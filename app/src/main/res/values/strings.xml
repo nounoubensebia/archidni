@@ -12,7 +12,7 @@
     <string name="select_on_map">Emplacement sur la carte</string>
     <string name="click_to_set_on_map">Selectionner un emplacement sur la carte</string>
     <string name="my_position">Ma position</string>
-    <string name="click_to_set_gps_location">selectionner votre emplacement GPS</string>
+    <string name="click_to_set_gps_location">Selectionner votre emplacement GPS</string>
     <string name="home">Domicile</string>
     <string name="select_home">Ajouter un domicile</string>
     <string name="work">Adresse professionnelle</string>

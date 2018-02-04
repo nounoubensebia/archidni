@@ -65,7 +65,7 @@ public abstract class PlaceSuggestion {
         else
         {
             placeSuggestions.add(new CommonPlaceSuggestion(App.getAppContext().getString(R.string.work),
-                    App.getAppContext().getString(R.string.home),
+                    App.getAppContext().getString(R.string.select_work),
                     CommonPlaceSuggestion.TYPE_WORK,false));
         }
         return placeSuggestions;
