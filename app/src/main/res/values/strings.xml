@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Archidni</string>
+    <string name="tramway">Tramway</string>
+    <string name="bus">Bus</string>
+    <string name="train">Train</string>
+    <string name="metro">Métro</string>
+    <string name="where_to_go">Où allez vous ?</string>
+    <string name="lines">Lignes</string>
+    <string name="stations">Stations</string>
+    <string name="error_retry">Une erreur s\'est produite veuillez réessayer</string>
+    <string name="reset">Réinitialiser</string>
+    <string name="select_on_map">Emplacement sur la carte</string>
+    <string name="click_to_set_on_map">Selectionner un emplacement sur la carte</string>
+    <string name="my_position">Ma position</string>
+    <string name="click_to_set_gps_location">selectionner votre emplacement GPS</string>
+    <string name="home">Domicile</string>
+    <string name="select_home">Ajouter un domicile</string>
+    <string name="work">Adresse professionnelle</string>
+    <string name="select_work">Ajouter une adresse professionnelle</string>
+    <string name="plan_path">Planifier un trajer</string>
+    <string name="get_path">Rechercher itinéraire</string>
+    <string name="path_origin">Départ</string>
+    <string name="path_destination">Arrivée</string>
+    <string name="options">Options</string>
+    <string name="suggested_paths">Itinéraires suggérés</string>
+    <string name="where_do_you_come_from">D\'où venez-vous ?</string>
+    <string name="not_defined">Non définie</string>
+    <string name="minutes">minutes</string>
+    <string name="hour">heure</string>
+    <string name="hours">heures</string>
+    <string name="wait">Attendre</string>
+    <string name="walk_to">Marcher pour atteindre</string>
+    <string name="metre">mètres</string>
+    <string name="today">Aujourd\'hui</string>
+    <string name="path">Itinéraire</string>
+    <string name="on_map">Emplacement sur la carte.</string>
+</resources>

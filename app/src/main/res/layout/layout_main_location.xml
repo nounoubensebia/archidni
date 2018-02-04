@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="#FAFAFA"
+    android:animateLayoutChanges="false"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        tools:visibility="visible"
+        android:layout_marginBottom="16dp"
+        android:animateLayoutChanges="false"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_transport_mean_icon"
+            app:srcCompat="@drawable/ic_location_on_green_64dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp" />
+        <LinearLayout
+            android:layout_marginLeft="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/text_main"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:text="Station Bact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/text_secondary"
+                android:text="El Mohamadia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/text_duration_distance"
+                android:text="El Mohamadia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/progressBar_station_location"
+                android:layout_width="24dp"
+                android:layout_height="24dp" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar_location"
+        android:visibility="gone"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center"
+        android:layout_width="64dp"
+        android:layout_height="64dp" />
+</FrameLayout>

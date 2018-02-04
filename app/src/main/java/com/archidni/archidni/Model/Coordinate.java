@@ -1,0 +1,38 @@
+package com.archidni.archidni.Model;
+
+import com.mapbox.mapboxsdk.geometry.LatLng;
+
+/**
+ * Created by noure on 02/02/2018.
+ */
+
+public class Coordinate {
+    private double latitude;
+    private double longitude;
+
+    public static final Coordinate DEFAULT_LOCATION = new Coordinate(36.728566111788055,
+            3.1676888465881348);
+
+    public Coordinate(Double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public Coordinate (com.mapbox.mapboxsdk.geometry.LatLng latLng)
+    {
+        this.latitude = latLng.getLatitude();
+        this.longitude = latLng.getLongitude();
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public LatLng toMapBoxLatLng() {
+        return new LatLng(latitude,longitude);
+    }
+}

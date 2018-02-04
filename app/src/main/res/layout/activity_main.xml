@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    app:umanoFadeColor="@android:color/transparent"
+    app:umanoOverlay="true"
+    app:umanoPanelHeight="100dp"
+    app:umanoShadowHeight="0dp">
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/layout_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/layout_main"
+            android:animateLayoutChanges="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.mapbox.mapboxsdk.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:animateLayoutChanges="false"
+                android:layout_height="match_parent">
+            <include layout="@layout/layout_main_search"
+                android:id="@+id/layout_search"/>
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:animateLayoutChanges="true"
+                android:layout_height="match_parent">
+            <include
+                layout="@layout/layout_main_location"
+                android:id="@+id/layout_location"
+                android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:animateLayoutChanges="true"
+                android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="100dp"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical">
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_my_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="#FFF"
+                    android:backgroundTint="#FFF"
+                    app:borderWidth="0dp"
+                    app:srcCompat="@drawable/ic_my_location_24dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="100dp"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_show_sliding_panel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|left"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:background="#FFF"
+                android:backgroundTint="#FFF"
+                app:borderWidth="0dp"
+                app:srcCompat="@drawable/ic_arrow_upward_black_24dp"/>
+            </LinearLayout>
+            </FrameLayout>
+            <LinearLayout
+                android:id="@+id/layout_get_path"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@color/color_transport_mean_selected_2"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    android:drawablePadding="16dp"
+                    android:drawableLeft="@drawable/ic_directions_24dp"
+                    android:text="@string/path"
+                    android:textColor="#FFF"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </android.support.design.widget.CoordinatorLayout>
+
+    </android.support.v4.widget.DrawerLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_sliding_up_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_sliding_up_panel" />
+    </FrameLayout>
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
