@@ -32,6 +32,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:5.3.2'
     compile 'com.jakewharton:butterknife:8.4.0'
+    compile 'com.google.android.gms:play-services-location:11.0.4'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.sothree.slidinguppanel:library:3.3.1'
     testImplementation 'junit:junit:4.12'

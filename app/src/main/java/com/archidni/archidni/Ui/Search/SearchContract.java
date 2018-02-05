@@ -21,11 +21,13 @@ public interface SearchContract {
         void startPathSearchActivity(Place origin,Place destination);
         void showPlacesSearchLoadingBar();
         void showHintMessage (String message);
+        void showMyPositionErrorMsg();
     }
 
     interface Presenter {
         void loadSearchResults(String text);
         void loadPlaceDetails(PlaceSuggestion place);
         void onSetMarkerResult(Coordinate selectedCoordinate);
+        void onUserLocationCaptured(Coordinate userLocation);
     }
 }

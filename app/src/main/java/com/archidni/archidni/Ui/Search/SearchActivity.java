@@ -1,7 +1,11 @@
 package com.archidni.archidni.Ui.Search;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -24,6 +28,9 @@ import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.PlaceSuggestionsAdapter;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.SetLocation.SetLocationActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -49,7 +56,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     @BindView(R.id.image_close)
     View closeImage;
 
-   
+    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,18 +64,38 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         setContentView(R.layout.activity_search);
         initViews();
         Bundle extras = getIntent().getExtras();
-        if (extras.containsKey(IntentUtils.LOCATION))
-        {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (extras.containsKey(IntentUtils.LOCATION)) {
             presenter = new SearchPresenter(this,
                     extras.getInt(IntentUtils.SearchIntents.EXTRA_REQUEST_TYPE),
                     new Gson().fromJson(extras.getString(IntentUtils.LOCATION),
                             Place.class));
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+
         }
         else
         {
             presenter = new SearchPresenter(this,
                     extras.getInt(IntentUtils.SearchIntents.EXTRA_REQUEST_TYPE));
         }
+        fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                presenter.onUserLocationCaptured(new Coordinate(location.getLatitude(),
+                        location.getLongitude()));
+            }
+        });
     }
 
     private void initViews()
@@ -198,6 +225,12 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     @Override
     public void showHintMessage(String message) {
         searchText.setHint(message);
+    }
+
+    @Override
+    public void showMyPositionErrorMsg() {
+        Toast.makeText(this,getApplicationContext().getString(R.string.error_retry),
+                Toast.LENGTH_LONG).show();
     }
 
     private void hideKeyboard ()

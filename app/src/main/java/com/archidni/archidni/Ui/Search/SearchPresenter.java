@@ -23,6 +23,7 @@ public class SearchPresenter implements SearchContract.Presenter {
     private SearchContract.View view;
     private int requestType;
     private Place bundledPlace;
+    private Coordinate userLocation;
 
     public SearchPresenter(SearchContract.View view,int requestType,Place place) {
         this.view = view;
@@ -122,10 +123,22 @@ public class SearchPresenter implements SearchContract.Presenter {
         }
         if (placeSuggestion instanceof GpsSuggestion)
         {
-            //view.startAskingActivity(requestType,null);
             if (placeSuggestion.getType()==GpsSuggestion.TYPE_SELECT_ON_MAP)
             {
                 view.startSetLocationActivity();
+            }
+            else
+            {
+                if (userLocation!=null)
+                {
+                    Place userPlace = new Place("Ma position","Ma position",
+                            userLocation);
+                    view.startAskingActivity(requestType,userPlace);
+                }
+                else
+                {
+                    view.showMyPositionErrorMsg();
+                }
             }
         }
         if (placeSuggestion instanceof CommonPlaceSuggestion)
@@ -138,6 +151,19 @@ public class SearchPresenter implements SearchContract.Presenter {
     public void onSetMarkerResult(Coordinate coordinate) {
         Place selectedLocation = new Place(StringUtils.getLocationString(coordinate),
                 App.getAppContext().getString(R.string.on_map),coordinate);
-        view.startPathSearchActivity(bundledPlace,selectedLocation);
+        switch (requestType) {
+            case IntentUtils.SearchIntents.TYPE_LOOK_ONLY_FOR_DESTINATION :
+                view.startPathSearchActivity(bundledPlace,selectedLocation);
+                break;
+            case IntentUtils.SearchIntents.TYPE_LOOK_ONLY_FOR_ORIGIN:
+                view.startPathSearchActivity(selectedLocation,bundledPlace);
+                break;
+                default:view.startAskingActivity(requestType,selectedLocation);
+        }
+    }
+
+    @Override
+    public void onUserLocationCaptured(Coordinate userLocation) {
+        this.userLocation = userLocation;
     }
 }

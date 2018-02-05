@@ -174,6 +174,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
 
     @Override
     public void showOriginAndDestinationOnMap(Place origin, Place destination) {
+        archidniMap.clearMap();
         archidniMap.addMarker(destination.getCoordinate(),R.drawable.ic_marker_blue_24dp);
         if (origin!=null)
         {

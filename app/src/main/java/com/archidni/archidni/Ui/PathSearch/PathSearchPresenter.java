@@ -32,6 +32,7 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
         String destinationString = (pathSearcher.getDestination().getMainText()!=null) ?
                 pathSearcher.getDestination().getMainText():"";
         view.showOriginAndDestinationLabels(originString,destinationString);
+        view.showOriginAndDestinationOnMap(pathSearcher.getOrigin(),pathSearcher.getDestination());
     }
 
     @Override
