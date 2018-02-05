@@ -23,7 +23,7 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
                 TimeUtils.getSecondsFromMidnight(),TimeUtils.getCurrentTimeInSeconds());
         String originString = (origin!=null) ? origin.getMainText():"";
         String destinationString = (destination!=null) ? destination.getMainText():"";
-        view.showOriginAndDestination(originString,destinationString);
+        view.showOriginAndDestinationLabels(originString,destinationString);
     }
 
     private void updateOriginDestination ()
@@ -31,7 +31,12 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
         String originString = (pathSearcher.getOrigin()!=null) ? pathSearcher.getOrigin().getMainText():"";
         String destinationString = (pathSearcher.getDestination().getMainText()!=null) ?
                 pathSearcher.getDestination().getMainText():"";
-        view.showOriginAndDestination(originString,destinationString);
+        view.showOriginAndDestinationLabels(originString,destinationString);
+    }
+
+    @Override
+    public void onMapReady() {
+        view.showOriginAndDestinationOnMap(pathSearcher.getOrigin(),pathSearcher.getDestination());
     }
 
     @Override

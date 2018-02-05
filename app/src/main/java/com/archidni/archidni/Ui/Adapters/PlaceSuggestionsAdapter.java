@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.archidni.archidni.Model.PlaceSuggestion.PlaceSuggestion;
-import com.archidni.archidni.Model.PlaceSuggestion.TextQuerySuggestion;
 import com.archidni.archidni.R;
 
 import java.util.ArrayList;
@@ -26,11 +25,11 @@ import butterknife.ButterKnife;
 public class PlaceSuggestionsAdapter extends RecyclerView.Adapter<PlaceSuggestionsAdapter.ViewHolder> {
 
     private ArrayList<PlaceSuggestion> placeSuggestions;
-    private OnItemClickedListener onItemClickedListener;
+    private OnItemClickListener onItemClickedListener;
     private Context context;
 
     public PlaceSuggestionsAdapter(ArrayList<PlaceSuggestion> placeSuggestions,
-                                   OnItemClickedListener onItemClickedListener,
+                                   OnItemClickListener onItemClickedListener,
                                    Context context) {
         this.placeSuggestions = placeSuggestions;
         this.onItemClickedListener = onItemClickedListener;
@@ -79,7 +78,7 @@ public class PlaceSuggestionsAdapter extends RecyclerView.Adapter<PlaceSuggestio
         }
     }
 
-    public interface OnItemClickedListener {
+    public interface OnItemClickListener {
         void onItemClick(PlaceSuggestion placeSuggestion);
     }
 }

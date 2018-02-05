@@ -6,8 +6,13 @@ package com.archidni.archidni;
 
 public class IntentUtils {
     public static final String LOCATION = "LOCATION";
-    public static final String ORIGIN = "ORIGIN";
-    public static final String DESTINATION = "DESTINATION";
+    public static final String PATH_SEARCH_ORIGIN = "PATH_SEARCH_ORIGIN";
+    public static final String PATH_SEARCH_DESTINATION = "PATH_SEARCH_DESTINATION";
+    public static final String SET_LOCATION_COORDINATES = "SET_LOCATION_COORDINATES";
+
+    public static class PathSearchIntents {
+
+    }
 
     public static class SearchIntents {
         public static final String EXTRA_REQUEST_TYPE = "REQUEST_TYPE";

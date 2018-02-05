@@ -10,12 +10,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.archidni.archidni.Data.GeoRepository;
 import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.StringUtils;
+import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.R;
@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     TextView secondaryText;
     @BindView(R.id.text_duration_distance)
     TextView durationDistanceText;
+    @BindView(R.id.layout_get_path)
+    View getPathLayout;
     ArchidniMap archidniMap;
 
     @Override
@@ -152,6 +154,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             @Override
             public void onClick(View view) {
                 presenter.onShowSlidingPanelFabClick();
+            }
+        });
+        getPathLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onSearchPathClick();
             }
         });
     }
@@ -311,7 +319,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             durationDistanceText.setText(StringUtils
                     .getTextFromDistance(GeoUtils.distance(archidniMap.getUserLocation(),
                             place.getCoordinate()))+", "+
-                    StringUtils.getTextFromDuration(GeoUtils.getOnFootDuration(archidniMap.getUserLocation(),
+                    StringUtils.getTextFromDuration(GeoUtils.getOnFootDuration(archidniMap
+                                    .getUserLocation(),
                             place.getCoordinate()))+" de marche");
 
         }
@@ -330,6 +339,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 container.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             }
         },250);
+        archidniMap.addMarker(place.getCoordinate(),R.drawable.ic_marker_green_24dp);
     }
 
     @Override
@@ -345,7 +355,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 slideInSearchText();
             }
         },250);
+        archidniMap.clearMap();
+    }
 
+    @Override
+    public void startPathSearchActivity(Place origin, Place destination) {
+        Intent intent = new Intent(this, PathSearchActivity.class);
+        intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,origin.toJson());
+        intent.putExtra(IntentUtils.PATH_SEARCH_DESTINATION,destination.toJson());
+        startActivity(intent);
     }
 
     @Override
@@ -354,8 +372,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void moveCameraToLocation(Coordinate coordinate) {
-
+    public void animateCameraToLocation(Coordinate coordinate) {
+        archidniMap.animateCamera(coordinate,15,250);
     }
 
     @Override

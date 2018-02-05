@@ -1,16 +1,31 @@
 package com.archidni.archidni.UiUtils;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 
 import com.archidni.archidni.Model.Coordinate;
+import com.mapbox.mapboxsdk.annotations.Icon;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdate;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.constants.MyBearingTracking;
 import com.mapbox.mapboxsdk.constants.MyLocationTracking;
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
+
+import java.util.ArrayList;
 
 /**
  * Created by noure on 02/02/2018.
@@ -34,6 +49,11 @@ public class ArchidniMap {
                 onMapReadyCallback.onMapReady();
             }
         });
+    }
+
+    public Coordinate getCenter ()
+    {
+        return new Coordinate(mapboxMap.getCameraPosition().target);
     }
 
     public void moveCamera (final Coordinate coordinate)
@@ -126,6 +146,64 @@ public class ArchidniMap {
                 onMapShortClickListener.onMapShortClick(new Coordinate(point));
             }
         });
+    }
+
+    public void moveCameraToBounds (ArrayList<Coordinate> coordinates, int padding)
+    {
+        LatLngBounds.Builder latLngBoundsBulder = new LatLngBounds.Builder();
+        for (Coordinate c:coordinates)
+        {
+            latLngBoundsBulder.include(c.toMapBoxLatLng());
+        }
+        com.mapbox.mapboxsdk.geometry.LatLngBounds latLngBounds = latLngBoundsBulder.build();
+
+
+        mapboxMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds,padding));
+    }
+
+    public void moveCameraToBounds (ArrayList<Coordinate> coordinates, int paddingLeft,int paddingTop,
+                                    int paddingRight,int paddingDown)
+    {
+        com.mapbox.mapboxsdk.geometry.LatLngBounds.Builder latLngBoundsBulder = new com.mapbox.mapboxsdk.geometry.LatLngBounds.Builder();
+        for (Coordinate c:coordinates)
+        {
+            latLngBoundsBulder.include(c.toMapBoxLatLng());
+        }
+        com.mapbox.mapboxsdk.geometry.LatLngBounds latLngBounds = latLngBoundsBulder.build();
+
+        mapboxMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds,paddingLeft,paddingTop,
+                paddingRight,paddingDown));
+
+    }
+
+    public void addMarker(Coordinate coordinate, int markerDrawableResource) {
+        IconFactory iconFactory = IconFactory.getInstance(mapView.getContext());
+        Icon icon = iconFactory.fromBitmap(getBitmapFromVectorDrawable(markerDrawableResource));
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(coordinate.toMapBoxLatLng());
+        markerOptions.icon(icon);
+        mapboxMap.addMarker(markerOptions);
+    }
+
+    public void clearMap ()
+    {
+        mapboxMap.clear();
+    }
+
+    private Bitmap getBitmapFromVectorDrawable(int drawableId) {
+        Context context = mapView.getContext();
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            drawable = (DrawableCompat.wrap(drawable)).mutate();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 
     public interface OnMapReadyCallback {

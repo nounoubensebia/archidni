@@ -17,12 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.archidni.archidni.IntentUtils;
+import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.PlaceSuggestion.PlaceSuggestion;
-import com.archidni.archidni.Model.PlaceSuggestion.TextQuerySuggestion;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.PlaceSuggestionsAdapter;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
+import com.archidni.archidni.Ui.SetLocation.SetLocationActivity;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -47,6 +48,9 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     TextView resetText;
     @BindView(R.id.image_close)
     View closeImage;
+
+   
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +88,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
             @Override
             public void afterTextChanged(Editable editable) {
                 String text = searchText.getText().toString();
-                if (text.length()>1)
+                if (text.length()>0)
                 {
                     presenter.loadSearchResults(text);
                     resetText.setVisibility(View.VISIBLE);
@@ -116,10 +120,17 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Coordinate coordinate = Coordinate.fromJson(data.getExtras().
+                getString(IntentUtils.SET_LOCATION_COORDINATES));
+        presenter.onSetMarkerResult(coordinate);
+    }
+
     private void populateListView (ArrayList<PlaceSuggestion> placeSuggestions)
     {
         PlaceSuggestionsAdapter placeSuggestionsAdapter = new PlaceSuggestionsAdapter(placeSuggestions,
-                new PlaceSuggestionsAdapter.OnItemClickedListener() {
+                new PlaceSuggestionsAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(PlaceSuggestion placeSuggestion) {
                         hideKeyboard();
@@ -161,14 +172,21 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     }
 
     @Override
+    public void startSetLocationActivity() {
+        startActivityForResult(new Intent(this,SetLocationActivity.class),
+                0);
+    }
+
+    @Override
     public void startPathSearchActivity(Place origin, Place destination) {
         Intent intent = new Intent(this,PathSearchActivity.class);
         if (origin!=null)
-            intent.putExtra(IntentUtils.ORIGIN,origin.toJson());
+            intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,origin.toJson());
         else
-            intent.putExtra(IntentUtils.ORIGIN,new Gson().toJson(null));
-        intent.putExtra(IntentUtils.DESTINATION,destination.toJson());
+            intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,new Gson().toJson(null));
+        intent.putExtra(IntentUtils.PATH_SEARCH_DESTINATION,destination.toJson());
         startActivity(intent);
+        finish();
     }
 
     @Override

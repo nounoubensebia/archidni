@@ -17,6 +17,7 @@ import android.widget.TimePicker;
 
 
 import com.archidni.archidni.IntentUtils;
+import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.StringUtils;
@@ -73,8 +74,8 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
         initViews(savedInstanceState);
         Bundle extras = getIntent().getExtras();
         pathSearchPresenter = new PathSearchPresenter(this,
-                Place.fromJson(extras.getString(IntentUtils.ORIGIN)),
-                Place.fromJson(extras.getString(IntentUtils.DESTINATION)));
+                Place.fromJson(extras.getString(IntentUtils.PATH_SEARCH_ORIGIN)),
+                Place.fromJson(extras.getString(IntentUtils.PATH_SEARCH_DESTINATION)));
     }
 
     private void initViews(Bundle savedInstanceState)
@@ -86,7 +87,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
                 new ArchidniMap.OnMapReadyCallback() {
             @Override
             public void onMapReady() {
-
+                pathSearchPresenter.onMapReady();
             }
         });
         getPathLayout.setOnClickListener(new View.OnClickListener() {
@@ -164,11 +165,29 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     }
 
     @Override
-    public void showOriginAndDestination(String origin, String destination) {
+    public void showOriginAndDestinationLabels(String origin, String destination) {
         String originString = (!origin.equals("")) ? origin:getString(R.string.not_defined);
         String destinationString = (!destination.equals("")) ? destination:getString(R.string.not_defined);
         originText.setText(originString);
         destinationText.setText(destinationString);
+    }
+
+    @Override
+    public void showOriginAndDestinationOnMap(Place origin, Place destination) {
+        archidniMap.addMarker(destination.getCoordinate(),R.drawable.ic_marker_blue_24dp);
+        if (origin!=null)
+        {
+            archidniMap.addMarker(origin.getCoordinate(),R.drawable.ic_marker_red_24dp);
+            ArrayList<Coordinate> coordinates = new ArrayList<>();
+            coordinates.add(origin.getCoordinate());
+            coordinates.add(destination.getCoordinate());
+            archidniMap.moveCameraToBounds(coordinates,100,200,100,
+                    400);
+        }
+        else
+        {
+            archidniMap.moveCamera(destination.getCoordinate(),15);
+        }
     }
 
     @Override

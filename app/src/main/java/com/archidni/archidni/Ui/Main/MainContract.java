@@ -15,12 +15,13 @@ public interface MainContract {
         void startSearchActivity(Place userLocation);
         void setUserLocationEnabled(boolean enable);
         void moveCameraToUserLocation();
-        void moveCameraToLocation(Coordinate coordinate);
+        void animateCameraToLocation(Coordinate coordinate);
         void obtainUserLocation(OnUserLocationObtainedCallback onUserLocationObtainedCallback);
         void trackUser();
         void showSlidingPanel();
         void showLocationLayout(Place place);
         void hideLocationLayout();
+        void startPathSearchActivity(Place origin,Place destination);
     }
 
     interface Presenter {
@@ -32,6 +33,7 @@ public interface MainContract {
         void onShowSlidingPanelFabClick();
         void onMapLongClick(Coordinate coordinate);
         void onMapShortClick();
+        void onSearchPathClick();
     }
 
     interface OnUserLocationObtainedCallback {

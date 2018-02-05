@@ -1,5 +1,6 @@
 package com.archidni.archidni.Model;
 
+import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 /**
@@ -34,5 +35,13 @@ public class Coordinate {
 
     public LatLng toMapBoxLatLng() {
         return new LatLng(latitude,longitude);
+    }
+
+    public String toJson() {
+        return new Gson().toJson(this);
+    }
+
+    public static Coordinate fromJson(String json) {
+        return new Gson().fromJson(json,Coordinate.class);
     }
 }

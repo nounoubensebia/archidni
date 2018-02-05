@@ -27,9 +27,13 @@
         </activity>
         <activity
             android:name=".Ui.Search.SearchActivity"
-            android:noHistory="true"
+            android:noHistory="false"
             android:windowSoftInputMode="stateVisible" />
-        <activity android:name=".Ui.PathSearch.PathSearchActivity" android:label="@string/plan_path"></activity>
+        <activity
+            android:name=".Ui.PathSearch.PathSearchActivity"
+            android:label="@string/plan_path"
+            android:parentActivityName=".Ui.Main.MainActivity" />
+        <activity android:name=".Ui.SetLocation.SetLocationActivity" android:theme="@style/AppThemeWithActionBar"></activity>
     </application>
 
 </manifest>

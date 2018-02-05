@@ -16,6 +16,7 @@ public class MainPresenter implements MainContract.Presenter {
     private TransportMeansSelector transportMeansSelector;
     private boolean stationsSelected = true;
     private boolean locationLayoutVisible = false;
+    private Place selectedLocation;
 
     public MainPresenter(MainContract.View view) {
         this.view = view;
@@ -74,7 +75,7 @@ public class MainPresenter implements MainContract.Presenter {
                 }
                 else
                 {
-                    view.moveCameraToLocation(Coordinate.DEFAULT_LOCATION);
+                    view.animateCameraToLocation(Coordinate.DEFAULT_LOCATION);
                 }
             }
         });
@@ -92,9 +93,11 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onMapLongClick(Coordinate coordinate) {
-        view.showLocationLayout(new Place(StringUtils.getLocationString(coordinate),
-                App.getAppContext().getString(R.string.on_map),coordinate));
+        selectedLocation = new Place(StringUtils.getLocationString(coordinate),
+                App.getAppContext().getString(R.string.on_map),coordinate);
+        view.showLocationLayout(selectedLocation);
         locationLayoutVisible = true;
+        view.animateCameraToLocation(coordinate);
     }
 
     @Override
@@ -104,5 +107,17 @@ public class MainPresenter implements MainContract.Presenter {
             view.hideLocationLayout();
             locationLayoutVisible = false;
         }
+    }
+
+    @Override
+    public void onSearchPathClick() {
+        view.obtainUserLocation(new MainContract.OnUserLocationObtainedCallback() {
+            @Override
+            public void onLocationObtained(Coordinate userLocation) {
+                    Place userPlace = new Place("Ma position","Ma position",
+                            userLocation);
+                    view.startPathSearchActivity(userPlace,selectedLocation);
+            }
+        });
     }
 }

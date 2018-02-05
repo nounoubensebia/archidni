@@ -1,5 +1,6 @@
 package com.archidni.archidni.Ui.Search;
 
+import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.PlaceSuggestion.PlaceSuggestion;
 import com.archidni.archidni.Model.PlaceSuggestion.TextQuerySuggestion;
@@ -16,6 +17,7 @@ public interface SearchContract {
         void showErrorMessage();
         void showPlaceDetailsLoadingBar();
         void startAskingActivity(int requestType,Place place);
+        void startSetLocationActivity();
         void startPathSearchActivity(Place origin,Place destination);
         void showPlacesSearchLoadingBar();
         void showHintMessage (String message);
@@ -24,5 +26,6 @@ public interface SearchContract {
     interface Presenter {
         void loadSearchResults(String text);
         void loadPlaceDetails(PlaceSuggestion place);
+        void onSetMarkerResult(Coordinate selectedCoordinate);
     }
 }

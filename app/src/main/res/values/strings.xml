@@ -34,4 +34,7 @@
     <string name="today">Aujourd\'hui</string>
     <string name="path">Itinéraire</string>
     <string name="on_map">Emplacement sur la carte.</string>
+    <string name="confirm">Confirmer</string>
+    <string name="finish">Terminé</string>
+    <string name="error_happened">Une erreur s\'est produite veilleuz réessayer</string>
 </resources>

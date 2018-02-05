@@ -1,5 +1,6 @@
 package com.archidni.archidni.Ui.PathSearch;
 
+import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Place;
 
@@ -11,7 +12,8 @@ import java.util.ArrayList;
 
 public interface PathSearchContract {
     interface View {
-        void showOriginAndDestination (String origin,String destination);
+        void showOriginAndDestinationLabels(String origin, String destination);
+        void showOriginAndDestinationOnMap(Place origin,Place destination);
         void showLoadingBar();
         void showPathSuggestions (ArrayList<Path> paths);
         void startSearchActivity (int requestType);
@@ -22,6 +24,7 @@ public interface PathSearchContract {
     }
 
     interface Presenter {
+        void onMapReady();
         void loadPathSuggestions ();
         void lookForLocation (int requestType);
         void onActivityResult (int requestType,Place newPlace);

@@ -3,11 +3,13 @@ package com.archidni.archidni.Ui.Search;
 import com.archidni.archidni.App;
 import com.archidni.archidni.Data.GeoRepository;
 import com.archidni.archidni.IntentUtils;
+import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.PlaceSuggestion.CommonPlaceSuggestion;
 import com.archidni.archidni.Model.PlaceSuggestion.GpsSuggestion;
 import com.archidni.archidni.Model.PlaceSuggestion.PlaceSuggestion;
 import com.archidni.archidni.Model.PlaceSuggestion.TextQuerySuggestion;
+import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.R;
 
 import java.util.ArrayList;
@@ -120,11 +122,22 @@ public class SearchPresenter implements SearchContract.Presenter {
         }
         if (placeSuggestion instanceof GpsSuggestion)
         {
-            view.startAskingActivity(requestType,null);
+            //view.startAskingActivity(requestType,null);
+            if (placeSuggestion.getType()==GpsSuggestion.TYPE_SELECT_ON_MAP)
+            {
+                view.startSetLocationActivity();
+            }
         }
         if (placeSuggestion instanceof CommonPlaceSuggestion)
         {
             view.startAskingActivity(requestType,null);
         }
+    }
+
+    @Override
+    public void onSetMarkerResult(Coordinate coordinate) {
+        Place selectedLocation = new Place(StringUtils.getLocationString(coordinate),
+                App.getAppContext().getString(R.string.on_map),coordinate);
+        view.startPathSearchActivity(bundledPlace,selectedLocation);
     }
 }
