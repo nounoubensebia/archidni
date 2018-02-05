@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="@string/cities"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_location_city_black_24dp"
+        android:id="@+id/item_my_maps"
+        android:visible="true">
+    </item>
+
+    <item android:title="@string/favorites"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_favorites_black_24dp"
+        android:id="@+id/item_my_favorites_lines"
+        android:visible="true">
+    </item>
+
+
+    <item android:title="@string/settings"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:id="@+id/item_my_settings"
+        android:visible="true">
+    </item>
+
+    <item android:title="@string/log_out"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_exit_transport_mean1"
+        android:id="@+id/item_disconnect"
+        android:visible="true">
+    </item>
+
+</menu>

@@ -37,4 +37,8 @@
     <string name="confirm">Confirmer</string>
     <string name="finish">Terminé</string>
     <string name="error_happened">Une erreur s\'est produite veilleuz réessayer</string>
+    <string name="cities">Villes</string>
+    <string name="favorites">Mes favoris</string>
+    <string name="settings">Mes parametres</string>
+    <string name="log_out">Se déconnecter</string>
 </resources>

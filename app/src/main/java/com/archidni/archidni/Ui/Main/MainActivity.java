@@ -3,8 +3,10 @@ package com.archidni.archidni.Ui.Main;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -69,7 +71,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     TextView durationDistanceText;
     @BindView(R.id.layout_get_path)
     View getPathLayout;
+    @BindView(R.id.layout_drawer)
+    DrawerLayout drawerLayout;
+    @BindView(R.id.image_open_drawer)
+    View openDrawerImage;
+
     ArchidniMap archidniMap;
+    private boolean drawerOpened;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +168,44 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             @Override
             public void onClick(View view) {
                 presenter.onSearchPathClick();
+            }
+        });
+        openDrawerImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(Gravity.START);
+                container.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+                drawerOpened = true;
+                myLocationFab.setVisibility(View.GONE);
+                showSlidingUpPanelFab.setVisibility(View.GONE);
+                getPathLayout.setVisibility(View.GONE);
+                slideOutSearchText();
+            }
+        });
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                drawerOpened = false;
+                container.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                getPathLayout.setVisibility(View.VISIBLE);
+                myLocationFab.setVisibility(View.VISIBLE);
+                showSlidingUpPanelFab.setVisibility(View.VISIBLE);
+                slideInSearchText();
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
             }
         });
     }
@@ -406,7 +452,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
         else
         {
-            super.onBackPressed();
+            if (drawerOpened)
+            {
+                drawerLayout.closeDrawer(Gravity.START);
+            }
+            else
+            {
+                super.onBackPressed();
+            }
         }
     }
 
