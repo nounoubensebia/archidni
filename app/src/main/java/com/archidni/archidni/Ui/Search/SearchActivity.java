@@ -92,6 +92,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
+                if (location!=null)
                 presenter.onUserLocationCaptured(new Coordinate(location.getLatitude(),
                         location.getLongitude()));
             }
