@@ -19,8 +19,8 @@
     <string name="select_work">Ajouter une adresse professionnelle</string>
     <string name="plan_path">Planifier un trajer</string>
     <string name="get_path">Rechercher itinéraire</string>
-    <string name="path_origin">Départ</string>
-    <string name="path_destination">Arrivée</string>
+    <string name="path_origin">Départ :</string>
+    <string name="path_destination">Arrivée :</string>
     <string name="options">Options</string>
     <string name="suggested_paths">Itinéraires suggérés</string>
     <string name="where_do_you_come_from">D\'où venez-vous ?</string>
