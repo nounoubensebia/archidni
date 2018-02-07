@@ -54,7 +54,7 @@ public class SetLocationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent data = new Intent();
                 data.putExtra(IntentUtils.SET_LOCATION_COORDINATES,archidniMap.getCenter().toJson());
-                setResult(1,data);
+                setResult(IntentUtils.RESULT_OK,data);
                 finish();
             }
         });

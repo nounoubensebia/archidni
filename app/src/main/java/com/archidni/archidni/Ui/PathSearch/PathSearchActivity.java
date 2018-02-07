@@ -257,7 +257,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == 1)
+        if (resultCode == IntentUtils.RESULT_OK)
             pathSearchPresenter.onActivityResult(requestCode,
                     Place.fromJson(data.getExtras().getString(IntentUtils.LOCATION)));
     }

@@ -130,6 +130,27 @@
                             android:theme="@style/progressBarWhiteTheme" />
                     </LinearLayout>
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layout_zoom_insufficient_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:animateLayoutChanges="true"
+                    android:background="@color/color_transport_mean_selected_1"
+                    android:elevation="4dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/text_zoom_insufficient_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Zoomez pour voir les station autour de cet endroit"
+                        android:textColor="#FFF" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout

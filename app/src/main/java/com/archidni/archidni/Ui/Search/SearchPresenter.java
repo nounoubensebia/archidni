@@ -89,9 +89,10 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void loadPlaceDetails(PlaceSuggestion placeSuggestion) {
-        view.showPlaceDetailsLoadingBar();
+
         if (placeSuggestion instanceof TextQuerySuggestion)
         {
+            view.showPlaceDetailsLoadingBar();
             geoRepository.getPlaceDetails((TextQuerySuggestion)placeSuggestion,
                     new GeoRepository.OnPlaceDetailsSearchComplete() {
                         @Override

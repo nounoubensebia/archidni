@@ -150,9 +150,12 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Coordinate coordinate = Coordinate.fromJson(data.getExtras().
-                getString(IntentUtils.SET_LOCATION_COORDINATES));
-        presenter.onSetMarkerResult(coordinate);
+        if (resultCode == IntentUtils.RESULT_OK)
+        {
+            Coordinate coordinate = Coordinate.fromJson(data.getExtras().
+                    getString(IntentUtils.SET_LOCATION_COORDINATES));
+            presenter.onSetMarkerResult(coordinate);
+        }
     }
 
     private void populateListView (ArrayList<PlaceSuggestion> placeSuggestions)

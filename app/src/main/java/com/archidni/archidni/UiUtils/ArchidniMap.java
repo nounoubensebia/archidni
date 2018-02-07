@@ -239,6 +239,19 @@ public class ArchidniMap {
                 mapboxMap.removeMarker(archidniMarker.getMarker());
             }
         }
+        for (int i = 0; i < archidniMarkers.size(); i++) {
+            ArchidniMarker archidniMarker = archidniMarkers.get(i);
+            if (archidniMarker.getTag()!=null&&archidniMarker.getTag().equals(tag))
+            {
+                mapboxMap.removeMarker(archidniMarker.getMarker());
+                archidniMarkers.remove(archidniMarker);
+            }
+            if (archidniMarker.getTag()==null&&tag==null)
+            {
+                mapboxMap.removeMarker(archidniMarker.getMarker());
+                archidniMarkers.remove(archidniMarker);
+            }
+        }
     }
 
     public void removeMarkers (ArrayList arrayList)
@@ -330,6 +343,22 @@ public class ArchidniMap {
     public void clearMap ()
     {
         mapboxMap.clear();
+        archidniMarkers = new ArrayList<>();
+        preparedArchidniMarkers = new ArrayList<>();
+    }
+
+    public void clearMarkersWithTags ()
+    {
+        int i = 0;
+        while (i< archidniMarkers.size())
+        {
+            ArchidniMarker archidniMarker = archidniMarkers.get(i);
+            if (archidniMarker.getTag()!=null)
+                removeMarker(archidniMarker.getTag());
+            else
+                i++;
+        }
+
     }
 
     private Bitmap getBitmapFromVectorDrawable(int drawableId) {
@@ -348,8 +377,19 @@ public class ArchidniMap {
         return bitmap;
     }
 
+    public void setOnCameraMoveListener (final OnCameraMoveListener onCameraMoveListener)
+    {
+        mapboxMap.setOnCameraMoveListener(new MapboxMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                onCameraMoveListener.onCameraMove(new Coordinate(mapboxMap.getCameraPosition().target),
+                        mapboxMap.getCameraPosition().zoom);
+            }
+        });
+    }
+
     public interface OnCameraMoveListener {
-        void onCameraMove ();
+        void onCameraMove (Coordinate coordinate,double zoom);
     }
 
     public interface OnMapReadyCallback {

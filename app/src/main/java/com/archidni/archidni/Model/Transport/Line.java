@@ -30,4 +30,8 @@ public class Line {
         }
         return stations;
     }
+
+    public TransportMean getTransportMean() {
+        return transportMean;
+    }
 }

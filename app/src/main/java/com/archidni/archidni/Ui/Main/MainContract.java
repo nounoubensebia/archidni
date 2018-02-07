@@ -34,6 +34,8 @@ public interface MainContract {
         void hideLinesLoadingLayout();
         void showLinesOnMap(ArrayList<Station> stations);
         void showLinesOnList(ArrayList<Line> lines);
+        void showZoomInsufficientLayout();
+        void hideZoomInsufficientLayout();
     }
 
     interface Presenter {
@@ -47,7 +49,8 @@ public interface MainContract {
         void onLocationMarkerCreated(ArchidniMarker marker);
         void onMapShortClick();
         void onSearchPathClick();
-        void onStationMarkerClickListener(Station station,ArchidniMarker marker);
+        void onCameraMove(Coordinate coordinate,double zoom);
+        void onStationMarkerClick(Station station, ArchidniMarker marker);
     }
 
     interface OnUserLocationObtainedCallback {

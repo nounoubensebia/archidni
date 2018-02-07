@@ -29,6 +29,8 @@ public class MainPresenter implements MainContract.Presenter {
     private ArrayList<Line> lines;
     private LinesRepository linesRepository;
     private ArchidniMarker selectedMarker;
+    private static final int MIN_ZOOM = 12;
+    private boolean currentZoomIsInsufficient;
 
     public MainPresenter(MainContract.View view) {
         this.view = view;
@@ -36,12 +38,14 @@ public class MainPresenter implements MainContract.Presenter {
         transportMeansSelector.selectAllTransportMeans();
         view.updateMeansSelectionLayout(transportMeansSelector);
         linesRepository = new LinesRepository();
+        lines = new ArrayList<>();
     }
 
     @Override
     public void toggleTransportMean(int transportMeanId) {
         transportMeansSelector.ToggleTransportMean(transportMeanId);
         view.updateMeansSelectionLayout(transportMeansSelector);
+        view.showLinesOnMap(TransportUtils.getStationsFromLines(filteredLines()));
     }
 
     @Override
@@ -79,32 +83,37 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onMapReady(final Context context) {
         view.setUserLocationEnabled(true);
+        transportMeansSelector.selectAllTransportMeans();
         view.obtainUserLocation(new MainContract.OnUserLocationObtainedCallback() {
             @Override
             public void onLocationObtained(Coordinate userLocation) {
                 view.showLinesLoadingLayout();
-
+                Coordinate searchLocation;
                 if (userLocation!=null)
                 {
                     view.moveCameraToUserLocation();
-                    linesRepository.getLines(context,userLocation, new LinesRepository.OnSearchCompleted() {
-                        @Override
-                        public void onLinesFound(ArrayList<Line> lines) {
-                            view.hideLinesLoadingLayout();
-                            view.showLinesOnList(lines);
-                            view.showLinesOnMap(TransportUtils.getStationsFromLines(lines));
-                        }
-
-                        @Override
-                        public void onError() {
-
-                        }
-                    });
+                    searchLocation = userLocation;
                 }
                 else
                 {
+                    searchLocation = Coordinate.DEFAULT_LOCATION;
                     view.animateCameraToLocation(Coordinate.DEFAULT_LOCATION);
                 }
+
+                linesRepository.getLines(context,searchLocation, new LinesRepository.OnSearchCompleted() {
+                    @Override
+                    public void onLinesFound(ArrayList<Line> lines) {
+                        MainPresenter.this.lines = lines;
+                        view.hideLinesLoadingLayout();
+                        view.showLinesOnList(lines);
+                        view.showLinesOnMap(TransportUtils.getStationsFromLines(filteredLines()));
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
             }
         });
     }
@@ -121,11 +130,14 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onMapLongClick(Coordinate coordinate) {
-        selectedLocation = new Place(StringUtils.getLocationString(coordinate),
-                App.getAppContext().getString(R.string.on_map),coordinate);
-        view.showLocationLayout(selectedLocation);
-        locationLayoutVisible = true;
-        view.animateCameraToLocation(coordinate);
+        if (selectedLocation == null)
+        {
+            selectedLocation = new Place(StringUtils.getLocationString(coordinate),
+                    App.getAppContext().getString(R.string.on_map),coordinate);
+            view.showLocationLayout(selectedLocation);
+            locationLayoutVisible = true;
+            view.animateCameraToLocation(coordinate);
+        }
     }
 
     @Override
@@ -140,6 +152,11 @@ public class MainPresenter implements MainContract.Presenter {
             view.hideLocationLayout(selectedMarker);
             locationLayoutVisible = false;
             selectedMarker = null;
+            selectedLocation = null;
+            if (currentZoomIsInsufficient)
+            {
+                view.showZoomInsufficientLayout();
+            }
         }
     }
 
@@ -155,12 +172,49 @@ public class MainPresenter implements MainContract.Presenter {
         });
     }
 
+
     @Override
-    public void onStationMarkerClickListener(Station station, ArchidniMarker marker) {
-        view.showLocationLayout(station);
-        selectedMarker = marker;
-        locationLayoutVisible = true;
-        view.animateCameraToLocation(station.getCoordinate());
-        selectedLocation = station;
+    public void onCameraMove(Coordinate coordinate, double zoom) {
+        if (zoom<MIN_ZOOM)
+        {
+            if (!locationLayoutVisible)
+                view.showZoomInsufficientLayout();
+            view.showLinesOnMap(new ArrayList<Station>());
+            currentZoomIsInsufficient = true;
+        }
+        else
+        {
+            if (currentZoomIsInsufficient)
+            {
+                currentZoomIsInsufficient = false;
+                view.hideZoomInsufficientLayout();
+                view.showLinesOnMap(TransportUtils.getStationsFromLines(filteredLines()));
+            }
+        }
+    }
+
+    @Override
+    public void onStationMarkerClick(Station station, ArchidniMarker marker) {
+        if (selectedLocation==null)
+        {
+            view.showLocationLayout(station);
+            selectedMarker = marker;
+            locationLayoutVisible = true;
+            view.animateCameraToLocation(station.getCoordinate());
+            selectedLocation = station;
+        }
+    }
+
+    private ArrayList<Line> filteredLines ()
+    {
+        ArrayList<Line> filteredLines = new ArrayList<>();
+        for (Line line:lines)
+        {
+            if (transportMeansSelector.isTransportMeanSelected(line.getTransportMean().getId()))
+            {
+                filteredLines.add(line);
+            }
+        }
+        return filteredLines;
     }
 }

@@ -13,7 +13,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.IntentUtils;
@@ -22,7 +21,6 @@ import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
-import com.archidni.archidni.Model.Transport.TransportUtils;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
@@ -33,7 +31,6 @@ import com.archidni.archidni.UiUtils.TransportMeansSelector;
 import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -91,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     ImageView placeFab;
     @BindView(R.id.image_transport_mean_icon)
     ImageView locationIcon;
+    @BindView(R.id.layout_zoom_insufficient_message)
+    View zoomInsufficientLayout;
     ArchidniMap archidniMap;
     private boolean drawerOpened;
 
@@ -129,8 +128,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                         if (archidniMarker.getTag()!=null)
                         {
                             Station station = (Station) archidniMarker.getTag();
-                            presenter.onStationMarkerClickListener(station,archidniMarker);
+                            presenter.onStationMarkerClick(station,archidniMarker);
                         }
+                    }
+                });
+                archidniMap.setOnCameraMoveListener(new ArchidniMap.OnCameraMoveListener() {
+                    @Override
+                    public void onCameraMove(Coordinate coordinate, double zoom) {
+                        presenter.onCameraMove(coordinate,zoom);
                     }
                 });
             }
@@ -485,6 +490,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void showLinesOnMap(ArrayList<Station> stations) {
+        archidniMap.clearMarkersWithTags();
         for(Station station:stations)
         {
             archidniMap.prepareMarker(station.getCoordinate(),
@@ -496,6 +502,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void showLinesOnList(ArrayList<Line> lines) {
 
+    }
+
+    @Override
+    public void showZoomInsufficientLayout() {
+        zoomInsufficientLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideZoomInsufficientLayout() {
+        zoomInsufficientLayout.setVisibility(View.GONE);
     }
 
 
