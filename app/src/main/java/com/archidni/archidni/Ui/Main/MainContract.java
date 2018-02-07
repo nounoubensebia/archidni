@@ -1,8 +1,14 @@
 package com.archidni.archidni.Ui.Main;
 
+import android.content.Context;
+
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Transport.Line;
+import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
+
+import java.util.ArrayList;
 
 /**
  * Created by noure on 02/02/2018.
@@ -22,13 +28,17 @@ public interface MainContract {
         void showLocationLayout(Place place);
         void hideLocationLayout();
         void startPathSearchActivity(Place origin,Place destination);
+        void showLinesLoadingLayout();
+        void hideLinesLoadingLayout();
+        void showLinesOnMap(ArrayList<Station> stations);
+        void showLinesOnList(ArrayList<Line> lines);
     }
 
     interface Presenter {
         void toggleTransportMean(int transportMeanId);
         void toggleStationsLines(boolean stationsTabbed);
         void onSearchClicked();
-        void onMapReady();
+        void onMapReady(Context context);
         void onMyLocationFabClick();
         void onShowSlidingPanelFabClick();
         void onMapLongClick(Coordinate coordinate);

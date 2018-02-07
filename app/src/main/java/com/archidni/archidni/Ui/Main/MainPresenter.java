@@ -1,11 +1,18 @@
 package com.archidni.archidni.Ui.Main;
 
+import android.content.Context;
+
 import com.archidni.archidni.App;
+import com.archidni.archidni.Data.Lines.LinesRepository;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.StringUtils;
+import com.archidni.archidni.Model.Transport.Line;
+import com.archidni.archidni.Model.Transport.TransportUtils;
 import com.archidni.archidni.R;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
+
+import java.util.ArrayList;
 
 /**
  * Created by noure on 02/02/2018.
@@ -17,12 +24,15 @@ public class MainPresenter implements MainContract.Presenter {
     private boolean stationsSelected = true;
     private boolean locationLayoutVisible = false;
     private Place selectedLocation;
+    private ArrayList<Line> lines;
+    private LinesRepository linesRepository;
 
     public MainPresenter(MainContract.View view) {
         this.view = view;
         this.transportMeansSelector = new TransportMeansSelector();
         transportMeansSelector.selectAllTransportMeans();
         view.updateMeansSelectionLayout(transportMeansSelector);
+        linesRepository = new LinesRepository();
     }
 
     @Override
@@ -64,14 +74,29 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void onMapReady() {
+    public void onMapReady(final Context context) {
         view.setUserLocationEnabled(true);
         view.obtainUserLocation(new MainContract.OnUserLocationObtainedCallback() {
             @Override
             public void onLocationObtained(Coordinate userLocation) {
+                view.showLinesLoadingLayout();
+
                 if (userLocation!=null)
                 {
                     view.moveCameraToUserLocation();
+                    linesRepository.getLines(context,userLocation, new LinesRepository.OnSearchCompleted() {
+                        @Override
+                        public void onLinesFound(ArrayList<Line> lines) {
+                            view.hideLinesLoadingLayout();
+                            view.showLinesOnList(lines);
+                            view.showLinesOnMap(TransportUtils.getStationsFromLines(lines));
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
                 }
                 else
                 {

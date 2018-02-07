@@ -41,4 +41,6 @@
     <string name="favorites">Mes favoris</string>
     <string name="settings">Mes parametres</string>
     <string name="log_out">Se déconnecter</string>
+    <string name="station">station</string>
+    <string name="station_of">station de</string>
 </resources>

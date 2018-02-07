@@ -32,4 +32,8 @@
     <style name="progressBarGreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorAccent">@color/colorPrimary </item>
     </style>
+
+    <style name="progressBarWhiteTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">#FFF </item>
+    </style>
 </resources>

@@ -17,6 +17,9 @@ import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.StringUtils;
+import com.archidni.archidni.Model.Transport.Line;
+import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.Model.Transport.TransportUtils;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
@@ -28,6 +31,8 @@ import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     DrawerLayout drawerLayout;
     @BindView(R.id.image_open_drawer)
     View openDrawerImage;
+    @BindView(R.id.layout_search_underway)
+    View searchUnderwayLayout;
 
     ArchidniMap archidniMap;
     private boolean drawerOpened;
@@ -94,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         archidniMap = new ArchidniMap(mapView, savedInstanceState, new ArchidniMap.OnMapReadyCallback() {
             @Override
             public void onMapReady() {
-                presenter.onMapReady();
+                presenter.onMapReady(MainActivity.this);
                 archidniMap.setOnMapLongClickListener(new ArchidniMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(Coordinate coordinate) {
@@ -411,6 +418,30 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         intent.putExtra(IntentUtils.PATH_SEARCH_DESTINATION,destination.toJson());
         startActivity(intent);
     }
+
+    @Override
+    public void showLinesLoadingLayout() {
+        searchUnderwayLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLinesLoadingLayout() {
+        searchUnderwayLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showLinesOnMap(ArrayList<Station> stations) {
+        for(Station station:stations)
+        {
+            archidniMap.addMarker(station.getCoordinate(),R.drawable.marker_transport_mean_0);
+        }
+    }
+
+    @Override
+    public void showLinesOnList(ArrayList<Line> lines) {
+
+    }
+
 
     @Override
     public void moveCameraToUserLocation() {

@@ -206,6 +206,10 @@ public class ArchidniMap {
         return bitmap;
     }
 
+    public interface OnCameraMoveListener {
+        void onCameraMove ();
+    }
+
     public interface OnMapReadyCallback {
         void onMapReady();
     }
