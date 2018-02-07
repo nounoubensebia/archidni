@@ -8,8 +8,10 @@ import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
+import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.TransportUtils;
 import com.archidni.archidni.R;
+import com.archidni.archidni.UiUtils.ArchidniMarker;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class MainPresenter implements MainContract.Presenter {
     private Place selectedLocation;
     private ArrayList<Line> lines;
     private LinesRepository linesRepository;
+    private ArchidniMarker selectedMarker;
 
     public MainPresenter(MainContract.View view) {
         this.view = view;
@@ -126,11 +129,17 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
+    public void onLocationMarkerCreated(ArchidniMarker marker) {
+        selectedMarker = marker;
+    }
+
+    @Override
     public void onMapShortClick() {
         if (locationLayoutVisible)
         {
-            view.hideLocationLayout();
+            view.hideLocationLayout(selectedMarker);
             locationLayoutVisible = false;
+            selectedMarker = null;
         }
     }
 
@@ -144,5 +153,14 @@ public class MainPresenter implements MainContract.Presenter {
                     view.startPathSearchActivity(userPlace,selectedLocation);
             }
         });
+    }
+
+    @Override
+    public void onStationMarkerClickListener(Station station, ArchidniMarker marker) {
+        view.showLocationLayout(station);
+        selectedMarker = marker;
+        locationLayoutVisible = true;
+        view.animateCameraToLocation(station.getCoordinate());
+        selectedLocation = station;
     }
 }

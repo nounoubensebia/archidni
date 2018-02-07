@@ -51,6 +51,39 @@ public class TransportMean {
         }
     }
 
+    public int getMarkerIcon()
+    {
+        switch (id){
+            case 0 : return R.drawable.marker_transport_mean_0;
+            case 1 : return R.drawable.marker_transport_mean_1;
+            case 2 : return R.drawable.marker_transport_mean_2;
+            case 3 : return R.drawable.marker_transport_mean_3;
+            default:return -1;
+        }
+    }
+
+    public int getFabIcon()
+    {
+        switch (id){
+            case 0 : return R.drawable.ic_fab_transport_mean_0;
+            case 1 : return R.drawable.ic_fab_transport_mean_1;
+            case 2 : return R.drawable.ic_fab_transport_mean_2;
+            case 3 : return R.drawable.ic_fab_transport_mean_3;
+            default:return -1;
+        }
+    }
+
+    public int getColor()
+    {
+        switch (id){
+            case 0 : return R.color.color_transport_mean_selected_0;
+            case 1 : return R.color.color_transport_mean_selected_1;
+            case 2 : return R.color.color_transport_mean_selected_2;
+            case 3 : return R.color.color_transport_mean_selected_3;
+            default:return -1;
+        }
+    }
+
     public String getName() {
         return name;
     }

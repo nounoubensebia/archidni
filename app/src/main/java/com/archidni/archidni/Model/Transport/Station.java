@@ -39,4 +39,16 @@ public class Station extends Place {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof  Station))
+        {
+            return false;
+        }
+        else
+        {
+            return (((Station)obj).getId()==id);
+        }
+    }
 }

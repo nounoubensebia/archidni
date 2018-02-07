@@ -13,7 +13,9 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import com.archidni.archidni.Model.Coordinate;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
+import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.annotations.MarkerView;
 import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdate;
@@ -35,6 +37,8 @@ public class ArchidniMap {
     private MapView mapView;
     private MapboxMap mapboxMap;
     private Coordinate userLocation;
+    private ArrayList<ArchidniMarker> archidniMarkers;
+    private ArrayList<PreparedArchidniMarker> preparedArchidniMarkers;
 
     public ArchidniMap(MapView mapView, Bundle savedInstanceState,
                        final OnMapReadyCallback onMapReadyCallback)
@@ -49,6 +53,8 @@ public class ArchidniMap {
                 onMapReadyCallback.onMapReady();
             }
         });
+        archidniMarkers = new ArrayList<>();
+        preparedArchidniMarkers = new ArrayList<>();
     }
 
     public Coordinate getCenter ()
@@ -176,13 +182,149 @@ public class ArchidniMap {
 
     }
 
-    public void addMarker(Coordinate coordinate, int markerDrawableResource) {
+    public ArchidniMarker addMarker(Coordinate coordinate, int markerDrawableResource) {
         IconFactory iconFactory = IconFactory.getInstance(mapView.getContext());
         Icon icon = iconFactory.fromBitmap(getBitmapFromVectorDrawable(markerDrawableResource));
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(coordinate.toMapBoxLatLng());
         markerOptions.icon(icon);
-        mapboxMap.addMarker(markerOptions);
+        Marker marker = mapboxMap.addMarker(markerOptions);
+        ArchidniMarker archidniMarker = new ArchidniMarker(marker);
+        archidniMarkers.add(archidniMarker);
+        return archidniMarker;
+    }
+
+    public ArchidniMarker addMarker(Coordinate coordinate, int markerDrawableResource,Object tag) {
+        IconFactory iconFactory = IconFactory.getInstance(mapView.getContext());
+        Icon icon = iconFactory.fromBitmap(getBitmapFromVectorDrawable(markerDrawableResource));
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(coordinate.toMapBoxLatLng());
+        markerOptions.icon(icon);
+        Marker marker = mapboxMap.addMarker(markerOptions);
+        ArchidniMarker archidniMarker = new ArchidniMarker(marker,tag);
+        archidniMarkers.add(archidniMarker);
+        return archidniMarker;
+    }
+
+    public void changeMarkerIcon (ArchidniMarker archidniMarker,int drawable)
+    {
+        IconFactory iconFactory = IconFactory.getInstance(mapView.getContext());
+        Icon icon = iconFactory.fromBitmap(getBitmapFromVectorDrawable(drawable));
+        archidniMarker.getMarker().setIcon(icon);
+    }
+
+    public void changeMarkerIcon (int drawable,Object tag)
+    {
+        IconFactory iconFactory = IconFactory.getInstance(mapView.getContext());
+        Icon icon = iconFactory.fromBitmap(getBitmapFromVectorDrawable(drawable));
+        for (ArchidniMarker archidniMarker:archidniMarkers)
+        {
+            if (archidniMarker.getTag().equals(tag))
+            {
+                archidniMarker.getMarker().setIcon(icon);
+            }
+        }
+    }
+
+    public void removeMarker (Object tag)
+    {
+        for (ArchidniMarker archidniMarker:archidniMarkers)
+        {
+            if (archidniMarker.getTag()!=null&&archidniMarker.getTag().equals(tag))
+            {
+                mapboxMap.removeMarker(archidniMarker.getMarker());
+            }
+            if (archidniMarker.getTag()==null&&tag==null)
+            {
+                mapboxMap.removeMarker(archidniMarker.getMarker());
+            }
+        }
+    }
+
+    public void removeMarkers (ArrayList arrayList)
+    {
+        for (ArchidniMarker archidniMarker:archidniMarkers)
+        {
+            for (Object object : arrayList)
+            {
+                if (archidniMarker.getTag()!=null&&archidniMarker.getTag().equals(object))
+                {
+                    mapboxMap.removeMarker(archidniMarker.getMarker());
+                }
+            }
+        }
+    }
+
+    public void prepareMarker(Coordinate coordinate, int markerDrawableResource) {
+        IconFactory iconFactory = IconFactory.getInstance(mapView.getContext());
+        Icon icon = iconFactory.fromBitmap(getBitmapFromVectorDrawable(markerDrawableResource));
+        MarkerOptions marker = new MarkerOptions().position(new LatLng(coordinate.getLatitude(),
+                coordinate.getLongitude()))
+                .icon(icon)
+                ;
+        preparedArchidniMarkers.add(new PreparedArchidniMarker(marker));
+    }
+
+    public void prepareMarker(Coordinate coordinate, int markerDrawableResource,Object tag) {
+        IconFactory iconFactory = IconFactory.getInstance(mapView.getContext());
+        Icon icon = iconFactory.fromBitmap(getBitmapFromVectorDrawable(markerDrawableResource));
+        MarkerOptions marker = new com.mapbox.mapboxsdk.annotations.MarkerOptions()
+                .position(new LatLng(coordinate.getLatitude(), coordinate.getLongitude()))
+                .icon(icon);
+        preparedArchidniMarkers.add(new PreparedArchidniMarker(marker,tag));
+    }
+
+    public void setOnMarkerClickListener (final OnMarkerClickListener onMarkerClickListener)
+    {
+        mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                for(ArchidniMarker archidniMarker:archidniMarkers)
+                {
+                    if (archidniMarker.getMarker().getPosition().getLatitude()
+                            ==marker.getPosition().getLatitude()&&
+                            archidniMarker.getMarker().getPosition().getLongitude()
+                                    ==marker.getPosition().getLongitude())
+                    {
+                        onMarkerClickListener.onMarkerClick(archidniMarker);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    public void addPreparedAnnotations ()
+    {
+        ArrayList<MarkerOptions> markerViewOptions = new ArrayList<>();
+        for (PreparedArchidniMarker preparedArchidniMarker : preparedArchidniMarkers)
+        {
+            markerViewOptions.add(preparedArchidniMarker.getMarkerViewOptions());
+
+        }
+        ArrayList<Marker> markers = new ArrayList<>();
+        markers.addAll(mapboxMap.addMarkers(markerViewOptions));
+        for (Marker marker:markers)
+        {
+            PreparedArchidniMarker preparedArchidniMarker = null;
+            for (PreparedArchidniMarker preparedArchidniMarker1:preparedArchidniMarkers)
+            {
+                if (preparedArchidniMarker1.getMarkerViewOptions().getPosition().getLongitude()
+                        ==marker.getPosition().getLongitude()&&
+                        preparedArchidniMarker1
+                                .getMarkerViewOptions()
+                                .getMarker().getPosition().getLatitude()==marker.getPosition()
+                                .getLatitude())
+                {
+                    preparedArchidniMarker = preparedArchidniMarker1;
+                    break;
+                }
+            }
+            archidniMarkers.add(new ArchidniMarker(marker,
+                    preparedArchidniMarker.getTag()));
+        }
+        preparedArchidniMarkers = new ArrayList<>();
     }
 
     public void clearMap ()
@@ -220,5 +362,9 @@ public class ArchidniMap {
 
     public interface OnMapShortClickListener {
         void onMapShortClick(Coordinate coordinate);
+    }
+
+    public interface OnMarkerClickListener {
+        void onMarkerClick (ArchidniMarker archidniMarker);
     }
 }

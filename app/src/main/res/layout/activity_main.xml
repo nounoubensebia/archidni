@@ -45,6 +45,16 @@
                 android:id="@+id/layout_location"
                 android:visibility="gone"/>
             </FrameLayout>
+            <ImageView
+                android:id="@+id/location_fab"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginRight="16dp"
+                android:elevation="10dp"
+                android:visibility="gone"
+                app:layout_anchor="@id/layout_location"
+                app:layout_anchorGravity="right|bottom"
+                app:srcCompat="@drawable/ic_fab_transport_mean_1" />
             <FrameLayout
                 android:layout_width="match_parent"
                 android:animateLayoutChanges="true"

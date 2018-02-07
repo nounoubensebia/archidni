@@ -3,6 +3,7 @@ package com.archidni.archidni.Ui.Main;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +11,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.IntentUtils;
@@ -25,10 +28,12 @@ import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Model.TransportMean;
+import com.archidni.archidni.UiUtils.ArchidniMarker;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -82,9 +87,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     View openDrawerImage;
     @BindView(R.id.layout_search_underway)
     View searchUnderwayLayout;
-
+    @BindView(R.id.location_fab)
+    ImageView placeFab;
+    @BindView(R.id.image_transport_mean_icon)
+    ImageView locationIcon;
     ArchidniMap archidniMap;
     private boolean drawerOpened;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +121,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     @Override
                     public void onMapShortClick(Coordinate coordinate) {
                         presenter.onMapShortClick();
+                    }
+                });
+                archidniMap.setOnMarkerClickListener(new ArchidniMap.OnMarkerClickListener() {
+                    @Override
+                    public void onMarkerClick(ArchidniMarker archidniMarker) {
+                        if (archidniMarker.getTag()!=null)
+                        {
+                            Station station = (Station) archidniMarker.getTag();
+                            presenter.onStationMarkerClickListener(station,archidniMarker);
+                        }
                     }
                 });
             }
@@ -392,11 +411,35 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 container.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             }
         },250);
-        archidniMap.addMarker(place.getCoordinate(),R.drawable.ic_marker_green_24dp);
+        if (!(place instanceof Station))
+        {
+            locationIcon.setImageDrawable(ContextCompat.getDrawable(this,
+                    R.drawable.ic_marker_green_24dp));
+            getPathLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
+                    R.color.colorGreen));
+            ArchidniMarker archidniMarker = archidniMap.addMarker(place.getCoordinate(),
+                    R.drawable.ic_marker_green_24dp);
+            presenter.onLocationMarkerCreated(archidniMarker);
+        }
+        else
+        {
+            Station station = (Station) place;
+            locationIcon.setImageDrawable(ContextCompat.getDrawable(this,
+                    station.getTransportMean().getMarkerIcon()));
+            getPathLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
+                    station.getTransportMean().getColor()));
+            Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab);
+            animation.setRepeatCount(Animation.INFINITE);
+            placeFab.setImageDrawable(ContextCompat.getDrawable(this,
+                    station.getTransportMean().getFabIcon()));
+            placeFab.startAnimation(animation);
+            placeFab.setVisibility(View.VISIBLE);
+            archidniMap.changeMarkerIcon(R.drawable.marker_selected,station);
+        }
     }
 
     @Override
-    public void hideLocationLayout() {
+    public void hideLocationLayout(ArchidniMarker archidniMarker) {
         container.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         myLocationFab.setVisibility(View.VISIBLE);
         showSlidingUpPanelFab.setVisibility(View.VISIBLE);
@@ -408,7 +451,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 slideInSearchText();
             }
         },250);
-        archidniMap.clearMap();
+        if (archidniMarker.getTag()!=null)
+        {
+            Station station = (Station) archidniMarker.getTag();
+            archidniMap.changeMarkerIcon(station.getTransportMean().getMarkerIcon(),
+                    archidniMarker.getTag());
+            placeFab.clearAnimation();
+            placeFab.setVisibility(View.GONE);
+        }
+        else
+        {
+            archidniMap.removeMarker(null);
+        }
     }
 
     @Override
@@ -433,8 +487,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void showLinesOnMap(ArrayList<Station> stations) {
         for(Station station:stations)
         {
-            archidniMap.addMarker(station.getCoordinate(),R.drawable.marker_transport_mean_0);
+            archidniMap.prepareMarker(station.getCoordinate(),
+                    station.getTransportMean().getMarkerIcon(),station);
         }
+        archidniMap.addPreparedAnnotations();
     }
 
     @Override

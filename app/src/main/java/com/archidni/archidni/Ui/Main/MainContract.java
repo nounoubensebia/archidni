@@ -6,7 +6,9 @@ import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.UiUtils.ArchidniMarker;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
+import com.mapbox.mapboxsdk.annotations.Marker;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,7 @@ public interface MainContract {
         void trackUser();
         void showSlidingPanel();
         void showLocationLayout(Place place);
-        void hideLocationLayout();
+        void hideLocationLayout(ArchidniMarker archidniMarker);
         void startPathSearchActivity(Place origin,Place destination);
         void showLinesLoadingLayout();
         void hideLinesLoadingLayout();
@@ -42,8 +44,10 @@ public interface MainContract {
         void onMyLocationFabClick();
         void onShowSlidingPanelFabClick();
         void onMapLongClick(Coordinate coordinate);
+        void onLocationMarkerCreated(ArchidniMarker marker);
         void onMapShortClick();
         void onSearchPathClick();
+        void onStationMarkerClickListener(Station station,ArchidniMarker marker);
     }
 
     interface OnUserLocationObtainedCallback {
