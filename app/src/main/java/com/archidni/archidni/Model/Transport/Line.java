@@ -1,5 +1,7 @@
 package com.archidni.archidni.Model.Transport;
 
+import com.archidni.archidni.GeoUtils;
+import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.TransportMean;
 
 import java.util.ArrayList;
@@ -33,5 +35,22 @@ public class Line {
 
     public TransportMean getTransportMean() {
         return transportMean;
+    }
+
+    public boolean insideSearchCircle (ArrayList<Coordinate> coordinates,float distance)
+    {
+        for (Station station:getStations())
+        {
+            for (Coordinate coordinate: coordinates)
+            {
+                if (GeoUtils.distance(station.getCoordinate(),coordinate)<distance)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public int getId() {
+        return id;
     }
 }

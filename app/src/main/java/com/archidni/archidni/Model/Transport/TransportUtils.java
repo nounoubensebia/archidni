@@ -34,4 +34,16 @@ public class TransportUtils {
         }
         return false;
     }
+
+    public static boolean containsLine (int lineId,ArrayList<Line> lines)
+    {
+        for (Line line:lines)
+        {
+            if (lineId==line.getId())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 archidniMap.setOnCameraMoveListener(new ArchidniMap.OnCameraMoveListener() {
                     @Override
                     public void onCameraMove(Coordinate coordinate, double zoom) {
-                        presenter.onCameraMove(coordinate,zoom);
+                        presenter.onCameraMove(MainActivity.this,coordinate,zoom);
                     }
                 });
             }

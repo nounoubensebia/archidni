@@ -83,7 +83,7 @@ public class LinesOnlineDataStore {
                     onSearchCompleted.onLinesFound(lines);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    onSearchCompleted.onError();
+                    onSearchCompleted.onLinesFound(lines);
                 }
             }
         }, new Response.ErrorListener() {

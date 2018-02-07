@@ -49,7 +49,7 @@ public interface MainContract {
         void onLocationMarkerCreated(ArchidniMarker marker);
         void onMapShortClick();
         void onSearchPathClick();
-        void onCameraMove(Coordinate coordinate,double zoom);
+        void onCameraMove(Context context,Coordinate coordinate,double zoom);
         void onStationMarkerClick(Station station, ArchidniMarker marker);
     }
 

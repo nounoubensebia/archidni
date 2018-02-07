@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.archidni.archidni.App;
 import com.archidni.archidni.Data.Lines.LinesRepository;
+import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.StringUtils;
@@ -31,6 +32,8 @@ public class MainPresenter implements MainContract.Presenter {
     private ArchidniMarker selectedMarker;
     private static final int MIN_ZOOM = 12;
     private boolean currentZoomIsInsufficient;
+    private ArrayList<Coordinate> searchCoordinates;
+    private boolean searchUnderway = false;
 
     public MainPresenter(MainContract.View view) {
         this.view = view;
@@ -39,6 +42,7 @@ public class MainPresenter implements MainContract.Presenter {
         view.updateMeansSelectionLayout(transportMeansSelector);
         linesRepository = new LinesRepository();
         lines = new ArrayList<>();
+        searchCoordinates = new ArrayList<>();
     }
 
     @Override
@@ -99,24 +103,12 @@ public class MainPresenter implements MainContract.Presenter {
                     searchLocation = Coordinate.DEFAULT_LOCATION;
                     view.animateCameraToLocation(Coordinate.DEFAULT_LOCATION);
                 }
-
-                linesRepository.getLines(context,searchLocation, new LinesRepository.OnSearchCompleted() {
-                    @Override
-                    public void onLinesFound(ArrayList<Line> lines) {
-                        MainPresenter.this.lines = lines;
-                        view.hideLinesLoadingLayout();
-                        view.showLinesOnList(lines);
-                        view.showLinesOnMap(TransportUtils.getStationsFromLines(filteredLines()));
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
+                searchCoordinates.add(searchLocation);
+                searchLines(context,searchLocation);
             }
         });
     }
+
 
     @Override
     public void onMyLocationFabClick() {
@@ -174,7 +166,7 @@ public class MainPresenter implements MainContract.Presenter {
 
 
     @Override
-    public void onCameraMove(Coordinate coordinate, double zoom) {
+    public void onCameraMove(Context context,Coordinate coordinate, double zoom) {
         if (zoom<MIN_ZOOM)
         {
             if (!locationLayoutVisible)
@@ -189,6 +181,71 @@ public class MainPresenter implements MainContract.Presenter {
                 currentZoomIsInsufficient = false;
                 view.hideZoomInsufficientLayout();
                 view.showLinesOnMap(TransportUtils.getStationsFromLines(filteredLines()));
+            }
+            boolean found = false;
+            for (Coordinate searchCoordinate:searchCoordinates)
+            {
+                if (GeoUtils.distance(searchCoordinate,coordinate)<=15000)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+            {
+                if (!searchUnderway)
+                {
+                    if (searchCoordinates.size()>=4)
+                    {
+                        searchCoordinates.remove(searchCoordinates.size()-1);
+                    }
+                    searchCoordinates.add(coordinate);
+                    int i = 0;
+                    while (i<lines.size())
+                    {
+                        if (!lines.get(i).insideSearchCircle(searchCoordinates,15000))
+                        {
+                            lines.remove(i);
+                        }
+                        else
+                        {
+                            i++;
+                        }
+                    }
+                    view.showLinesLoadingLayout();
+                    searchLines(context,coordinate);
+                }
+            }
+        }
+    }
+
+    private void searchLines (Context context,Coordinate coordinate)
+    {
+        searchUnderway = true;
+        linesRepository.getLines(context,coordinate, new LinesRepository.OnSearchCompleted() {
+            @Override
+            public void onLinesFound(ArrayList<Line> lines) {
+                addLines(lines);
+                view.hideLinesLoadingLayout();
+                view.showLinesOnList(lines);
+                view.showLinesOnMap(TransportUtils.getStationsFromLines(filteredLines()));
+                searchUnderway = false;
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+
+    private void addLines(ArrayList<Line> lines)
+    {
+        for (Line line:lines)
+        {
+            if (!TransportUtils.containsLine(line.getId(),this.lines))
+            {
+                this.lines.add(line);
             }
         }
     }
