@@ -7,6 +7,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -21,6 +24,7 @@ import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.Ui.Adapters.StationAdapter;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
@@ -90,6 +94,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     ImageView locationIcon;
     @BindView(R.id.layout_zoom_insufficient_message)
     View zoomInsufficientLayout;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+
     ArchidniMap archidniMap;
     private boolean drawerOpened;
 
@@ -239,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
             }
         });
+        container.setScrollableView(recyclerView);
     }
 
     @Override
@@ -489,7 +497,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void showLinesOnMap(ArrayList<Station> stations) {
+    public void showStationsOnMap(ArrayList<Station> stations) {
         archidniMap.clearMarkersWithTags();
         for(Station station:stations)
         {
@@ -502,6 +510,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void showLinesOnList(ArrayList<Line> lines) {
 
+    }
+
+    @Override
+    public void showStationsOnList(ArrayList<Station> stations) {
+        Coordinate userCoordinate = archidniMap.getUserLocation();
+        StationAdapter stationAdapter = new StationAdapter(stations,userCoordinate,this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(stationAdapter);
     }
 
     @Override

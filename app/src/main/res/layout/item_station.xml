@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/container"
+        android:background="@drawable/shape_rect_white_rounded__8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_transport_mean_icon"
+            app:srcCompat="@drawable/ic_transport_mean_2_enabled"
+            android:layout_width="64dp"
+            android:layout_height="64dp" />
+        <LinearLayout
+            android:layout_marginLeft="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/text_name"
+                android:textColor="@color/colorGreen"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="16sp"
+                android:text="Station Bact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/text_duration"
+                android:fontFamily="sans-serif-condensed"
+                android:text="à 12 minutes de marches"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/text_distance"
+                android:fontFamily="sans-serif-condensed"
+                android:text="100 métres"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,5 +1,8 @@
 package com.archidni.archidni.Model.Transport;
 
+import com.archidni.archidni.GeoUtils;
+import com.archidni.archidni.Model.Coordinate;
+
 import java.util.ArrayList;
 
 /**
@@ -45,5 +48,23 @@ public class TransportUtils {
             }
         }
         return false;
+    }
+
+    public static void sortStationsByDistance (ArrayList<Station> stations, Coordinate coordinate)
+    {
+        for (int i = 0; i < stations.size(); i++) {
+            Station station1 = stations.get(i);
+            for (int j = i; j < stations.size(); j++) {
+                Station station2 = stations.get(j);
+                if (GeoUtils.distance(coordinate,station2.getCoordinate()) <
+                        GeoUtils.distance(coordinate,station1.getCoordinate()))
+                {
+                    Station station = station1;
+                    stations.set(i,station2);
+                    stations.set(j,station);
+                    station1 = station2;
+                }
+            }
+        }
     }
 }

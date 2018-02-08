@@ -32,8 +32,9 @@ public interface MainContract {
         void startPathSearchActivity(Place origin,Place destination);
         void showLinesLoadingLayout();
         void hideLinesLoadingLayout();
-        void showLinesOnMap(ArrayList<Station> stations);
+        void showStationsOnMap(ArrayList<Station> stations);
         void showLinesOnList(ArrayList<Line> lines);
+        void showStationsOnList(ArrayList<Station> stations);
         void showZoomInsufficientLayout();
         void hideZoomInsufficientLayout();
     }

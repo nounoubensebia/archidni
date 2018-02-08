@@ -20,14 +20,14 @@ public class StringUtils {
         {
             if (hours==1)
             {
-                hourString = hours + " " +App.getAppContext().getString(R.string.hour);
+                hourString = hours + " " +App.getAppContext().getString(R.string.hour)+" ";
             }
             else
             {
-                hourString = hours + " "+ App.getAppContext().getString(R.string.hours);
+                hourString = hours + " "+ App.getAppContext().getString(R.string.hours)+" ";
             }
         }
-        return hourString +" "+ minutes +" "+
+        return hourString +""+ minutes +" "+
                 App.getAppContext().getString(R.string.minutes);
     }
     public static String getTextFromDistance (int meters)

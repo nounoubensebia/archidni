@@ -49,7 +49,8 @@ public class MainPresenter implements MainContract.Presenter {
     public void toggleTransportMean(int transportMeanId) {
         transportMeansSelector.ToggleTransportMean(transportMeanId);
         view.updateMeansSelectionLayout(transportMeansSelector);
-        view.showLinesOnMap(TransportUtils.getStationsFromLines(filteredLines()));
+        view.showStationsOnMap(TransportUtils.getStationsFromLines(filteredLines()));
+        view.showStationsOnList(TransportUtils.getStationsFromLines(filteredLines()));
     }
 
     @Override
@@ -171,7 +172,7 @@ public class MainPresenter implements MainContract.Presenter {
         {
             if (!locationLayoutVisible)
                 view.showZoomInsufficientLayout();
-            view.showLinesOnMap(new ArrayList<Station>());
+            view.showStationsOnMap(new ArrayList<Station>());
             currentZoomIsInsufficient = true;
         }
         else
@@ -180,7 +181,7 @@ public class MainPresenter implements MainContract.Presenter {
             {
                 currentZoomIsInsufficient = false;
                 view.hideZoomInsufficientLayout();
-                view.showLinesOnMap(TransportUtils.getStationsFromLines(filteredLines()));
+                view.showStationsOnMap(TransportUtils.getStationsFromLines(filteredLines()));
             }
             boolean found = false;
             for (Coordinate searchCoordinate:searchCoordinates)
@@ -228,7 +229,8 @@ public class MainPresenter implements MainContract.Presenter {
                 addLines(lines);
                 view.hideLinesLoadingLayout();
                 view.showLinesOnList(lines);
-                view.showLinesOnMap(TransportUtils.getStationsFromLines(filteredLines()));
+                view.showStationsOnList(TransportUtils.getStationsFromLines(filteredLines()));
+                view.showStationsOnMap(TransportUtils.getStationsFromLines(filteredLines()));
                 searchUnderway = false;
             }
 
@@ -261,6 +263,7 @@ public class MainPresenter implements MainContract.Presenter {
             selectedLocation = station;
         }
     }
+
 
     private ArrayList<Line> filteredLines ()
     {
