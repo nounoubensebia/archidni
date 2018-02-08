@@ -20,13 +20,38 @@ public class ViewUtils {
         Drawable drawable = ContextCompat.getDrawable(context,drawableResource);
         switch (direction)
         {
-            case DIRECTION_UP : textView.setCompoundDrawablesWithIntrinsicBounds(null,drawable,null,null);
+            case DIRECTION_UP : textView.setCompoundDrawablesWithIntrinsicBounds(null,drawable,
+                    null,null);
                 break;
-            case DIRECTION_LEFT : textView.setCompoundDrawablesWithIntrinsicBounds(drawable,null,null,null);
+            case DIRECTION_LEFT : textView.setCompoundDrawablesWithIntrinsicBounds(drawable,null,
+                    null,null);
                 break;
-            case DIRECTION_RIGHT : textView.setCompoundDrawablesWithIntrinsicBounds(null,null,drawable,null);
+            case DIRECTION_RIGHT : textView.setCompoundDrawablesWithIntrinsicBounds(null,null,
+                    drawable,null);
                 break;
-            case DIRECTION_DOWN : textView.setCompoundDrawablesWithIntrinsicBounds(null,null,null,drawable);
+            case DIRECTION_DOWN : textView.setCompoundDrawablesWithIntrinsicBounds(null,null,
+                    null,drawable);
+                break;
+
+        }
+    }
+
+    public static void changeTextViewState (Context context, TextView textView, int drawableResource, int direction)
+    {
+        Drawable drawable = ContextCompat.getDrawable(context,drawableResource);
+        switch (direction)
+        {
+            case DIRECTION_UP : textView.setCompoundDrawablesWithIntrinsicBounds(null,drawable,
+                    null,null);
+                break;
+            case DIRECTION_LEFT : textView.setCompoundDrawablesWithIntrinsicBounds(drawable,null,
+                    null,null);
+                break;
+            case DIRECTION_RIGHT : textView.setCompoundDrawablesWithIntrinsicBounds(null,null,
+                    drawable,null);
+                break;
+            case DIRECTION_DOWN : textView.setCompoundDrawablesWithIntrinsicBounds(null,null,
+                    null,drawable);
                 break;
         }
     }

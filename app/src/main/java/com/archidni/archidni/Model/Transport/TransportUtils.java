@@ -1,6 +1,7 @@
 package com.archidni.archidni.Model.Transport;
 
 import com.archidni.archidni.GeoUtils;
+import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 
 import java.util.ArrayList;
@@ -67,4 +68,33 @@ public class TransportUtils {
             }
         }
     }
+
+    public static ArrayList<Station> filterStations (ArrayList<Station> stations,
+                                                     BoundingBox boundingBox)
+    {
+        ArrayList<Station> stations1 = new ArrayList<>();
+        for (Station station:stations)
+        {
+            if (station.isInsideBoundingBox(boundingBox))
+            {
+                stations1.add(station);
+            }
+        }
+        return stations1;
+    }
+
+    public static ArrayList<Line> filterLines (ArrayList<Line> lines,
+                                                     BoundingBox boundingBox)
+    {
+        ArrayList<Line> lines1 = new ArrayList<>();
+        for (Line line:lines)
+        {
+            if (line.hasStationInsideBoundingBox(boundingBox))
+            {
+                lines1.add(line);
+            }
+        }
+        return lines1;
+    }
+
 }

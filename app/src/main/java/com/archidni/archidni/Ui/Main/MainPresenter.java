@@ -5,6 +5,7 @@ import android.content.Context;
 import com.archidni.archidni.App;
 import com.archidni.archidni.Data.Lines.LinesRepository;
 import com.archidni.archidni.GeoUtils;
+import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.StringUtils;
@@ -34,6 +35,8 @@ public class MainPresenter implements MainContract.Presenter {
     private boolean currentZoomIsInsufficient;
     private ArrayList<Coordinate> searchCoordinates;
     private boolean searchUnderway = false;
+    private BoundingBox currentBoundingBox;
+    private Coordinate userCoordinate;
 
     public MainPresenter(MainContract.View view) {
         this.view = view;
@@ -50,7 +53,7 @@ public class MainPresenter implements MainContract.Presenter {
         transportMeansSelector.ToggleTransportMean(transportMeanId);
         view.updateMeansSelectionLayout(transportMeansSelector);
         view.showStationsOnMap(TransportUtils.getStationsFromLines(filteredLines()));
-        view.showStationsOnList(TransportUtils.getStationsFromLines(filteredLines()));
+        populateList();
     }
 
     @Override
@@ -63,6 +66,7 @@ public class MainPresenter implements MainContract.Presenter {
         {
             if (stationsSelected) stationsSelected = false;
         }
+        populateList();
         view.updateStationsLinesLayout(stationsSelected);
     }
 
@@ -86,8 +90,9 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void onMapReady(final Context context) {
+    public void onMapReady(final Context context, BoundingBox boundingBox) {
         view.setUserLocationEnabled(true);
+        currentBoundingBox = boundingBox;
         transportMeansSelector.selectAllTransportMeans();
         view.obtainUserLocation(new MainContract.OnUserLocationObtainedCallback() {
             @Override
@@ -104,6 +109,7 @@ public class MainPresenter implements MainContract.Presenter {
                     searchLocation = Coordinate.DEFAULT_LOCATION;
                     view.animateCameraToLocation(Coordinate.DEFAULT_LOCATION);
                 }
+                userCoordinate = userLocation;
                 searchCoordinates.add(searchLocation);
                 searchLines(context,searchLocation);
             }
@@ -114,6 +120,15 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onMyLocationFabClick() {
         view.trackUser();
+        view.obtainUserLocation(new MainContract.OnUserLocationObtainedCallback() {
+            @Override
+            public void onLocationObtained(Coordinate userLocation) {
+                if (userLocation!=null)
+                {
+                    userCoordinate = userLocation;
+                }
+            }
+        });
     }
 
     @Override
@@ -167,16 +182,21 @@ public class MainPresenter implements MainContract.Presenter {
 
 
     @Override
-    public void onCameraMove(Context context,Coordinate coordinate, double zoom) {
+    public void onCameraMove(Context context,Coordinate coordinate, double zoom
+            ,BoundingBox boundingBox) {
+        currentBoundingBox = boundingBox;
         if (zoom<MIN_ZOOM)
         {
             if (!locationLayoutVisible)
                 view.showZoomInsufficientLayout();
             view.showStationsOnMap(new ArrayList<Station>());
             currentZoomIsInsufficient = true;
+            populateList();
         }
         else
         {
+            currentBoundingBox = boundingBox;
+            populateList();
             if (currentZoomIsInsufficient)
             {
                 currentZoomIsInsufficient = false;
@@ -229,7 +249,7 @@ public class MainPresenter implements MainContract.Presenter {
                 addLines(lines);
                 view.hideLinesLoadingLayout();
                 view.showLinesOnList(lines);
-                view.showStationsOnList(TransportUtils.getStationsFromLines(filteredLines()));
+                populateList();
                 view.showStationsOnMap(TransportUtils.getStationsFromLines(filteredLines()));
                 searchUnderway = false;
             }
@@ -264,6 +284,11 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    private ArrayList<Station> filteredListStations ()
+    {
+        ArrayList<Station> stations = TransportUtils.getStationsFromLines(filteredLines());
+        return TransportUtils.filterStations(stations,currentBoundingBox);
+    }
 
     private ArrayList<Line> filteredLines ()
     {
@@ -276,5 +301,17 @@ public class MainPresenter implements MainContract.Presenter {
             }
         }
         return filteredLines;
+    }
+
+    private void populateList()
+    {
+        if (stationsSelected)
+        {
+            view.showStationsOnList(filteredListStations(),userCoordinate);
+        }
+        else
+        {
+            view.showLinesOnList(TransportUtils.filterLines(filteredLines(),currentBoundingBox));
+        }
     }
 }

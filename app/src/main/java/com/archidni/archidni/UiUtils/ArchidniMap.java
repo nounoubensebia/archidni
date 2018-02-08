@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 
+import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
@@ -382,14 +383,30 @@ public class ArchidniMap {
         mapboxMap.setOnCameraMoveListener(new MapboxMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
-                onCameraMoveListener.onCameraMove(new Coordinate(mapboxMap.getCameraPosition().target),
+                BoundingBox boundingBox = new BoundingBox(new Coordinate(mapboxMap
+                        .getProjection()
+                        .getVisibleRegion()
+                .latLngBounds.getNorthEast()),new Coordinate(mapboxMap.getProjection().getVisibleRegion()
+                        .latLngBounds.getSouthWest()));
+
+
+                onCameraMoveListener.onCameraMove(new Coordinate(mapboxMap.getCameraPosition().target)
+                        ,boundingBox,
                         mapboxMap.getCameraPosition().zoom);
             }
         });
     }
 
+    public BoundingBox getBoundingBox ()
+    {
+        LatLngBounds latLngBounds = mapboxMap.getProjection().getVisibleRegion().latLngBounds;
+        BoundingBox boundingBox = new BoundingBox(new Coordinate(latLngBounds.getNorthEast()),
+            new Coordinate(latLngBounds.getSouthWest()));
+        return boundingBox;
+    }
+
     public interface OnCameraMoveListener {
-        void onCameraMove (Coordinate coordinate,double zoom);
+        void onCameraMove (Coordinate coordinate, BoundingBox boundingBox,double zoom);
     }
 
     public interface OnMapReadyCallback {

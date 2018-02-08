@@ -2,6 +2,7 @@ package com.archidni.archidni.Ui.Main;
 
 import android.content.Context;
 
+import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.Transport.Line;
@@ -34,7 +35,7 @@ public interface MainContract {
         void hideLinesLoadingLayout();
         void showStationsOnMap(ArrayList<Station> stations);
         void showLinesOnList(ArrayList<Line> lines);
-        void showStationsOnList(ArrayList<Station> stations);
+        void showStationsOnList(ArrayList<Station> stations,Coordinate userCoordinate);
         void showZoomInsufficientLayout();
         void hideZoomInsufficientLayout();
     }
@@ -43,14 +44,14 @@ public interface MainContract {
         void toggleTransportMean(int transportMeanId);
         void toggleStationsLines(boolean stationsTabbed);
         void onSearchClicked();
-        void onMapReady(Context context);
+        void onMapReady(Context context,BoundingBox boundingBox);
         void onMyLocationFabClick();
         void onShowSlidingPanelFabClick();
         void onMapLongClick(Coordinate coordinate);
         void onLocationMarkerCreated(ArchidniMarker marker);
         void onMapShortClick();
         void onSearchPathClick();
-        void onCameraMove(Context context,Coordinate coordinate,double zoom);
+        void onCameraMove(Context context, Coordinate coordinate, double zoom, BoundingBox boundingBox);
         void onStationMarkerClick(Station station, ArchidniMarker marker);
     }
 

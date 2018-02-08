@@ -84,6 +84,17 @@ public class TransportMean {
         }
     }
 
+    public int getCircleDrawable ()
+    {
+        switch (id){
+            case 0 : return R.drawable.ic_circle_transport_mean_0;
+            case 1 : return R.drawable.ic_circle_transport_mean_1;
+            case 2 : return R.drawable.ic_circle_transport_mean_2;
+            case 3 : return R.drawable.ic_circle_transport_mean_3;
+            default:return -1;
+        }
+    }
+
     public String getName() {
         return name;
     }

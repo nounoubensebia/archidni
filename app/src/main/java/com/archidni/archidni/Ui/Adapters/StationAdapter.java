@@ -41,6 +41,15 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
         }
     }
 
+    public void updateItems(ArrayList<Station> newItems,Coordinate userCoordinate) {
+        ArrayList<Station> stations = new ArrayList<>(newItems);
+        TransportUtils.sortStationsByDistance(stations,userCoordinate);
+        this.userCoordinate = userCoordinate;
+        this.stations.clear();
+        this.stations.addAll(stations);
+        notifyDataSetChanged();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_station ,

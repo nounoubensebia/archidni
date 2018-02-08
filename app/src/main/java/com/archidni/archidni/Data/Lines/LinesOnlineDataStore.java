@@ -77,7 +77,7 @@ public class LinesOnlineDataStore {
                         TransportMean transportMean = TransportMean.allTransportMeans.get(
                           jsonObject.getInt("transport_mode_id")-1
                         );
-                        Line line = new Line(id,transportMean,sections);
+                        Line line = new Line(id,name,transportMean,sections);
                         lines.add(line);
                     }
                     onSearchCompleted.onLinesFound(lines);

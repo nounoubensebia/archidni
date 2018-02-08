@@ -1,6 +1,7 @@
 package com.archidni.archidni.Model.Transport;
 
 import com.archidni.archidni.GeoUtils;
+import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.TransportMean;
 
@@ -12,11 +13,14 @@ import java.util.ArrayList;
 
 public class Line {
     private int id;
+    private String name;
     private TransportMean transportMean;
     private ArrayList<Section> sections;
 
-    public Line(int id, TransportMean transportMean, ArrayList<Section> sections) {
+
+    public Line(int id, String name, TransportMean transportMean, ArrayList<Section> sections) {
         this.id = id;
+        this.name = name;
         this.transportMean = transportMean;
         this.sections = sections;
     }
@@ -52,5 +56,24 @@ public class Line {
 
     public int getId() {
         return id;
+    }
+
+    public Station getOrigin()
+    {
+        return sections.get(0).getOrigin();
+    }
+
+    public Station getDestination()
+    {
+        return sections.get(sections.size()-1).getDestination();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean hasStationInsideBoundingBox (BoundingBox boundingBox)
+    {
+        return (TransportUtils.filterStations(getStations(),boundingBox).size()>0);
     }
 }

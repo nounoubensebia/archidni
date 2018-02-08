@@ -19,11 +19,13 @@ import android.widget.TextView;
 
 import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.IntentUtils;
+import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.Ui.Adapters.LineAdapter;
 import com.archidni.archidni.Ui.Adapters.StationAdapter;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         archidniMap = new ArchidniMap(mapView, savedInstanceState, new ArchidniMap.OnMapReadyCallback() {
             @Override
             public void onMapReady() {
-                presenter.onMapReady(MainActivity.this);
+                presenter.onMapReady(MainActivity.this,archidniMap.getBoundingBox());
                 archidniMap.setOnMapLongClickListener(new ArchidniMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(Coordinate coordinate) {
@@ -141,8 +143,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 });
                 archidniMap.setOnCameraMoveListener(new ArchidniMap.OnCameraMoveListener() {
                     @Override
-                    public void onCameraMove(Coordinate coordinate, double zoom) {
-                        presenter.onCameraMove(MainActivity.this,coordinate,zoom);
+                    public void onCameraMove(Coordinate coordinate, BoundingBox boundingBox, double zoom) {
+                        presenter.onCameraMove(MainActivity.this,coordinate,zoom,boundingBox);
                     }
                 });
             }
@@ -509,17 +511,37 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void showLinesOnList(ArrayList<Line> lines) {
-
+        if (recyclerView.getAdapter()!=null && recyclerView.getAdapter() instanceof LineAdapter)
+        {
+            LineAdapter lineAdapter = (LineAdapter) recyclerView.getAdapter();
+            lineAdapter.updateItems(lines);
+        }
+        else
+        {
+            LineAdapter lineAdapter = new LineAdapter(lines,this);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(lineAdapter);
+        }
     }
 
     @Override
-    public void showStationsOnList(ArrayList<Station> stations) {
-        Coordinate userCoordinate = archidniMap.getUserLocation();
-        StationAdapter stationAdapter = new StationAdapter(stations,userCoordinate,this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(stationAdapter);
+    public void showStationsOnList(ArrayList<Station> stations,Coordinate userCoordinate) {
+
+        if (recyclerView.getAdapter()!=null && recyclerView.getAdapter() instanceof StationAdapter)
+        {
+            StationAdapter stationAdapter = (StationAdapter) recyclerView.getAdapter();
+            stationAdapter.updateItems(stations,userCoordinate);
+        }
+        else
+        {
+            StationAdapter stationAdapter = new StationAdapter(stations,userCoordinate,this);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(stationAdapter);
+        }
     }
 
     @Override
