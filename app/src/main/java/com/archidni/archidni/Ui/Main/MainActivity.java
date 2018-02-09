@@ -27,6 +27,7 @@ import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Ui.Adapters.LineAdapter;
 import com.archidni.archidni.Ui.Adapters.StationAdapter;
+import com.archidni.archidni.Ui.Line.LineActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
@@ -122,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         archidniMap = new ArchidniMap(mapView, savedInstanceState, new ArchidniMap.OnMapReadyCallback() {
             @Override
             public void onMapReady() {
-                archidniMap.disableAllGestures();
                 presenter.onMapReady(MainActivity.this,archidniMap.getBoundingBox());
                 archidniMap.setOnMapLongClickListener(new ArchidniMap.OnMapLongClickListener() {
                     @Override
@@ -537,7 +537,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
         else
         {
-            LineAdapter lineAdapter = new LineAdapter(lines,this);
+            LineAdapter lineAdapter = new LineAdapter(this, lines, new LineAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Line line) {
+                    presenter.onLineItemClicked(line);
+                }
+            });
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -595,6 +600,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void startStationActivity(Station station) {
         Intent intent = new Intent(this, StationActivity.class);
         intent.putExtra(IntentUtils.STATION_STATION,station.toJson());
+        startActivity(intent);
+    }
+
+    @Override
+    public void startLineActivity(Line line) {
+        Intent intent = new Intent(this, LineActivity.class);
+        intent.putExtra(IntentUtils.LINE_LINE,line.toJson());
         startActivity(intent);
     }
 

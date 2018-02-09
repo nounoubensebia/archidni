@@ -9,19 +9,19 @@ import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
  */
 
 public class PreparedArchidniMarker {
-    private MarkerOptions markerViewOptions;
+    private MarkerViewOptions markerViewOptions;
     private Object tag;
 
-    public PreparedArchidniMarker(MarkerOptions markerViewOptions, Object tag) {
+    public PreparedArchidniMarker(MarkerViewOptions markerViewOptions, Object tag) {
         this.markerViewOptions = markerViewOptions;
         this.tag = tag;
     }
 
-    public PreparedArchidniMarker(MarkerOptions markerViewOptions) {
+    public PreparedArchidniMarker(MarkerViewOptions markerViewOptions) {
         this.markerViewOptions = markerViewOptions;
     }
 
-    public MarkerOptions getMarkerViewOptions() {
+    public MarkerViewOptions getMarkerViewOptions() {
         return markerViewOptions;
     }
 

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+
+
+        android:orientation="vertical"
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:layout_marginLeft="16dp"
+            android:id="@+id/image_instruction1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+
+                android:id="@+id/layout_instruction1"
+                android:layout_gravity="center"
+                android:src="@drawable/selector_circle_button_transport_mean0"
+                android:layout_width="16dp"
+                android:layout_height="16dp" />
+        </FrameLayout>
+        <LinearLayout
+
+            android:layout_alignTop="@id/image_instruction1"
+            android:layout_toRightOf="@id/image_instruction1"
+            android:id="@+id/layout_text_instruction"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_marginTop="0dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+            <TextView
+
+                android:gravity="center"
+                android:textColor="#000"
+                android:id="@+id/text_label"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="Station les bannaniers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <View
+            tools:visibility="visible"
+            android:layout_below="@id/image_instruction1"
+            android:id="@+id/view_separation_transport_mean1"
+            android:layout_marginLeft="24dp"
+            android:layout_width="1dp"
+            android:layout_height="32dp"
+            android:background="@color/color_transport_mean_selected_0"
+            android:visibility="gone"
+            ></View>
+        <View
+            android:layout_below="@id/image_instruction1"
+            android:id="@+id/view_separation_transport_mean2"
+            android:layout_marginLeft="24dp"
+            android:layout_width="1dp"
+            android:layout_height="32dp"
+            android:background="@color/color_transport_mean_selected_1"
+            android:visibility="gone"
+            ></View>
+        <View
+            android:layout_below="@id/image_instruction1"
+            android:id="@+id/view_separation_transport_mean3"
+            android:layout_marginLeft="24dp"
+            android:layout_width="1dp"
+            android:layout_height="32dp"
+            android:background="@color/color_transport_mean_selected_2"
+            android:visibility="gone"
+            ></View>
+        <View
+            android:layout_below="@id/image_instruction1"
+            android:id="@+id/view_separation_transport_mean4"
+            android:layout_marginLeft="24dp"
+            android:layout_width="1dp"
+            android:layout_height="32dp"
+            android:background="@color/color_transport_mean_selected_3"
+            android:visibility="gone"
+            ></View>
+    </RelativeLayout>
+
+</LinearLayout>

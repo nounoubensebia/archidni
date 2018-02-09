@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.view.View;
 
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
@@ -18,6 +19,8 @@ import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.annotations.MarkerView;
 import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
+import com.mapbox.mapboxsdk.annotations.Polyline;
+import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdate;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
@@ -29,6 +32,7 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by noure on 02/02/2018.
@@ -40,6 +44,8 @@ public class ArchidniMap {
     private Coordinate userLocation;
     private ArrayList<ArchidniMarker> archidniMarkers;
     private ArrayList<PreparedArchidniMarker> preparedArchidniMarkers;
+    private ArrayList<PolylineOptions> polylineOptionses;
+    private List<Polyline> polylines;
 
     public ArchidniMap(MapView mapView, Bundle savedInstanceState,
                        final OnMapReadyCallback onMapReadyCallback)
@@ -56,6 +62,8 @@ public class ArchidniMap {
         });
         archidniMarkers = new ArrayList<>();
         preparedArchidniMarkers = new ArrayList<>();
+        polylineOptionses = new ArrayList<>();
+        polylines = new ArrayList<>();
     }
 
     public void disableAllGestures ()
@@ -274,12 +282,12 @@ public class ArchidniMap {
         }
     }
 
-    public void prepareMarker(Coordinate coordinate, int markerDrawableResource) {
+    public void prepareMarker(Coordinate coordinate, int markerDrawableResource,float anchorX,float anchorY) {
         IconFactory iconFactory = IconFactory.getInstance(mapView.getContext());
         Icon icon = iconFactory.fromBitmap(getBitmapFromVectorDrawable(markerDrawableResource));
-        MarkerOptions marker = new MarkerOptions().position(new LatLng(coordinate.getLatitude(),
+        MarkerViewOptions marker = new MarkerViewOptions().position(new LatLng(coordinate.getLatitude(),
                 coordinate.getLongitude()))
-                .icon(icon)
+                .icon(icon).anchor(anchorX,anchorY)
                 ;
         preparedArchidniMarkers.add(new PreparedArchidniMarker(marker));
     }
@@ -287,7 +295,7 @@ public class ArchidniMap {
     public void prepareMarker(Coordinate coordinate, int markerDrawableResource,Object tag) {
         IconFactory iconFactory = IconFactory.getInstance(mapView.getContext());
         Icon icon = iconFactory.fromBitmap(getBitmapFromVectorDrawable(markerDrawableResource));
-        MarkerOptions marker = new com.mapbox.mapboxsdk.annotations.MarkerOptions()
+        MarkerViewOptions marker = new com.mapbox.mapboxsdk.annotations.MarkerViewOptions()
                 .position(new LatLng(coordinate.getLatitude(), coordinate.getLongitude()))
                 .icon(icon);
         preparedArchidniMarkers.add(new PreparedArchidniMarker(marker,tag));
@@ -295,9 +303,9 @@ public class ArchidniMap {
 
     public void setOnMarkerClickListener (final OnMarkerClickListener onMarkerClickListener)
     {
-        mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
+        mapboxMap.getMarkerViewManager().setOnMarkerViewClickListener(new MapboxMap.OnMarkerViewClickListener() {
             @Override
-            public boolean onMarkerClick(@NonNull Marker marker) {
+            public boolean onMarkerClick(@NonNull Marker marker, @NonNull View view, @NonNull MapboxMap.MarkerViewAdapter adapter) {
                 for(ArchidniMarker archidniMarker:archidniMarkers)
                 {
                     if (archidniMarker.getMarker().getPosition().getLatitude()
@@ -316,14 +324,14 @@ public class ArchidniMap {
 
     public void addPreparedAnnotations ()
     {
-        ArrayList<MarkerOptions> markerViewOptions = new ArrayList<>();
+        ArrayList<MarkerViewOptions> markerViewOptions = new ArrayList<>();
+
         for (PreparedArchidniMarker preparedArchidniMarker : preparedArchidniMarkers)
         {
             markerViewOptions.add(preparedArchidniMarker.getMarkerViewOptions());
-
         }
         ArrayList<Marker> markers = new ArrayList<>();
-        markers.addAll(mapboxMap.addMarkers(markerViewOptions));
+        markers.addAll(mapboxMap.addMarkerViews(markerViewOptions));
         for (Marker marker:markers)
         {
             PreparedArchidniMarker preparedArchidniMarker = null;
@@ -343,7 +351,8 @@ public class ArchidniMap {
             archidniMarkers.add(new ArchidniMarker(marker,
                     preparedArchidniMarker.getTag()));
         }
-        preparedArchidniMarkers = new ArrayList<>();
+        polylines.addAll(mapboxMap.addPolylines(polylineOptionses));
+        polylineOptionses = new ArrayList<>();
     }
 
     public void clearMap ()
@@ -402,12 +411,49 @@ public class ArchidniMap {
         });
     }
 
+    public com.mapbox.mapboxsdk.annotations.Polyline preparePolyline(Context context, ArrayList<Coordinate> coordinates, int colorResrouceId) {
+        ArrayList<LatLng> points = new ArrayList<>();
+        for (Coordinate c : coordinates) {
+            points.add(new LatLng(c.getLatitude(), c.getLongitude()));
+        }
+        com.mapbox.mapboxsdk.annotations.PolylineOptions polylineOptions = new com.mapbox.mapboxsdk.annotations.PolylineOptions().addAll(points).color(ContextCompat.getColor(context,colorResrouceId)).width(2);
+
+        //mapboxMap.preparePolyline(polylineOptions);
+        polylineOptionses.add(polylineOptions);
+        return polylineOptions.getPolyline();
+    }
+
+    public com.mapbox.mapboxsdk.annotations.Polyline preparePolyline(Context context, ArrayList<Coordinate> coordinates,
+                                                                     int colorResrouceId, int width) {
+        ArrayList<LatLng> points = new ArrayList<>();
+        for (Coordinate c : coordinates) {
+            points.add(new LatLng(c.getLatitude(), c.getLongitude()));
+        }
+        com.mapbox.mapboxsdk.annotations.PolylineOptions polylineOptions = new com.mapbox.mapboxsdk.annotations.PolylineOptions().addAll(points).color(ContextCompat.getColor(context,colorResrouceId)).width(width);
+        polylineOptions.alpha(0.5f);
+        //mapboxMap.preparePolyline(polylineOptions);
+        polylineOptionses.add(polylineOptions);
+        return polylineOptions.getPolyline();
+    }
+
     public BoundingBox getBoundingBox ()
     {
         LatLngBounds latLngBounds = mapboxMap.getProjection().getVisibleRegion().latLngBounds;
         BoundingBox boundingBox = new BoundingBox(new Coordinate(latLngBounds.getNorthEast()),
             new Coordinate(latLngBounds.getSouthWest()));
         return boundingBox;
+    }
+
+    public void animateCameraToBounds(ArrayList<Coordinate> bounds, int padding, int duraion) {
+        com.mapbox.mapboxsdk.geometry.LatLngBounds.Builder latLngBoundsBulder = new com.mapbox.mapboxsdk.geometry.LatLngBounds.Builder();
+        for (Coordinate c:bounds)
+        {
+            latLngBoundsBulder.include(c.toMapBoxLatLng());
+        }
+        com.mapbox.mapboxsdk.geometry.LatLngBounds latLngBounds = latLngBoundsBulder.build();
+
+
+        mapboxMap.animateCamera(com.mapbox.mapboxsdk.camera.CameraUpdateFactory.newLatLngBounds(latLngBounds,padding),duraion);
     }
 
     public interface OnCameraMoveListener {

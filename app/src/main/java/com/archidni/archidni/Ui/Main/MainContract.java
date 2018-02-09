@@ -41,6 +41,7 @@ public interface MainContract {
         void showSearchErrorLayout();
         void hideSearchErrorLayout();
         void startStationActivity(Station station);
+        void startLineActivity(Line line);
     }
 
     interface Presenter {
@@ -59,6 +60,7 @@ public interface MainContract {
         void onRetryClicked(Context context,Coordinate coordinate);
         void onStationFabClick();
         void onStationItemClick(Station station);
+        void onLineItemClicked(Line line);
     }
 
     interface OnUserLocationObtainedCallback {

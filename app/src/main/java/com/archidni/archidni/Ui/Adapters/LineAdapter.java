@@ -29,11 +29,13 @@ public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> {
 
     private ArrayList<Line> lines;
     private Context context;
+    private OnItemClickListener onItemClickListener;
 
-    public LineAdapter(ArrayList<Line> lines, Context context) {
+    public LineAdapter( Context context,ArrayList<Line> lines,OnItemClickListener onItemClickListener) {
         this.lines = new ArrayList<>(lines);
         this.context = context;
         setHasStableIds(true);
+        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -56,7 +58,7 @@ public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Line line = lines.get(position);
+        final Line line = lines.get(position);
         holder.nameText.setText(line.getName());
         holder.nameText.setTextColor(ContextCompat.getColor(context,line.getTransportMean().getColor()));
         holder.originText.setText(line.getOrigin().getName());
@@ -68,6 +70,12 @@ public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> {
                 line.getTransportMean().getCircleDrawable(),ViewUtils.DIRECTION_LEFT);
         ViewUtils.changeTextViewState(context,holder.destinationText,
                 line.getTransportMean().getCircleDrawable(),ViewUtils.DIRECTION_LEFT);
+        holder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClickListener.onItemClick(line);
+            }
+        });
     }
 
     @Override
@@ -86,10 +94,15 @@ public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> {
         View separationView;
         @BindView(R.id.text_destination)
         TextView destinationText;
-
+        @BindView(R.id.container)
+        View container;
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Line line);
     }
 }

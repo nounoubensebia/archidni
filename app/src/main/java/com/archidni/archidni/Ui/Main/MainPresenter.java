@@ -319,6 +319,11 @@ public class MainPresenter implements MainContract.Presenter {
         view.startStationActivity(station);
     }
 
+    @Override
+    public void onLineItemClicked(Line line) {
+        view.startLineActivity(line);
+    }
+
     private ArrayList<Station> filteredListStations ()
     {
         ArrayList<Station> stations = TransportUtils.getStationsFromLines(filteredLines());

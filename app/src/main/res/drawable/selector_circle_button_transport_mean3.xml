@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/shape_button_circle_full_transport_mean3"
+        android:state_activated="true"></item>
+    <item android:drawable="@drawable/shape_button_circle_empty_transport_mean3"
+        android:state_activated="false"></item>
+
+</selector>

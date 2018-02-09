@@ -36,7 +36,8 @@
         <activity
             android:name=".Ui.SetLocation.SetLocationActivity"
             android:theme="@style/AppThemeWithActionBar" />
-        <activity android:name=".Ui.Station.StationActivity"></activity>
+        <activity android:name=".Ui.Station.StationActivity" />
+        <activity android:name=".Ui.Line.LineActivity"></activity>
     </application>
 
 </manifest>

@@ -11,7 +11,7 @@ public class IntentUtils {
     public static final String SET_LOCATION_COORDINATES = "SET_LOCATION_COORDINATES";
     public static final int RESULT_OK = 1;
     public static final String STATION_STATION = "STATION_STATION";
-
+    public static final String LINE_LINE = "LINE_LINE";
 
     public static class PathSearchIntents {
 

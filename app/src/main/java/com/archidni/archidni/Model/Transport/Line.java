@@ -4,6 +4,7 @@ import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.TransportMean;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -16,6 +17,7 @@ public class Line {
     private String name;
     private TransportMean transportMean;
     private ArrayList<Section> sections;
+
 
 
     public Line(int id, String name, TransportMean transportMean, ArrayList<Section> sections) {
@@ -75,5 +77,25 @@ public class Line {
     public boolean hasStationInsideBoundingBox (BoundingBox boundingBox)
     {
         return (TransportUtils.filterStations(getStations(),boundingBox).size()>0);
+    }
+
+    public String toJson ()
+    {
+        return new Gson().toJson(this);
+    }
+
+    public static Line fromJson (String json)
+    {
+        return new Gson().fromJson(json,Line.class);
+    }
+
+    public ArrayList<Coordinate> getPolyline() {
+        ArrayList<Coordinate> coordinates = new ArrayList<>();
+        coordinates.add(sections.get(0).getOrigin().getCoordinate());
+        for (Section section:sections)
+        {
+            coordinates.add(section.getDestination().getCoordinate());
+        }
+        return coordinates;
     }
 }

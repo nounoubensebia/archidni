@@ -145,4 +145,26 @@ public class TransportMean {
     public String getName() {
         return name;
     }
+
+    public int getStationCirleDrawableId() {
+        switch (id)
+        {
+            case 0 : return R.drawable.selector_circle_button_transport_mean0;
+            case 1 : return R.drawable.selector_circle_button_transport_mean1;
+            case 2 : return R.drawable.selector_circle_button_transport_mean2;
+            case 3 : return R.drawable.selector_circle_button_transport_mean3;
+            default:return -1;
+        }
+    }
+
+    public int getSeparationViewId() {
+        switch (id)
+        {
+            case 0 : return R.id.view_separation_transport_mean1;
+            case 1 : return R.id.view_separation_transport_mean2;
+            case 2 : return R.id.view_separation_transport_mean3;
+            case 3 : return R.id.view_separation_transport_mean4;
+            default:return -1;
+        }
+    }
 }
