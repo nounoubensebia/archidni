@@ -33,7 +33,10 @@
             android:name=".Ui.PathSearch.PathSearchActivity"
             android:label="@string/plan_path"
             android:parentActivityName=".Ui.Main.MainActivity" />
-        <activity android:name=".Ui.SetLocation.SetLocationActivity" android:theme="@style/AppThemeWithActionBar"></activity>
+        <activity
+            android:name=".Ui.SetLocation.SetLocationActivity"
+            android:theme="@style/AppThemeWithActionBar" />
+        <activity android:name=".Ui.Station.StationActivity"></activity>
     </application>
 
 </manifest>

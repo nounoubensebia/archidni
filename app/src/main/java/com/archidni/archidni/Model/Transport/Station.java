@@ -6,6 +6,7 @@ import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
+import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 
 /**
@@ -60,5 +61,15 @@ public class Station extends Place {
         getCoordinate().getLongitude()>boundingBox.getSouthWest().getLongitude()&&
         getCoordinate().getLatitude()<boundingBox.getNorthEast().getLatitude()&&
         getCoordinate().getLatitude()>boundingBox.getSouthWest().getLatitude());
+    }
+
+    public String toJson ()
+    {
+        return new Gson().toJson(this);
+    }
+
+    public static Station fromJson (String json)
+    {
+        return new Gson().fromJson(json,Station.class);
     }
 }

@@ -10,6 +10,8 @@ public class IntentUtils {
     public static final String PATH_SEARCH_DESTINATION = "PATH_SEARCH_DESTINATION";
     public static final String SET_LOCATION_COORDINATES = "SET_LOCATION_COORDINATES";
     public static final int RESULT_OK = 1;
+    public static final String STATION_STATION = "STATION_STATION";
+
 
     public static class PathSearchIntents {
 

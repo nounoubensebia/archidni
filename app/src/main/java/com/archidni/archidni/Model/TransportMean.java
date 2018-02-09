@@ -84,6 +84,17 @@ public class TransportMean {
         }
     }
 
+    public int getTheme()
+    {
+        switch (id){
+            case 0 : return R.style.TransportMeanTheme0;
+            case 1 : return R.style.TransportMeanTheme1;
+            case 2 : return R.style.TransportMeanTheme2;
+            case 3 : return R.style.TransportMeanTheme3;
+            default:return -1;
+        }
+    }
+
     public int getCircleDrawable ()
     {
         switch (id){
@@ -91,6 +102,42 @@ public class TransportMean {
             case 1 : return R.drawable.ic_circle_transport_mean_1;
             case 2 : return R.drawable.ic_circle_transport_mean_2;
             case 3 : return R.drawable.ic_circle_transport_mean_3;
+            default:return -1;
+        }
+    }
+
+    public int getCoordinateDrawable ()
+    {
+        switch (id)
+        {
+            case 0 : return R.drawable.ic_coordinate_transport_mean_0;
+            case 1 : return R.drawable.ic_coordinate_transport_mean_1;
+            case 2 : return R.drawable.ic_coordinate_transport_mean_2;
+            case 3 : return R.drawable.ic_coordinate_transport_mean_3;
+            default:return -1;
+        }
+    }
+
+    public int getLinesSelectedDrawable ()
+    {
+        switch (id)
+        {
+            case 0 : return R.drawable.ic_line_enabled_transport_mean_0;
+            case 1 : return R.drawable.ic_line_enabled_transport_mean_1;
+            case 2 : return R.drawable.ic_line_enabled_transport_mean_2;
+            case 3 : return R.drawable.ic_line_enabled_transport_mean_3;
+            default:return -1;
+        }
+    }
+
+    public int getTimesSelectedDrawable ()
+    {
+        switch (id)
+        {
+            case 0 : return R.drawable.ic_time_transport_mean_0;
+            case 1 : return R.drawable.ic_time_transport_mean_1;
+            case 2 : return R.drawable.ic_time_transport_mean_2;
+            case 3 : return R.drawable.ic_time_transport_mean_3;
             default:return -1;
         }
     }

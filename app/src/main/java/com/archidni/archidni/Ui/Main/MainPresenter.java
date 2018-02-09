@@ -309,6 +309,16 @@ public class MainPresenter implements MainContract.Presenter {
         searchLines(context,currentCoordinate);
     }
 
+    @Override
+    public void onStationFabClick() {
+        view.startStationActivity((Station)selectedLocation);
+    }
+
+    @Override
+    public void onStationItemClick(Station station) {
+        view.startStationActivity(station);
+    }
+
     private ArrayList<Station> filteredListStations ()
     {
         ArrayList<Station> stations = TransportUtils.getStationsFromLines(filteredLines());

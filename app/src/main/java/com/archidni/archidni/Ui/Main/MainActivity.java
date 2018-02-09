@@ -29,6 +29,7 @@ import com.archidni.archidni.Ui.Adapters.LineAdapter;
 import com.archidni.archidni.Ui.Adapters.StationAdapter;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
+import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Model.TransportMean;
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @BindView(R.id.layout_search_underway)
     View searchUnderwayLayout;
     @BindView(R.id.location_fab)
-    ImageView placeFab;
+    ImageView stationFab;
     @BindView(R.id.image_transport_mean_icon)
     ImageView locationIcon;
     @BindView(R.id.layout_zoom_insufficient_message)
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         archidniMap = new ArchidniMap(mapView, savedInstanceState, new ArchidniMap.OnMapReadyCallback() {
             @Override
             public void onMapReady() {
+                archidniMap.disableAllGestures();
                 presenter.onMapReady(MainActivity.this,archidniMap.getBoundingBox());
                 archidniMap.setOnMapLongClickListener(new ArchidniMap.OnMapLongClickListener() {
                     @Override
@@ -257,6 +259,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             @Override
             public void onClick(View view) {
                 presenter.onRetryClicked(MainActivity.this,archidniMap.getCenter());
+            }
+        });
+        stationFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onStationFabClick();
             }
         });
     }
@@ -455,10 +463,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     station.getTransportMean().getColor()));
             Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab);
             animation.setRepeatCount(Animation.INFINITE);
-            placeFab.setImageDrawable(ContextCompat.getDrawable(this,
+            stationFab.setImageDrawable(ContextCompat.getDrawable(this,
                     station.getTransportMean().getFabIcon()));
-            placeFab.startAnimation(animation);
-            placeFab.setVisibility(View.VISIBLE);
+            stationFab.startAnimation(animation);
+            stationFab.setVisibility(View.VISIBLE);
             archidniMap.changeMarkerIcon(R.drawable.marker_selected,station);
         }
     }
@@ -481,8 +489,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             Station station = (Station) archidniMarker.getTag();
             archidniMap.changeMarkerIcon(station.getTransportMean().getMarkerIcon(),
                     archidniMarker.getTag());
-            placeFab.clearAnimation();
-            placeFab.setVisibility(View.GONE);
+            stationFab.clearAnimation();
+            stationFab.setVisibility(View.GONE);
         }
         else
         {
@@ -492,6 +500,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void startPathSearchActivity(Place origin, Place destination) {
+        /*TODO check if null*/
         Intent intent = new Intent(this, PathSearchActivity.class);
         intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,origin.toJson());
         intent.putExtra(IntentUtils.PATH_SEARCH_DESTINATION,destination.toJson());
@@ -546,7 +555,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
         else
         {
-            StationAdapter stationAdapter = new StationAdapter(stations,userCoordinate,this);
+            StationAdapter stationAdapter = new StationAdapter(this, stations, userCoordinate,
+                    new StationAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Station station) {
+                            presenter.onStationItemClick(station);
+                        }
+                    });
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -574,6 +589,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void hideSearchErrorLayout() {
         errorLayout.setVisibility(View.GONE);
         retryFab.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void startStationActivity(Station station) {
+        Intent intent = new Intent(this, StationActivity.class);
+        intent.putExtra(IntentUtils.STATION_STATION,station.toJson());
+        startActivity(intent);
     }
 
 

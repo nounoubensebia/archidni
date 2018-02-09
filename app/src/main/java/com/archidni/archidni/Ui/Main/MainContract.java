@@ -40,6 +40,7 @@ public interface MainContract {
         void hideZoomInsufficientLayout();
         void showSearchErrorLayout();
         void hideSearchErrorLayout();
+        void startStationActivity(Station station);
     }
 
     interface Presenter {
@@ -56,6 +57,8 @@ public interface MainContract {
         void onCameraMove(Context context, Coordinate coordinate, double zoom, BoundingBox boundingBox);
         void onStationMarkerClick(Station station, ArchidniMarker marker);
         void onRetryClicked(Context context,Coordinate coordinate);
+        void onStationFabClick();
+        void onStationItemClick(Station station);
     }
 
     interface OnUserLocationObtainedCallback {

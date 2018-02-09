@@ -58,6 +58,11 @@ public class ArchidniMap {
         preparedArchidniMarkers = new ArrayList<>();
     }
 
+    public void disableAllGestures ()
+    {
+        this.mapboxMap.getUiSettings().setAllGesturesEnabled(false);
+    }
+
     public Coordinate getCenter ()
     {
         return new Coordinate(mapboxMap.getCameraPosition().target);

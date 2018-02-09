@@ -16,6 +16,33 @@
 
     </style>
 
+
+    <style name="TransportMeanTheme0" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_transport_mean_selected_0</item>
+        <item name="colorPrimaryDark">#000</item>
+        <item name="colorAccent">@color/color_transport_mean_selected_0</item>
+    </style>
+    <style name="TransportMeanTheme1" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_transport_mean_selected_1</item>
+        <item name="colorPrimaryDark">#000</item>
+        <item name="colorAccent">@color/color_transport_mean_selected_1</item>
+    </style>
+    <style name="TransportMeanTheme2" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_transport_mean_selected_2</item>
+        <item name="colorPrimaryDark">#000</item>
+        <item name="colorAccent">@color/color_transport_mean_selected_2</item>
+    </style>
+    <style name="TransportMeanTheme3" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_transport_mean_selected_3</item>
+        <item name="colorPrimaryDark">#000</item>
+        <item name="colorAccent">@color/color_transport_mean_selected_3</item>
+    </style>
+
+
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorGreen</item>
@@ -33,7 +60,13 @@
         <item name="colorAccent">@color/colorPrimary </item>
     </style>
 
+    <style name="progressBarBlackTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">#000 </item>
+    </style>
+
     <style name="progressBarWhiteTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorAccent">#FFF </item>
     </style>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 </resources>

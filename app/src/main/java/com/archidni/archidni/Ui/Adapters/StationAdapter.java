@@ -29,12 +29,15 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
     private ArrayList<Station> stations;
     private Coordinate userCoordinate;
     private Context context;
+    private OnItemClickListener onItemClickListener;
 
-    public StationAdapter(ArrayList<Station> stations, Coordinate userCoordinate, Context context) {
+    public StationAdapter( Context context,ArrayList<Station> stations, Coordinate userCoordinate,
+                           OnItemClickListener onItemClickListener) {
         this.stations = new ArrayList<>(stations);
         this.userCoordinate = userCoordinate;
         this.context = context;
         this.setHasStableIds(true);
+        this.onItemClickListener = onItemClickListener;
         if (userCoordinate!=null)
         {
             TransportUtils.sortStationsByDistance(this.stations,userCoordinate);
@@ -64,7 +67,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Station station = stations.get(position);
+        final Station station = stations.get(position);
         holder.mainText.setText(station.getName());
         holder.mainText.setTextColor(ContextCompat.getColor(context,station.getTransportMean().getColor()));
         if (userCoordinate!=null)
@@ -76,6 +79,12 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
         }
         holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,
                 station.getTransportMean().getIconEnabled()));
+        holder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClickListener.onItemClick(station);
+            }
+        });
     }
 
     @Override
@@ -94,10 +103,16 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
         TextView durationText;
         @BindView(R.id.image_transport_mean_icon)
         ImageView imageView;
+        @BindView(R.id.container)
+        View container;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick (Station station);
     }
 }
