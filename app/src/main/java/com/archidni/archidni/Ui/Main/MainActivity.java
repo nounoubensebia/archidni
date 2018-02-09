@@ -98,7 +98,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     View zoomInsufficientLayout;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-
+    @BindView(R.id.fab_retry)
+    View retryFab;
+    @BindView(R.id.layout_search_error)
+    View errorLayout;
     ArchidniMap archidniMap;
     private boolean drawerOpened;
 
@@ -249,6 +252,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             }
         });
         container.setScrollableView(recyclerView);
+
+        retryFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onRetryClicked(MainActivity.this,archidniMap.getCenter());
+            }
+        });
     }
 
     @Override
@@ -552,6 +562,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void hideZoomInsufficientLayout() {
         zoomInsufficientLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showSearchErrorLayout() {
+        errorLayout.setVisibility(View.VISIBLE);
+        retryFab.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideSearchErrorLayout() {
+        errorLayout.setVisibility(View.GONE);
+        retryFab.setVisibility(View.GONE);
     }
 
 

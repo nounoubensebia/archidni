@@ -17,6 +17,7 @@ import com.archidni.archidni.UiUtils.ArchidniMarker;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 /**
  * Created by noure on 02/02/2018.
@@ -37,6 +38,7 @@ public class MainPresenter implements MainContract.Presenter {
     private boolean searchUnderway = false;
     private BoundingBox currentBoundingBox;
     private Coordinate userCoordinate;
+    private boolean errorHappened = false;
 
     public MainPresenter(MainContract.View view) {
         this.view = view;
@@ -138,7 +140,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onMapLongClick(Coordinate coordinate) {
-        if (selectedLocation == null)
+        if (selectedLocation == null&&!errorHappened)
         {
             selectedLocation = new Place(StringUtils.getLocationString(coordinate),
                     App.getAppContext().getString(R.string.on_map),coordinate);
@@ -214,7 +216,7 @@ public class MainPresenter implements MainContract.Presenter {
             }
             if (!found)
             {
-                if (!searchUnderway)
+                if (!searchUnderway&&!errorHappened)
                 {
                     if (searchCoordinates.size()>=4)
                     {
@@ -246,6 +248,7 @@ public class MainPresenter implements MainContract.Presenter {
         linesRepository.getLines(context,coordinate, new LinesRepository.OnSearchCompleted() {
             @Override
             public void onLinesFound(ArrayList<Line> lines) {
+                errorHappened = false;
                 addLines(lines);
                 view.hideLinesLoadingLayout();
                 view.showLinesOnList(lines);
@@ -256,7 +259,15 @@ public class MainPresenter implements MainContract.Presenter {
 
             @Override
             public void onError() {
-
+                errorHappened = true;
+                view.hideLinesLoadingLayout();
+                android.os.Handler handler = new android.os.Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.showSearchErrorLayout();
+                    }
+                },250);
             }
         });
     }
@@ -282,6 +293,20 @@ public class MainPresenter implements MainContract.Presenter {
             view.animateCameraToLocation(station.getCoordinate());
             selectedLocation = station;
         }
+    }
+
+    @Override
+    public void onRetryClicked(final Context context, final Coordinate currentCoordinate) {
+        view.hideSearchErrorLayout();
+        android.os.Handler handler = new android.os.Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (errorHappened)
+                view.showLinesLoadingLayout();
+            }
+        },250);
+        searchLines(context,currentCoordinate);
     }
 
     private ArrayList<Station> filteredListStations ()

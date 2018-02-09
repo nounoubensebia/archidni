@@ -66,6 +66,18 @@
                 android:layout_marginBottom="100dp"
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_retry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="#FFF"
+                    android:backgroundTint="#FFF"
+                    android:visibility="gone"
+                    app:borderWidth="0dp"
+                    app:srcCompat="@drawable/ic_retry_24dp" />
                 <FrameLayout
                     android:animateLayoutChanges="true"
                     android:layout_width="match_parent"
@@ -81,6 +93,7 @@
                     android:backgroundTint="#FFF"
                     app:borderWidth="0dp"
                     app:srcCompat="@drawable/ic_my_location_24dp"/>
+
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/fab_show_sliding_panel"
                     android:layout_width="wrap_content"
@@ -93,6 +106,38 @@
                     app:borderWidth="0dp"
                     app:srcCompat="@drawable/ic_arrow_upward_black_24dp"/>
                 </FrameLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_search_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:animateLayoutChanges="true"
+                    android:background="@android:color/holo_red_dark"
+                    android:elevation="4dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/text_search_error"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center"
+                            android:text="une erreur s'est produite veuillez réessayer"
+                            android:textColor="#FFF" />
+                    </LinearLayout>
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/layout_search_underway"
                     android:layout_width="match_parent"

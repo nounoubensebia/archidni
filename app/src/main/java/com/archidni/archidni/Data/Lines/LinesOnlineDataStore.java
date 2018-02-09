@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class LinesOnlineDataStore {
 
-    private static final String GET_LINES_URL = "http://192.168.1.8:8000/api/v1/lines";
+    private static final String GET_LINES_URL = "http://192.168.1.9:8000/api/v1/lines";
 
     public void getLines(Context context, final Coordinate position,
                          final OnSearchCompleted onSearchCompleted)
