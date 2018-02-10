@@ -30,9 +30,7 @@ dependencies {
     compile "com.android.support:support-core-utils:26.1.0"
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.1.4@aar') {
-        transitive = true
-    }
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:5.4.1'
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.google.android.gms:play-services-location:11.0.4'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'

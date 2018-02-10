@@ -9,14 +9,14 @@ import java.util.ArrayList;
  */
 
 public class TrainLine extends Line {
-    ArrayList<TrainTrip> trips;
+    private ArrayList<TrainTrip> trainTrips;
 
-    public TrainLine(int id, String name, TransportMean transportMean, ArrayList<Section> sections, ArrayList<TrainTrip> trips) {
+    public TrainLine(int id, String name, TransportMean transportMean, ArrayList<Section> sections, ArrayList<TrainTrip> trainTrips) {
         super(id, name, transportMean, sections);
-        this.trips = trips;
+        this.trainTrips = trainTrips;
     }
 
-    public ArrayList<TrainTrip> getTrips() {
-        return trips;
+    public ArrayList<TrainTrip> getTrainTrips() {
+        return trainTrips;
     }
 }

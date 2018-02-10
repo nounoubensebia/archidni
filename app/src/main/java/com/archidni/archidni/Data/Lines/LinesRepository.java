@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Transport.Line;
+import com.archidni.archidni.Model.Transport.Station;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,22 @@ public class LinesRepository {
     {
         LinesOnlineDataStore linesOnlineDataStore = getLinesOnlineDataStoreInstance();
         linesOnlineDataStore.getLines(context,coordinate, new LinesOnlineDataStore.OnSearchCompleted() {
+            @Override
+            public void onLinesFound(ArrayList<Line> lines) {
+                onSearchCompleted.onLinesFound(lines);
+            }
+
+            @Override
+            public void onError() {
+                onSearchCompleted.onError();
+            }
+        });
+    }
+
+    public void getLinesPassingByStation (Context context, Station station, final OnSearchCompleted onSearchCompleted)
+    {
+        LinesOnlineDataStore linesOnlineDataStore = getLinesOnlineDataStoreInstance();
+        linesOnlineDataStore.getLinesPassingByStation(context,station, new LinesOnlineDataStore.OnSearchCompleted() {
             @Override
             public void onLinesFound(ArrayList<Line> lines) {
                 onSearchCompleted.onLinesFound(lines);

@@ -630,7 +630,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void trackUser() {
-        archidniMap.trackUser();
+        archidniMap.animateCamera(archidniMap.getUserLocation(),15,250);
     }
 
     @Override

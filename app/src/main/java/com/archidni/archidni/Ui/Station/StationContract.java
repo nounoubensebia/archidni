@@ -1,5 +1,7 @@
 package com.archidni.archidni.Ui.Station;
 
+import android.content.Context;
+
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.Transport.Line;
@@ -16,7 +18,7 @@ public interface StationContract {
     public interface View {
         void setTheme(Station station);
         void showLinesLoadingBar();
-        void showLinesOnList(ArrayList<? extends Line> lines);
+        void showLinesOnList(ArrayList<Line> lines);
         void showTripsOnList(ArrayList<? extends Trip> trips);
         void showTimeDialog(long selectedTime);
         void showDateDialog (long selectedDate);
@@ -26,13 +28,15 @@ public interface StationContract {
         void showStationOnActivity(Station station);
         void showStationOnMap (Station station);
         void updateLinesTripsLayout(boolean linesSelected,Station station);
+        void startLineActivity(Line line);
     }
 
     public interface Presenter {
         void onGetPathClicked ();
-        void onCreate();
+        void onCreate(Context context);
         void onMapReady();
         void onUserLocationCaptured(Coordinate coordinate);
         void toggleLinesTrips (boolean linesSelected);
+        void onLineItemClick(Line line);
     }
 }

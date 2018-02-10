@@ -3,11 +3,14 @@ package com.archidni.archidni.Ui.Station;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -22,6 +25,8 @@ import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.Trip;
 import com.archidni.archidni.R;
+import com.archidni.archidni.Ui.Adapters.LineAdapter;
+import com.archidni.archidni.Ui.Line.LineActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.UiUtils.ViewUtils;
@@ -39,8 +44,8 @@ public class StationActivity extends AppCompatActivity implements StationContrac
 
     @BindView(R.id.mapView)
     MapView mapView;
-    /*@BindView(R.id.progressBar)
-    ProgressBar progressBar;*/
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.text_name)
@@ -70,7 +75,7 @@ public class StationActivity extends AppCompatActivity implements StationContrac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_station);
         initViews(savedInstanceState);
-        presenter.onCreate();
+        presenter.onCreate(this);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
@@ -121,12 +126,29 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     @Override
     public void showLinesLoadingBar() {
         recyclerView.setVisibility(View.GONE);
-        //progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void showLinesOnList(ArrayList<? extends Line> lines) {
-
+    public void showLinesOnList(final ArrayList<Line> lines) {
+        LineAdapter lineAdapter = new LineAdapter(this, lines, new LineAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Line line) {
+                presenter.onLineItemClick(line);
+            }
+        });
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(lineAdapter);
+        progressBar.setVisibility(View.GONE);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        },250);
     }
 
     @Override
@@ -227,7 +249,13 @@ public class StationActivity extends AppCompatActivity implements StationContrac
                             .getTimesSelectedDrawable(),station.getTransportMean().getColor(),
                     ViewUtils.DIRECTION_RIGHT);
         }
+    }
 
+    @Override
+    public void startLineActivity(Line line) {
+        Intent intent = new Intent(this, LineActivity.class);
+        intent.putExtra(IntentUtils.LINE_LINE,line.toJson());
+        startActivity(intent);
     }
 
     @Override
