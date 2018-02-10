@@ -1,6 +1,8 @@
 package com.archidni.archidni.Ui.Station;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Handler;
@@ -14,8 +16,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
@@ -26,6 +30,7 @@ import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.Trip;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.LineAdapter;
+import com.archidni.archidni.Ui.Adapters.TrainTripAdapter;
 import com.archidni.archidni.Ui.Line.LineActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
@@ -36,6 +41,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.mapbox.mapboxsdk.maps.MapView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,6 +68,12 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     TextView timesText;
     @BindView(R.id.text_lines)
     TextView linesText;
+    @BindView(R.id.layout_trip_options)
+    View tripOptionsLayout;
+    @BindView(R.id.text_time)
+    TextView timeText;
+    @BindView(R.id.text_date)
+    TextView dateText;
     ArchidniMap archidniMap;
     StationContract.Presenter presenter;
     private FusedLocationProviderClient fusedLocationClient;
@@ -114,6 +126,20 @@ public class StationActivity extends AppCompatActivity implements StationContrac
                 presenter.toggleLinesTrips(false);
             }
         });
+
+        timeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onTimeUpdateClick();
+            }
+        });
+        dateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onDateUpdateClick();
+            }
+        });
+
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
     }
@@ -131,6 +157,7 @@ public class StationActivity extends AppCompatActivity implements StationContrac
 
     @Override
     public void showLinesOnList(final ArrayList<Line> lines) {
+        tripOptionsLayout.setVisibility(View.GONE);
         LineAdapter lineAdapter = new LineAdapter(this, lines, new LineAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Line line) {
@@ -152,28 +179,56 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     }
 
     @Override
-    public void showTripsOnList(ArrayList<? extends Trip> trips) {
+    public void showTripsOnList(Station station,ArrayList<Line>lines,long departureTime,
+                                long departureDate) {
+        TrainTripAdapter trainTripAdapter = new TrainTripAdapter(this,departureTime,
+                departureDate,station,lines);
 
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(trainTripAdapter);
+        tripOptionsLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void showTimeDialog(long selectedTime) {
-
+    public void showTimeDialog(long departureTime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(departureTime*1000);
+        TimePickerDialog dialogFragment = new TimePickerDialog(this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        presenter.updateTime(hourOfDay * 3600 + minute * 60);
+                    }
+                }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+        dialogFragment.show();
     }
 
     @Override
-    public void showDateDialog(long selectedDate) {
-
+    public void showDateDialog(long departureDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(departureDate*1000);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Calendar c = Calendar.getInstance();
+                        c.set(year, month, dayOfMonth, 0, 0);
+                        presenter.updateDate(c.getTimeInMillis() / 1000);
+                    }
+                }, calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
     }
 
     @Override
     public void updateTime(long newTime) {
-
+        timeText.setText(StringUtils.getTimeString(newTime));
     }
 
     @Override
     public void updateDate(long newDate) {
-
+        dateText.setText(StringUtils.getDateString(newDate));
     }
 
     @Override

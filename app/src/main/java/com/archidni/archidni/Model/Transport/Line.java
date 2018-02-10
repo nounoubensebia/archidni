@@ -98,4 +98,8 @@ public class Line {
         }
         return coordinates;
     }
+
+    public ArrayList<Section> getSections() {
+        return sections;
+    }
 }

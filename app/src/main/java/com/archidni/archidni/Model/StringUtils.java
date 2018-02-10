@@ -59,6 +59,7 @@ public class StringUtils {
         return (float)coordinate.getLatitude()+", "+(float)coordinate.getLongitude();
     }
 
+
     public static String getDateString (long timestamp)
     {
         Calendar chosenCal = Calendar.getInstance();

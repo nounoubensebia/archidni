@@ -55,4 +55,13 @@ public class TimeUtils {
         long secondsPassed = passed / 1000;
         return secondsPassed;
     }
+
+    public static long getTimeFromString (String s)
+    {
+        String[] units = s.split(":");
+        int hours = Integer.parseInt(units[0]);
+        int minutes = Integer.parseInt(units[1]); //first element
+        int seconds = Integer.parseInt(units[2]); //second element
+        return (long) (3600 * hours + 60 * minutes + seconds);
+    }
 }

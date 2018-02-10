@@ -19,7 +19,7 @@ public interface StationContract {
         void setTheme(Station station);
         void showLinesLoadingBar();
         void showLinesOnList(ArrayList<Line> lines);
-        void showTripsOnList(ArrayList<? extends Trip> trips);
+        void showTripsOnList(Station station,ArrayList<Line> lines,long departureTime,long departureDate);
         void showTimeDialog(long selectedTime);
         void showDateDialog (long selectedDate);
         void updateTime(long newTime);
@@ -38,5 +38,9 @@ public interface StationContract {
         void onUserLocationCaptured(Coordinate coordinate);
         void toggleLinesTrips (boolean linesSelected);
         void onLineItemClick(Line line);
+        void updateTime(long newTime);
+        void updateDate(long newDate);
+        void onTimeUpdateClick();
+        void onDateUpdateClick();
     }
 }

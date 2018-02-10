@@ -1,6 +1,7 @@
 package com.archidni.archidni.Data.Lines;
 
 import android.content.Context;
+import android.util.Pair;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -12,7 +13,9 @@ import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Section;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.TrainLine;
+import com.archidni.archidni.Model.Transport.TrainTrip;
 import com.archidni.archidni.Model.TransportMean;
+import com.archidni.archidni.TimeUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,7 +64,7 @@ public class LinesOnlineDataStore {
         AppSingleton.getInstance(context).addToRequestQueue(stringRequest, "TAG");
     }
 
-    public void getLinesPassingByStation(Context context,Station station,
+    public void getLinesPassingByStation(Context context, final Station station,
                                          final OnSearchCompleted onSearchCompleted) {
         String url = GET_STATIONS_URL + "/" + station.getId() + "/lines";
         final ArrayList<Line> lines = new ArrayList<>();
@@ -72,8 +75,32 @@ public class LinesOnlineDataStore {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray data = jsonObject.getJSONArray("data");
                     for (int i = 0; i < data.length(); i++) {
-                        JSONObject jsonObject1 = data.getJSONObject(i);
-                        Line line = parseLine(jsonObject1);
+                        JSONObject lineObject = data.getJSONObject(i);
+                        Line line = parseLine(lineObject);
+                        JSONArray trips = lineObject.getJSONArray("trips");
+                        ArrayList<TrainTrip> trainTrips = new ArrayList<>();
+                        for (int j = 0; j < trips.length(); j++) {
+                            JSONObject tripObject = trips.getJSONObject(j);
+                            long days = tripObject.getLong("days");
+                            JSONArray departuresJsonArray = tripObject.getJSONArray("departures");
+                            ArrayList<Long> departures = new ArrayList<>();
+                            for (int k = 0; k < departuresJsonArray.length(); k++) {
+                                JSONObject departureObject = departuresJsonArray.getJSONObject(k);
+                                long departureTime = TimeUtils
+                                        .getTimeFromString(departureObject.getString("time"));
+                                departures.add(departureTime);
+                            }
+                            JSONArray stationsJsonArray = tripObject.getJSONArray("stations");
+                            ArrayList<Pair<Integer,Integer>> pairs = new ArrayList<>();
+                            for (int k = 0; k < stationsJsonArray.length(); k++) {
+                                JSONObject stationObject = stationsJsonArray.getJSONObject(k);
+                                pairs.add(new Pair<Integer, Integer>(stationObject.getInt("id"),
+                                        stationObject.getInt("minutes")));
+                            }
+                            trainTrips.add(new TrainTrip(days,pairs,departures));
+                            line = new TrainLine(line.getId(),line.getName(),
+                                    line.getTransportMean(),line.getSections(),trainTrips);
+                        }
                         lines.add(line);
                     }
                     onSearchCompleted.onLinesFound(lines);
@@ -136,6 +163,7 @@ public class LinesOnlineDataStore {
                 lines.add(parseLine(jsonObject));
             }
         } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
             return new ArrayList<>();
         }
         return lines;
