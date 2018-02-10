@@ -139,7 +139,7 @@ public class TransportUtils {
     {
         for (int i = 0; i < pairs.size(); i++) {
             Pair<Pair<Line,TrainTrip>,Long> pair1 = pairs.get(i);
-            for (int j = 0; j < pairs.size(); j++) {
+            for (int j = i+1; j < pairs.size(); j++) {
                 Pair<Pair<Line,TrainTrip>,Long> pair2 = pairs.get(j);
                 if (pair1.second<pair2.second)
                 {
@@ -166,4 +166,41 @@ public class TransportUtils {
         return null;
     }
 
+    public static ArrayList<Pair<Line,TimePeriod>> getDayTrips (long departureDate,
+                                                                      ArrayList<Line> lines)
+    {
+        ArrayList<Pair<Line,TimePeriod>> arrayList = new ArrayList<>();
+        for (Line line:lines)
+        {
+            if (line instanceof TramwayMetroLine)
+            {
+                TramwayMetroLine tramwayMetroLine = (TramwayMetroLine) line;
+                for (TramwayMetroTrip tramwayMetroTrip:tramwayMetroLine.getTramwayMetroTrips())
+                {
+                    for (TimePeriod timePeriod:tramwayMetroTrip.getTimePeriods())
+                    {
+                        arrayList.add(new Pair<Line, TimePeriod>(line,timePeriod));
+                    }
+                }
+            }
+        }
+        sortDayTrips(arrayList);
+        return arrayList;
+    }
+
+    private static void sortDayTrips (ArrayList <Pair<Line,TimePeriod>> dayTrips)
+    {
+        for (int i = 0; i < dayTrips.size(); i++) {
+            Pair<Line,TimePeriod> pair1 = dayTrips.get(i);
+            for (int j = i+1; j < dayTrips.size(); j++) {
+                Pair<Line,TimePeriod> pair2 = dayTrips.get(j);
+                if (pair1.second.getStart()>pair2.second.getStart())
+                {
+                    dayTrips.set(i,pair2);
+                    dayTrips.set(j,pair1);
+                    pair1 = pair2;
+                }
+            }
+        }
+    }
 }

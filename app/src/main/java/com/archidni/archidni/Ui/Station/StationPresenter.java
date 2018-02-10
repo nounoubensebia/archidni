@@ -46,6 +46,10 @@ public class StationPresenter implements StationContract.Presenter {
         departureTime = TimeUtils.getSecondsFromMidnight();
         departureDate = TimeUtils.getCurrentTimeInSeconds();
         view.updateTime(departureTime);
+        if (station.getTransportMean().getId()!=1)
+        {
+            view.hideTimeText();
+        }
     }
 
     @Override

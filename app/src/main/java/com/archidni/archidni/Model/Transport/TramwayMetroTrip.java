@@ -15,4 +15,8 @@ public class TramwayMetroTrip extends Trip {
         super(days, stationTimes);
         this.timePeriods = timePeriods;
     }
+
+    public ArrayList<TimePeriod> getTimePeriods() {
+        return timePeriods;
+    }
 }

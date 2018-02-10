@@ -14,4 +14,16 @@ public class TimePeriod {
         this.end = end;
         this.averageWaitingTime = averageWaitingTime;
     }
+
+    public long getStart() {
+        return start;
+    }
+
+    public long getEnd() {
+        return end;
+    }
+
+    public int getAverageWaitingTime() {
+        return averageWaitingTime;
+    }
 }

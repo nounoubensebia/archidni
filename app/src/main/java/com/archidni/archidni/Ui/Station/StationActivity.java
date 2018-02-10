@@ -27,10 +27,12 @@ import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.Model.Transport.TramwayMetroTrip;
 import com.archidni.archidni.Model.Transport.Trip;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.LineAdapter;
 import com.archidni.archidni.Ui.Adapters.TrainTripAdapter;
+import com.archidni.archidni.Ui.Adapters.TramwayMetroTripAdapter;
 import com.archidni.archidni.Ui.Line.LineActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
@@ -181,14 +183,28 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     @Override
     public void showTripsOnList(Station station,ArrayList<Line>lines,long departureTime,
                                 long departureDate) {
-        TrainTripAdapter trainTripAdapter = new TrainTripAdapter(this,departureTime,
-                departureDate,station,lines);
+        if (station.getTransportMean().getId()==1)
+        {
+            TrainTripAdapter trainTripAdapter = new TrainTripAdapter(this,departureTime,
+                    departureDate,station,lines);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(trainTripAdapter);
-        tripOptionsLayout.setVisibility(View.VISIBLE);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(trainTripAdapter);
+            tripOptionsLayout.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            TramwayMetroTripAdapter tramwayMetroAdapter = new TramwayMetroTripAdapter(this,lines,
+                    departureDate);
+
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(tramwayMetroAdapter);
+            tripOptionsLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -311,6 +327,11 @@ public class StationActivity extends AppCompatActivity implements StationContrac
         Intent intent = new Intent(this, LineActivity.class);
         intent.putExtra(IntentUtils.LINE_LINE,line.toJson());
         startActivity(intent);
+    }
+
+    @Override
+    public void hideTimeText() {
+        timeText.setVisibility(View.GONE);
     }
 
     @Override

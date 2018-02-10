@@ -29,6 +29,7 @@ public interface StationContract {
         void showStationOnMap (Station station);
         void updateLinesTripsLayout(boolean linesSelected,Station station);
         void startLineActivity(Line line);
+        void hideTimeText();
     }
 
     public interface Presenter {
