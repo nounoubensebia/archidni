@@ -141,7 +141,7 @@ public class TransportUtils {
             Pair<Pair<Line,TrainTrip>,Long> pair1 = pairs.get(i);
             for (int j = i+1; j < pairs.size(); j++) {
                 Pair<Pair<Line,TrainTrip>,Long> pair2 = pairs.get(j);
-                if (pair1.second<pair2.second)
+                if (pair1.second>pair2.second)
                 {
                     pairs.set(i,pair2);
                     pairs.set(j,pair1);
