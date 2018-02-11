@@ -686,7 +686,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             }
             else
             {
-                super.onBackPressed();
+                if (locationLayout.getVisibility()==View.VISIBLE)
+                {
+                    presenter.onMapShortClick();
+                }
+                else
+                {
+                    super.onBackPressed();
+                }
             }
         }
     }

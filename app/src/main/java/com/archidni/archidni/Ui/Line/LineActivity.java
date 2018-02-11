@@ -1,6 +1,7 @@
 package com.archidni.archidni.Ui.Line;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -152,7 +153,16 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
             }
         });
         listView.setDividerHeight(0);
-        ViewUtils.justifyListViewHeightBasedOnChildren(listView);
+        listView.setVisibility(View.INVISIBLE);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listView.setVisibility(View.VISIBLE);
+                ViewUtils.justifyListViewHeightBasedOnChildren(listView);
+            }
+        },500);
+
     }
 
     @Override

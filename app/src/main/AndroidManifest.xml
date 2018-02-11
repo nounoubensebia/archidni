@@ -35,6 +35,7 @@
             android:parentActivityName=".Ui.Main.MainActivity" />
         <activity
             android:name=".Ui.SetLocation.SetLocationActivity"
+            android:label="Selectionner un emplacement"
             android:theme="@style/AppThemeWithActionBar" />
         <activity android:name=".Ui.Station.StationActivity" />
         <activity android:name=".Ui.Line.LineActivity" />

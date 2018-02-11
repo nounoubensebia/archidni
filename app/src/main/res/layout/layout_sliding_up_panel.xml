@@ -89,6 +89,7 @@
         android:padding="8dp"
         android:text="Trouver une ligne ou une station"
         android:textColor="#000"
+        android:textSize="16sp"
         android:gravity="center"
         android:drawablePadding="8dp"
         android:drawableLeft="@drawable/ic_search_green"
