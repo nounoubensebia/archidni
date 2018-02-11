@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:id="@+id/container"
-    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
@@ -43,7 +43,7 @@
                 android:drawablePadding="8dp"
                 android:layout_marginLeft="16dp"
                 android:text="05:30-07:00"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textColor="#000"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
