@@ -24,6 +24,7 @@ import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
+import com.archidni.archidni.UiUtils.ViewUtils;
 import com.mapbox.mapboxsdk.maps.MapView;
 
 import java.util.ArrayList;
@@ -182,8 +183,10 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
             ArrayList<Coordinate> coordinates = new ArrayList<>();
             coordinates.add(origin.getCoordinate());
             coordinates.add(destination.getCoordinate());
-            archidniMap.moveCameraToBounds(coordinates,100,200,100,
-                    400);
+            archidniMap.moveCameraToBounds(coordinates, (int) ViewUtils.dpToPx(this,64),
+                    (int) ViewUtils.dpToPx(this,64),
+                    (int) ViewUtils.dpToPx(this,64),
+                    (int) ViewUtils.dpToPx(this,128));
         }
         else
         {
