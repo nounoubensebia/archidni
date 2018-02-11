@@ -6,13 +6,23 @@ package com.archidni.archidni.Model.Path;
 
 public abstract class PathInstruction {
     protected long durationInSeconds;
-    protected int order;
 
-    public PathInstruction(long durationInSeconds, int order) {
+    public PathInstruction(long durationInSeconds) {
         this.durationInSeconds = durationInSeconds;
-        this.order = order;
     }
+
+    public long getDurationInSeconds() {
+        return durationInSeconds;
+    }
+
+
 
     public abstract String getMainText();
     public abstract String getSecondaryText();
+    public abstract long getInstructionIcon();
+    public abstract int getInstructionWhiteIcon();
+    public String getDurationString ()
+    {
+        return getDurationInSeconds()/60+" minutes";
+    }
 }

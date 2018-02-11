@@ -39,9 +39,12 @@
             android:theme="@style/AppThemeWithActionBar" />
         <activity android:name=".Ui.Station.StationActivity" />
         <activity android:name=".Ui.Line.LineActivity" />
-        <activity android:name=".Ui.SearchLineStation.SearchLineStationActivity"
+        <activity
+            android:name=".Ui.SearchLineStation.SearchLineStationActivity"
+            android:label="Rechercher une ligne ou une station"
             android:parentActivityName=".Ui.Main.MainActivity"
-            android:label="Rechercher une ligne ou une station"></activity>
+            android:windowSoftInputMode="stateVisible" />
+        <activity android:name=".Ui.PathDetails.PathDetailsActivity"></activity>
     </application>
 
 </manifest>

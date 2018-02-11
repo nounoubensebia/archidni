@@ -12,19 +12,43 @@ import com.archidni.archidni.R;
 public class WaitInstruction extends PathInstruction {
 
     private Coordinate coordinate;
+    private boolean isAverage = false;
 
-    public WaitInstruction(long durationInSeconds, int order, Coordinate coordinate) {
-        super(durationInSeconds, order);
+    public WaitInstruction(int duration, Coordinate coordinate) {
+        super(duration);
         this.coordinate = coordinate;
     }
 
     @Override
     public String getMainText() {
-        return App.getAppContext().getString(R.string.wait);
+        return "Attendre";
     }
 
     @Override
     public String getSecondaryText() {
-        return StringUtils.getTextFromDuration(durationInSeconds);
+        if (isAverage) return ("Temps d'attente moyen "+getDurationInSeconds()/60+" minutes");
+        else return (getDurationInSeconds()/60+" minutes");
+    }
+
+    @Override
+    public long getInstructionIcon() {
+        return R.drawable.ic_time_transport_mean_1 ;
+    }
+
+    @Override
+    public int getInstructionWhiteIcon() {
+        return R.drawable.ic_time_white_24dp;
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public void setDuration(int duration) {
+        this.durationInSeconds = duration;
+    }
+
+    public void setAverage(boolean average) {
+        this.isAverage = average;
     }
 }

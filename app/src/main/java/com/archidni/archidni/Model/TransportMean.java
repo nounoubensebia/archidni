@@ -167,4 +167,48 @@ public class TransportMean {
             default:return -1;
         }
     }
+
+    public int getSeparationView2Id() {
+        switch (id)
+        {
+            case 0 : return R.id.view_separation1_transport_mean1;
+            case 1 : return R.id.view_separation1_transport_mean2;
+            case 2 : return R.id.view_separation1_transport_mean3;
+            case 3 : return R.id.view_separation1_transport_mean4;
+            default:return -1;
+        }
+    }
+
+    public int getExitDrawable() {
+        switch (id)
+        {
+            case 0 : return R.drawable.ic_exit_transport_mean0;
+            case 1 : return R.drawable.ic_exit_transport_mean1;
+            case 2 : return R.drawable.ic_exit_transport_mean2;
+            case 3 : return R.drawable.ic_exit_transport_mean3;
+            default:return -1;
+        }
+    }
+
+    public int getCircleFullDrawableId() {
+        switch (id)
+        {
+            case 0 : return R.drawable.shape_button_circle_full_transport_mean0;
+            case 1 : return R.drawable.shape_button_circle_full_transport_mean1;
+            case 2 : return R.drawable.shape_button_circle_full_transport_mean2;
+            case 3 : return R.drawable.shape_button_circle_full_transport_mean3;
+            default:return -1;
+        }
+    }
+
+    public int getWhiteIconDrawableId() {
+        switch (id)
+        {
+            case 0 : return R.drawable.ic_transport_mean_0_white;
+            case 1 : return R.drawable.ic_transport_mean_1_white;
+            case 2 : return R.drawable.ic_transport_mean_2_white;
+            case 3 : return R.drawable.ic_transport_mean_3_white;
+            default:return -1;
+        }
+    }
 }

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <FrameLayout
+            android:id="@+id/layout_instruction1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp">
+
+            <ImageView
+                android:id="@+id/circle_instruction1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/selector_circle_button_transport_mean1" />
+
+            <ImageView
+                android:id="@+id/image_instruction1"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_walk_green_24dp" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_text_instruction"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_toRightOf="@id/layout_instruction1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_instruction_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Marcher pour atteindre la station"
+                android:textColor="#000" />
+
+
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/view_separation_transport_mean1"
+            android:layout_width="1dp"
+            android:layout_height="72dp"
+            android:layout_below="@id/layout_instruction1"
+            android:layout_marginLeft="36dp"
+            android:background="@color/color_transport_mean_selected_0"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_instruction_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="10 min, 20m" />
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/view_separation_transport_mean2"
+            android:layout_width="1dp"
+            android:layout_height="72dp"
+            android:layout_below="@id/layout_instruction1"
+            android:layout_marginLeft="24dp"
+            android:background="@color/color_transport_mean_selected_1"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/view_separation_transport_mean3"
+            android:layout_width="1dp"
+            android:layout_height="72dp"
+            android:layout_below="@id/layout_instruction1"
+            android:layout_marginLeft="24dp"
+            android:background="@color/color_transport_mean_selected_2"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/view_separation_transport_mean4"
+            android:layout_width="1dp"
+            android:layout_height="48dp"
+            android:layout_below="@id/layout_instruction1"
+            android:layout_marginLeft="24dp"
+            android:background="@color/color_transport_mean_selected_3"
+            android:visibility="gone" />
+    </RelativeLayout>
+</LinearLayout>
