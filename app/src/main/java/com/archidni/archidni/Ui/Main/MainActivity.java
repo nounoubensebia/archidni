@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -30,6 +31,7 @@ import com.archidni.archidni.Ui.Adapters.StationAdapter;
 import com.archidni.archidni.Ui.Line.LineActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
+import com.archidni.archidni.Ui.SearchLineStation.SearchLineStationActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.R;
@@ -49,8 +51,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
     MainContract.Presenter presenter;
-
-    @BindView(R.id.mapView)
+     @BindView(R.id.mapView)
     MapView mapView;
     @BindView(R.id.text_transport_mean_0)
     TextView transportMean0Text;
@@ -104,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     View retryFab;
     @BindView(R.id.layout_search_error)
     View errorLayout;
+    @BindView(R.id.text_find_lines_stations)
+    TextView findLinesStationsText;
+
     ArchidniMap archidniMap;
     private boolean drawerOpened;
 
@@ -267,6 +271,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 presenter.onStationFabClick();
             }
         });
+        findLinesStationsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onLinesStationsFindClick();
+            }
+        });
     }
 
     @Override
@@ -414,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void showLocationLayout(Place place) {
+    public void showLocationLayout(Place place,Place oldSelectedPlace) {
         container.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         mainText.setText(place.getMainText());
         secondaryText.setText(place.getSecondaryText());
@@ -446,6 +456,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         },250);
         if (!(place instanceof Station))
         {
+            stationFab.setVisibility(View.GONE);
             locationIcon.setImageDrawable(ContextCompat.getDrawable(this,
                     R.drawable.ic_marker_green_24dp));
             getPathLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
@@ -468,6 +479,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             stationFab.startAnimation(animation);
             stationFab.setVisibility(View.VISIBLE);
             archidniMap.changeMarkerIcon(R.drawable.marker_selected,station);
+        }
+        if (oldSelectedPlace != null)
+        {
+            if (oldSelectedPlace instanceof Station)
+            {
+                Station station1 = (Station) oldSelectedPlace;
+                archidniMap.changeMarkerIcon(station1.getTransportMean().getMarkerIcon(),station1);
+            }
+            else
+            {
+                archidniMap.removeMarker(null);
+            }
         }
     }
 
@@ -607,6 +630,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void startLineActivity(Line line) {
         Intent intent = new Intent(this, LineActivity.class);
         intent.putExtra(IntentUtils.LINE_LINE,line.toJson());
+        startActivity(intent);
+    }
+
+    @Override
+    public void startLinesStationsActivity() {
+        Intent intent = new Intent(this, SearchLineStationActivity.class);
         startActivity(intent);
     }
 

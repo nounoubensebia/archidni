@@ -17,7 +17,6 @@ import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
-import com.mapbox.mapboxsdk.annotations.MarkerView;
 import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
 import com.mapbox.mapboxsdk.annotations.Polyline;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
@@ -43,6 +42,7 @@ public class ArchidniMap {
     private MapboxMap mapboxMap;
     private Coordinate userLocation;
     private ArrayList<ArchidniMarker> archidniMarkers;
+    private ArrayList<PreparedArchidniMarkerDeprecated> preparedArchidniMarkerDeprecateds;
     private ArrayList<PreparedArchidniMarker> preparedArchidniMarkers;
     private ArrayList<PolylineOptions> polylineOptionses;
     private List<Polyline> polylines;
@@ -61,6 +61,7 @@ public class ArchidniMap {
             }
         });
         archidniMarkers = new ArrayList<>();
+        preparedArchidniMarkerDeprecateds = new ArrayList<>();
         preparedArchidniMarkers = new ArrayList<>();
         polylineOptionses = new ArrayList<>();
         polylines = new ArrayList<>();
@@ -233,7 +234,8 @@ public class ArchidniMap {
         Icon icon = iconFactory.fromBitmap(getBitmapFromVectorDrawable(drawable));
         for (ArchidniMarker archidniMarker:archidniMarkers)
         {
-            if (archidniMarker.getTag().equals(tag))
+            if (archidniMarker.getTag()!=null&&archidniMarker.getTag().equals(tag))
+            if (archidniMarker.getTag()!=null&&archidniMarker.getTag().equals(tag))
             {
                 archidniMarker.getMarker().setIcon(icon);
             }
@@ -289,13 +291,13 @@ public class ArchidniMap {
                 coordinate.getLongitude()))
                 .icon(icon).anchor(anchorX,anchorY)
                 ;
-        preparedArchidniMarkers.add(new PreparedArchidniMarker(marker));
+        preparedArchidniMarkerDeprecateds.add(new PreparedArchidniMarkerDeprecated(marker));
     }
 
     public void prepareMarker(Coordinate coordinate, int markerDrawableResource,Object tag) {
         IconFactory iconFactory = IconFactory.getInstance(mapView.getContext());
         Icon icon = iconFactory.fromBitmap(getBitmapFromVectorDrawable(markerDrawableResource));
-        MarkerViewOptions marker = new com.mapbox.mapboxsdk.annotations.MarkerViewOptions()
+        MarkerOptions marker = new com.mapbox.mapboxsdk.annotations.MarkerOptions()
                 .position(new LatLng(coordinate.getLatitude(), coordinate.getLongitude()))
                 .icon(icon);
         preparedArchidniMarkers.add(new PreparedArchidniMarker(marker,tag));
@@ -320,37 +322,82 @@ public class ArchidniMap {
                 return false;
             }
         });
+        mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                for(ArchidniMarker archidniMarker:archidniMarkers)
+                {
+                    if (archidniMarker.getMarker().getPosition().getLatitude()
+                            ==marker.getPosition().getLatitude()&&
+                            archidniMarker.getMarker().getPosition().getLongitude()
+                                    ==marker.getPosition().getLongitude())
+                    {
+                        onMarkerClickListener.onMarkerClick(archidniMarker);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     public void addPreparedAnnotations ()
     {
         ArrayList<MarkerViewOptions> markerViewOptions = new ArrayList<>();
 
-        for (PreparedArchidniMarker preparedArchidniMarker : preparedArchidniMarkers)
+        for (PreparedArchidniMarkerDeprecated preparedArchidniMarkerDeprecated : preparedArchidniMarkerDeprecateds)
         {
-            markerViewOptions.add(preparedArchidniMarker.getMarkerViewOptions());
+            markerViewOptions.add(preparedArchidniMarkerDeprecated.getMarkerViewOptions());
         }
         ArrayList<Marker> markers = new ArrayList<>();
         markers.addAll(mapboxMap.addMarkerViews(markerViewOptions));
+
+        ArrayList<MarkerOptions> markerOptions = new ArrayList<>();
+        for (PreparedArchidniMarker preparedArchidniMarker : preparedArchidniMarkers)
+        {
+            markerOptions.add(preparedArchidniMarker.getMarkerViewOptions());
+        }
+         markers.addAll(mapboxMap.addMarkers(markerOptions));
         for (Marker marker:markers)
         {
-            PreparedArchidniMarker preparedArchidniMarker = null;
-            for (PreparedArchidniMarker preparedArchidniMarker1:preparedArchidniMarkers)
+            PreparedArchidniMarkerDeprecated preparedArchidniMarkerDeprecated = null;
+            for (PreparedArchidniMarkerDeprecated preparedArchidniMarkerDeprecated1 : preparedArchidniMarkerDeprecateds)
             {
-                if (preparedArchidniMarker1.getMarkerViewOptions().getPosition().getLongitude()
+                if (preparedArchidniMarkerDeprecated1.getMarkerViewOptions().getPosition().getLongitude()
                         ==marker.getPosition().getLongitude()&&
-                        preparedArchidniMarker1
+                        preparedArchidniMarkerDeprecated1
                                 .getMarkerViewOptions()
                                 .getMarker().getPosition().getLatitude()==marker.getPosition()
                                 .getLatitude())
                 {
-                    preparedArchidniMarker = preparedArchidniMarker1;
+                    preparedArchidniMarkerDeprecated = preparedArchidniMarkerDeprecated1;
                     break;
                 }
             }
+            if (preparedArchidniMarkerDeprecated!=null)
+            archidniMarkers.add(new ArchidniMarker(marker,
+                    preparedArchidniMarkerDeprecated.getTag()));
+
+            PreparedArchidniMarker preparedArchidniMarker = null;
+            for (PreparedArchidniMarker preparedArchidniMarkerDeprecated1 : preparedArchidniMarkers)
+            {
+                if (preparedArchidniMarkerDeprecated1.getMarkerViewOptions().getPosition().getLongitude()
+                        ==marker.getPosition().getLongitude()&&
+                        preparedArchidniMarkerDeprecated1
+                                .getMarkerViewOptions()
+                                .getMarker().getPosition().getLatitude()==marker.getPosition()
+                                .getLatitude())
+                {
+                    preparedArchidniMarker = preparedArchidniMarkerDeprecated1;
+                    break;
+                }
+            }
+            if (preparedArchidniMarker!=null)
             archidniMarkers.add(new ArchidniMarker(marker,
                     preparedArchidniMarker.getTag()));
         }
+        preparedArchidniMarkers = new ArrayList<>();
+        preparedArchidniMarkerDeprecateds = new ArrayList<>();
         polylines.addAll(mapboxMap.addPolylines(polylineOptionses));
         polylineOptionses = new ArrayList<>();
     }
@@ -359,6 +406,7 @@ public class ArchidniMap {
     {
         mapboxMap.clear();
         archidniMarkers = new ArrayList<>();
+        preparedArchidniMarkerDeprecateds = new ArrayList<>();
         preparedArchidniMarkers = new ArrayList<>();
     }
 

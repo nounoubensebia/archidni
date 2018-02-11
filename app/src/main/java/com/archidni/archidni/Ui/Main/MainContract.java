@@ -28,7 +28,7 @@ public interface MainContract {
         void obtainUserLocation(OnUserLocationObtainedCallback onUserLocationObtainedCallback);
         void trackUser();
         void showSlidingPanel();
-        void showLocationLayout(Place place);
+        void showLocationLayout(Place place,Place oldPlace);
         void hideLocationLayout(ArchidniMarker archidniMarker);
         void startPathSearchActivity(Place origin,Place destination);
         void showLinesLoadingLayout();
@@ -42,6 +42,7 @@ public interface MainContract {
         void hideSearchErrorLayout();
         void startStationActivity(Station station);
         void startLineActivity(Line line);
+        void startLinesStationsActivity();
     }
 
     interface Presenter {
@@ -61,6 +62,7 @@ public interface MainContract {
         void onStationFabClick();
         void onStationItemClick(Station station);
         void onLineItemClicked(Line line);
+        void onLinesStationsFindClick();
     }
 
     interface OnUserLocationObtainedCallback {

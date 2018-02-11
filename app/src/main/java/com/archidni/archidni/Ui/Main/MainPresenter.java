@@ -140,13 +140,14 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onMapLongClick(Coordinate coordinate) {
-        if (selectedLocation == null&&!errorHappened)
+        if (!errorHappened)
         {
-            selectedLocation = new Place(StringUtils.getLocationString(coordinate),
+            Place se = new Place(StringUtils.getLocationString(coordinate),
                     App.getAppContext().getString(R.string.on_map),coordinate);
-            view.showLocationLayout(selectedLocation);
+            view.showLocationLayout(se,selectedLocation);
             locationLayoutVisible = true;
             view.animateCameraToLocation(coordinate);
+            selectedLocation = se;
         }
     }
 
@@ -285,14 +286,11 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onStationMarkerClick(Station station, ArchidniMarker marker) {
-        if (selectedLocation==null)
-        {
-            view.showLocationLayout(station);
+            view.showLocationLayout(station,selectedLocation);
             selectedMarker = marker;
             locationLayoutVisible = true;
             view.animateCameraToLocation(station.getCoordinate());
             selectedLocation = station;
-        }
     }
 
     @Override
@@ -322,6 +320,11 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onLineItemClicked(Line line) {
         view.startLineActivity(line);
+    }
+
+    @Override
+    public void onLinesStationsFindClick() {
+        view.startLinesStationsActivity();
     }
 
     private ArrayList<Station> filteredListStations ()

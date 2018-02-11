@@ -116,6 +116,16 @@ public class StationActivity extends AppCompatActivity implements StationContrac
                 presenter.onGetPathClicked();
             }
         });
+        linesLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b)
+                {
+                    linesLayout.performClick();
+                }
+            }
+        });
+
         linesLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,6 +136,16 @@ public class StationActivity extends AppCompatActivity implements StationContrac
             @Override
             public void onClick(View view) {
                 presenter.toggleLinesTrips(false);
+            }
+        });
+
+        timesLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b)
+                {
+                    timesLayout.performClick();
+                }
             }
         });
 

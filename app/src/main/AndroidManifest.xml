@@ -37,7 +37,10 @@
             android:name=".Ui.SetLocation.SetLocationActivity"
             android:theme="@style/AppThemeWithActionBar" />
         <activity android:name=".Ui.Station.StationActivity" />
-        <activity android:name=".Ui.Line.LineActivity"></activity>
+        <activity android:name=".Ui.Line.LineActivity" />
+        <activity android:name=".Ui.SearchLineStation.SearchLineStationActivity"
+            android:parentActivityName=".Ui.Main.MainActivity"
+            android:label="Rechercher une ligne ou une station"></activity>
     </application>
 
 </manifest>
