@@ -88,6 +88,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
                 new ArchidniMap.OnMapReadyCallback() {
             @Override
             public void onMapReady() {
+                archidniMap.disableAllGestures();
                 pathSearchPresenter.onMapReady();
             }
         });

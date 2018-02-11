@@ -107,6 +107,7 @@ public class StationActivity extends AppCompatActivity implements StationContrac
         archidniMap = new ArchidniMap(mapView, savedInstanceState, new ArchidniMap.OnMapReadyCallback() {
             @Override
             public void onMapReady() {
+                archidniMap.disableAllGestures();
                 presenter.onMapReady();
             }
         });
