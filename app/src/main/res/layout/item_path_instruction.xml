@@ -94,7 +94,7 @@
             android:layout_width="1dp"
             android:layout_height="72dp"
             android:layout_below="@id/layout_instruction1"
-            android:layout_marginLeft="24dp"
+            android:layout_marginLeft="36dp"
             android:background="@color/color_transport_mean_selected_2"
             android:visibility="gone" />
 
@@ -103,7 +103,7 @@
             android:layout_width="1dp"
             android:layout_height="48dp"
             android:layout_below="@id/layout_instruction1"
-            android:layout_marginLeft="24dp"
+            android:layout_marginLeft="36dp"
             android:background="@color/color_transport_mean_selected_3"
             android:visibility="gone" />
     </RelativeLayout>

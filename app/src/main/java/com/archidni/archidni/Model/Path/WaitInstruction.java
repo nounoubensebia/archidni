@@ -1,15 +1,15 @@
 package com.archidni.archidni.Model.Path;
 
-import com.archidni.archidni.App;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.R;
+
+import java.io.Serializable;
 
 /**
  * Created by noure on 03/02/2018.
  */
 
-public class WaitInstruction extends PathInstruction {
+public class WaitInstruction extends PathInstruction implements Serializable {
 
     private Coordinate coordinate;
     private boolean isAverage = false;
@@ -26,13 +26,13 @@ public class WaitInstruction extends PathInstruction {
 
     @Override
     public String getSecondaryText() {
-        if (isAverage) return ("Temps d'attente moyen "+getDurationInSeconds()/60+" minutes");
-        else return (getDurationInSeconds()/60+" minutes");
+        if (isAverage) return ("Temps d'attente moyen "+ getDuration()/60+" minutes");
+        else return (getDuration()/60+" minutes");
     }
 
     @Override
     public long getInstructionIcon() {
-        return R.drawable.ic_time_transport_mean_1 ;
+        return R.drawable.ic_time_transport_mean_2 ;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class WaitInstruction extends PathInstruction {
     }
 
     public void setDuration(int duration) {
-        this.durationInSeconds = duration;
+        this.duration = duration;
     }
 
     public void setAverage(boolean average) {

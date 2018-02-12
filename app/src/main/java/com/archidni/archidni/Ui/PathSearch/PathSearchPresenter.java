@@ -1,7 +1,8 @@
 package com.archidni.archidni.Ui.PathSearch;
 
+import com.archidni.archidni.Data.Paths.PathRepository;
 import com.archidni.archidni.IntentUtils;
-import com.archidni.archidni.Model.Path.PathSearcher;
+import com.archidni.archidni.Model.Path.PathSettings;
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.TimeUtils;
@@ -15,41 +16,55 @@ import java.util.ArrayList;
 public class PathSearchPresenter implements PathSearchContract.Presenter {
 
     private PathSearchContract.View view;
-    private PathSearcher pathSearcher;
+    private PathSettings pathSettings;
+    private PathRepository pathRepository;
 
     public PathSearchPresenter(PathSearchContract.View view, Place origin, Place destination) {
         this.view = view;
-        pathSearcher = new PathSearcher(origin,destination,
+        pathSettings = new PathSettings(origin,destination,
                 TimeUtils.getSecondsFromMidnight(),TimeUtils.getCurrentTimeInSeconds());
         String originString = (origin!=null) ? origin.getMainText():"";
         String destinationString = (destination!=null) ? destination.getMainText():"";
         view.showOriginAndDestinationLabels(originString,destinationString);
+        pathRepository = new PathRepository();
     }
 
     private void updateOriginDestination ()
     {
-        String originString = (pathSearcher.getOrigin()!=null) ? pathSearcher.getOrigin().getMainText():"";
-        String destinationString = (pathSearcher.getDestination().getMainText()!=null) ?
-                pathSearcher.getDestination().getMainText():"";
+        String originString = (pathSettings.getOrigin()!=null) ? pathSettings.getOrigin().getMainText():"";
+        String destinationString = (pathSettings.getDestination().getMainText()!=null) ?
+                pathSettings.getDestination().getMainText():"";
         view.showOriginAndDestinationLabels(originString,destinationString);
-        view.showOriginAndDestinationOnMap(pathSearcher.getOrigin(),pathSearcher.getDestination());
+        view.showOriginAndDestinationOnMap(pathSettings.getOrigin(), pathSettings.getDestination());
     }
 
     @Override
     public void onMapReady() {
-        view.showOriginAndDestinationOnMap(pathSearcher.getOrigin(),pathSearcher.getDestination());
+        view.showOriginAndDestinationOnMap(pathSettings.getOrigin(), pathSettings.getDestination());
     }
 
     @Override
-    public void loadPathSuggestions() {
+    public void onSearchPathsClick() {
         view.showLoadingBar();
-        android.os.Handler handler = new android.os.Handler();
+        /*android.os.Handler handler = new android.os.Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 view.showPathSuggestions(new ArrayList<Path>());
             }
-        },2000);
+        },2000);*/
+        pathRepository.getPaths(pathSettings, new PathRepository.OnSearchCompleted() {
+            @Override
+            public void onResultsFound(ArrayList<Path> paths) {
+                view.showPathSuggestions(paths);
+            }
+
+            @Override
+            public void onError() {
+                view.hidePathsLayout();
+                view.showErrorMessage();
+            }
+        });
 
     }
 
@@ -62,32 +77,55 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
     public void onActivityResult(int requestType, Place newPlace) {
         if (requestType == IntentUtils.SearchIntents.TYPE_LOOK_FOR_OR)
         {
-            pathSearcher.setOrigin(newPlace);
+            if (!newPlace.getCoordinate().equals(pathSettings.getOrigin().getCoordinate()))
+            {
+               view.hidePathsLayout();
+            }
+            pathSettings.setOrigin(newPlace);
         }
         else
         {
-            pathSearcher.setDestination(newPlace);
+            if (!newPlace.getCoordinate().equals(pathSettings.getDestination().getCoordinate()))
+            {
+                view.hidePathsLayout();
+            }
+            pathSettings.setDestination(newPlace);
         }
         updateOriginDestination();
     }
 
     @Override
     public void onDepartureTimeClick() {
-        view.showSetTimeDialog(pathSearcher.getDepartureTimeInSeconds());
+        view.showSetTimeDialog(pathSettings.getDepartureTime());
     }
 
     @Override
     public void onDepartureDateClick() {
-        view.showSetDateDialog(pathSearcher.getDepartureDateInSeconds());
+        view.showSetDateDialog(pathSettings.getDepartureDate());
     }
 
     @Override
     public void updateTime(long departureTime) {
         view.updateTime(departureTime);
+        if (departureTime!=pathSettings.getDepartureTime())
+        {
+            view.hidePathsLayout();
+        }
+        pathSettings.setDepartureTime(departureTime);
     }
 
     @Override
     public void updateDate(long departureDate) {
         view.updateDate(departureDate);
+        if (departureDate!=pathSettings.getDepartureDate())
+        {
+            view.hidePathsLayout();
+        }
+        pathSettings.setDepartureDate(departureDate);
+    }
+
+    @Override
+    public void onPathItemClick(Path path) {
+        view.startPathDetailsActivity(path);
     }
 }

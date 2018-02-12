@@ -1,18 +1,16 @@
 package com.archidni.archidni.Model.Path;
 
-import com.archidni.archidni.App;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Place;
-import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by noure on 03/02/2018.
  */
 
-public class WalkInstruction extends MoveInstruction {
+public class WalkInstruction extends MoveInstruction implements Serializable {
     private ArrayList<Coordinate> polyline;
     private float distance;
     private String destination;
@@ -30,7 +28,7 @@ public class WalkInstruction extends MoveInstruction {
 
     @Override
     public String getSecondaryText() {
-        return (getDurationInSeconds()/60+" minutes, "+(int)(getDistance()*1000)+" mètres");
+        return (getDuration()/60+" minutes, "+(int)(getDistance())+" mètres");
     }
 
     @Override

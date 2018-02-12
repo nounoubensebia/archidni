@@ -3,11 +3,13 @@ package com.archidni.archidni.Model;
 import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
+import java.io.Serializable;
+
 /**
  * Created by noure on 02/02/2018.
  */
 
-public class Coordinate {
+public class Coordinate implements Serializable {
     private double latitude;
     private double longitude;
 
@@ -43,5 +45,18 @@ public class Coordinate {
 
     public static Coordinate fromJson(String json) {
         return new Gson().fromJson(json,Coordinate.class);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Coordinate))
+        {
+            return false;
+        }
+        else
+        {
+            Coordinate coordinate = (Coordinate)obj;
+            return (coordinate.getLatitude()==latitude&&coordinate.getLongitude()==longitude);
+        }
     }
 }

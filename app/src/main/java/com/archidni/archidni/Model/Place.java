@@ -2,11 +2,13 @@ package com.archidni.archidni.Model;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
+
 /**
  * Created by noure on 02/02/2018.
  */
 
-public class Place {
+public class Place implements Serializable {
     private String mainText;
     private String secondaryText;
     private Coordinate coordinate;

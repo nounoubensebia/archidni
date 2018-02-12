@@ -4,13 +4,14 @@ import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Transport.Section;
 import com.archidni.archidni.Model.TransportMean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by noure on 11/02/2018.
  */
 
-public class RideInstruction extends MoveInstruction {
+public class RideInstruction extends MoveInstruction implements Serializable {
 
     private long transportMeanId; //id berk
     private ArrayList<PathSection> sections; //tronçons
@@ -39,7 +40,7 @@ public class RideInstruction extends MoveInstruction {
     {
         int s = sections.size();
 
-        return (s+" arrêts"+" ("+(getDurationInSeconds()/60)+" minutes)");
+        return (s+" arrêts"+" ("+(getDuration()/60)+" minutes)");
     }
 
     @Override
@@ -85,12 +86,17 @@ public class RideInstruction extends MoveInstruction {
     }
 
     @Override
-    public long getDurationInSeconds() {
+    public long getDuration() {
         int duration = 0;
         for (PathSection section : sections)
         {
             duration+=section.getDuration();
         }
         return duration;
+    }
+
+
+    public void setTransportMeanId(int transportMeanId) {
+        this.transportMeanId = transportMeanId;
     }
 }

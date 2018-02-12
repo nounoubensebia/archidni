@@ -21,16 +21,20 @@ public interface PathSearchContract {
         void showSetDateDialog(long departureDate);
         void updateTime(long departureTime);
         void updateDate(long departureDate);
+        void hidePathsLayout();
+        void showErrorMessage();
+        void startPathDetailsActivity(Path path);
     }
 
     interface Presenter {
         void onMapReady();
-        void loadPathSuggestions ();
+        void onSearchPathsClick();
         void lookForLocation (int requestType);
         void onActivityResult (int requestType,Place newPlace);
         void onDepartureTimeClick();
         void onDepartureDateClick();
         void updateTime(long departureTime);
         void updateDate(long departureDate);
+        void onPathItemClick (Path path);
     }
 }

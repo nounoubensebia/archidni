@@ -3,9 +3,12 @@ package com.archidni.archidni.Ui.PathSearch;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -14,14 +17,18 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Path.Path;
+import com.archidni.archidni.Model.Path.PathSettings;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.R;
+import com.archidni.archidni.Ui.Adapters.PathSuggestionAdapter;
+import com.archidni.archidni.Ui.PathDetails.PathDetailsActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.UiUtils.ViewUtils;
@@ -43,7 +50,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     @BindView(R.id.text_get_path)
     TextView getPathText;
     @BindView(R.id.list_paths)
-    RecyclerView pathsList;
+    RecyclerView recyclerView;
     @BindView(R.id.layout_paths_list)
     View pathsListLayout;
     @BindView(R.id.progressBar)
@@ -95,7 +102,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
         getPathLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pathSearchPresenter.loadPathSuggestions();
+                pathSearchPresenter.onSearchPathsClick();
             }
         });
         destinationLayout.setOnClickListener(new View.OnClickListener() {
@@ -202,7 +209,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
         layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
         bottomLayout.setLayoutParams(layoutParams);
         progressBar.setVisibility(View.VISIBLE);
-        getPathText.setVisibility(View.GONE);
+        getPathLayout.setVisibility(View.GONE);
         pathsListLayout.setVisibility(View.VISIBLE);
     }
 
@@ -210,6 +217,18 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     public void showPathSuggestions(ArrayList<Path> paths) {
         progressBar.setVisibility(View.GONE);
         pathSuggestionsLayout.setVisibility(View.VISIBLE);
+        PathSuggestionAdapter pathSuggestionAdapter = new PathSuggestionAdapter(this,paths,
+                paths.get(0).getPathSettings());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        pathSuggestionAdapter.setOnClickListener(new PathSuggestionAdapter.OnClickListener() {
+            @Override
+            public void onClick(Path path) {
+                pathSearchPresenter.onPathItemClick(path);
+            }
+        });
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(pathSuggestionAdapter);
     }
 
     @Override
@@ -257,6 +276,38 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     @Override
     public void updateDate(long departureDate) {
         departureDateText.setText(StringUtils.getDateString(departureDate));
+    }
+
+    @Override
+    public void hidePathsLayout() {
+        pathsListLayout.setVisibility(View.GONE);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                CoordinatorLayout.LayoutParams layoutParams =
+                        (CoordinatorLayout.LayoutParams) bottomLayout.getLayoutParams();
+                layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                getPathLayout.setVisibility(View.VISIBLE);
+                bottomLayout.setLayoutParams(layoutParams);
+                getPathText.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                pathSuggestionsLayout.setVisibility(View.GONE);
+            }
+        },250);
+    }
+
+    @Override
+    public void showErrorMessage() {
+        Toast.makeText(this,"Une erreur s'est produite veuillez réessayez"
+                ,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void startPathDetailsActivity(Path path) {
+        Intent intent = new Intent(this, PathDetailsActivity.class);
+        intent.putExtra(IntentUtils.PATH,path);
+        startActivity(intent);
     }
 
     @Override

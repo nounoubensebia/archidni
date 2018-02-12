@@ -117,7 +117,7 @@ public class PathInstructionAdapter extends ArrayAdapter<PathInstruction> {
                 {
                     Drawable drawable1 = ContextCompat.getDrawable(getContext(),rideInstruction.getTransportMean().getCircleFullDrawableId());
                     circle2Image.setImageDrawable(drawable1);
-                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.ic_exit_transport_mean2);
+                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.ic_exit_white);
                     imageInstruction2.setImageDrawable(drawable1);
                 }
                 else
@@ -188,18 +188,18 @@ public class PathInstructionAdapter extends ArrayAdapter<PathInstruction> {
             }
             else
             {
-                View separationView1 = item.findViewById(R.id.view_separation_transport_mean1);
+                View separationView1 = item.findViewById(R.id.view_separation_transport_mean3);
                 separationView1.setVisibility(View.VISIBLE);
                 Drawable drawable1;
                 Drawable drawable;
                 if (selectedItem!=position*10+1)
                 {
-                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_empty_transport_mean1);
+                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_empty_transport_mean2);
                     drawable = ContextCompat.getDrawable(getContext(),R.drawable.ic_marker_green_24dp);
                 }
                 else
                 {
-                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_full_transport_mean1);
+                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_full_transport_mean2);
                     drawable = ContextCompat.getDrawable(getContext(),R.drawable.ic_marker_white_24dp);
                 }
                 circle2Image.setImageDrawable(drawable1);
@@ -209,12 +209,12 @@ public class PathInstructionAdapter extends ArrayAdapter<PathInstruction> {
                 mainInstructionText2.setText("Destination atteinte !");
                 if (selectedItem!=position*10)
                 {
-                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_empty_transport_mean1);
+                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_empty_transport_mean2);
                     drawable = ContextCompat.getDrawable(getContext(), (int) pathInstruction.getInstructionIcon());
                 }
                 else
                 {
-                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_full_transport_mean1);
+                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_full_transport_mean2);
                     drawable = ContextCompat.getDrawable(getContext(), (int) pathInstruction.getInstructionWhiteIcon());
                 }
                 imageInstruction1.setImageDrawable(drawable);
@@ -299,17 +299,17 @@ public class PathInstructionAdapter extends ArrayAdapter<PathInstruction> {
             {
                 Drawable drawable = ContextCompat.getDrawable(getContext(),(int)pathInstruction.getInstructionIcon());
                 imageView.setImageDrawable(drawable);
-                drawable = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_empty_transport_mean1);
+                drawable = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_empty_transport_mean2);
                 circleImage.setImageDrawable(drawable);
             }
             else
             {
                 Drawable drawable = ContextCompat.getDrawable(getContext(),(int)pathInstruction.getInstructionWhiteIcon());
                 imageView.setImageDrawable(drawable);
-                drawable = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_full_transport_mean1);
+                drawable = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_full_transport_mean2);
                 circleImage.setImageDrawable(drawable);
             }
-            View separationView = item.findViewById(R.id.view_separation_transport_mean1);
+            View separationView = item.findViewById(R.id.view_separation_transport_mean3);
             separationView.setVisibility(View.VISIBLE);
 
             instructionLayout.setOnClickListener(new View.OnClickListener() {

@@ -1,18 +1,20 @@
 package com.archidni.archidni.Model.Path;
 
+import java.io.Serializable;
+
 /**
  * Created by noure on 03/02/2018.
  */
 
-public abstract class PathInstruction {
-    protected long durationInSeconds;
+public abstract class PathInstruction implements Serializable {
+    protected long duration;
 
-    public PathInstruction(long durationInSeconds) {
-        this.durationInSeconds = durationInSeconds;
+    public PathInstruction(long duration) {
+        this.duration = duration;
     }
 
-    public long getDurationInSeconds() {
-        return durationInSeconds;
+    public long getDuration() {
+        return duration;
     }
 
 
@@ -23,6 +25,6 @@ public abstract class PathInstruction {
     public abstract int getInstructionWhiteIcon();
     public String getDurationString ()
     {
-        return getDurationInSeconds()/60+" minutes";
+        return getDuration()/60+" minutes";
     }
 }

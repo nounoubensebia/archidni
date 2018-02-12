@@ -6,13 +6,14 @@ import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.TransportMean;
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by noure on 07/02/2018.
  */
 
-public class Line {
+public class Line implements Serializable {
     private int id;
     private String name;
     private TransportMean transportMean;

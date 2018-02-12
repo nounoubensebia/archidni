@@ -9,11 +9,13 @@ import com.archidni.archidni.R;
 import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 
+import java.io.Serializable;
+
 /**
  * Created by noure on 07/02/2018.
  */
 
-public class Station extends Place {
+public class Station extends Place implements Serializable {
     private String name;
     private TransportMean transportMean;
     private int id;

@@ -2,11 +2,13 @@ package com.archidni.archidni.Model.Transport;
 
 import com.archidni.archidni.GeoUtils;
 
+import java.io.Serializable;
+
 /**
  * Created by noure on 07/02/2018.
  */
 
-public class Section {
+public class Section implements Serializable {
     private Station origin;
     private Station destination;
 
