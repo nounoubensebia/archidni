@@ -19,9 +19,7 @@ public class Line implements Serializable {
     private TransportMean transportMean;
     private ArrayList<Section> sections;
 
-
-
-    public Line(int id, String name, TransportMean transportMean, ArrayList<Section> sections) {
+    Line(int id, String name, TransportMean transportMean, ArrayList<Section> sections) {
         this.id = id;
         this.name = name;
         this.transportMean = transportMean;
@@ -102,5 +100,30 @@ public class Line implements Serializable {
 
     public ArrayList<Section> getSections() {
         return sections;
+    }
+
+    public static class Builder {
+        private int id;
+        private String name;
+        private TransportMean transportMean;
+        private ArrayList<Section> sections;
+
+        public Builder(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public void setTransportMean(TransportMean transportMean) {
+            this.transportMean = transportMean;
+        }
+
+        public void setSections(ArrayList<Section> sections) {
+            this.sections = sections;
+        }
+
+        public Line build ()
+        {
+            return new Line(id,name,transportMean,sections);
+        }
     }
 }

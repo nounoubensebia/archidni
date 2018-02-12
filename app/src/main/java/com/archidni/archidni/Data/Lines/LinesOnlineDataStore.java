@@ -184,7 +184,10 @@ public class LinesOnlineDataStore {
             TransportMean transportMean = TransportMean.allTransportMeans.get(
                     jsonObject.getInt("transport_mode_id") - 1
             );
-            return new Line(id, name, transportMean, sections);
+            Line.Builder builder = new Line.Builder(id,name);
+            builder.setSections(sections);
+            builder.setTransportMean(transportMean);
+            return builder.build();
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

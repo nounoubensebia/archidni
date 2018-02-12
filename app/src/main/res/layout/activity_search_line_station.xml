@@ -40,7 +40,18 @@
     <android.support.v4.view.ViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
+        android:elevation="4dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+        <android.support.design.widget.TabLayout
+            app:tabBackground="@color/colorGreen"
+            app:tabTextColor="#EDEDED"
+            app:tabSelectedTextColor="#FFF"
+            app:tabIndicatorColor="@android:color/holo_orange_dark"
+            app:tabIndicatorHeight="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top" />
+    </android.support.v4.view.ViewPager>
 
 </LinearLayout>
