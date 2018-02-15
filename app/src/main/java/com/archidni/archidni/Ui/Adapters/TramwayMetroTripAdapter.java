@@ -54,7 +54,7 @@ public class TramwayMetroTripAdapter extends RecyclerView.Adapter<TramwayMetroTr
         holder.nameText.setText(line.getName());
         holder.originText.setText(line.getOrigin().getName());
         holder.destinationText.setText(line.getDestination().getName());
-        String timePeriodString = StringUtils.getTimeString(timePeriod.getStart())+" - "+
+        String timePeriodString = "De " + StringUtils.getTimeString(timePeriod.getStart())+" à "+
                 StringUtils.getTimeString(timePeriod.getEnd());
         holder.timePeriodText.setText(timePeriodString);
         holder.waitingTimeText.setText("Temps d'attente : "+

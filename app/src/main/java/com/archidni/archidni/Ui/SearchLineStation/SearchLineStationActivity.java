@@ -7,12 +7,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.TextView;
-
 import com.archidni.archidni.R;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,8 +21,14 @@ public class SearchLineStationActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.pager)
     ViewPager viewPager;
+    @BindView(R.id.editText)
+    TextView editText;
 
-    DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
+    LineFragment linesFragment;
+    StationFragment stationsFragment;
+
+
+    PgAdapter mPgAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,26 +42,47 @@ public class SearchLineStationActivity extends AppCompatActivity {
 
     private void initViews() {
         ButterKnife.bind(this);
-        mDemoCollectionPagerAdapter =
-                new DemoCollectionPagerAdapter(
+        mPgAdapter =
+                new PgAdapter(
                         getSupportFragmentManager());
-        viewPager.setAdapter(mDemoCollectionPagerAdapter);
+        viewPager.setAdapter(mPgAdapter);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                linesFragment.updateQueryText(editable.toString());
+                stationsFragment.updateQueryText(editable.toString());
+            }
+        });
     }
 
-    public class DemoCollectionPagerAdapter extends FragmentPagerAdapter {
+    public class PgAdapter extends FragmentPagerAdapter {
 
-        public DemoCollectionPagerAdapter(FragmentManager fm) {
+        public PgAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = new DemoObjectFragment();
-            Bundle args = new Bundle();
-            // Our object is just an integer :-P
-            args.putInt(DemoObjectFragment.ARG_OBJECT, position);
-            fragment.setArguments(args);
-            return fragment;
+            if (position ==0)
+            {
+                linesFragment = new LineFragment();
+                return linesFragment;
+            }
+            else
+            {
+                stationsFragment = new StationFragment();
+                return stationsFragment;
+            }
         }
 
         @Override
@@ -77,20 +103,8 @@ public class SearchLineStationActivity extends AppCompatActivity {
         }
     }
 
-    public static class DemoObjectFragment extends Fragment {
-        public static final String ARG_OBJECT = "object";
 
-        @Override
-        public View onCreateView(LayoutInflater inflater,
-                                 ViewGroup container, Bundle savedInstanceState) {
-            // The last two arguments ensure LayoutParams are inflated
-            // properly.
-            View rootView = inflater.inflate(
-                    R.layout.fragment_collection_object, container, false);
-            Bundle args = getArguments();
-            ((TextView) rootView.findViewById(R.id.text_demo)).setText(
-                    Integer.toString(args.getInt(ARG_OBJECT)));
-            return rootView;
-        }
-    }
+
+
+
 }

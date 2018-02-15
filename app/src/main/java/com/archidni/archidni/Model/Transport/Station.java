@@ -17,13 +17,13 @@ import java.io.Serializable;
 
 public class Station extends Place implements Serializable {
     private String name;
-    private TransportMean transportMean;
+    private int transportMean;
     private int id;
 
-    public Station(int id,String name,TransportMean transportMean,Coordinate coordinate) {
+    public Station(int id,String name,int transportMean,Coordinate coordinate) {
         super(App.getAppContext().getString(R.string.station) +" "+
                 name,App.getAppContext().getString(R.string.station_of)+" "+
-                transportMean.getName(), coordinate);
+                TransportMean.allTransportMeans.get(transportMean).getName(), coordinate);
         this.name = name;
         this.transportMean = transportMean;
         this.id = id;
@@ -34,7 +34,7 @@ public class Station extends Place implements Serializable {
     }
 
     public TransportMean getTransportMean() {
-        return transportMean;
+        return TransportMean.allTransportMeans.get(transportMean);
     }
 
     public int getId() {

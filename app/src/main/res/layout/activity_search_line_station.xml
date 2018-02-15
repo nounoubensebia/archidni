@@ -24,6 +24,7 @@
         android:paddingBottom="16dp"
         android:layout_height="wrap_content">
     <EditText
+        android:id="@+id/editText"
         android:elevation="4dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -45,7 +46,7 @@
         android:layout_height="match_parent" >
         <android.support.design.widget.TabLayout
             app:tabBackground="@color/colorGreen"
-            app:tabTextColor="#EDEDED"
+            app:tabTextColor="#EAEAEA"
             app:tabSelectedTextColor="#FFF"
             app:tabIndicatorColor="@android:color/holo_orange_dark"
             app:tabIndicatorHeight="4dp"

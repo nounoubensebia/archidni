@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.AppSingleton;
 import com.archidni.archidni.Model.Coordinate;
+import com.archidni.archidni.Model.LineStationSuggestion;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Section;
@@ -34,9 +35,9 @@ import java.util.LinkedHashMap;
 
 public class LinesOnlineDataStore {
 
-    private static final String GET_LINES_URL = "http://192.168.1.12:8000/api/v1/lines";
+    private static final String GET_LINES_URL = "http://192.168.1.7:8000/api/v1/line";
 
-    private static final String GET_STATIONS_URL = "http://192.168.1.12:8000/api/v1/station";
+    private static final String GET_STATIONS_URL = "http://192.168.1.7:8000/api/v1/station";
 
     public void getLines(Context context, final Coordinate position,
                          final OnSearchCompleted onSearchCompleted) {
@@ -66,6 +67,32 @@ public class LinesOnlineDataStore {
             }
         });
         AppSingleton.getInstance(context).addToRequestQueue(stringRequest, "TAG");
+    }
+
+    public void getLine(Context context, LineStationSuggestion lineStationSuggestion,
+                        final OnLineSearchCompleted onLineSearchCompleted)
+    {
+        String url = GET_LINES_URL+"/"+lineStationSuggestion.getId();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    onLineSearchCompleted.onLineFound(parseLine(jsonObject.getJSONObject("data")));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    onLineSearchCompleted.onError();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onLineSearchCompleted.onError();
+            }
+        });
+        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,"TAG");
     }
 
     public void getLinesPassingByStation(Context context, final Station station,
@@ -168,15 +195,13 @@ public class LinesOnlineDataStore {
                 JSONObject destinationObject = sectionObject.getJSONObject("destination");
                 Station origin = new Station(originObject.getInt("id"),
                         originObject.getString("name"),
-                        TransportMean.allTransportMeans.get(originObject
-                                .getInt("transport_mode_id") - 1), new Coordinate(
-                        originObject.getDouble("latitude"),
+                        originObject.getInt("transport_mode_id")-1,
+                        new Coordinate(originObject.getDouble("latitude"),
                         originObject.getDouble("longitude")));
                 Station destination = new Station(destinationObject.getInt("id"),
                         destinationObject.getString("name"),
-                        TransportMean.allTransportMeans.get(destinationObject
-                                .getInt("transport_mode_id") - 1), new Coordinate(
-                        destinationObject.getDouble("latitude"),
+                        destinationObject.getInt("transport_mode_id")-1,
+                        new Coordinate(destinationObject.getDouble("latitude"),
                         destinationObject.getDouble("longitude")));
                 Section section = new Section(origin, destination);
                 sections.add(section);
@@ -210,7 +235,11 @@ public class LinesOnlineDataStore {
 
     public interface OnSearchCompleted {
         void onLinesFound(ArrayList<Line> lines);
+        void onError();
+    }
 
+    public interface OnLineSearchCompleted {
+        void onLineFound (Line line);
         void onError();
     }
 }

@@ -1,10 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:animateLayoutChanges="true"
     android:layout_height="match_parent">
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:id="@+id/progressBar"
+        android:elevation="4dp"
+        android:layout_width="64dp"
+        android:theme="@style/progressBarGreenTheme"
+        android:layout_height="64dp" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <TextView
-        android:id="@+id/text_demo"
+        android:visibility="gone"
+        android:id="@+id/text_no_results"
+        android:drawableTop="@drawable/ic_sad_24dp"
+        android:text="Aucun résultat"
+        android:textColor="@android:color/holo_red_light"
+        android:layout_gravity="center"
+        android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

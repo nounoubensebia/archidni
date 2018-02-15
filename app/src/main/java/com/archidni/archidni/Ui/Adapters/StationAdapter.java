@@ -46,6 +46,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
 
     public void updateItems(ArrayList<Station> newItems,Coordinate userCoordinate) {
         ArrayList<Station> stations = new ArrayList<>(newItems);
+        if (userCoordinate!=null)
         TransportUtils.sortStationsByDistance(stations,userCoordinate);
         this.userCoordinate = userCoordinate;
         this.stations.clear();
