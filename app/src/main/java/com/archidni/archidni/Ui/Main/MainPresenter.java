@@ -12,6 +12,7 @@ import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.TransportUtils;
+import com.archidni.archidni.Model.User;
 import com.archidni.archidni.R;
 import com.archidni.archidni.UiUtils.ArchidniMarker;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
@@ -39,15 +40,18 @@ public class MainPresenter implements MainContract.Presenter {
     private BoundingBox currentBoundingBox;
     private Coordinate userCoordinate;
     private boolean errorHappened = false;
+    private User user;
 
-    public MainPresenter(MainContract.View view) {
+    public MainPresenter(MainContract.View view, User user) {
         this.view = view;
+        this.user = user;
         this.transportMeansSelector = new TransportMeansSelector();
         transportMeansSelector.selectAllTransportMeans();
         view.updateMeansSelectionLayout(transportMeansSelector);
         linesRepository = new LinesRepository();
         lines = new ArrayList<>();
         searchCoordinates = new ArrayList<>();
+        view.showDrawerLayout(user);
     }
 
     @Override
@@ -325,6 +329,11 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onLinesStationsFindClick() {
         view.startLinesStationsActivity();
+    }
+
+    @Override
+    public void onLogoutClick() {
+        view.logoutUser();
     }
 
     private ArrayList<Station> filteredListStations ()

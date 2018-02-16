@@ -1,5 +1,6 @@
 package com.archidni.archidni.UiUtils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -7,9 +8,12 @@ import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.archidni.archidni.Ui.Search.SearchActivity;
 
 /**
  * Created by noure on 02/02/2018.
@@ -87,4 +91,6 @@ public class ViewUtils {
         listView.setLayoutParams(par);
         listView.requestLayout();
     }
+
+
 }

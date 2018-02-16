@@ -45,7 +45,13 @@
             android:parentActivityName=".Ui.Main.MainActivity"
             android:windowSoftInputMode="stateVisible" />
         <activity android:name=".Ui.PathDetails.PathDetailsActivity" />
-        <activity android:name=".Ui.PathNavigation.PathNavigationActivity"></activity>
+        <activity android:name=".Ui.PathNavigation.PathNavigationActivity" />
+        <activity android:name=".Ui.Login.LoginActivity" android:theme="@style/LogInTheme"
+            />
+        <activity
+            android:name=".Ui.Signup.SignupActivity"
+            android:theme="@style/LogInTheme"
+            android:label="Inscription" />
     </application>
 
 </manifest>

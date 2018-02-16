@@ -7,6 +7,7 @@ import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.Model.User;
 import com.archidni.archidni.UiUtils.ArchidniMarker;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 import com.mapbox.mapboxsdk.annotations.Marker;
@@ -43,6 +44,8 @@ public interface MainContract {
         void startStationActivity(Station station);
         void startLineActivity(Line line);
         void startLinesStationsActivity();
+        void showDrawerLayout(User user);
+        void logoutUser();
     }
 
     interface Presenter {
@@ -63,6 +66,7 @@ public interface MainContract {
         void onStationItemClick(Station station);
         void onLineItemClicked(Line line);
         void onLinesStationsFindClick();
+        void onLogoutClick();
     }
 
     interface OnUserLocationObtainedCallback {

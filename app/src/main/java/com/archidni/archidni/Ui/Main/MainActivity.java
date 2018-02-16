@@ -3,6 +3,8 @@ package com.archidni.archidni.Ui.Main;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -12,12 +14,15 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.BoundingBox;
@@ -26,12 +31,15 @@ import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.Model.User;
 import com.archidni.archidni.Ui.Adapters.LineAdapter;
 import com.archidni.archidni.Ui.Adapters.StationAdapter;
 import com.archidni.archidni.Ui.Line.LineActivity;
+import com.archidni.archidni.Ui.Login.LoginActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.Ui.SearchLineStation.SearchLineStationActivity;
+import com.archidni.archidni.Ui.Signup.SignupActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.R;
@@ -49,9 +57,9 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements MainContract.View {
+public class MainActivity extends AppCompatActivity implements MainContract.View,NavigationView.OnNavigationItemSelectedListener {
     MainContract.Presenter presenter;
-     @BindView(R.id.mapView)
+    @BindView(R.id.mapView)
     MapView mapView;
     @BindView(R.id.text_transport_mean_0)
     TextView transportMean0Text;
@@ -108,6 +116,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @BindView(R.id.text_find_lines_stations)
     TextView findLinesStationsText;
 
+    TextView usernameText;
+
     ArchidniMap archidniMap;
     private boolean drawerOpened;
 
@@ -118,12 +128,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         Mapbox.getInstance(this, "pk.eyJ1Ijoibm91bm91OTYiLCJhIjoiY2o0Z29mMXNsMDVoazMzbzI1NTJ1MmRqbCJ9.CXczOhM2eznwR0Mv6h2Pgg");
         setContentView(R.layout.activity_main);
         initViews(savedInstanceState);
-        presenter = new MainPresenter(this);
+        User user = User.fromJson(SharedPrefsUtils.loadString(this,
+                SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT));
+        presenter = new MainPresenter(this,user);
     }
 
     private void initViews(Bundle savedInstanceState)
     {
         ButterKnife.bind(this);
+
         archidniMap = new ArchidniMap(mapView, savedInstanceState, new ArchidniMap.OnMapReadyCallback() {
             @Override
             public void onMapReady() {
@@ -277,6 +290,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 presenter.onLinesStationsFindClick();
             }
         });
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+        usernameText = (TextView) headerView.findViewById(R.id.text_username);
     }
 
     @Override
@@ -639,6 +656,19 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         startActivity(intent);
     }
 
+    @Override
+    public void showDrawerLayout(User user) {
+        usernameText.setText(user.getFirstName()+" "+user.getLastName());
+    }
+
+    @Override
+    public void logoutUser() {
+        SharedPrefsUtils.disconnectUser(this);
+        Intent intent = new Intent(this,SignupActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
 
     @Override
     public void moveCameraToUserLocation() {
@@ -741,5 +771,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             }
         });
         searchLayout.startAnimation(animation);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id)
+        {
+            case R.id.item_disconnect : presenter.onLogoutClick();
+            break;
+        }
+        return true;
     }
 }

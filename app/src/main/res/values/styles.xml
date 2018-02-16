@@ -50,6 +50,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="LogInTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">#388E33</item>
+        <item name="colorAccent">#D0D0D0</item>
+        <item name="colorControlNormal">#FFF</item>
+        <item name="colorControlActivated">#FFF</item>
+        <item name="colorControlHighlight">#FFF</item>
+    </style>
+
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <item name="android:textColorPrimary">#FFF</item>

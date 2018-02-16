@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 
 public class SharedPrefsUtils {
     public static String SHARED_PREFS_ENTRY_USER_SUGGESTIONS;
+    public static String SHARED_PREFS_ENTRY_USER_OBJECT;
 
     public static void saveString (Context context,String key,String s)
     {
@@ -37,5 +38,13 @@ public class SharedPrefsUtils {
     {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPref.contains(key);
+    }
+
+    public static void disconnectUser (Context context)
+    {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.commit();
     }
 }

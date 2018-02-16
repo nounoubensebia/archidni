@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:title="@string/cities"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_location_city_black_24dp"
-        android:id="@+id/item_my_maps"
-        android:visible="true">
-    </item>
+
 
     <item android:title="@string/favorites"
         app:showAsAction="ifRoom"
