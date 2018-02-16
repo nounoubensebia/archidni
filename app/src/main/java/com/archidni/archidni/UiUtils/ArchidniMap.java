@@ -504,6 +504,20 @@ public class ArchidniMap {
         mapboxMap.animateCamera(com.mapbox.mapboxsdk.camera.CameraUpdateFactory.newLatLngBounds(latLngBounds,padding),duraion);
     }
 
+    public void animateCameraToBounds(ArrayList<Coordinate> bounds, int paddingLeft,
+                                      int paddingTop,int paddingRight,int paddingBottom,int duraion) {
+        LatLngBounds.Builder latLngBoundsBulder = new LatLngBounds.Builder();
+        for (Coordinate c:bounds)
+        {
+            latLngBoundsBulder.include(c.toMapBoxLatLng());
+        }
+        LatLngBounds latLngBounds = latLngBoundsBulder.build();
+
+
+        mapboxMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds,paddingLeft,
+                paddingTop,paddingRight,paddingBottom),duraion);
+    }
+
     public interface OnCameraMoveListener {
         void onCameraMove (Coordinate coordinate, BoundingBox boundingBox,double zoom);
     }

@@ -133,7 +133,7 @@
                             android:layout_marginRight="8dp"
                             android:layout_marginTop="8dp"
                             android:gravity="center"
-                            android:text="une erreur s'est produite veuillez réessayer"
+                            android:text="Une erreur s'est produite veuillez réessayer"
                             android:textColor="#FFF" />
                     </LinearLayout>
                 </LinearLayout>

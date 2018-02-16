@@ -35,7 +35,7 @@ import java.util.LinkedHashMap;
 
 public class PathOnlineDataStore {
 
-    private static final String URL_GET_PATH = "http://192.168.1.12/awiyi-web-yasser/PathFinder/get_path.php";
+    private static final String URL_GET_PATH = "http://192.168.1.11/awiyi-web-yasser/PathFinder/get_path.php";
 
 
     public void getPaths (final PathSettings pathSettings, final OnSearchCompleted onSearchCompleted) {

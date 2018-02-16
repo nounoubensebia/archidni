@@ -44,7 +44,8 @@
             android:label="Rechercher une ligne ou une station"
             android:parentActivityName=".Ui.Main.MainActivity"
             android:windowSoftInputMode="stateVisible" />
-        <activity android:name=".Ui.PathDetails.PathDetailsActivity"></activity>
+        <activity android:name=".Ui.PathDetails.PathDetailsActivity" />
+        <activity android:name=".Ui.PathNavigation.PathNavigationActivity"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:animateLayoutChanges="true">
+
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10"
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/text_my_position"
+        android:text="Ma position"
+        android:drawableLeft="@drawable/ic_my_location_green_24dp"
+        android:gravity="center"
+        android:drawablePadding="8dp"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/color_transport_mean_selected_2"
+        android:background="@drawable/shape_rect_white_rounded"
+        android:layout_width="wrap_content"
+        android:padding="8dp"
+        android:elevation="4dp"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/layout_step"
+        android:background="#FFF"
+        android:animateLayoutChanges="true"
+        android:layout_gravity="bottom"
+        android:elevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_weight="0"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/text_step_count"
+            android:text="Etape 1"
+            android:textSize="20sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/color_transport_mean_selected_2"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <View
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="#BDBDBD"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/image_step"
+                android:layout_marginLeft="16dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_walk_green_24dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp" />
+            <TextView
+                android:id="@+id/text_step"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:text="Marcher pour atteindre la station de tramway tamaris"
+                android:layout_width="wrap_content"
+                android:textColor="#000"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/text_step_details_1"
+                android:text="10 minutes"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:gravity="center"
+                android:background="@drawable/shape_green_empty_rect"
+                android:layout_gravity="center"
+                android:textColor="@color/color_transport_mean_selected_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/text_step_details_2"
+                android:layout_marginLeft="16dp"
+                android:text="500 mètres"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:gravity="center"
+                android:background="@drawable/shape_green_empty_rect"
+                android:layout_gravity="center"
+                android:textColor="@color/color_transport_mean_selected_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/image_previous"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:layout_width="64dp"
+                android:layout_marginRight="16dp"
+                android:scaleX="-1"
+                app:srcCompat="@drawable/ic_play_arrow_transport_mean_1_24dp"
+                android:layout_height="64dp" />
+            <View
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#EDEDED"/>
+            <ImageView
+                android:id="@+id/image_next"
+                android:layout_marginLeft="16dp"
+                android:layout_width="64dp"
+                app:srcCompat="@drawable/ic_play_arrow_transport_mean_1_24dp"
+                android:layout_height="64dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

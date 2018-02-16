@@ -172,25 +172,29 @@ public class Path implements Serializable {
                         s = "la station de " + ((RideInstruction) pathInstructions.get(i + 2)).getTransportMean().getName() + " "+
                                 ((RideInstruction) pathInstructions.get(i + 2)).getSections().get(0).getOrigin().getName();
                 }
-                PathStep.Builder builder = new PathStep.Builder(("Marcher pour atteindre " + s), (int) pathInstruction.getInstructionIcon());
+                PathStep.Builder builder = new PathStep.Builder(("Marcher pour atteindre " + s),
+                        (int) pathInstruction.getInstructionIcon());
                 builder.setPolyline(((WalkInstruction) pathInstruction).getPolyline());
                 builder.setStepDetails1(((WalkInstruction) pathInstruction).getDistanceString());
                 builder.setStepDetails2(((WalkInstruction) pathInstruction).getDurationString());
                 pathSteps.add(builder.build());
             } else {
                 if (pathInstruction instanceof WaitInstruction) {
-                    PathStep.Builder builder = new PathStep.Builder("Attendre", (int) pathInstruction.getInstructionIcon());
+                    PathStep.Builder builder = new PathStep.Builder("Attendre",
+                            (int) pathInstruction.getInstructionIcon());
                     builder.setStepDetails1(pathInstruction.getDurationString());
                     builder.setCoordinate(((WaitInstruction) pathInstruction).getCoordinate());
                     pathSteps.add(builder.build());
                 } else {
                     RideInstruction rideInstruction = (RideInstruction) pathInstruction;
-                    PathStep.Builder builder = new PathStep.Builder(rideInstruction.getMainText(), (int) pathInstruction.getInstructionIcon());
+                    PathStep.Builder builder = new PathStep.Builder(rideInstruction.getMainText(),
+                            (int) ((RideInstruction) pathInstruction).getTransportMean().getIconEnabled());
                     builder.setStepDetails1(rideInstruction.getDurationString());
                     builder.setStepDetails2(rideInstruction.getSections().size() + 1 + " Arrêts");
                     builder.setPolyline(rideInstruction.getPolyline());
                     pathSteps.add(builder.build());
-                    builder = new PathStep.Builder(rideInstruction.getExitInstructionText(), (int) pathInstruction.getInstructionIcon());
+                    builder = new PathStep.Builder(rideInstruction.getExitInstructionText(),
+                            (int) ((RideInstruction) pathInstruction).getTransportMean().getExitDrawable());
                     builder.setCoordinate(rideInstruction.getPolyline().get(rideInstruction.getPolyline().size() - 1));
                     pathSteps.add(builder.build());
                 }

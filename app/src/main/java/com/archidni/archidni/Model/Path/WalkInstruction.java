@@ -50,7 +50,7 @@ public class WalkInstruction extends MoveInstruction implements Serializable {
 
     public String getDistanceString ()
     {
-        return (int)(getDistance()*1000)+" mètres";
+        return (int)(getDistance())+" mètres";
     }
     @Override
     public float getDistance() {

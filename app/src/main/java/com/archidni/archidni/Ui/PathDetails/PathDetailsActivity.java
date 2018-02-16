@@ -1,8 +1,10 @@
 package com.archidni.archidni.Ui.PathDetails;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Path.PathInstruction;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.PathInstructionAdapter;
+import com.archidni.archidni.Ui.PathNavigation.PathNavigationActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.UiUtils.ViewUtils;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -54,6 +57,12 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
             public void onMapReady() {
                 presenter.onMapReady();
                 archidniMap.setMyLocationEnabled(true);
+            }
+        });
+        startNavigationText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onStartNavigationClick();
             }
         });
     }
@@ -127,6 +136,13 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
         ArrayList<Coordinate> pathPolyline = path.getPolyline();
         showInstructionsAnnotations(path);
         archidniMap.moveCameraToBounds(pathPolyline,100);
+    }
+
+    @Override
+    public void startPathNavigationActivity(Path path) {
+        Intent intent = new Intent(this, PathNavigationActivity.class);
+        intent.putExtra(IntentUtils.PATH,path);
+        startActivity(intent);
     }
 
     @Override
