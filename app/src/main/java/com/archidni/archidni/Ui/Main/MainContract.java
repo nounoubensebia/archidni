@@ -46,6 +46,7 @@ public interface MainContract {
         void startLinesStationsActivity();
         void showDrawerLayout(User user);
         void logoutUser();
+        void startFavoritesActivity();
     }
 
     interface Presenter {
@@ -67,6 +68,7 @@ public interface MainContract {
         void onLineItemClicked(Line line);
         void onLinesStationsFindClick();
         void onLogoutClick();
+        void onFavoritesClick();
     }
 
     interface OnUserLocationObtainedCallback {

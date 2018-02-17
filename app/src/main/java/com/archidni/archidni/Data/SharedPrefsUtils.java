@@ -9,8 +9,9 @@ import android.preference.PreferenceManager;
  */
 
 public class SharedPrefsUtils {
-    public static String SHARED_PREFS_ENTRY_USER_SUGGESTIONS;
-    public static String SHARED_PREFS_ENTRY_USER_OBJECT;
+    public static String SHARED_PREFS_ENTRY_USER_SUGGESTIONS = "USER_SUGGESTIONS";
+    public static String SHARED_PREFS_ENTRY_USER_OBJECT = "USER_OBJECT";
+    public static String SHARED_PREFS_ENTRY_FAVORITES = "FAVORITES";
 
     public static void saveString (Context context,String key,String s)
     {

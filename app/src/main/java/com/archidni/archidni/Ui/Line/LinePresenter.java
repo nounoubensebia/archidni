@@ -1,5 +1,7 @@
 package com.archidni.archidni.Ui.Line;
 
+import com.archidni.archidni.App;
+import com.archidni.archidni.Data.Favorites.FavoritesRepository;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 
@@ -11,11 +13,13 @@ public class LinePresenter implements LineContract.Presenter {
     private Line line;
     private LineContract.View view;
     private Station selectedStation;
+    private FavoritesRepository favoritesRepository;
 
     public LinePresenter(Line line, LineContract.View view) {
         this.line = line;
         this.view = view;
         view.setTheme(line);
+        favoritesRepository = new FavoritesRepository();
     }
 
     @Override
@@ -38,6 +42,10 @@ public class LinePresenter implements LineContract.Presenter {
     @Override
     public void onCreate() {
         view.showLineOnActivity(line);
+        if (favoritesRepository.lineExists(App.getAppContext(),line))
+        {
+            view.showDeleteLineFromFavoritesText();
+        }
     }
 
     @Override
@@ -56,5 +64,26 @@ public class LinePresenter implements LineContract.Presenter {
             view.inflateTripMenu();
         else
             view.inflateStationMenu();
+    }
+
+    @Override
+    public void onAddDeleteFromFavoritesClicked() {
+        if (favoritesRepository.lineExists(App.getAppContext(),line))
+        {
+            favoritesRepository.deleteLine(App.getAppContext(),line);
+            view.showDeletedFromFavoritesMessage();
+            view.showAddToFavoritesText();
+        }
+        else
+        {
+            favoritesRepository.addLineToFavorites(App.getAppContext(),line);
+            view.showAddedToFavoritesMessage();
+            view.showDeleteLineFromFavoritesText();
+        }
+    }
+
+    @Override
+    public void onSignalDisturbanceClicked() {
+        view.showFeatureNotYetAvailableMessage();
     }
 }

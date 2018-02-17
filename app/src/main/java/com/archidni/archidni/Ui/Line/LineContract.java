@@ -17,6 +17,11 @@ public interface LineContract {
         void startStationActivity(Station station);
         void inflateTripMenu();
         void inflateStationMenu();
+        void showFeatureNotYetAvailableMessage();
+        void showDeleteLineFromFavoritesText();
+        void showAddedToFavoritesMessage();
+        void showDeletedFromFavoritesMessage();
+        void showAddToFavoritesText();
     }
 
     public interface Presenter {
@@ -25,5 +30,7 @@ public interface LineContract {
         void onMapReady();
         void onStationDetailsClicked();
         void loadMenu();
+        void onAddDeleteFromFavoritesClicked();
+        void onSignalDisturbanceClicked();
     }
 }

@@ -12,13 +12,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.R;
-import com.archidni.archidni.Ui.Adapters.StationAdapter;
 import com.archidni.archidni.Ui.Adapters.StationInsideLineAdapter;
 import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
@@ -32,6 +32,10 @@ import butterknife.ButterKnife;
 
 public class LineActivity extends AppCompatActivity implements LineContract.View {
 
+    @BindView(R.id.text_add_to_favorites)
+    TextView addToFavoritesText;
+    @BindView(R.id.text_report)
+    TextView signalDisturbanceText;
     @BindView(R.id.mapView)
     MapView mapView;
     @BindView(R.id.text_name)
@@ -68,6 +72,18 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
             @Override
             public void onMapReady() {
                 presenter.onMapReady();
+            }
+        });
+        addToFavoritesText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onAddDeleteFromFavoritesClicked();
+            }
+        });
+        signalDisturbanceText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onSignalDisturbanceClicked();
             }
         });
     }
@@ -212,6 +228,33 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
         MenuItem item = mMenu.findItem(R.id.item_info_station);
         item.setVisible(true);
     }
+
+    @Override
+    public void showFeatureNotYetAvailableMessage() {
+        Toast.makeText(this,"Cette fonctionnalité n'est pas encore disponible",
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showDeleteLineFromFavoritesText() {
+        addToFavoritesText.setText("Supprimer des favoris");
+    }
+
+    @Override
+    public void showAddedToFavoritesMessage() {
+        Toast.makeText(this,"Ligne ajoutée aux favoris",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showDeletedFromFavoritesMessage() {
+        Toast.makeText(this,"Ligne supprimée des favoris",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showAddToFavoritesText() {
+        addToFavoritesText.setText("Ajouter aux favoris");
+    }
+
 
     private void inflateMenu ()
     {

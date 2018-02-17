@@ -336,6 +336,11 @@ public class MainPresenter implements MainContract.Presenter {
         view.logoutUser();
     }
 
+    @Override
+    public void onFavoritesClick() {
+        view.startFavoritesActivity();
+    }
+
     private ArrayList<Station> filteredListStations ()
     {
         ArrayList<Station> stations = TransportUtils.getStationsFromLines(filteredLines());

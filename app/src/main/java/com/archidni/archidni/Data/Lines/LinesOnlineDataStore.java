@@ -35,9 +35,9 @@ import java.util.LinkedHashMap;
 
 public class LinesOnlineDataStore {
 
-    private static final String GET_LINES_URL = "http://192.168.1.7:8000/api/v1/line";
+    private static final String GET_LINES_URL = "http://192.168.1.3:8000/api/v1/line";
 
-    private static final String GET_STATIONS_URL = "http://192.168.1.7:8000/api/v1/station";
+    private static final String GET_STATIONS_URL = "http://192.168.1.3:8000/api/v1/station";
 
     public void getLines(Context context, final Coordinate position,
                          final OnSearchCompleted onSearchCompleted) {

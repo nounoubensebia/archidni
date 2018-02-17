@@ -34,6 +34,7 @@ import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.User;
 import com.archidni.archidni.Ui.Adapters.LineAdapter;
 import com.archidni.archidni.Ui.Adapters.StationAdapter;
+import com.archidni.archidni.Ui.Favorites.FavoritesActivity;
 import com.archidni.archidni.Ui.Line.LineActivity;
 import com.archidni.archidni.Ui.Login.LoginActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
@@ -669,6 +670,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         finish();
     }
 
+    @Override
+    public void startFavoritesActivity() {
+        Intent intent = new Intent(this, FavoritesActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public void moveCameraToUserLocation() {
@@ -780,6 +787,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         switch (id)
         {
             case R.id.item_disconnect : presenter.onLogoutClick();
+            break;
+            case R.id.item_my_favorites_lines :presenter.onFavoritesClick();
             break;
         }
         return true;

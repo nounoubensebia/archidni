@@ -19,7 +19,7 @@ import org.json.JSONObject;
  */
 
 public class StationDataStore {
-    private static final String GET_LINE_SUGGESTIONS_URL = "http://192.168.1.7:8000/api/v1/station";
+    private static final String GET_LINE_SUGGESTIONS_URL = "http://192.168.1.3:8000/api/v1/station";
 
     public void getStation (Context context, LineStationSuggestion lineStationSuggestion,
                             final OnSearchComplete onSearchComplete)
