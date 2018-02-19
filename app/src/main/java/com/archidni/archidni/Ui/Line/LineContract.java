@@ -3,17 +3,19 @@ package com.archidni.archidni.Ui.Line;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 
+import java.util.ArrayList;
+
 /**
  * Created by nouno on 09/02/2018.
  */
 
 public interface LineContract {
     public interface View {
-        void showLineOnMap(Line line);
+        void showStationsOnMap(ArrayList<Station> stations);
         void showLineOnActivity(Line line);
         void setTheme(Line line);
         void showSelectedStation (Station station);
-        void deselectStation (Line line);
+        void deselectStation (ArrayList<Station> stations);
         void startStationActivity(Station station);
         void inflateTripMenu();
         void inflateStationMenu();
@@ -22,6 +24,9 @@ public interface LineContract {
         void showAddedToFavoritesMessage();
         void showDeletedFromFavoritesMessage();
         void showAddToFavoritesText();
+        void showStationsOnList (ArrayList<Station> stations);
+        void updateInboundOutboundLayout (boolean outboundSelected);
+        void showInboundOutboundLayout();
     }
 
     public interface Presenter {
@@ -32,5 +37,6 @@ public interface LineContract {
         void loadMenu();
         void onAddDeleteFromFavoritesClicked();
         void onSignalDisturbanceClicked();
+        void onInboundOutboundClicked(boolean outboundClicked);
     }
 }

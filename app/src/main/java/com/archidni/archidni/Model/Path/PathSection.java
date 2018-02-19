@@ -1,5 +1,6 @@
 package com.archidni.archidni.Model.Path;
 
+import com.archidni.archidni.Model.Transport.LineSection;
 import com.archidni.archidni.Model.Transport.Section;
 import com.archidni.archidni.Model.Transport.Station;
 

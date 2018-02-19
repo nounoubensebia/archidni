@@ -1,7 +1,7 @@
 package com.archidni.archidni.Model.Path;
 
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Transport.Section;
+import com.archidni.archidni.Model.Transport.LineSection;
 import com.archidni.archidni.Model.TransportMean;
 
 import java.io.Serializable;
@@ -18,7 +18,7 @@ public class RideInstruction extends MoveInstruction implements Serializable {
     private String lineLabel; //name
     private String terminus; //for example dergana centre
 
-    public RideInstruction(int duration,long transportMean, ArrayList<PathSection> sections, String lineLabel, String terminus) {
+    public RideInstruction(int duration, long transportMean, ArrayList<PathSection> sections, String lineLabel, String terminus) {
         super(duration);
         this.transportMeanId = transportMean;
         this.sections = sections;
@@ -78,9 +78,9 @@ public class RideInstruction extends MoveInstruction implements Serializable {
     @Override
     public float getDistance() {
         float distance = 0;
-        for (Section section:sections)
+        for (PathSection section:sections)
         {
-            distance+=section.getDistance();
+            distance+= section.getDistance();
         }
         return distance;
     }

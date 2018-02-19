@@ -5,7 +5,7 @@ import com.archidni.archidni.GeoUtils;
 import java.io.Serializable;
 
 /**
- * Created by noure on 07/02/2018.
+ * Created by nouno on 19/02/2018.
  */
 
 public class Section implements Serializable {
@@ -24,9 +24,8 @@ public class Section implements Serializable {
     public Station getDestination() {
         return destination;
     }
-
     public int getDistance ()
     {
-        return GeoUtils.distance(origin.getCoordinate(),destination.getCoordinate());
+        return GeoUtils.distance(getOrigin().getCoordinate(),getDestination().getCoordinate());
     }
 }

@@ -49,8 +49,8 @@
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:elevation="4dp"
-            android:layout_weight="2.5">
+            android:layout_weight="2.5"
+            android:elevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -135,6 +135,8 @@
                         android:textAppearance="?android:attr/textAppearanceButton"
                         android:textColor="#FFF" />
 
+
+
                 </LinearLayout>
 
                 <TextView
@@ -145,9 +147,71 @@
                     android:text="Stations"
                     android:textColor="#000"
                     android:textSize="16sp" />
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/layout_outbound_inbound"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="64dp"
+                    android:layout_marginRight="64dp"
+                    android:layout_marginTop="16dp"
+                    android:animateLayoutChanges="false"
+                    android:background="@drawable/shape_rect_white_rounded"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:id="@+id/layout_outbound"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_full_green_rounded_left"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <TextView
+                            android:id="@+id/text_outbound"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:drawablePadding="16dp"
+                            android:fontFamily="sans-serif-condensed"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Aller"
+                            android:textColor="#FFF" />
+                    </FrameLayout>
+
+
+                    <FrameLayout
+                        android:id="@+id/layout_inbound"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_green_empty_rect_right"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <TextView
+                            android:id="@+id/text_inbound"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:drawablePadding="16dp"
+                            android:fontFamily="sans-serif-condensed"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Retour"
+                            android:textColor="#000" />
+                    </FrameLayout>
+
+                </LinearLayout>
+
                 <android.support.design.widget.CoordinatorLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <ListView
                         android:id="@+id/list_station"
                         android:layout_width="match_parent"
@@ -157,7 +221,6 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-
 
 
 </LinearLayout>

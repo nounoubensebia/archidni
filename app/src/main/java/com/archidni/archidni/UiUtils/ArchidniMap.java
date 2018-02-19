@@ -408,6 +408,7 @@ public class ArchidniMap {
         archidniMarkers = new ArrayList<>();
         preparedArchidniMarkerDeprecateds = new ArrayList<>();
         preparedArchidniMarkers = new ArrayList<>();
+        
     }
 
     public void clearMarkersWithTags ()

@@ -31,6 +31,27 @@ public class TransportUtils {
         return stations;
     }
 
+    public static ArrayList<Coordinate> getCoordinatesFromStations (ArrayList<Station> stations)
+    {
+        ArrayList<Coordinate> coordinates = new ArrayList<>();
+        for (Station station : stations)
+        {
+            coordinates.add(station.getCoordinate());
+        }
+        return coordinates;
+    }
+
+    public static ArrayList<Station> getStationsFromSections (ArrayList<LineSection> lineSections)
+    {
+        ArrayList<Station> stations = new ArrayList<>();
+        stations.add(lineSections.get(0).getOrigin());
+        for (LineSection lineSection : lineSections)
+        {
+            stations.add(lineSection.getDestination());
+        }
+        return stations;
+    }
+
     private static boolean containsStation (int stationId,ArrayList<Station> stations)
     {
         for (Station station:stations)

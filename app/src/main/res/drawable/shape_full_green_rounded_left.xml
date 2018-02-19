@@ -1,0 +1,15 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:endColor="@color/color_transport_mean_selected_2"
+        android:centerColor="@color/color_transport_mean_selected_2"
+        android:startColor="@color/color_transport_mean_selected_2"
+        />
+    <corners
+        android:topLeftRadius="8dp"
+        android:bottomLeftRadius="8dp"/>
+    <padding
+        android:left="0dp"
+        android:top="0dp"
+        android:right="0dp"
+        android:bottom="0dp" />
+</shape>

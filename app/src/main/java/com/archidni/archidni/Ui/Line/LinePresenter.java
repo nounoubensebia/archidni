@@ -5,6 +5,8 @@ import com.archidni.archidni.Data.Favorites.FavoritesRepository;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 
+import java.util.ArrayList;
+
 /**
  * Created by nouno on 09/02/2018.
  */
@@ -14,19 +16,21 @@ public class LinePresenter implements LineContract.Presenter {
     private LineContract.View view;
     private Station selectedStation;
     private FavoritesRepository favoritesRepository;
+    private boolean outboundSelected;
 
     public LinePresenter(Line line, LineContract.View view) {
         this.line = line;
         this.view = view;
         view.setTheme(line);
         favoritesRepository = new FavoritesRepository();
+        outboundSelected = true;
     }
 
     @Override
     public void onStationClicked(Station station) {
         if (selectedStation!=null&&selectedStation.getId()==station.getId())
         {
-            view.deselectStation(line);
+            view.deselectStation(getStations());
             selectedStation = null;
         }
         else
@@ -42,6 +46,15 @@ public class LinePresenter implements LineContract.Presenter {
     @Override
     public void onCreate() {
         view.showLineOnActivity(line);
+        if (line.isBusLine())
+        {
+            view.showStationsOnList(getStations());
+            view.showInboundOutboundLayout();
+        }
+        else
+        {
+            view.showStationsOnList(line.getStations());
+        }
         if (favoritesRepository.lineExists(App.getAppContext(),line))
         {
             view.showDeleteLineFromFavoritesText();
@@ -50,7 +63,26 @@ public class LinePresenter implements LineContract.Presenter {
 
     @Override
     public void onMapReady() {
-        view.showLineOnMap(line);
+        view.showStationsOnMap(getStations());
+    }
+
+    private ArrayList<Station> getStations ()
+    {
+        if (line.isBusLine())
+        {
+            if (outboundSelected)
+            {
+                return line.getOutboundStations();
+            }
+            else
+            {
+                return line.getInboundStations();
+            }
+        }
+        else
+        {
+            return line.getStations();
+        }
     }
 
     @Override
@@ -85,5 +117,13 @@ public class LinePresenter implements LineContract.Presenter {
     @Override
     public void onSignalDisturbanceClicked() {
         view.showFeatureNotYetAvailableMessage();
+    }
+
+    @Override
+    public void onInboundOutboundClicked(boolean outboundClicked) {
+        outboundSelected = outboundClicked;
+        view.updateInboundOutboundLayout(outboundSelected);
+        view.showStationsOnList(getStations());
+        view.showStationsOnMap(getStations());
     }
 }

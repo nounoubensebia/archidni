@@ -10,9 +10,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.AppSingleton;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.LineStationSuggestion;
-import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
-import com.archidni.archidni.Model.Transport.Section;
+import com.archidni.archidni.Model.Transport.LineSection;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.TimePeriod;
 import com.archidni.archidni.Model.Transport.TrainLine;
@@ -35,9 +34,9 @@ import java.util.LinkedHashMap;
 
 public class LinesOnlineDataStore {
 
-    private static final String GET_LINES_URL = "http://192.168.1.3:8000/api/v1/line";
+    private static final String GET_LINES_URL = "http://192.168.1.7:8000/api/v1/line";
 
-    private static final String GET_STATIONS_URL = "http://192.168.1.3:8000/api/v1/station";
+    private static final String GET_STATIONS_URL = "http://192.168.1.7:8000/api/v1/station";
 
     public void getLines(Context context, final Coordinate position,
                          final OnSearchCompleted onSearchCompleted) {
@@ -131,7 +130,7 @@ public class LinesOnlineDataStore {
                                 }
                                 trainTrips.add(new TrainTrip(days, pairs, departures));
                                 line = new TrainLine(line.getId(), line.getName(),
-                                        line.getTransportMean(), line.getSections(), trainTrips);
+                                        line.getTransportMean(), line.getLineSections(), trainTrips);
                             }
                         }
                         else
@@ -163,7 +162,7 @@ public class LinesOnlineDataStore {
                             }
 
                             line = new TramwayMetroLine(line.getId(),line.getName(),
-                                    line.getTransportMean(),line.getSections(),tramwayMetroTrips);
+                                    line.getTransportMean(),line.getLineSections(),tramwayMetroTrips);
                         }
                         lines.add(line);
                     }
@@ -188,7 +187,7 @@ public class LinesOnlineDataStore {
             int id = jsonObject.getInt("id");
             String name = jsonObject.getString("name");
             JSONArray sectionsArray = jsonObject.getJSONArray("sections");
-            ArrayList<Section> sections = new ArrayList<>();
+            ArrayList<LineSection> lineSections = new ArrayList<>();
             for (int j = 0; j < sectionsArray.length(); j++) {
                 JSONObject sectionObject = sectionsArray.getJSONObject(j);
                 JSONObject originObject = sectionObject.getJSONObject("origin");
@@ -203,14 +202,16 @@ public class LinesOnlineDataStore {
                         destinationObject.getInt("transport_mode_id")-1,
                         new Coordinate(destinationObject.getDouble("latitude"),
                         destinationObject.getDouble("longitude")));
-                Section section = new Section(origin, destination);
-                sections.add(section);
+                int order = sectionObject.getInt("order");
+                int mode = sectionObject.getInt("mode");
+                LineSection lineSection = new LineSection(origin, destination,mode,order);
+                lineSections.add(lineSection);
             }
             TransportMean transportMean = TransportMean.allTransportMeans.get(
                     jsonObject.getInt("transport_mode_id") - 1
             );
             Line.Builder builder = new Line.Builder(id,name);
-            builder.setSections(sections);
+            builder.setLineSections(lineSections);
             builder.setTransportMean(transportMean);
             return builder.build();
         } catch (JSONException e) {

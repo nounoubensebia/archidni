@@ -17,23 +17,23 @@ public class Line implements Serializable {
     private int id;
     private String name;
     private TransportMean transportMean;
-    private ArrayList<Section> sections;
+    private ArrayList<LineSection> lineSections;
 
-    Line(int id, String name, TransportMean transportMean, ArrayList<Section> sections) {
+    Line(int id, String name, TransportMean transportMean, ArrayList<LineSection> lineSections) {
         this.id = id;
         this.name = name;
         this.transportMean = transportMean;
-        this.sections = sections;
+        this.lineSections = lineSections;
     }
 
     public ArrayList<Station> getStations ()
     {
-        Station first = sections.get(0).getOrigin();
+        Station first = lineSections.get(0).getOrigin();
         ArrayList<Station> stations = new ArrayList<>();
         stations.add(first);
-        for (Section section:sections)
+        for (LineSection lineSection : lineSections)
         {
-            stations.add(section.getDestination());
+            stations.add(lineSection.getDestination());
         }
         return stations;
     }
@@ -61,12 +61,12 @@ public class Line implements Serializable {
 
     public Station getOrigin()
     {
-        return sections.get(0).getOrigin();
+        return lineSections.get(0).getOrigin();
     }
 
     public Station getDestination()
     {
-        return sections.get(sections.size()-1).getDestination();
+        return lineSections.get(lineSections.size()-1).getDestination();
     }
 
     public String getName() {
@@ -90,23 +90,66 @@ public class Line implements Serializable {
 
     public ArrayList<Coordinate> getPolyline() {
         ArrayList<Coordinate> coordinates = new ArrayList<>();
-        coordinates.add(sections.get(0).getOrigin().getCoordinate());
-        for (Section section:sections)
+        coordinates.add(lineSections.get(0).getOrigin().getCoordinate());
+        for (LineSection lineSection : lineSections)
         {
-            coordinates.add(section.getDestination().getCoordinate());
+            coordinates.add(lineSection.getDestination().getCoordinate());
         }
         return coordinates;
     }
 
-    public ArrayList<Section> getSections() {
-        return sections;
+    public ArrayList<LineSection> getLineSections() {
+        return lineSections;
+    }
+
+    public boolean isBusLine ()
+    {
+        for (LineSection lineSection : lineSections)
+        {
+            if (lineSection.getMode()!=0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Station> getInboundStations ()
+    {
+        return TransportUtils.getStationsFromSections(getInboundSections());
+    }
+
+    public ArrayList<Station> getOutboundStations ()
+    {
+        return TransportUtils.getStationsFromSections(getOutboundSections());
+    }
+
+    private ArrayList<LineSection> getInboundSections ()
+    {
+        return getSectionByMode(2);
+    }
+
+    private ArrayList<LineSection> getOutboundSections ()
+    {
+        return getSectionByMode(1);
+    }
+
+    private ArrayList<LineSection> getSectionByMode(int mode)
+    {
+        ArrayList<LineSection> sectionsByMode = new ArrayList<>();
+        for (LineSection lineSection : lineSections)
+        {
+            if (lineSection.getMode()==mode)
+                sectionsByMode.add(lineSection);
+        }
+        return sectionsByMode;
     }
 
     public static class Builder {
         private int id;
         private String name;
         private TransportMean transportMean;
-        private ArrayList<Section> sections;
+        private ArrayList<LineSection> lineSections;
 
         public Builder(int id, String name) {
             this.id = id;
@@ -117,13 +160,13 @@ public class Line implements Serializable {
             this.transportMean = transportMean;
         }
 
-        public void setSections(ArrayList<Section> sections) {
-            this.sections = sections;
+        public void setLineSections(ArrayList<LineSection> lineSections) {
+            this.lineSections = lineSections;
         }
 
         public Line build ()
         {
-            return new Line(id,name,transportMean,sections);
+            return new Line(id,name,transportMean, lineSections);
         }
     }
 }

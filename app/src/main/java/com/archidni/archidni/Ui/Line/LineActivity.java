@@ -1,7 +1,9 @@
 package com.archidni.archidni.Ui.Line;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +20,7 @@ import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.Model.Transport.TransportUtils;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.StationInsideLineAdapter;
 import com.archidni.archidni.Ui.Station.StationActivity;
@@ -42,6 +45,16 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     TextView nameText;
     @BindView(R.id.list_station)
     ListView listView;
+    @BindView(R.id.layout_outbound_inbound)
+    View outboundInboudLayout;
+    @BindView(R.id.layout_inbound)
+    View inboundLayout;
+    @BindView(R.id.layout_outbound)
+    View outboundLayout;
+    @BindView(R.id.text_inbound)
+    TextView inboundTextView;
+    @BindView(R.id.text_outbound)
+    TextView outboundTextView;
 
     private Menu mMenu;
 
@@ -84,6 +97,18 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
             @Override
             public void onClick(View view) {
                 presenter.onSignalDisturbanceClicked();
+            }
+        });
+        outboundLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onInboundOutboundClicked(true);
+            }
+        });
+        inboundLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onInboundOutboundClicked(false);
             }
         });
     }
@@ -131,21 +156,23 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     }
 
     @Override
-    public void showLineOnMap(Line line) {
-        animateCameraToFitLine(line);
-        archidniMap.preparePolyline(this,line.getPolyline(),line.getTransportMean().getColor());
-        for (Station station:line.getStations())
+    public void showStationsOnMap(ArrayList<Station> stations) {
+        archidniMap.clearMap();
+        animateCameraToFitLine(stations);
+        archidniMap.preparePolyline(this, TransportUtils.getCoordinatesFromStations(stations)
+                ,stations.get(0).getTransportMean().getColor());
+        for (Station station:stations)
         {
-            archidniMap.prepareMarker(station.getCoordinate(),line.getTransportMean()
+            archidniMap.prepareMarker(station.getCoordinate(),station.getTransportMean()
                     .getCircleDrawable(),0.5f,0.5f);
         }
         archidniMap.addPreparedAnnotations();
     }
 
-    private void animateCameraToFitLine (Line mLine)
+    private void animateCameraToFitLine (ArrayList<Station> stations)
     {
         ArrayList<Coordinate> bounds = new ArrayList<>();
-        for (Station station: mLine.getStations())
+        for (Station station: stations)
         {
             bounds.add(station.getCoordinate());
         }
@@ -160,24 +187,7 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
         getSupportActionBar().setTitle(line.getName());
         getSupportActionBar().setElevation(0);
         nameText.setText(line.getName());
-        StationInsideLineAdapter stationInsideLineAdapter = new StationInsideLineAdapter(this,line.getStations(),null);
-        listView.setAdapter(stationInsideLineAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                presenter.onStationClicked(line.getStations().get(position));
-            }
-        });
-        listView.setDividerHeight(0);
-        listView.setVisibility(View.INVISIBLE);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                listView.setVisibility(View.VISIBLE);
-                ViewUtils.justifyListViewHeightBasedOnChildren(listView);
-            }
-        },500);
+
 
     }
 
@@ -195,8 +205,8 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     }
 
     @Override
-    public void deselectStation(Line line) {
-        animateCameraToFitLine(line);
+    public void deselectStation(ArrayList<Station> stations) {
+        animateCameraToFitLine(stations);
         StationInsideLineAdapter stationInsideLineAdapter = (StationInsideLineAdapter) listView.getAdapter();
         stationInsideLineAdapter.selectStation(null);
         invalidateOptionsMenu();
@@ -253,6 +263,59 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     @Override
     public void showAddToFavoritesText() {
         addToFavoritesText.setText("Ajouter aux favoris");
+    }
+
+    @Override
+    public void showStationsOnList(final ArrayList<Station> stations) {
+        StationInsideLineAdapter stationInsideLineAdapter = new StationInsideLineAdapter(this,
+                stations,null);
+        listView.setAdapter(stationInsideLineAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                presenter.onStationClicked(stations.get(position));
+            }
+        });
+        listView.setDividerHeight(0);
+        listView.setVisibility(View.INVISIBLE);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listView.setVisibility(View.VISIBLE);
+                ViewUtils.justifyListViewHeightBasedOnChildren(listView);
+            }
+        },500);
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public void updateInboundOutboundLayout(boolean outboundSelected) {
+        if (outboundSelected)
+        {
+            outboundTextView.setTextColor(ContextCompat.getColor(this,R.color.white));
+            outboundLayout.setBackground(ContextCompat.getDrawable(this,
+                    R.drawable.shape_full_green_rounded_left));
+            inboundTextView.setTextColor(ContextCompat.getColor(this,
+                    R.color.color_transport_mean_selected_2));
+            inboundLayout.setBackground(ContextCompat.getDrawable(this,
+                    R.drawable.shape_green_empty_rect_right));
+        }
+        else
+        {
+            inboundTextView.setTextColor(ContextCompat.getColor(this,R.color.white));
+            inboundLayout.setBackground(ContextCompat.getDrawable(this,
+                    R.drawable.shape_full_green_rounded_right));
+            outboundTextView.setTextColor(ContextCompat.getColor(this,
+                    R.color.color_transport_mean_selected_2));
+            outboundLayout.setBackground(ContextCompat.getDrawable(this,
+                    R.drawable.shape_green_empty_rect_left));
+        }
+    }
+
+    @Override
+    public void showInboundOutboundLayout() {
+        outboundInboudLayout.setVisibility(View.VISIBLE);
     }
 
 

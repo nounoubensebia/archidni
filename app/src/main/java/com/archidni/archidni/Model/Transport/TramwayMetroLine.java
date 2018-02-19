@@ -13,8 +13,8 @@ public class TramwayMetroLine extends Line {
     private ArrayList<TramwayMetroTrip> tramwayMetroTrips;
 
     public TramwayMetroLine(int id, String name, TransportMean transportMean,
-                            ArrayList<Section> sections, ArrayList<TramwayMetroTrip> tramwayMetroTrips) {
-        super(id, name, transportMean, sections);
+                            ArrayList<LineSection> lineSections, ArrayList<TramwayMetroTrip> tramwayMetroTrips) {
+        super(id, name, transportMean, lineSections);
         this.tramwayMetroTrips = tramwayMetroTrips;
     }
 

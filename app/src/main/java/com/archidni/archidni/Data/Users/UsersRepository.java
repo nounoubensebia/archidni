@@ -21,8 +21,8 @@ import java.util.Map;
  */
 
 public class UsersRepository {
-    private static  String SIGNUP_URL = "http://192.168.1.3:8000/api/v1/user/signup";
-    private static  String LOGIN_URL = "http://192.168.1.3:8000/api/v1/user/login";
+    private static  String SIGNUP_URL = "http://192.168.1.7:8000/api/v1/user/signup";
+    private static  String LOGIN_URL = "http://192.168.1.7:8000/api/v1/user/login";
 
     public void signup (Context context, final String email, final String password,
                         final String firstName, final String lastName,

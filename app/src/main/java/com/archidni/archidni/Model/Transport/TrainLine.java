@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class TrainLine extends Line {
     private ArrayList<TrainTrip> trainTrips;
 
-    public TrainLine(int id, String name, TransportMean transportMean, ArrayList<Section> sections, ArrayList<TrainTrip> trainTrips) {
-        super(id, name, transportMean, sections);
+    public TrainLine(int id, String name, TransportMean transportMean, ArrayList<LineSection> lineSections, ArrayList<TrainTrip> trainTrips) {
+        super(id, name, transportMean, lineSections);
         this.trainTrips = trainTrips;
     }
 
