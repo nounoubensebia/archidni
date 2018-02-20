@@ -40,6 +40,7 @@ import com.archidni.archidni.Ui.Login.LoginActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.Ui.SearchLineStation.SearchLineStationActivity;
+import com.archidni.archidni.Ui.Settings.SettingsActivity;
 import com.archidni.archidni.Ui.Signup.SignupActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
@@ -789,6 +790,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             case R.id.item_disconnect : presenter.onLogoutClick();
             break;
             case R.id.item_my_favorites_lines :presenter.onFavoritesClick();
+            break;
+            case R.id.item_my_settings : Intent intent = new Intent(this,
+                    SettingsActivity.class);
+            startActivity(intent);
             break;
         }
         return true;

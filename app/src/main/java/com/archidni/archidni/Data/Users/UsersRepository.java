@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.AppSingleton;
+import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.User;
 
 import org.json.JSONException;
@@ -21,14 +22,15 @@ import java.util.Map;
  */
 
 public class UsersRepository {
-    private static  String SIGNUP_URL = "http://192.168.1.7:8000/api/v1/user/signup";
-    private static  String LOGIN_URL = "http://192.168.1.7:8000/api/v1/user/login";
+    private static  String SIGNUP_URL = "/api/v1/user/signup";
+    private static  String LOGIN_URL = "/api/v1/user/login";
 
     public void signup (Context context, final String email, final String password,
                         final String firstName, final String lastName,
                         final SignupRequestCallback signupRequestCallback)
     {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, SIGNUP_URL,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                SharedPrefsUtils.getServerUrl(context)+SIGNUP_URL,
                 new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -65,7 +67,8 @@ public class UsersRepository {
     public void login (Context context, final String email, final String password,
                        final LoginRequestCallback loginRequestCallback)
     {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGIN_URL,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                SharedPrefsUtils.getServerUrl(context)+ LOGIN_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

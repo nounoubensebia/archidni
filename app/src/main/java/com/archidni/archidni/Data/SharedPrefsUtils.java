@@ -12,6 +12,21 @@ public class SharedPrefsUtils {
     public static String SHARED_PREFS_ENTRY_USER_SUGGESTIONS = "USER_SUGGESTIONS";
     public static String SHARED_PREFS_ENTRY_USER_OBJECT = "USER_OBJECT";
     public static String SHARED_PREFS_ENTRY_FAVORITES = "FAVORITES";
+    public static String SHARED_PREFS_ENTRY_SERVER_URL= "SERVER_URL";
+
+
+    public static String getServerUrl (Context context)
+    {
+        if (verifyKey(context,SHARED_PREFS_ENTRY_SERVER_URL))
+        {
+            return loadString(context,SHARED_PREFS_ENTRY_SERVER_URL);
+        }
+        else
+        {
+            saveString(context,SHARED_PREFS_ENTRY_SERVER_URL,"http://192.168.1.7:8000");
+            return loadString(context,SHARED_PREFS_ENTRY_SERVER_URL);
+        }
+    }
 
     public static void saveString (Context context,String key,String s)
     {

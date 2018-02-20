@@ -7,6 +7,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.AppSingleton;
+import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.LineStationSuggestion;
 import com.archidni.archidni.Model.Transport.Station;
@@ -19,12 +20,13 @@ import org.json.JSONObject;
  */
 
 public class StationDataStore {
-    private static final String GET_LINE_SUGGESTIONS_URL = "http://192.168.1.3:8000/api/v1/station";
+    private static final String GET_LINE_SUGGESTIONS_URL = "/api/v1/station";
 
     public void getStation (Context context, LineStationSuggestion lineStationSuggestion,
                             final OnSearchComplete onSearchComplete)
     {
-        String url = GET_LINE_SUGGESTIONS_URL+"/"+lineStationSuggestion.getId();
+        String url = SharedPrefsUtils.getServerUrl(context) +
+                GET_LINE_SUGGESTIONS_URL + "/" + lineStationSuggestion.getId();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

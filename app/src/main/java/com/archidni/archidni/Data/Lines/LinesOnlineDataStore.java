@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.AppSingleton;
+import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.LineStationSuggestion;
 import com.archidni.archidni.Model.Transport.Line;
@@ -34,9 +35,9 @@ import java.util.LinkedHashMap;
 
 public class LinesOnlineDataStore {
 
-    private static final String GET_LINES_URL = "http://192.168.1.7:8000/api/v1/line";
+    private static final String GET_LINES_URL = "/api/v1/line";
 
-    private static final String GET_STATIONS_URL = "http://192.168.1.7:8000/api/v1/station";
+    private static final String GET_STATIONS_URL = "/api/v1/station";
 
     public void getLines(Context context, final Coordinate position,
                          final OnSearchCompleted onSearchCompleted) {
@@ -44,7 +45,7 @@ public class LinesOnlineDataStore {
         String positionString = position.getLatitude() + "," + position.getLongitude();
         map.put("position", positionString);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                AppSingleton.buildGetUrl(GET_LINES_URL, map),
+                AppSingleton.buildGetUrl(SharedPrefsUtils.getServerUrl(context)+GET_LINES_URL, map),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -71,7 +72,8 @@ public class LinesOnlineDataStore {
     public void getLine(Context context, LineStationSuggestion lineStationSuggestion,
                         final OnLineSearchCompleted onLineSearchCompleted)
     {
-        String url = GET_LINES_URL+"/"+lineStationSuggestion.getId();
+        String url = SharedPrefsUtils.getServerUrl(context)+
+                GET_LINES_URL+"/"+lineStationSuggestion.getId();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>() {
             @Override
@@ -96,7 +98,8 @@ public class LinesOnlineDataStore {
 
     public void getLinesPassingByStation(Context context, final Station station,
                                          final OnSearchCompleted onSearchCompleted) {
-        String url = GET_STATIONS_URL + "/" + station.getId() + "/lines";
+        String url = SharedPrefsUtils.getServerUrl(context)+GET_STATIONS_URL + "/" + station.getId()
+                + "/lines";
         final ArrayList<Line> lines = new ArrayList<>();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

@@ -7,6 +7,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.AppSingleton;
+import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.LineStationSuggestion;
 import com.google.gson.JsonArray;
 
@@ -22,8 +23,8 @@ import java.util.LinkedHashMap;
  */
 
 public class LineStationDataStore {
-    private static final String GET_LINE_SUGGESTIONS_URL = "http://192.168.1.7:8000/api/v1/line/autocomplete";
-    private static final String GET_STATION_SUGGESTIONS_URL = "http://192.168.1.7:8000/api/v1/station/autocomplete";
+    private static final String GET_LINE_SUGGESTIONS_URL = "/api/v1/line/autocomplete";
+    private static final String GET_STATION_SUGGESTIONS_URL = "/api/v1/station/autocomplete";
 
     public void getLineSuggestions (Context context, String text,
                                     final LineStationDataStore.OnSearchComplete onSearchComplete)
@@ -31,7 +32,8 @@ public class LineStationDataStore {
         AppSingleton.getInstance(context).getRequestQueue().cancelAll("LINE_SUGGESTIONS");
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("text",text);
-        String url = AppSingleton.buildGetUrl(GET_LINE_SUGGESTIONS_URL,map);
+        String url = SharedPrefsUtils.getServerUrl(context) +
+                AppSingleton.buildGetUrl(GET_LINE_SUGGESTIONS_URL,map);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -52,7 +54,8 @@ public class LineStationDataStore {
         AppSingleton.getInstance(context).getRequestQueue().cancelAll("STATION_SUGGESTIONS");
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("text",text);
-        String url = AppSingleton.buildGetUrl(GET_STATION_SUGGESTIONS_URL,map);
+        String url = SharedPrefsUtils.getServerUrl(context)+
+                AppSingleton.buildGetUrl(GET_STATION_SUGGESTIONS_URL,map);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

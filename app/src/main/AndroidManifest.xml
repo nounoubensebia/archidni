@@ -53,9 +53,12 @@
             android:name=".Ui.Signup.SignupActivity"
             android:label="Inscription"
             android:theme="@style/LogInTheme" />
-        <activity android:name=".Ui.Favorites.FavoritesActivity" android:theme="@style/AppThemeWithActionBar"
+        <activity
+            android:name=".Ui.Favorites.FavoritesActivity"
+            android:label="Mes favoris"
             android:parentActivityName=".Ui.Main.MainActivity"
-            android:label="Mes favoris"></activity>
+            android:theme="@style/AppThemeWithActionBar" />
+        <activity android:name=".Ui.Settings.SettingsActivity"></activity>
     </application>
 
 </manifest>
