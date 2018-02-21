@@ -43,7 +43,7 @@ public abstract class PlaceSuggestion {
         placeSuggestions.add(new GpsSuggestion(GpsSuggestion.TYPE_SELECT_ON_MAP));
         ArrayList<CommonPlaceSuggestion> commonPlaceSuggestions = new CommonSuggestionsRepository()
                 .getCommonSuggestions(App.getAppContext());
-        if (PlaceSuggestionUtils.getCommonSuggestion(commonPlaceSuggestions,
+        /*if (PlaceSuggestionUtils.getCommonSuggestion(commonPlaceSuggestions,
                 CommonPlaceSuggestion.TYPE_HOME)!=null)
         {
             placeSuggestions.add(PlaceSuggestionUtils.getCommonSuggestion(commonPlaceSuggestions,
@@ -67,7 +67,7 @@ public abstract class PlaceSuggestion {
             placeSuggestions.add(new CommonPlaceSuggestion(App.getAppContext().getString(R.string.work),
                     App.getAppContext().getString(R.string.select_work),
                     CommonPlaceSuggestion.TYPE_WORK,false));
-        }
+        }*/
         return placeSuggestions;
     }
 

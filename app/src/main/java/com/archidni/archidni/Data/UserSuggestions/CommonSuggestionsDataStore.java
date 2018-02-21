@@ -33,7 +33,7 @@ public class CommonSuggestionsDataStore {
     public ArrayList<CommonPlaceSuggestion> getCommonSuggestions ()
     {
         ArrayList<CommonPlaceSuggestion> placeSuggestions = new ArrayList<>();
-        if (SharedPrefsUtils.verifyKey(context,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_SUGGESTIONS))
+        /*if (SharedPrefsUtils.verifyKey(context,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_SUGGESTIONS))
         {
             String json = SharedPrefsUtils.loadString(context,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_SUGGESTIONS);
             try {
@@ -49,7 +49,7 @@ public class CommonSuggestionsDataStore {
                 e.printStackTrace();
             }
 
-        }
+        }*/
         return placeSuggestions;
     }
 

@@ -113,6 +113,7 @@
                 android:layout_marginRight="16dp"
                 android:background="@drawable/shape_button_empty_white_rect"
                 android:gravity="center"
+                android:visibility="gone"
                 android:text="@string/options"
                 android:textColor="#FFF" />
         </android.support.design.widget.CoordinatorLayout>
