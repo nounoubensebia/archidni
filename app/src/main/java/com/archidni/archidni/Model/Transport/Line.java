@@ -61,12 +61,22 @@ public class Line implements Serializable {
 
     public Station getOrigin()
     {
+        if (!isBusLine())
         return lineSections.get(0).getOrigin();
+        else
+        {
+            return getOutboundSections().get(0).getOrigin();
+        }
     }
 
     public Station getDestination()
     {
+        if (!isBusLine())
         return lineSections.get(lineSections.size()-1).getDestination();
+        else
+        {
+            return getOutboundSections().get(getOutboundSections().size()-1).getDestination();
+        }
     }
 
     public String getName() {

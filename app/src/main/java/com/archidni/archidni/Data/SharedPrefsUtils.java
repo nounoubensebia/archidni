@@ -23,7 +23,7 @@ public class SharedPrefsUtils {
         }
         else
         {
-            saveString(context,SHARED_PREFS_ENTRY_SERVER_URL,"http://192.168.1.7:8000");
+            saveString(context,SHARED_PREFS_ENTRY_SERVER_URL,"http://192.168.1.8:8000");
             return loadString(context,SHARED_PREFS_ENTRY_SERVER_URL);
         }
     }
