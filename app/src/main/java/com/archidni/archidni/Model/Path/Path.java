@@ -164,13 +164,18 @@ public class Path implements Serializable {
             if (pathInstruction instanceof WalkInstruction) {
                 String s = "votre destination";
                 if ((i + 1) < pathInstructions.size() &&
-                        (pathInstructions.get(i + 1) instanceof RideInstruction || pathInstructions.get(i + 1) instanceof WaitInstruction)) {
+                        (pathInstructions.get(i + 1) instanceof RideInstruction ||
+                                pathInstructions.get(i + 1) instanceof WaitInstruction)) {
                     if (pathInstructions.get(i+1)instanceof RideInstruction)
-                        s = "la station de " + ((RideInstruction) pathInstructions.get(i + 1)).getTransportMean().getName() + " "+
-                                ((RideInstruction) pathInstructions.get(i + 1)).getSections().get(0).getOrigin().getName();
+                        s = "la station de " + ((RideInstruction) pathInstructions.get(i + 1))
+                                .getTransportMean().getName() + " "+
+                                ((RideInstruction) pathInstructions.get(i + 1)).getSections().get(0)
+                                        .getOrigin().getName();
                     else
-                        s = "la station de " + ((RideInstruction) pathInstructions.get(i + 2)).getTransportMean().getName() + " "+
-                                ((RideInstruction) pathInstructions.get(i + 2)).getSections().get(0).getOrigin().getName();
+                        s = "la station de " + ((RideInstruction) pathInstructions.get(i + 2))
+                                .getTransportMean().getName() + " "+
+                                ((RideInstruction) pathInstructions.get(i + 2)).getSections()
+                                        .get(0).getOrigin().getName();
                 }
                 PathStep.Builder builder = new PathStep.Builder(("Marcher pour atteindre " + s),
                         (int) pathInstruction.getInstructionIcon());

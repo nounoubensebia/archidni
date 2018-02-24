@@ -28,7 +28,7 @@ public class WalkInstruction extends MoveInstruction implements Serializable {
 
     @Override
     public String getSecondaryText() {
-        return (getDuration()+" minutes, "+(int)(getDistance())+" mètres");
+        return ((int)getDuration()/60+" minutes, "+(int)(getDistance())+" mètres");
     }
 
     @Override
