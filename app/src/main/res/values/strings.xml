@@ -17,7 +17,7 @@
     <string name="select_home">Ajouter un domicile</string>
     <string name="work">Adresse professionnelle</string>
     <string name="select_work">Ajouter une adresse professionnelle</string>
-    <string name="plan_path">Planifier un trajer</string>
+    <string name="plan_path">Planifier un trajet</string>
     <string name="get_path">Rechercher itinéraire</string>
     <string name="path_origin">Départ :</string>
     <string name="path_destination">Arrivée :</string>
