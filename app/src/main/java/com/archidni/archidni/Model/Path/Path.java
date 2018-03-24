@@ -25,35 +25,6 @@ public class Path implements Serializable {
         this.destination = destination;
         this.pathSettings = pathSettings;
         this.pathInstructions = pathInstructions;
-        int i = 0;
-        if (pathInstructions !=null)
-        {
-            for (PathInstruction pathInstruction : pathInstructions)
-            {
-                if (pathInstruction instanceof WaitInstruction)
-                {
-                    if (pathInstructions.get(i+1)instanceof RideInstruction)
-                    {
-                        RideInstruction rideInstruction = (RideInstruction) pathInstructions.get(i+1);
-                        if (rideInstruction.getTransportMean().getId()== TransportMean.ID_TRAMWAY)
-                        {
-                            WaitInstruction waitInstruction = (WaitInstruction) pathInstruction;
-                            waitInstruction.setDuration(240);
-                            waitInstruction.setAverage(true);
-                        }
-                        if (rideInstruction.getTransportMean().getId()==TransportMean.ID_METRO)
-                        {
-                            WaitInstruction waitInstruction = (WaitInstruction) pathInstruction;
-                            waitInstruction.setDuration(300);
-                            waitInstruction.setAverage(true);
-                        }
-                    }
-                }
-                i++;
-            }
-
-        }
-
     }
 
 

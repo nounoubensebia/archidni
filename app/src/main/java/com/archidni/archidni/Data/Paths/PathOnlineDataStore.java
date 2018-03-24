@@ -158,12 +158,14 @@ public class PathOnlineDataStore {
                             {
                                 Coordinate coordinate = new Gson().fromJson(jsonObject.getJSONObject("coordinate").toString(), Coordinate.class);
                                 WaitInstruction waitInstruction = new WaitInstruction((int) jsonObject.getDouble("duration"), coordinate);
+                                waitInstruction.setAverage(!jsonObject.getBoolean("exact_waiting_time"));
+                                waitInstruction.setDuration(jsonObject.getInt("duration")*60);
                                 pathInstructions.add(waitInstruction);
                             }
                             if (jsonObject.getString("type").equals("ride_instruction"))
                             {
                                 String lineLabel = jsonObject.getString("line_name");
-                                int duration = jsonObject.getInt("duration");
+                                int duration = jsonObject.getInt("duration")*60;
                                 int transportModeId = jsonObject.getInt("transport_mode_id")-1;
                                 String destination = jsonObject.getString("destination");
                                 Gson gson = new Gson();
