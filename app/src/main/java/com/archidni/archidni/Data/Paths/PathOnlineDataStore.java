@@ -187,6 +187,18 @@ public class PathOnlineDataStore {
                         }
                         foundPaths.add(new Path(departure,arrival,pathSettings,pathInstructions));
                     }
+                    for (int i=0;i<foundPaths.size();i++)
+                    {
+                        for (int j=0;j<foundPaths.size();j++)
+                        {
+                            if (foundPaths.get(i).getDuration()<foundPaths.get(j).getDuration())
+                            {
+                                Path path = foundPaths.get(i);
+                                foundPaths.set(i,foundPaths.get(j));
+                                foundPaths.set(j,path);
+                            }
+                        }
+                    }
                     onSearchCompleted.onResultsFound(foundPaths);
                 } catch (JSONException e) {
                     e.printStackTrace();
