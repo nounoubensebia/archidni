@@ -1,5 +1,7 @@
 package com.archidni.archidni.Data.Paths;
 
+import android.content.Context;
+
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Path.PathSettings;
 
@@ -10,9 +12,9 @@ import java.util.ArrayList;
  */
 
 public class PathRepository {
-    public void getPaths (PathSettings pathSettings, final OnSearchCompleted onSearchCompleted)
+    public void getPaths (Context context,PathSettings pathSettings, final OnSearchCompleted onSearchCompleted)
     {
-        new PathOnlineDataStore().getPaths(pathSettings, new PathOnlineDataStore.OnSearchCompleted() {
+        new PathOnlineDataStore().getPaths(context,pathSettings, new PathOnlineDataStore.OnSearchCompleted() {
             @Override
             public void onResultsFound(ArrayList<Path> paths) {
                 onSearchCompleted.onResultsFound(paths);
@@ -23,6 +25,11 @@ public class PathRepository {
                 onSearchCompleted.onError();
             }
         });
+    }
+
+    public void cancelRequests (Context context)
+    {
+        new PathOnlineDataStore().cancelRequests(context);
     }
 
     public interface OnSearchCompleted {

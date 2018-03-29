@@ -1,5 +1,7 @@
 package com.archidni.archidni.Ui.Search;
 
+import android.content.Context;
+
 import com.archidni.archidni.App;
 import com.archidni.archidni.Data.GeoRepository;
 import com.archidni.archidni.IntentUtils;
@@ -38,7 +40,7 @@ public class SearchPresenter implements SearchContract.Presenter {
             view.showHintMessage(App.getAppContext().getString(R.string.where_do_you_come_from));
         }
         geoRepository = new GeoRepository();
-        loadSearchResults("");
+        loadSearchResults(null,"");
     }
 
     public SearchPresenter (SearchContract.View view,int requestType)
@@ -54,16 +56,16 @@ public class SearchPresenter implements SearchContract.Presenter {
             view.showHintMessage(App.getAppContext().getString(R.string.where_do_you_come_from));
         }
         geoRepository = new GeoRepository();
-        loadSearchResults("");
+        loadSearchResults(null,"");
     }
 
     @Override
-    public void loadSearchResults(String text) {
+    public void loadSearchResults(Context context,String text) {
         final ArrayList<PlaceSuggestion> placeSuggestions = new ArrayList<>();
         if (text.length()>0)
         {
             view.showPlacesSearchLoadingBar();
-            geoRepository.getTextAutoCompleteSuggestions(text,
+            geoRepository.getTextAutoCompleteSuggestions(context,text,
                     new GeoRepository.OnPlaceSuggestionsSearchComplete() {
                         @Override
                         public void onResultsFound(ArrayList<TextQuerySuggestion> textQuerySuggestions) {
@@ -88,12 +90,12 @@ public class SearchPresenter implements SearchContract.Presenter {
     }
 
     @Override
-    public void loadPlaceDetails(PlaceSuggestion placeSuggestion) {
+    public void loadPlaceDetails(Context context,PlaceSuggestion placeSuggestion) {
 
         if (placeSuggestion instanceof TextQuerySuggestion)
         {
             view.showPlaceDetailsLoadingBar();
-            geoRepository.getPlaceDetails((TextQuerySuggestion)placeSuggestion,
+            geoRepository.getPlaceDetails(context,(TextQuerySuggestion)placeSuggestion,
                     new GeoRepository.OnPlaceDetailsSearchComplete() {
                         @Override
                         public void onResultFound(Place place) {
@@ -166,5 +168,10 @@ public class SearchPresenter implements SearchContract.Presenter {
     @Override
     public void onUserLocationCaptured(Coordinate userLocation) {
         this.userLocation = userLocation;
+    }
+
+    @Override
+    public void onStop(Context context) {
+        geoRepository.cancelRequests(context);
     }
 }

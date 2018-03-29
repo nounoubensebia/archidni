@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.AppSingleton;
+import com.archidni.archidni.Data.OnlineDataStore;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.LineStationSuggestion;
@@ -33,17 +34,19 @@ import java.util.LinkedHashMap;
  * Created by noure on 07/02/2018.
  */
 
-public class LinesOnlineDataStore {
+public class LinesOnlineDataStore extends OnlineDataStore {
+
 
     private static final String GET_LINES_URL = "/api/v1/line";
-
     private static final String GET_STATIONS_URL = "/api/v1/station";
+
 
     public void getLines(Context context, final Coordinate position,
                          final OnSearchCompleted onSearchCompleted) {
         LinkedHashMap map = new LinkedHashMap();
         String positionString = position.getLatitude() + "," + position.getLongitude();
         map.put("position", positionString);
+        cancelRequests(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 AppSingleton.buildGetUrl(SharedPrefsUtils.getServerUrl(context)+GET_LINES_URL, map),
                 new Response.Listener<String>() {
@@ -66,12 +69,15 @@ public class LinesOnlineDataStore {
                 onSearchCompleted.onError();
             }
         });
-        AppSingleton.getInstance(context).addToRequestQueue(stringRequest, "TAG");
+        AppSingleton.getInstance(context).addToRequestQueue(stringRequest, getTag());
     }
+
+
 
     public void getLine(Context context, LineStationSuggestion lineStationSuggestion,
                         final OnLineSearchCompleted onLineSearchCompleted)
     {
+        cancelRequests(context);
         String url = SharedPrefsUtils.getServerUrl(context)+
                 GET_LINES_URL+"/"+lineStationSuggestion.getId();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
@@ -93,11 +99,12 @@ public class LinesOnlineDataStore {
                 onLineSearchCompleted.onError();
             }
         });
-        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,"TAG");
+        AppSingleton.getInstance(context).addToRequestQueue(stringRequest, getTag());
     }
 
     public void getLinesPassingByStation(Context context, final Station station,
                                          final OnSearchCompleted onSearchCompleted) {
+        cancelRequests(context);
         String url = SharedPrefsUtils.getServerUrl(context)+GET_STATIONS_URL + "/" + station.getId()
                 + "/lines";
         final ArrayList<Line> lines = new ArrayList<>();
@@ -181,12 +188,11 @@ public class LinesOnlineDataStore {
                 onSearchCompleted.onError();
             }
         });
-        AppSingleton.getInstance(context).addToRequestQueue(stringRequest, "TAG");
+        AppSingleton.getInstance(context).addToRequestQueue(stringRequest, getTag());
     }
 
     private Line parseLine(JSONObject jsonObject) {
         try {
-
             int id = jsonObject.getInt("id");
             String name = jsonObject.getString("name");
             JSONArray sectionsArray = jsonObject.getJSONArray("sections");
@@ -235,6 +241,11 @@ public class LinesOnlineDataStore {
             return new ArrayList<>();
         }
         return lines;
+    }
+
+    @Override
+    public String getTag() {
+        return "LINE";
     }
 
     public interface OnSearchCompleted {

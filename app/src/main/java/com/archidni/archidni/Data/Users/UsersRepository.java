@@ -8,6 +8,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.AppSingleton;
+import com.archidni.archidni.Data.LineStationSuggestions.LineStationDataStore;
+import com.archidni.archidni.Data.OnlineDataStore;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.User;
 
@@ -21,7 +23,7 @@ import java.util.Map;
  * Created by nouno on 16/02/2018.
  */
 
-public class UsersRepository {
+public class UsersRepository extends OnlineDataStore {
     private static  String SIGNUP_URL = "/api/v1/user/signup";
     private static  String LOGIN_URL = "/api/v1/user/login";
 
@@ -29,6 +31,7 @@ public class UsersRepository {
                         final String firstName, final String lastName,
                         final SignupRequestCallback signupRequestCallback)
     {
+        cancelRequests(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 SharedPrefsUtils.getServerUrl(context)+SIGNUP_URL,
                 new Response.Listener<String>() {
@@ -61,12 +64,13 @@ public class UsersRepository {
                 return map;
             }
         };
-        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,"TAG");
+        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,getTag());
     }
 
     public void login (Context context, final String email, final String password,
                        final LoginRequestCallback loginRequestCallback)
     {
+        cancelRequests(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 SharedPrefsUtils.getServerUrl(context)+ LOGIN_URL,
                 new Response.Listener<String>() {
@@ -95,7 +99,7 @@ public class UsersRepository {
                 return map;
             }
         };
-        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,"TAG");
+        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,getTag());
     }
 
     private User getUser (String response)
@@ -113,6 +117,12 @@ public class UsersRepository {
         }
         return null;
     }
+
+    @Override
+    public String getTag() {
+        return "USERS";
+    }
+
 
     public interface SignupRequestCallback {
         public void onSuccess (User user);

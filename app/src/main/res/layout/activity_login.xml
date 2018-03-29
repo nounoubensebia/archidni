@@ -116,7 +116,14 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
         </LinearLayout>
-
+        <TextView
+            android:id="@+id/text_settings"
+            android:text="Paramètres"
+            android:textStyle="bold"
+            android:textColor="#FFF"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </LinearLayout>

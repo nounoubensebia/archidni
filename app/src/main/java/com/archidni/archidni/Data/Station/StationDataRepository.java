@@ -26,6 +26,12 @@ public class StationDataRepository {
             }
         });
     }
+
+    public void cancelAllRequests (Context context)
+    {
+        new StationDataStore().cancelRequests(context);
+    }
+
     public interface OnSearchComplete {
         public void onSearchComplete (Station station);
         public void onError ();

@@ -99,6 +99,12 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         });
     }
 
+    @Override
+    protected void onStop() {
+        presenter.onStop(getApplicationContext());
+        super.onStop();
+    }
+
     private void initViews()
     {
         ButterKnife.bind(this);
@@ -118,12 +124,12 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
                 String text = searchText.getText().toString();
                 if (text.length()>0)
                 {
-                    presenter.loadSearchResults(text);
+                    presenter.loadSearchResults(getApplicationContext(),text);
                     resetText.setVisibility(View.VISIBLE);
                 }
                 else
                 {
-                    presenter.loadSearchResults(text);
+                    presenter.loadSearchResults(getApplicationContext(),text);
                     resetText.setVisibility(View.GONE);
                 }
             }
@@ -165,7 +171,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
                     @Override
                     public void onItemClick(PlaceSuggestion placeSuggestion) {
                         hideKeyboard();
-                        presenter.loadPlaceDetails(placeSuggestion);
+                        presenter.loadPlaceDetails(getApplicationContext(),placeSuggestion);
                     }
                 },this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());

@@ -15,6 +15,12 @@ import java.util.ArrayList;
 
 public class LineStationSuggestionsRepository {
     public int requestSent = 0;
+
+    public void cancelRequests (Context context)
+    {
+        new LineStationDataStore().cancelRequests(context);
+    }
+
     public void getLineSuggestions (Context context, String text, final OnSearchComplete onSearchComplete)
     {
         requestSent++;

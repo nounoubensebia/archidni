@@ -43,5 +43,6 @@ public interface StationContract {
         void updateDate(long newDate);
         void onTimeUpdateClick();
         void onDateUpdateClick();
+        void onStop(Context context);
     }
 }

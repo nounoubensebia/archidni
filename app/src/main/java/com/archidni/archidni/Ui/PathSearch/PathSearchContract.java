@@ -1,5 +1,7 @@
 package com.archidni.archidni.Ui.PathSearch;
 
+import android.content.Context;
+
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Place;
@@ -28,7 +30,7 @@ public interface PathSearchContract {
 
     interface Presenter {
         void onMapReady();
-        void onSearchPathsClick();
+        void onSearchPathsClick(Context context);
         void lookForLocation (int requestType);
         void onActivityResult (int requestType,Place newPlace);
         void onDepartureTimeClick();
@@ -36,5 +38,6 @@ public interface PathSearchContract {
         void updateTime(long departureTime);
         void updateDate(long departureDate);
         void onPathItemClick (Path path);
+        void onStop(Context context);
     }
 }

@@ -20,6 +20,7 @@ import com.archidni.archidni.Model.User;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Login.LoginActivity;
 import com.archidni.archidni.Ui.Main.MainActivity;
+import com.archidni.archidni.Ui.Settings.SettingsActivity;
 import com.archidni.archidni.UiUtils.ActivityUtils;
 
 import butterknife.BindView;
@@ -43,6 +44,8 @@ public class SignupActivity extends AppCompatActivity {
     ProgressBar progressBar;
     @BindView(R.id.toolbar)
     android.support.v7.widget.Toolbar toolbar;
+    @BindView(R.id.text_settings)
+    TextView settingsText;
     UsersRepository usersRepository;
 
     @Override
@@ -51,6 +54,12 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         usersRepository = new UsersRepository();
         initViews();
+    }
+
+    @Override
+    protected void onStop() {
+        usersRepository.cancelRequests(getApplicationContext());
+        super.onStop();
     }
 
     private void initViews ()
@@ -128,6 +137,13 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        settingsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SignupActivity.this, SettingsActivity.class);
                 startActivity(intent);
             }
         });

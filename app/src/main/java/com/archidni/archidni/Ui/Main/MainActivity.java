@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -20,7 +19,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.GeoUtils;
@@ -36,7 +34,6 @@ import com.archidni.archidni.Ui.Adapters.LineAdapter;
 import com.archidni.archidni.Ui.Adapters.StationAdapter;
 import com.archidni.archidni.Ui.Favorites.FavoritesActivity;
 import com.archidni.archidni.Ui.Line.LineActivity;
-import com.archidni.archidni.Ui.Login.LoginActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.Ui.SearchLineStation.SearchLineStationActivity;
@@ -103,8 +100,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     View openDrawerImage;
     @BindView(R.id.layout_search_underway)
     View searchUnderwayLayout;
-    @BindView(R.id.location_fab)
-    ImageView stationFab;
+
     @BindView(R.id.image_transport_mean_icon)
     ImageView locationIcon;
     @BindView(R.id.layout_zoom_insufficient_message)
@@ -117,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     View errorLayout;
     @BindView(R.id.text_find_lines_stations)
     TextView findLinesStationsText;
+    @BindView(R.id.layout_overlay)
+    View overlayLayout;
 
     TextView usernameText;
 
@@ -240,9 +238,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 drawerLayout.openDrawer(Gravity.START);
                 container.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 drawerOpened = true;
-                myLocationFab.setVisibility(View.GONE);
-                showSlidingUpPanelFab.setVisibility(View.GONE);
-                getPathLayout.setVisibility(View.GONE);
+                //myLocationFab.setVisibility(View.GONE);
+                //showSlidingUpPanelFab.setVisibility(View.GONE);
+                //getPathLayout.setVisibility(View.GONE);
+                hideOverlayLayout();
                 slideOutSearchText();
             }
         });
@@ -264,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 getPathLayout.setVisibility(View.VISIBLE);
                 myLocationFab.setVisibility(View.VISIBLE);
                 showSlidingUpPanelFab.setVisibility(View.VISIBLE);
+                showOverlayLayout();
                 slideInSearchText();
             }
 
@@ -280,12 +280,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 presenter.onRetryClicked(MainActivity.this,archidniMap.getCenter());
             }
         });
-        stationFab.setOnClickListener(new View.OnClickListener() {
+        /*stationFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.onStationFabClick();
             }
-        });
+        });*/
         findLinesStationsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -319,6 +319,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void onStop() {
         super.onStop();
+        presenter.onStop(this.getApplicationContext());
         mapView.onStop();
     }
 
@@ -475,7 +476,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         },250);
         if (!(place instanceof Station))
         {
-            stationFab.setVisibility(View.GONE);
+            locationLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+            //stationFab.setVisibility(View.GONE);
             locationIcon.setImageDrawable(ContextCompat.getDrawable(this,
                     R.drawable.ic_marker_green_24dp));
             getPathLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
@@ -486,6 +493,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
         else
         {
+            locationLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    presenter.onStationFabClick();
+                }
+            });
             Station station = (Station) place;
             locationIcon.setImageDrawable(ContextCompat.getDrawable(this,
                     station.getTransportMean().getMarkerIcon()));
@@ -493,10 +506,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     station.getTransportMean().getColor()));
             Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab);
             animation.setRepeatCount(Animation.INFINITE);
-            stationFab.setImageDrawable(ContextCompat.getDrawable(this,
-                    station.getTransportMean().getFabIcon()));
-            stationFab.startAnimation(animation);
-            stationFab.setVisibility(View.VISIBLE);
+            //stationFab.setImageDrawable(ContextCompat.getDrawable(this,
+             //       station.getTransportMean().getFabIcon()));
+            //stationFab.startAnimation(animation);
+            //stationFab.setVisibility(View.VISIBLE);
             archidniMap.changeMarkerIcon(R.drawable.marker_selected,station);
         }
         if (oldSelectedPlace != null)
@@ -531,8 +544,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             Station station = (Station) archidniMarker.getTag();
             archidniMap.changeMarkerIcon(station.getTransportMean().getMarkerIcon(),
                     archidniMarker.getTag());
-            stationFab.clearAnimation();
-            stationFab.setVisibility(View.GONE);
+            //stationFab.clearAnimation();
+            //stationFab.setVisibility(View.GONE);
+
         }
         else
         {
@@ -669,6 +683,19 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         Intent intent = new Intent(this,SignupActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void hideOverlayLayout() {
+        overlayLayout.setVisibility(View.GONE);
+        getPathLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showOverlayLayout()
+    {
+        overlayLayout.setVisibility(View.VISIBLE);
+        getPathLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

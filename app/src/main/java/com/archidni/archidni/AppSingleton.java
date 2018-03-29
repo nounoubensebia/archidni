@@ -22,6 +22,11 @@ public class AppSingleton {
     private ImageLoader mImageLoader;
     private static Context mContext;
 
+    public static final String REQUEST_TAG_STATION = "STATION";
+    public static final String REQUEST_TAG_LINE_STATION_SUGGESTION = "LINE_STATION_SUFFESTION";
+    public static final String REQUEST_TAG_PATH = "PATH";
+    public static final String REQUEST_TAG_PLACE_SUGGESTIONS = "PLACE_SUGGESTION";
+
     private AppSingleton(Context context) {
         mContext = context;
         mRequestQueue = getRequestQueue();

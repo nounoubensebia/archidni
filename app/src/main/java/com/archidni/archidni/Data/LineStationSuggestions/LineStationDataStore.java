@@ -7,6 +7,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.AppSingleton;
+import com.archidni.archidni.Data.OnlineDataStore;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.LineStationSuggestion;
 import com.google.gson.JsonArray;
@@ -22,14 +23,16 @@ import java.util.LinkedHashMap;
  * Created by nouno on 15/02/2018.
  */
 
-public class LineStationDataStore {
+public class LineStationDataStore extends OnlineDataStore {
     private static final String GET_LINE_SUGGESTIONS_URL = "/api/v1/line/autocomplete";
     private static final String GET_STATION_SUGGESTIONS_URL = "/api/v1/station/autocomplete";
+
+
 
     public void getLineSuggestions (Context context, String text,
                                     final LineStationDataStore.OnSearchComplete onSearchComplete)
     {
-        AppSingleton.getInstance(context).getRequestQueue().cancelAll("LINE_SUGGESTIONS");
+        AppSingleton.getInstance(context).getRequestQueue().cancelAll("LinesSuggestions");
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("text",text);
         String url = SharedPrefsUtils.getServerUrl(context) +
@@ -45,13 +48,13 @@ public class LineStationDataStore {
                 onSearchComplete.onError();
             }
         });
-        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,"LINE_SUGGESTIONS");
+        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,"LinesSuggestions");
     }
 
     public void getStationSuggestions (Context context, String text,
                                     final LineStationDataStore.OnSearchComplete onSearchComplete)
     {
-        AppSingleton.getInstance(context).getRequestQueue().cancelAll("STATION_SUGGESTIONS");
+        AppSingleton.getInstance(context).getRequestQueue().cancelAll("StationSuggestions");
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("text",text);
         String url = SharedPrefsUtils.getServerUrl(context)+
@@ -67,7 +70,7 @@ public class LineStationDataStore {
                 onSearchComplete.onError();
             }
         });
-        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,"STATION_SUGGESTIONS");
+        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,"StationSuggestions");
     }
 
     private ArrayList<LineStationSuggestion> fromJson (String response)
@@ -88,6 +91,11 @@ public class LineStationDataStore {
             e.printStackTrace();
         }
         return lineStationSuggestions;
+    }
+
+    @Override
+    public String getTag() {
+        return "LINE_STATION_SUGGESTION";
     }
 
     public interface OnSearchComplete {

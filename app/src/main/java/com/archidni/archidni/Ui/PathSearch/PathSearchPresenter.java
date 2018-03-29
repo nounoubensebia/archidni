@@ -1,5 +1,7 @@
 package com.archidni.archidni.Ui.PathSearch;
 
+import android.content.Context;
+
 import com.archidni.archidni.Data.Paths.PathRepository;
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Path.PathSettings;
@@ -44,16 +46,9 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
     }
 
     @Override
-    public void onSearchPathsClick() {
+    public void onSearchPathsClick(Context context) {
         view.showLoadingBar();
-        /*android.os.Handler handler = new android.os.Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                view.showPathSuggestions(new ArrayList<Path>());
-            }
-        },2000);*/
-        pathRepository.getPaths(pathSettings, new PathRepository.OnSearchCompleted() {
+        pathRepository.getPaths(context,pathSettings, new PathRepository.OnSearchCompleted() {
             @Override
             public void onResultsFound(ArrayList<Path> paths) {
                 view.showPathSuggestions(paths);
@@ -127,5 +122,10 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
     @Override
     public void onPathItemClick(Path path) {
         view.startPathDetailsActivity(path);
+    }
+
+    @Override
+    public void onStop(Context context) {
+        pathRepository.cancelRequests(context);
     }
 }

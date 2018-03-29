@@ -17,6 +17,8 @@ public class LinesRepository {
 
     private LinesOnlineDataStore linesOnlineDataStore;
 
+
+
     public void getLine (Context context, LineStationSuggestion lineStationSuggestion,
                          final OnLineSearchCompleted onLineSearchCompleted)
     {
@@ -32,6 +34,11 @@ public class LinesRepository {
                 onLineSearchCompleted.onError();
             }
         });
+    }
+
+    public void cancelAllRequests (Context context)
+    {
+        getLinesOnlineDataStoreInstance().cancelRequests(context);
     }
 
     public void getLines(Context context,Coordinate coordinate, final OnSearchCompleted onSearchCompleted)
@@ -83,4 +90,5 @@ public class LinesRepository {
         void onLineFound (Line line);
         void onError();
     }
+
 }

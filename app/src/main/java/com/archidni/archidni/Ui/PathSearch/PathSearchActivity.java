@@ -86,6 +86,8 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
                 Place.fromJson(extras.getString(IntentUtils.PATH_SEARCH_DESTINATION)));
     }
 
+
+
     private void initViews(Bundle savedInstanceState)
     {
         ButterKnife.bind(this);
@@ -102,7 +104,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
         getPathLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pathSearchPresenter.onSearchPathsClick();
+                pathSearchPresenter.onSearchPathsClick(PathSearchActivity.this);
             }
         });
         destinationLayout.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +153,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
 
     @Override
     public void onStop() {
+        pathSearchPresenter.onStop(getApplicationContext());
         super.onStop();
         mapView.onStop();
     }

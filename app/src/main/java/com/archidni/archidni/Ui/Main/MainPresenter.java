@@ -341,6 +341,11 @@ public class MainPresenter implements MainContract.Presenter {
         view.startFavoritesActivity();
     }
 
+    @Override
+    public void onStop(Context context) {
+        linesRepository.cancelAllRequests(context);
+    }
+
     private ArrayList<Station> filteredListStations ()
     {
         ArrayList<Station> stations = TransportUtils.getStationsFromLines(filteredLines());

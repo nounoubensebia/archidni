@@ -376,6 +376,7 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     @Override
     public void onStop() {
         super.onStop();
+        presenter.onStop(getApplicationContext());
         mapView.onStop();
     }
 

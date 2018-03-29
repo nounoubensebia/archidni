@@ -1,5 +1,7 @@
 package com.archidni.archidni.Ui.Search;
 
+import android.content.Context;
+
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.PlaceSuggestion.PlaceSuggestion;
@@ -25,9 +27,10 @@ public interface SearchContract {
     }
 
     interface Presenter {
-        void loadSearchResults(String text);
-        void loadPlaceDetails(PlaceSuggestion place);
+        void loadSearchResults(Context context,String text);
+        void loadPlaceDetails(Context context,PlaceSuggestion place);
         void onSetMarkerResult(Coordinate selectedCoordinate);
         void onUserLocationCaptured(Coordinate userLocation);
+        void onStop(Context context);
     }
 }

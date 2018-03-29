@@ -25,7 +25,7 @@ public class TrainTrip extends Trip {
     public ArrayList<Long> getNextDepartureRemainingTime (Station station, long departureTime, long departureDate)
     {
         long day = com.archidni.archidni.TimeUtils.getDayFromTimeStamp(departureDate);
-        if ((getDays()%day)!=0)
+        if (false)
         {
             return new ArrayList<>();
         }

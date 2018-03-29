@@ -1,5 +1,7 @@
 package com.archidni.archidni.Data;
 
+import android.content.Context;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -21,12 +23,14 @@ import java.util.LinkedHashMap;
  * Created by noure on 02/02/2018.
  */
 
-public class GeoRepository {
+public class GeoRepository extends OnlineDataStore {
     private static final String GOOGLE_API_KEY ="AIzaSyBUk19I8oW1d_OKmuPpzu6v5pEvTx3sBzE";
     private static final String URL_PLACES_AUTOCOMPLETE = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
     private static final String URL_PLACE_TYPE = "https://maps.googleapis.com/maps/api/place/details/json?";
 
-    public void getTextAutoCompleteSuggestions(String text, final OnPlaceSuggestionsSearchComplete onPlaceSuggestionsSearchComplete)
+    public void getTextAutoCompleteSuggestions(Context context,
+                                               String text,
+                                               final OnPlaceSuggestionsSearchComplete onPlaceSuggestionsSearchComplete)
     {
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("input",text);
@@ -34,6 +38,7 @@ public class GeoRepository {
         map.put("components","country:dz");
         map.put("language","fr");
         final String requestUrl = URL_PLACES_AUTOCOMPLETE + AppSingleton.buildParametersString(map);
+        cancelRequests(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, requestUrl,
                 new Response.Listener<String>() {
             @Override
@@ -82,16 +87,17 @@ public class GeoRepository {
                 onPlaceSuggestionsSearchComplete.onError();
             }
         });
-        AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,"TAG_PLACE_SUGGESTIONS");
+        AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,getTag());
     };
 
-    public void getPlaceDetails (final TextQuerySuggestion textQuerySuggestion,
+    public void getPlaceDetails (Context context, final TextQuerySuggestion textQuerySuggestion,
                                  final OnPlaceDetailsSearchComplete onPlaceDetailsSearchComplete)
     {
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("placeid", textQuerySuggestion.getPlaceId());
         map.put("key",GOOGLE_API_KEY);
         final String requestUrl = URL_PLACE_TYPE + AppSingleton.buildParametersString(map);
+        cancelRequests(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, requestUrl,
                 new Response.Listener<String>() {
                     @Override
@@ -119,7 +125,12 @@ public class GeoRepository {
                 onPlaceDetailsSearchComplete.onError();
             }
         });
-        AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,"TAG_PLACE_DETAILS");
+        AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,getTag());
+    }
+
+    @Override
+    public String getTag() {
+        return "GEO_SUGGESTIONS";
     }
 
     public interface OnPlaceSuggestionsSearchComplete {

@@ -114,6 +114,11 @@ public class StationPresenter implements StationContract.Presenter {
         view.showDateDialog(departureDate);
     }
 
+    @Override
+    public void onStop(Context context) {
+        linesRepository.cancelAllRequests(context);
+    }
+
     private void getLines(Context context) {
         linesRepository.getLinesPassingByStation(context, station, new LinesRepository.OnSearchCompleted() {
             @Override

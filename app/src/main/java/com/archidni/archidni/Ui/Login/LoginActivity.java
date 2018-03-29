@@ -17,6 +17,7 @@ import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.User;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Main.MainActivity;
+import com.archidni.archidni.Ui.Settings.SettingsActivity;
 import com.archidni.archidni.Ui.Signup.SignupActivity;
 import com.archidni.archidni.UiUtils.ActivityUtils;
 
@@ -37,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     ProgressBar progressBar;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.text_settings)
+    TextView settingsText;
 
     UsersRepository usersRepository;
     @Override
@@ -45,6 +48,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         usersRepository = new UsersRepository();
         initViews();
+    }
+
+    @Override
+    protected void onStop() {
+        usersRepository.cancelRequests(getApplicationContext());
+        super.onStop();
     }
 
     private void initViews ()
@@ -107,6 +116,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this,SignupActivity.class);
+                startActivity(intent);
+            }
+        });
+        settingsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this,SettingsActivity.class);
                 startActivity(intent);
             }
         });

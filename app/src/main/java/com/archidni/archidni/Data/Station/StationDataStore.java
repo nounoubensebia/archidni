@@ -7,6 +7,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.AppSingleton;
+import com.archidni.archidni.Data.OnlineDataStore;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.LineStationSuggestion;
@@ -19,12 +20,14 @@ import org.json.JSONObject;
  * Created by nouno on 15/02/2018.
  */
 
-public class StationDataStore {
+public class StationDataStore extends OnlineDataStore {
     private static final String GET_LINE_SUGGESTIONS_URL = "/api/v1/station";
+
 
     public void getStation (Context context, LineStationSuggestion lineStationSuggestion,
                             final OnSearchComplete onSearchComplete)
     {
+        cancelRequests(context);
         String url = SharedPrefsUtils.getServerUrl(context) +
                 GET_LINE_SUGGESTIONS_URL + "/" + lineStationSuggestion.getId();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -52,7 +55,12 @@ public class StationDataStore {
                 onSearchComplete.onError();
             }
         });
-        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,"TAG");
+        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,getTag());
+    }
+
+    @Override
+    public String getTag() {
+        return "STATIONS";
     }
 
     public interface OnSearchComplete {
