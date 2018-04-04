@@ -136,12 +136,12 @@ public class Line implements Serializable {
 
     private ArrayList<LineSection> getInboundSections ()
     {
-        return getSectionByMode(2);
+        return getSectionByMode(1);
     }
 
     private ArrayList<LineSection> getOutboundSections ()
     {
-        return getSectionByMode(1);
+        return getSectionByMode(0);
     }
 
     private ArrayList<LineSection> getSectionByMode(int mode)
