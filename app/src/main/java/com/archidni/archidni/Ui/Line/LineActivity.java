@@ -24,8 +24,12 @@ import com.archidni.archidni.Model.Transport.TransportUtils;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.StationInsideLineAdapter;
 import com.archidni.archidni.Ui.Station.StationActivity;
+import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.UiUtils.ViewUtils;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.MapView;
 
 import java.util.ArrayList;
@@ -39,8 +43,8 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     TextView addToFavoritesText;
     @BindView(R.id.text_report)
     TextView signalDisturbanceText;
-    @BindView(R.id.mapView)
-    MapView mapView;
+
+    MapFragment mapView;
     @BindView(R.id.text_name)
     TextView nameText;
     @BindView(R.id.list_station)
@@ -58,7 +62,7 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
 
     private Menu mMenu;
 
-    ArchidniMap archidniMap;
+    ArchidniGoogleMap archidniMap;
     LineContract.Presenter presenter;
 
     @Override
@@ -81,10 +85,18 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     private void initViews (Bundle bundle)
     {
         ButterKnife.bind(this);
-        archidniMap = new ArchidniMap(mapView, bundle, new ArchidniMap.OnMapReadyCallback() {
+        /*archidniMap = new ArchidniMap(mapView, bundle, new ArchidniMap.OnMapReadyCallback() {
             @Override
             public void onMapReady() {
                 presenter.onMapReady();
+            }
+        });*/
+        mapView = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
+        archidniMap = new ArchidniGoogleMap(mapView, new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                    presenter.onMapReady();
+                    archidniMap.moveCamera(new Coordinate(36.773479, 3.052176),10);
             }
         });
         addToFavoritesText.setOnClickListener(new View.OnClickListener() {
@@ -116,43 +128,43 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     @Override
     public void onStart() {
         super.onStart();
-        mapView.onStart();
+        //mapView.onStart();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mapView.onResume();
+        //mapView.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mapView.onPause();
+        //mapView.onPause();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mapView.onStop();
+        //mapView.onStop();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mapView.onLowMemory();
+        //mapView.onLowMemory();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mapView.onDestroy();
+        //mapView.onDestroy();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
+        //mapView.onSaveInstanceState(outState);
     }
 
     @Override
@@ -277,7 +289,8 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
             }
         });
         listView.setDividerHeight(0);
-        listView.setVisibility(View.INVISIBLE);
+        //listView.setVisibility(View.VISIBLE);
+        //ViewUtils.justifyListViewHeightBasedOnChildren(listView);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -285,7 +298,7 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
                 listView.setVisibility(View.VISIBLE);
                 ViewUtils.justifyListViewHeightBasedOnChildren(listView);
             }
-        },500);
+        },300);
     }
 
     @SuppressLint("NewApi")

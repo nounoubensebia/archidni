@@ -106,6 +106,15 @@
             android:background="@color/color_transport_mean_selected_3"
             android:visibility="gone" />
 
+        <View
+            android:id="@+id/view_separation_transport_mean5"
+            android:layout_width="1dp"
+            android:layout_height="80dp"
+            android:layout_below="@id/layout_instruction1"
+            android:layout_marginLeft="36dp"
+            android:background="@color/color_transport_mean_selected_4"
+            android:visibility="gone" />
+
 
         <FrameLayout
             android:id="@+id/layout_instruction2"
@@ -184,6 +193,15 @@
             android:layout_below="@id/layout_instruction2"
             android:layout_marginLeft="36dp"
             android:background="@color/color_transport_mean_selected_3"
+            android:visibility="gone"
+            tools:visibility="visible" />
+        <View
+            android:id="@+id/view_separation1_transport_mean5"
+            android:layout_width="1dp"
+            android:layout_height="80dp"
+            android:layout_below="@id/layout_instruction2"
+            android:layout_marginLeft="36dp"
+            android:background="@color/color_transport_mean_selected_4"
             android:visibility="gone"
             tools:visibility="visible" />
 

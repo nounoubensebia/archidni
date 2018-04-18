@@ -30,6 +30,7 @@ import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,7 +127,7 @@ public class ArchidniMap {
 
     public void setMyLocationEnabled (boolean enabled)
     {
-        mapboxMap.setMyLocationEnabled(enabled);
+        //mapboxMap.setMyLocationEnabled(enabled);
     }
 
     public Coordinate getUserLocation ()

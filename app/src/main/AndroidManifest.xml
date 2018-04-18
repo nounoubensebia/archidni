@@ -15,9 +15,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAmYvO7yTRJbWVCYK1B1Rp3CDOwwictb-c" />
         <activity android:name=".Ui.Main.MainActivity" />
         <activity
             android:name=".Ui.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,38 +34,50 @@
         </activity>
         <activity
             android:name=".Ui.Search.SearchActivity"
+            android:screenOrientation="portrait"
             android:noHistory="false"
             android:windowSoftInputMode="stateVisible" />
         <activity
             android:name=".Ui.PathSearch.PathSearchActivity"
+            android:screenOrientation="portrait"
             android:label="@string/plan_path"
             android:parentActivityName=".Ui.Main.MainActivity" />
         <activity
             android:name=".Ui.SetLocation.SetLocationActivity"
+            android:screenOrientation="portrait"
             android:label="Selectionner un emplacement"
             android:theme="@style/AppThemeWithActionBar" />
-        <activity android:name=".Ui.Station.StationActivity" />
-        <activity android:name=".Ui.Line.LineActivity" />
+        <activity android:name=".Ui.Station.StationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Ui.Line.LineActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Ui.SearchLineStation.SearchLineStationActivity"
             android:label="Rechercher une ligne ou une station"
             android:parentActivityName=".Ui.Main.MainActivity"
-            android:windowSoftInputMode="stateVisible" />
-        <activity android:name=".Ui.PathDetails.PathDetailsActivity" />
-        <activity android:name=".Ui.PathNavigation.PathNavigationActivity" />
+            android:windowSoftInputMode="stateVisible"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Ui.PathDetails.PathDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Ui.PathNavigation.PathNavigationActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Ui.Login.LoginActivity"
-            android:theme="@style/LogInTheme" />
+            android:theme="@style/LogInTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Ui.Signup.SignupActivity"
             android:label="Inscription"
-            android:theme="@style/LogInTheme" />
+            android:theme="@style/LogInTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Ui.Favorites.FavoritesActivity"
             android:label="Mes favoris"
             android:parentActivityName=".Ui.Main.MainActivity"
-            android:theme="@style/AppThemeWithActionBar" />
-        <activity android:name=".Ui.Settings.SettingsActivity"></activity>
+            android:theme="@style/AppThemeWithActionBar"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Ui.Settings.SettingsActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

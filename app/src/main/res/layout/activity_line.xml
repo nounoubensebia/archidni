@@ -38,11 +38,11 @@
             android:layout_weight="2"
             android:visibility="visible">
 
-            <com.mapbox.mapboxsdk.maps.MapView
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/mapView"
+                android:name="com.google.android.gms.maps.MapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10" />
+                android:layout_height="match_parent" />
         </FrameLayout>
 
         <ScrollView
@@ -70,7 +70,6 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/text_line_state"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -79,7 +78,8 @@
                     android:drawableLeft="@drawable/ic_check_circle_black_24dp"
                     android:drawablePadding="8dp"
                     android:gravity="center"
-                    android:text="Aucune perturbation n'a été signalée" />
+                    android:text="Aucune perturbation n'a été signalée"
+                    android:visibility="gone" />
 
                 <ProgressBar
                     android:id="@+id/progressBar_line_state"
@@ -122,7 +122,6 @@
                         android:textColor="@color/color_transport_mean_selected_2" />
 
                     <TextView
-                        android:visibility="gone"
                         android:id="@+id/text_report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -136,8 +135,8 @@
                         android:text="Signaler des perturbations"
                         android:textAllCaps="false"
                         android:textAppearance="?android:attr/textAppearanceButton"
-                        android:textColor="#FFF" />
-
+                        android:textColor="#FFF"
+                        android:visibility="gone" />
 
 
                 </LinearLayout>
@@ -150,8 +149,8 @@
                     android:text="Stations"
                     android:textColor="#000"
                     android:textSize="16sp" />
+
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/layout_outbound_inbound"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -160,7 +159,8 @@
                     android:layout_marginTop="16dp"
                     android:animateLayoutChanges="false"
                     android:background="@drawable/shape_rect_white_rounded"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <FrameLayout
                         android:id="@+id/layout_outbound"

@@ -42,6 +42,13 @@
         <item name="colorAccent">@color/color_transport_mean_selected_3</item>
     </style>
 
+    <style name="TransportMeanTheme4" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_transport_mean_selected_4</item>
+        <item name="colorPrimaryDark">#000</item>
+        <item name="colorAccent">@color/color_transport_mean_selected_4</item>
+    </style>
+
 
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->

@@ -39,6 +39,11 @@ public class Coordinate implements Serializable {
         return new LatLng(latitude,longitude);
     }
 
+    public com.google.android.gms.maps.model.LatLng toGoogleMapLatLng ()
+    {
+        return new com.google.android.gms.maps.model.LatLng(latitude,longitude);
+    }
+
     public String toJson() {
         return new Gson().toJson(this);
     }

@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     TextView transportMean2Text;
     @BindView(R.id.text_transport_mean_3)
     TextView transportMean3Text;
+    @BindView(R.id.text_transport_mean_4)
+    TextView transportMean4Text;
     @BindView(R.id.text_stations)
     TextView stationsText;
     @BindView(R.id.text_lines)
@@ -171,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 });
             }
         });
-        transportMean0Text.setOnClickListener(new View.OnClickListener() {
+        /*transportMean0Text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.toggleTransportMean(0);
@@ -195,6 +197,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 presenter.toggleTransportMean(3);
             }
         });
+        transportMean4Text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.toggleTransportMean(4);
+            }
+        });*/
         stationsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -396,6 +404,21 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         {
             ViewUtils.changeTextViewState(this,transportMean3Text,
                     TransportMean.allTransportMeans.get(3).getIconDisabled(),
+                    R.color.color_transport_mean_not_selected
+                    ,ViewUtils.DIRECTION_UP);
+        }
+
+        if (transportMeansSelector.isTransportMeanSelected(4))
+        {
+            ViewUtils.changeTextViewState(this,transportMean4Text,
+                    TransportMean.allTransportMeans.get(4).getIconEnabled(),
+                    R.color.color_transport_mean_selected_4
+                    ,ViewUtils.DIRECTION_UP);
+        }
+        else
+        {
+            ViewUtils.changeTextViewState(this,transportMean4Text,
+                    TransportMean.allTransportMeans.get(4).getIconDisabled(),
                     R.color.color_transport_mean_not_selected
                     ,ViewUtils.DIRECTION_UP);
         }

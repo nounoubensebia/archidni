@@ -58,10 +58,10 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void toggleTransportMean(int transportMeanId) {
-        transportMeansSelector.ToggleTransportMean(transportMeanId);
+        /*transportMeansSelector.ToggleTransportMean(transportMeanId);
         view.updateMeansSelectionLayout(transportMeansSelector);
         view.showStationsOnMap(TransportUtils.getStationsFromLines(filteredLines()));
-        populateList();
+        populateList();*/
     }
 
     @Override
@@ -345,7 +345,8 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onStop(Context context) {
-        linesRepository.cancelAllRequests(context);
+
+        //linesRepository.cancelAllRequests(context);
     }
 
     private ArrayList<Station> filteredListStations ()
@@ -383,7 +384,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     private class PopulateTask extends AsyncTask<Void,Void,Pair<Boolean,Pair<ArrayList<Line>,ArrayList<Station>>>>
     {
-
         @Override
         protected Pair<Boolean,Pair<ArrayList<Line>,ArrayList<Station>>> doInBackground(Void... voids) {
             if (stationsSelected)

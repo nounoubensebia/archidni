@@ -90,6 +90,15 @@
             android:background="@color/color_transport_mean_selected_3"
             android:visibility="gone"
             ></View>
+        <View
+            android:layout_below="@id/image_instruction1"
+            android:id="@+id/view_separation_transport_mean5"
+            android:layout_marginLeft="24dp"
+            android:layout_width="1dp"
+            android:layout_height="32dp"
+            android:background="@color/color_transport_mean_selected_4"
+            android:visibility="gone"
+            ></View>
     </RelativeLayout>
 
 </LinearLayout>

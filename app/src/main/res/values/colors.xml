@@ -7,6 +7,7 @@
     <color name="color_transport_mean_selected_2">@color/colorGreen</color>
     <color name="color_transport_mean_selected_0">#F44336</color>
     <color name="color_transport_mean_selected_3">#FF5722</color>
+    <color name="color_transport_mean_selected_4">@android:color/holo_purple</color>
     <color name="color_transport_mean_selected_1">#2196F3</color>
     <color name="colorRed">@android:color/holo_red_light</color>
     <color name="color_transport_mean_not_selected">#606060</color>
