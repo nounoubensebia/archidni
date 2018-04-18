@@ -72,7 +72,7 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
     public void onActivityResult(int requestType, Place newPlace) {
         if (requestType == IntentUtils.SearchIntents.TYPE_LOOK_FOR_OR)
         {
-            if (!newPlace.getCoordinate().equals(pathSettings.getOrigin().getCoordinate()))
+            if (pathSettings.getOrigin()==null||!newPlace.getCoordinate().equals(pathSettings.getOrigin().getCoordinate()))
             {
                view.hidePathsLayout();
             }

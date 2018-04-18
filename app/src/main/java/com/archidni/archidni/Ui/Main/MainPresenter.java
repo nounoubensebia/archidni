@@ -1,6 +1,8 @@
 package com.archidni.archidni.Ui.Main;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Pair;
 
 import com.archidni.archidni.App;
 import com.archidni.archidni.Data.Lines.LinesRepository;
@@ -211,7 +213,7 @@ public class MainPresenter implements MainContract.Presenter {
                 view.showStationsOnMap(TransportUtils.getStationsFromLines(filteredLines()));
             }
             boolean found = false;
-            for (Coordinate searchCoordinate:searchCoordinates)
+            /*for (Coordinate searchCoordinate:searchCoordinates)
             {
                 if (GeoUtils.distance(searchCoordinate,coordinate)<=15000)
                 {
@@ -243,7 +245,7 @@ public class MainPresenter implements MainContract.Presenter {
                     view.showLinesLoadingLayout();
                     searchLines(context,coordinate);
                 }
-            }
+            }*/
         }
     }
 
@@ -367,13 +369,41 @@ public class MainPresenter implements MainContract.Presenter {
 
     private void populateList()
     {
-        if (stationsSelected)
+        /*if (stationsSelected)
         {
-            view.showStationsOnList(filteredListStations(),userCoordinate);
+            //view.showStationsOnList(filteredListStations(),userCoordinate);
         }
         else
         {
             view.showLinesOnList(TransportUtils.filterLines(filteredLines(),currentBoundingBox));
+        }*/
+        PopulateTask populateTask = new PopulateTask();
+        populateTask.execute();
+    }
+
+    private class PopulateTask extends AsyncTask<Void,Void,Pair<Boolean,Pair<ArrayList<Line>,ArrayList<Station>>>>
+    {
+
+        @Override
+        protected Pair<Boolean,Pair<ArrayList<Line>,ArrayList<Station>>> doInBackground(Void... voids) {
+            if (stationsSelected)
+            {
+                //view.showStationsOnList(filteredListStations(),userCoordinate);
+                return new Pair<>(true,new Pair<ArrayList<Line>, ArrayList<Station>>(filteredLines(),filteredListStations()));
+            }
+            else
+            {
+                return new Pair<>(false,new Pair<ArrayList<Line>, ArrayList<Station>>(filteredLines(),filteredListStations()));
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Pair<Boolean, Pair<ArrayList<Line>, ArrayList<Station>>> booleanPairPair) {
+            if (booleanPairPair.first)
+                view.showStationsOnList(booleanPairPair.second.second,userCoordinate);
+            else
+                view.showLinesOnList(booleanPairPair.second.first);
         }
     }
 }
