@@ -156,7 +156,7 @@ public class Path implements Serializable {
                 pathSteps.add(builder.build());
             } else {
                 if (pathInstruction instanceof WaitInstruction) {
-                    PathStep.Builder builder = new PathStep.Builder("Attendre",
+                    PathStep.Builder builder = new PathStep.Builder(((WaitInstruction)pathInstruction).getMainText(),
                             (int) pathInstruction.getInstructionIcon());
                     builder.setStepDetails1(pathInstruction.getDurationString());
                     builder.setCoordinate(((WaitInstruction) pathInstruction).getCoordinate());

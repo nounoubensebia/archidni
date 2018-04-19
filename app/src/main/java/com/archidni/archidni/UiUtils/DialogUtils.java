@@ -44,6 +44,27 @@ public class DialogUtils {
 
     }
 
+    public static Dialog buildClickableDialog(Context context, String title, String msg, String positiveButton, final DialogInterface.OnClickListener clickListener,
+                                              final DialogInterface.OnClickListener onNegativeBuuttonClick)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(msg).setTitle(title);
+        builder.setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                clickListener.onClick(dialog,id);
+            }
+        });
+        builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                onNegativeBuuttonClick.onClick(dialogInterface,i);
+            }
+        });
+
+        return builder.create();
+
+    }
+
     public static Dialog buildInfoDialog(Context context,String title, String msg)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

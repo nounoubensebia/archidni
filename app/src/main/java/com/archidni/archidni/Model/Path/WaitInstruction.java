@@ -1,6 +1,7 @@
 package com.archidni.archidni.Model.Path;
 
 import com.archidni.archidni.Model.Coordinate;
+import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 
 import java.io.Serializable;
@@ -13,15 +14,23 @@ public class WaitInstruction extends PathInstruction implements Serializable {
 
     private Coordinate coordinate;
     private boolean isAverage = false;
+    private RideInstruction rideInstruction;
+
 
     public WaitInstruction(int duration, Coordinate coordinate) {
         super(duration);
         this.coordinate = coordinate;
     }
 
+
     @Override
     public String getMainText() {
-        return "Attendre";
+        if (rideInstruction.getTransportMean().getId()!= TransportMean.ID_BUS)
+        return "Attendre le "+rideInstruction.getTransportMean().getName()+
+                " ligne : "+rideInstruction.getLineLabel()+" vers "+rideInstruction.getTerminus();
+        else
+            return "Attendre le "+rideInstruction.getTransportMean().getName()+
+                    " "+rideInstruction.getLineLabel()+" vers "+rideInstruction.getTerminus();
     }
 
     @Override
@@ -50,5 +59,9 @@ public class WaitInstruction extends PathInstruction implements Serializable {
 
     public void setAverage(boolean average) {
         this.isAverage = average;
+    }
+
+    public void setRideInstruction(RideInstruction rideInstruction) {
+        this.rideInstruction = rideInstruction;
     }
 }

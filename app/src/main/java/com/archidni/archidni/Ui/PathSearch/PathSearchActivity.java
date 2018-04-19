@@ -307,6 +307,11 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     }
 
     @Override
+    public void showOriginNotSet() {
+        Toast.makeText(this,"Veuillez choisir un point de départ",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void startPathDetailsActivity(Path path) {
         Intent intent = new Intent(this, PathDetailsActivity.class);
         intent.putExtra(IntentUtils.PATH,path);

@@ -78,6 +78,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
             @Override
             public void onResponse(String response) {
                 ArrayList<Path> foundPaths = new ArrayList<>();
+                WaitInstruction waitInstruction = null;
                 try {
                     JSONArray rootJsonArray = new JSONArray(response);
                     for (int j=0;j<rootJsonArray.length();j++) {
@@ -109,7 +110,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
                             if (jsonObject.getString("type").equals("wait_instruction"))
                             {
                                 Coordinate coordinate = new Gson().fromJson(jsonObject.getJSONObject("coordinate").toString(), Coordinate.class);
-                                WaitInstruction waitInstruction = new WaitInstruction((int) jsonObject.getDouble("duration"), coordinate);
+                                waitInstruction = new WaitInstruction((int) jsonObject.getDouble("duration"), coordinate);
                                 waitInstruction.setAverage(!jsonObject.getBoolean("exact_waiting_time"));
                                 waitInstruction.setDuration(jsonObject.getInt("duration")*60);
                                 pathInstructions.add(waitInstruction);
@@ -134,6 +135,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
 
                                 RideInstruction rideInstruction = new RideInstruction(duration,
                                         transportModeId,sections,lineLabel,destination);
+                                waitInstruction.setRideInstruction(rideInstruction);
                                 pathInstructions.add(rideInstruction);
                             }
                         }

@@ -25,6 +25,7 @@ public interface PathSearchContract {
         void updateDate(long departureDate);
         void hidePathsLayout();
         void showErrorMessage();
+        void showOriginNotSet();
         void startPathDetailsActivity(Path path);
     }
 

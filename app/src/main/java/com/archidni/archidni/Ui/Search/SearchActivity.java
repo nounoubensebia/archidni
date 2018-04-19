@@ -1,6 +1,7 @@
 package com.archidni.archidni.Ui.Search;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -239,7 +240,8 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
 
     @Override
     public void showMyPositionErrorMsg() {
-        Toast.makeText(this,getApplicationContext().getString(R.string.error_retry),
+        Toast.makeText(this,"Impossible de trouver la position de l'utilisateur." +
+                        " Peut-être que vous n'avez pas activer les services de localisation GPS. Veuillez activer les services de localisation GPS et relancer l'application.",
                 Toast.LENGTH_LONG).show();
     }
 

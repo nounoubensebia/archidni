@@ -27,6 +27,14 @@ public class RideInstruction extends MoveInstruction implements Serializable {
         this.terminus = terminus;
     }
 
+    public String getLineLabel() {
+        return lineLabel;
+    }
+
+    public String getTerminus() {
+        return terminus;
+    }
+
     public ArrayList<Section> getSections() {
         return sections;
     }

@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="?attr/selectableItemBackground"
+
             android:clickable="true"
             android:drawablePadding="4dp"
             android:drawableTop="@drawable/ic_transport_mean_0_disabled"
@@ -37,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="?attr/selectableItemBackground"
+
                 android:clickable="true"
                 android:drawablePadding="4dp"
                 android:drawableTop="@drawable/ic_transport_mean_1_disabled"
@@ -59,7 +59,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="?attr/selectableItemBackground"
+
                 android:clickable="true"
                 android:drawablePadding="4dp"
                 android:drawableTop="@drawable/ic_transport_mean_2_disabled"
@@ -79,7 +79,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="?attr/selectableItemBackground"
+
                 android:clickable="true"
                 android:drawablePadding="4dp"
                 android:drawableTop="@drawable/ic_transport_mean_3_disabled"
@@ -99,7 +99,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="?attr/selectableItemBackground"
+
         android:clickable="true"
         android:drawablePadding="4dp"
         android:drawableTop="@drawable/ic_transport_mean_4_disabled"

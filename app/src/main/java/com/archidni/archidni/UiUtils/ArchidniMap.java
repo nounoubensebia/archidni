@@ -114,7 +114,7 @@ public class ArchidniMap {
     }
 
     public void animateCamera(final Coordinate coordinate, final int zoom, int duration) {
-
+        if (coordinate!=null)
         mapboxMap.animateCamera(new CameraUpdate() {
             @Override
             public CameraPosition getCameraPosition(@NonNull MapboxMap mapboxMap) {

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class TransportMean {
     public static final int ID_TRAMWAY = 3;
     public static final int ID_METRO = 0;
+    public static final int ID_BUS = 2;
     private int id;
     private String name;
     public static ArrayList<TransportMean> allTransportMeans =

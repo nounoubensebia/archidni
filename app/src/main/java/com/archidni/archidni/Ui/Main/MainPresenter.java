@@ -146,7 +146,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onMapLongClick(Coordinate coordinate) {
-        if (!errorHappened)
+        /*if (!errorHappened)
         {
             Place se = new Place(StringUtils.getLocationString(coordinate),
                     App.getAppContext().getString(R.string.on_map),coordinate);
@@ -154,7 +154,7 @@ public class MainPresenter implements MainContract.Presenter {
             locationLayoutVisible = true;
             view.animateCameraToLocation(coordinate);
             selectedLocation = se;
-        }
+        }*/
     }
 
     @Override

@@ -47,20 +47,25 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
 
     @Override
     public void onSearchPathsClick(Context context) {
-        view.showLoadingBar();
-        pathRepository.getPaths(context,pathSettings, new PathRepository.OnSearchCompleted() {
-            @Override
-            public void onResultsFound(ArrayList<Path> paths) {
-                view.showPathSuggestions(paths);
-            }
+        if (pathSettings.getOrigin()!=null&&pathSettings.getDestination()!=null) {
+            view.showLoadingBar();
+            pathRepository.getPaths(context, pathSettings, new PathRepository.OnSearchCompleted() {
+                @Override
+                public void onResultsFound(ArrayList<Path> paths) {
+                    view.showPathSuggestions(paths);
+                }
 
-            @Override
-            public void onError() {
-                view.hidePathsLayout();
-                view.showErrorMessage();
-            }
-        });
-
+                @Override
+                public void onError() {
+                    view.hidePathsLayout();
+                    view.showErrorMessage();
+                }
+            });
+        }
+        else
+        {
+            view.showOriginNotSet();
+        }
     }
 
     @Override

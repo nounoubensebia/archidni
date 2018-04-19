@@ -33,4 +33,5 @@ public interface SearchContract {
         void onUserLocationCaptured(Coordinate userLocation);
         void onStop(Context context);
     }
+
 }
