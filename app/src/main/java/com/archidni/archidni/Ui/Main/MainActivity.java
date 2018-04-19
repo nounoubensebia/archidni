@@ -702,10 +702,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void logoutUser() {
-        SharedPrefsUtils.disconnectUser(this);
+        /*SharedPrefsUtils.disconnectUser(this);
         Intent intent = new Intent(this,SignupActivity.class);
         startActivity(intent);
-        finish();
+        finish();*/
     }
 
     @Override

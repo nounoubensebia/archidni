@@ -2,6 +2,7 @@ package com.archidni.archidni;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.mapbox.mapboxsdk.Mapbox;
 
@@ -15,6 +16,12 @@ public class App extends Application {
     public static Context getAppContext ()
     {
         return appContext;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     @Override
