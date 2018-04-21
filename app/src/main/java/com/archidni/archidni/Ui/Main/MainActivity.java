@@ -40,6 +40,7 @@ import com.archidni.archidni.Ui.SearchLineStation.SearchLineStationActivity;
 import com.archidni.archidni.Ui.Settings.SettingsActivity;
 import com.archidni.archidni.Ui.Signup.SignupActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
+import com.archidni.archidni.Ui.TarifsActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Model.TransportMean;
@@ -844,6 +845,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             case R.id.item_my_settings : Intent intent = new Intent(this,
                     SettingsActivity.class);
             startActivity(intent);
+            break;
+            case R.id.item_tarifs : Intent intent1 = new Intent(this, TarifsActivity.class);
+            startActivity(intent1);
             break;
         }
         return true;

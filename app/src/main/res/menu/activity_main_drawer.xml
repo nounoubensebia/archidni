@@ -10,6 +10,12 @@
         android:visible="true">
     </item>
 
+    <item android:title="Tarrifications"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_attach_money_black_24dp"
+        android:id="@+id/item_tarifs"
+        android:visible="true">
+    </item>
 
     <item android:title="@string/settings"
         app:showAsAction="ifRoom"
@@ -24,5 +30,7 @@
         android:id="@+id/item_disconnect"
         android:visible="true">
     </item>
+
+
 
 </menu>

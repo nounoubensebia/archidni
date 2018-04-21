@@ -165,7 +165,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
                 onSearchCompleted.onError();
             }
         });
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(30000,10, (float) 1.0));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000,10, (float) 1.0));
         AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,getTag());
     }
 
