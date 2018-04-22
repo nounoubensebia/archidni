@@ -84,7 +84,8 @@
         <activity
             android:name=".Ui.Settings.SettingsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Ui.TarifsActivity"></activity>
+        <activity android:name=".Ui.TarifsActivity" />
+        <activity android:name=".Ui.BusTarifsActivity"></activity>
     </application>
 
 </manifest>
