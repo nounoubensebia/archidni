@@ -29,9 +29,19 @@
         android:layout_marginRight="16dp"
         android:backgroundTint="#FFF"
         android:textColor="@color/color_transport_mean_selected_2"
-        android:text="J'accepte les termes d'utilisation de l'application"
+        android:text="J'accepte les termes et les conditions d'utilisation de l'application"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/button_refuse"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:backgroundTint="#FFF"
+            android:textColor="@color/color_transport_mean_selected_3"
+            android:text="Je refuse les termes et les conditions d'utilisation de l'application"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </ScrollView>

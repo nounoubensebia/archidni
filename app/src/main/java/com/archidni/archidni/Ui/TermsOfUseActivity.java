@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.User;
@@ -19,6 +20,9 @@ public class TermsOfUseActivity extends AppCompatActivity {
     @BindView(R.id.button_accept)
     Button acceptButton;
 
+    @BindView(R.id.button_refuse)
+    Button refuseButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +36,14 @@ public class TermsOfUseActivity extends AppCompatActivity {
                 Intent intent = new Intent(TermsOfUseActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+        refuseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(TermsOfUseActivity.this,
+                        "Vous devez accepter les termes et les conditions d'utilisation de l'application pour pouvoir utiliser l'application",
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
