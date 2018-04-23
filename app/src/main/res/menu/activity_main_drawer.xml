@@ -24,6 +24,13 @@
         android:visible="true">
     </item>
 
+    <item android:title="À propos"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_help_black_24dp"
+        android:id="@+id/item_about"
+        android:visible="true">
+    </item>
+
     <item android:title="@string/log_out"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_exit_transport_mean1"

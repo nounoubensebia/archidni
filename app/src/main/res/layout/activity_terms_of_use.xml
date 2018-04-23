@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/color_transport_mean_selected_2"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Ui.TermsOfUseActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/text"
+        android:textColor="#FFF"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Cette version de l'application est une version de test et ne peut en aucun cas etre utilisée à des fins commerciales.\nToutes les données incluses dans l'applications sont des données fictives de test et ne doivent en aucun cas etre utilisées dans des situations réels. Les développeurs de l'application ne peuvent etre en aucun cas tenus responsables ....(de l'utilisation de ces données)."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/button_accept"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:backgroundTint="#FFF"
+        android:textColor="@color/color_transport_mean_selected_2"
+        android:text="J'accepte les termes d'utilisation de l'application"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</ScrollView>

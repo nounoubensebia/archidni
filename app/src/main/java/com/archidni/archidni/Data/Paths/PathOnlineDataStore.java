@@ -153,6 +153,8 @@ public class PathOnlineDataStore extends OnlineDataStore {
                             }
                         }
                     }
+                    if (foundPaths.size()==1&&foundPaths.get(0).getDurationInMinutes()>10)
+                        foundPaths = new ArrayList<>();
                     onSearchCompleted.onResultsFound(foundPaths);
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -268,13 +268,7 @@ public class MainPresenter implements MainContract.Presenter {
             public void onError() {
                 errorHappened = true;
                 view.hideLinesLoadingLayout();
-                android.os.Handler handler = new android.os.Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.showSearchErrorLayout();
-                    }
-                },250);
+                view.showSearchErrorLayout();
             }
         });
     }
@@ -303,13 +297,14 @@ public class MainPresenter implements MainContract.Presenter {
     public void onRetryClicked(final Context context, final Coordinate currentCoordinate) {
         view.hideSearchErrorLayout();
         android.os.Handler handler = new android.os.Handler();
-        handler.postDelayed(new Runnable() {
+        /*handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (errorHappened)
                 view.showLinesLoadingLayout();
             }
-        },250);
+        },250);*/
+        view.showLinesLoadingLayout();
         searchLines(context,currentCoordinate);
     }
 

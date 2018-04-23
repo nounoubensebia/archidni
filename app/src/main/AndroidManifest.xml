@@ -85,7 +85,12 @@
             android:name=".Ui.Settings.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".Ui.TarifsActivity" />
-        <activity android:name=".Ui.BusTarifsActivity"></activity>
+        <activity android:name=".Ui.BusTarifsActivity" />
+        <activity android:name=".Ui.MetroTarifsActivity" />
+        <activity android:name=".Ui.TramwayTarifsActivity" />
+        <activity android:name=".Ui.TrainTarifsActivity" />
+        <activity android:name=".Ui.TermsOfUseActivity" />
+        <activity android:name=".Ui.AboutActivity"></activity>
     </application>
 
 </manifest>

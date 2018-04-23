@@ -48,6 +48,11 @@ public class ArchidniMap {
     private ArrayList<PolylineOptions> polylineOptionses;
     private List<Polyline> polylines;
 
+
+    public MapboxMap getMapboxMap() {
+        return mapboxMap;
+    }
+
     public ArchidniMap(MapView mapView, Bundle savedInstanceState,
                        final OnMapReadyCallback onMapReadyCallback)
     {
@@ -132,13 +137,20 @@ public class ArchidniMap {
 
     public Coordinate getUserLocation ()
     {
-        mapboxMap.setMyLocationEnabled(true);
-        if (mapboxMap.getMyLocation()!=null)
+        if (mapboxMap!=null)
         {
-            userLocation = new Coordinate(mapboxMap.getMyLocation()
-                    .getLatitude(),mapboxMap.getMyLocation().getLongitude());
+            mapboxMap.setMyLocationEnabled(true);
+            if (mapboxMap.getMyLocation()!=null)
+            {
+                userLocation = new Coordinate(mapboxMap.getMyLocation()
+                        .getLatitude(),mapboxMap.getMyLocation().getLongitude());
+            }
+            return userLocation;
         }
-        return userLocation;
+        else
+        {
+            return null;
+        }
     }
 
     public void trackUser ()

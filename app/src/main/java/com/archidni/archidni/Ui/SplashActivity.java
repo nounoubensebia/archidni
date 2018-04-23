@@ -21,6 +21,7 @@ import com.archidni.archidni.Ui.Signup.SignupActivity;
 import com.archidni.archidni.UiUtils.DialogUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.mapbox.mapboxsdk.Mapbox;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -43,6 +44,8 @@ public class SplashActivity extends AppCompatActivity {
         }
         else
         {
+
+
             int permissionCheck = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE);
             ActivityCompat.requestPermissions(this,
@@ -73,6 +76,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
+
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     if (!SharedPrefsUtils.verifyKey(this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT))
@@ -80,9 +84,7 @@ public class SplashActivity extends AppCompatActivity {
                         /*Intent intent = new Intent(SplashActivity.this,SignupActivity.class);
                         startActivity(intent);
                         finish();*/
-                        User user = new User(1,"test@test.com","test_user","test_user");
-                        SharedPrefsUtils.saveString(this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT,user.toJson());
-                        Intent intent = new Intent(SplashActivity.this,MainActivity.class);
+                        Intent intent = new Intent(SplashActivity.this,TermsOfUseActivity.class);
                         startActivity(intent);
                         finish();
                     }

@@ -30,6 +30,7 @@ import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.User;
+import com.archidni.archidni.Ui.AboutActivity;
 import com.archidni.archidni.Ui.Adapters.LineAdapter;
 import com.archidni.archidni.Ui.Adapters.StationAdapter;
 import com.archidni.archidni.Ui.Favorites.FavoritesActivity;
@@ -848,6 +849,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             break;
             case R.id.item_tarifs : Intent intent1 = new Intent(this, TarifsActivity.class);
             startActivity(intent1);
+            break;
+            case R.id.item_about : Intent intent2 = new Intent(this, AboutActivity.class);
+            startActivity(intent2);
             break;
         }
         return true;

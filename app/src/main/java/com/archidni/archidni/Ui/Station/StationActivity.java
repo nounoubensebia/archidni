@@ -29,6 +29,7 @@ import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.TramwayMetroTrip;
 import com.archidni.archidni.Model.Transport.Trip;
+import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.LineAdapter;
 import com.archidni.archidni.Ui.Adapters.TrainTripAdapter;
@@ -180,6 +181,7 @@ public class StationActivity extends AppCompatActivity implements StationContrac
 
     @Override
     public void showLinesOnList(final ArrayList<Line> lines) {
+
         tripOptionsLayout.setVisibility(View.GONE);
         LineAdapter lineAdapter = new LineAdapter(this, lines, new LineAdapter.OnItemClickListener() {
             @Override
@@ -204,6 +206,10 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     @Override
     public void showTripsOnList(Station station,ArrayList<Line>lines,long departureTime,
                                 long departureDate) {
+        if (lines.get(0).getTransportMean().getId()== TransportMean.ID_BUS||lines.get(0).getTransportMean().getId()==4)
+        {
+            lines = new ArrayList<>();
+        }
         if (station.getTransportMean().getId()==1)
         {
             TrainTripAdapter trainTripAdapter = new TrainTripAdapter(this,departureTime,
