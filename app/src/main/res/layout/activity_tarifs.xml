@@ -178,7 +178,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/shape_green_empty_rect"
@@ -201,6 +200,35 @@
             android:layout_marginTop="4dp"
             app:srcCompat="@drawable/ic_transport_mean_2_enabled" />
     </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/telepheric_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape_violet_empty_rect"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Tarification Téléphérique"
+                android:textStyle="bold"
+                android:textColor="@color/color_transport_mean_selected_4"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                app:srcCompat="@drawable/ic_transport_mean_4_enabled" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

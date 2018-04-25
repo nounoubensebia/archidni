@@ -90,7 +90,8 @@
         <activity android:name=".Ui.TramwayTarifsActivity" />
         <activity android:name=".Ui.TrainTarifsActivity" />
         <activity android:name=".Ui.TermsOfUseActivity" />
-        <activity android:name=".Ui.AboutActivity"></activity>
+        <activity android:name=".Ui.AboutActivity" />
+        <activity android:name=".Ui.TelephericTarifsActivity"></activity>
     </application>
 
 </manifest>

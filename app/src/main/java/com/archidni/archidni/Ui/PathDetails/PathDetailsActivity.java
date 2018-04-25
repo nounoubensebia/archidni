@@ -100,6 +100,7 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
                     archidniMap.preparePolyline(PathDetailsActivity.this,polyline,R.color.colorGreen,8);
                     archidniMap.addPreparedAnnotations();
                     showInstructionsAnnotations(path);
+
                 }
                 else
                 {

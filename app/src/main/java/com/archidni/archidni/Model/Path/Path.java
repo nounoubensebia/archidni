@@ -166,7 +166,7 @@ public class Path implements Serializable {
                     PathStep.Builder builder = new PathStep.Builder(rideInstruction.getMainText(),
                             (int) ((RideInstruction) pathInstruction).getTransportMean().getIconEnabled());
                     builder.setStepDetails1(rideInstruction.getDurationString());
-                    builder.setStepDetails2(rideInstruction.getSections().size() + 1 + " Arrêts");
+                    builder.setStepDetails2(rideInstruction.getSections().size() + " Arrêts");
                     builder.setPolyline(rideInstruction.getPolyline());
                     pathSteps.add(builder.build());
                     builder = new PathStep.Builder(rideInstruction.getExitInstructionText(),

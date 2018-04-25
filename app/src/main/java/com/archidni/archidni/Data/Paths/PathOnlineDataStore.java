@@ -92,7 +92,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
                                 Type fooType = new TypeToken<ArrayList<Coordinate>>() {
                                 }.getType();
                                 ArrayList<Coordinate> polyline = gson.fromJson(jsonObject.get("polyline").toString(), fooType);
-                                double distance = GeoUtils.distance(polyline.get(0), polyline.get(polyline.size() - 1));
+                                double distance = GeoUtils.distance(polyline);
                                 int duration = (int) GeoUtils.getOnFootDuration(distance);
                                 String destination;
                                 if (jsonObject.getString("destination_type").equals("station"))
@@ -105,6 +105,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
                                     destination = "votre destination";
                                 }
                                 WalkInstruction walkInstruction = new WalkInstruction(duration, (float) distance, polyline, destination);
+                                if (!GeoUtils.polylineContainsOnlyEquals(walkInstruction.getPolyline()))
                                 pathInstructions.add(walkInstruction);
                             }
                             if (jsonObject.getString("type").equals("wait_instruction"))
@@ -153,7 +154,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
                             }
                         }
                     }
-                    if (foundPaths.size()==1&&foundPaths.get(0).getDurationInMinutes()>10)
+                    if (foundPaths.size()==1&&foundPaths.get(0).getDurationInMinutes()>10&&foundPaths.get(0).getTransportMeans().size()==0)
                         foundPaths = new ArrayList<>();
                     onSearchCompleted.onResultsFound(foundPaths);
                 } catch (JSONException e) {
@@ -167,7 +168,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
                 onSearchCompleted.onError();
             }
         });
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000,10, (float) 1.0));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(1000000,10, (float) 1.0));
         AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,getTag());
     }
 

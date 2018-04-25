@@ -52,7 +52,7 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
             pathRepository.getPaths(context, pathSettings, new PathRepository.OnSearchCompleted() {
                 @Override
                 public void onResultsFound(ArrayList<Path> paths) {
-                    view.showPathSuggestions(paths);
+                    view.showPathSuggestions(paths,pathSettings);
                 }
 
                 @Override

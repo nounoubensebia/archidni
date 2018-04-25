@@ -17,8 +17,12 @@
         android:textColor="#FFF"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_weight="1"
         android:layout_marginTop="16dp"
-        android:text="Cette version de l'application est une version de test et ne peut en aucun cas etre utilisée à des fins commerciales.\nToutes les données incluses dans l'applications sont des données fictives de test et ne doivent en aucun cas etre utilisées dans des situations réels. Les développeurs de l'application ne peuvent etre en aucun cas tenus responsables ....(de l'utilisation de ces données)."
+        android:text="Cette version de l'application est une variante en cours de test et ne peut être  utilisée que pour cet effet, à l’exclusion de tout autre fin.
+Cette version de test faisant appel à des données fictives et ne peut de ce fait, être utilisée pour des situations réelles.
+Les auteurs et propriétaires déclinent leurs responsabilité pour toutes conséquences de l’utilisation des données relatives à cette application d’essai (tarification, dénomination des stations, localisation des stations, dénomination des lignes,  composition des lignes, horaires, hors de son contexte de  test.
+"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

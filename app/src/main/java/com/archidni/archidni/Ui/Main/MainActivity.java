@@ -839,8 +839,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         switch (id)
         {
-            case R.id.item_disconnect : presenter.onLogoutClick();
-            break;
+            //case R.id.item_disconnect : presenter.onLogoutClick();
+            //break;
             case R.id.item_my_favorites_lines :presenter.onFavoritesClick();
             break;
             case R.id.item_my_settings : Intent intent = new Intent(this,
@@ -850,9 +850,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             case R.id.item_tarifs : Intent intent1 = new Intent(this, TarifsActivity.class);
             startActivity(intent1);
             break;
-            case R.id.item_about : Intent intent2 = new Intent(this, AboutActivity.class);
-            startActivity(intent2);
-            break;
+            //case R.id.item_about : Intent intent2 = new Intent(this, AboutActivity.class);
+            //startActivity(intent2);
+            //break;
         }
         return true;
     }

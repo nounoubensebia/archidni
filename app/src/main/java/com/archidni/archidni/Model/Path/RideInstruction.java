@@ -96,7 +96,7 @@ public class RideInstruction extends MoveInstruction implements Serializable {
 
     @Override
     public String getDurationString() {
-        return (getDuration()/60) + "minutes";
+        return (getDuration()/60) + " minutes";
     }
 
     public void setTransportMeanId(int transportMeanId) {

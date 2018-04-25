@@ -217,11 +217,11 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     }
 
     @Override
-    public void showPathSuggestions(ArrayList<Path> paths) {
+    public void showPathSuggestions(ArrayList<Path> paths,PathSettings pathSettings) {
         progressBar.setVisibility(View.GONE);
         pathSuggestionsLayout.setVisibility(View.VISIBLE);
         PathSuggestionAdapter pathSuggestionAdapter = new PathSuggestionAdapter(this,paths,
-                paths.get(0).getPathSettings());
+                pathSettings);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         pathSuggestionAdapter.setOnClickListener(new PathSuggestionAdapter.OnClickListener() {
             @Override

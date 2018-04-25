@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Path.Path;
+import com.archidni.archidni.Model.Path.PathSettings;
 import com.archidni.archidni.Model.Place;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public interface PathSearchContract {
         void showOriginAndDestinationLabels(String origin, String destination);
         void showOriginAndDestinationOnMap(Place origin,Place destination);
         void showLoadingBar();
-        void showPathSuggestions (ArrayList<Path> paths);
+        void showPathSuggestions (ArrayList<Path> paths, PathSettings pathSettings);
         void startSearchActivity (int requestType);
         void showSetTimeDialog(long departureTime);
         void showSetDateDialog(long departureDate);

@@ -21,6 +21,8 @@ public class TarifsActivity extends AppCompatActivity {
     View tramwayButton;
     @BindView(R.id.button_train)
     View trainButton;
+    @BindView(R.id.telepheric_button)
+    View telephericButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,13 @@ public class TarifsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TarifsActivity.this,TrainTarifsActivity.class);
+                startActivity(intent);
+            }
+        });
+        telephericButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TarifsActivity.this,TelephericTarifsActivity.class);
                 startActivity(intent);
             }
         });
