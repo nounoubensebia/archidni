@@ -85,14 +85,12 @@ public class SplashActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();*/
                         Intent intent = new Intent(SplashActivity.this,TermsOfUseActivity.class);
-                        startActivity(intent);
-                        finish();
+                        startNextActivity(intent);
                     }
                     else
                     {
                         Intent intent = new Intent(SplashActivity.this,MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        startNextActivity(intent);
                     }
 
                 } else {
@@ -111,5 +109,17 @@ public class SplashActivity extends AppCompatActivity {
             // other 'case' lines to check for other
             // permissions this app might request.
         }
+    }
+
+    private void startNextActivity (final Intent intent)
+    {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(intent);
+                finish();
+            }
+        },2000);
     }
 }
