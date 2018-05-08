@@ -33,6 +33,7 @@ import com.archidni.archidni.Model.User;
 import com.archidni.archidni.Ui.AboutActivity;
 import com.archidni.archidni.Ui.Adapters.LineAdapter;
 import com.archidni.archidni.Ui.Adapters.StationAdapter;
+import com.archidni.archidni.Ui.ExchangePolesActivity;
 import com.archidni.archidni.Ui.Favorites.FavoritesActivity;
 import com.archidni.archidni.Ui.Line.LineActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
@@ -850,6 +851,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             case R.id.item_tarifs : Intent intent1 = new Intent(this, TarifsActivity.class);
             startActivity(intent1);
             break;
+            case R.id.item_poles :
+                Intent intent2 = new Intent(this, ExchangePolesActivity.class);
+                startActivity(intent2);
+                break;
             //case R.id.item_about : Intent intent2 = new Intent(this, AboutActivity.class);
             //startActivity(intent2);
             //break;

@@ -91,7 +91,8 @@
         <activity android:name=".Ui.TrainTarifsActivity" />
         <activity android:name=".Ui.TermsOfUseActivity" />
         <activity android:name=".Ui.AboutActivity" />
-        <activity android:name=".Ui.TelephericTarifsActivity"></activity>
+        <activity android:name=".Ui.TelephericTarifsActivity" />
+        <activity android:name=".Ui.ExchangePolesActivity"></activity>
     </application>
 
 </manifest>
