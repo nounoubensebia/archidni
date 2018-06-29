@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.archidni.archidni.IntentUtils;
+import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Path.PathStep;
 import com.archidni.archidni.R;
@@ -96,13 +97,20 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
         if (pathStep.getStepDetails1()!=null)
         {   mStepDetailsText1.setVisibility(View.VISIBLE);
             mStepDetailsText1.setText(pathStep.getStepDetails1());
+            if (!pathStep.getStepDetails1().equals(""))
+                mStepDetailsText1.setText(pathStep.getStepDetails1());
+            else
+                mStepDetailsText1.setVisibility(View.GONE);
         }
         else
             mStepDetailsText1.setVisibility(View.GONE);
         if (pathStep.getStepDetails2()!=null)
         {
             mStepDetailsText2.setVisibility(View.VISIBLE);
-            mStepDetailsText2.setText(pathStep.getStepDetails2());
+            if (!pathStep.getStepDetails2().equals(""))
+                mStepDetailsText2.setText(pathStep.getStepDetails2());
+            else
+                mStepDetailsText2.setVisibility(View.GONE);
         }
         else
             mStepDetailsText2.setVisibility(View.GONE);
@@ -121,7 +129,12 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
         else
         {
             mUiMapUtils.clearMap();
-            mUiMapUtils.preparePolyline(this,pathStep.getPolyline(),R.color.colorGreen,8);
+            mUiMapUtils.preparePolyline(this,pathStep.getPolyline(),R.color.colorGreen,8,1);
+            /*int i =0;
+            for (Coordinate coordinate:pathStep.getPolyline())
+            {
+                mUiMapUtils.addMarker(coordinate,R.drawable.marker_selected);
+            }*/
             mUiMapUtils.addMarker(pathStep.getPolyline().get(0),R.drawable.ic_marker_green_24dp);
             mUiMapUtils.addMarker(pathStep.getPolyline().get(pathStep.getPolyline().size()-1),
                     R.drawable.ic_marker_red_24dp);

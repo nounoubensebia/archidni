@@ -25,6 +25,11 @@ public class WaitInstruction extends PathInstruction implements Serializable {
 
     @Override
     public String getMainText() {
+        if (rideInstruction.getTransportMean().getId()==4)
+        {
+            return "Attendre le "+rideInstruction.getTransportMean().getName()+" ligne : "+
+                    rideInstruction.getLineLabel()+" vers "+rideInstruction.getTerminus();
+        }
         if (rideInstruction.getTransportMean().getId()!= TransportMean.ID_BUS)
         return "Attendre le "+rideInstruction.getTransportMean().getName()+
                 " ligne : "+rideInstruction.getLineLabel()+" vers "+rideInstruction.getTerminus();

@@ -97,7 +97,7 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
                 {
                     archidniMap.clearMap();
                     archidniMap.animateCameraToBounds(polyline,50,500);
-                    archidniMap.preparePolyline(PathDetailsActivity.this,polyline,R.color.colorGreen,8);
+                    archidniMap.preparePolyline(PathDetailsActivity.this,polyline,R.color.black,8,1);
                     archidniMap.addPreparedAnnotations();
                     showInstructionsAnnotations(path);
 
@@ -126,7 +126,7 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     private void showInstructionsAnnotations(Path path)
     {
         ArrayList<Coordinate> pathPolyline = path.getPolyline();
-        archidniMap.preparePolyline(this,pathPolyline,android.R.color.darker_gray,8);
+        archidniMap.preparePolyline(this,pathPolyline,R.color.colorGreen,8,0.6f);
         archidniMap.addMarker(pathPolyline.get(0),R.drawable.ic_marker_blue_24dp);
         archidniMap.addMarker(pathPolyline.get(pathPolyline.size()-1),R.drawable.ic_marker_red_24dp);
         archidniMap.addPreparedAnnotations();

@@ -24,6 +24,13 @@
         android:visible="true">
     </item>
 
+    <item android:title="Les Parkings "
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_info_black_24dp"
+        android:id="@+id/item_parkings"
+        android:visible="true">
+    </item>
+
     <item android:title="@string/settings"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_settings_black_24dp"

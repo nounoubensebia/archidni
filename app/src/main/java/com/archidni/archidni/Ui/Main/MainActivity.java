@@ -36,6 +36,7 @@ import com.archidni.archidni.Ui.Adapters.StationAdapter;
 import com.archidni.archidni.Ui.ExchangePolesActivity;
 import com.archidni.archidni.Ui.Favorites.FavoritesActivity;
 import com.archidni.archidni.Ui.Line.LineActivity;
+import com.archidni.archidni.Ui.ParkingsActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.Ui.SearchLineStation.SearchLineStationActivity;
@@ -846,11 +847,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             break;
             case R.id.item_my_settings : Intent intent = new Intent(this,
                     SettingsActivity.class);
-            startActivity(intent);
+            //startActivity(intent);
             break;
             case R.id.item_tarifs : Intent intent1 = new Intent(this, TarifsActivity.class);
             startActivity(intent1);
             break;
+            case R.id.item_parkings : Intent intent3 = new Intent(this, ParkingsActivity.class);
+                startActivity(intent3);
+                break;
             case R.id.item_poles :
                 Intent intent2 = new Intent(this, ExchangePolesActivity.class);
                 startActivity(intent2);

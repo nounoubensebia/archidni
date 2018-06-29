@@ -421,7 +421,7 @@ public class ArchidniMap {
         archidniMarkers = new ArrayList<>();
         preparedArchidniMarkerDeprecateds = new ArrayList<>();
         preparedArchidniMarkers = new ArrayList<>();
-        
+        polylineOptionses = new ArrayList<>();
     }
 
     public void clearMarkersWithTags ()
@@ -486,13 +486,13 @@ public class ArchidniMap {
     }
 
     public com.mapbox.mapboxsdk.annotations.Polyline preparePolyline(Context context, ArrayList<Coordinate> coordinates,
-                                                                     int colorResrouceId, int width) {
+                                                                     int colorResrouceId, int width,float polylineAlpha) {
         ArrayList<LatLng> points = new ArrayList<>();
         for (Coordinate c : coordinates) {
             points.add(new LatLng(c.getLatitude(), c.getLongitude()));
         }
         com.mapbox.mapboxsdk.annotations.PolylineOptions polylineOptions = new com.mapbox.mapboxsdk.annotations.PolylineOptions().addAll(points).color(ContextCompat.getColor(context,colorResrouceId)).width(width);
-        polylineOptions.alpha(0.5f);
+        polylineOptions.alpha(polylineAlpha);
         //mapboxMap.preparePolyline(polylineOptions);
         polylineOptionses.add(polylineOptions);
         return polylineOptions.getPolyline();

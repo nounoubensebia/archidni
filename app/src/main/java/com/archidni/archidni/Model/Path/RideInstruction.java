@@ -41,15 +41,19 @@ public class RideInstruction extends MoveInstruction implements Serializable {
 
     @Override
     public String getMainText() {
-        return ("Prendre le "+getTransportMean().getName()+" Ligne : "+lineLabel+ " vers "+terminus);
+        return ("Prendre le "+getTransportMean().getName()+" Ligne : "+lineLabel);
     }
 
     @Override
     public String getSecondaryText ()
     {
         int s = sections.size();
-
+        if (transportMeanId!=TransportMean.ID_BUS&&transportMeanId!=4)
         return (s+" arrêts"+" ("+(getDuration()/60)+" minutes)");
+        else
+        {
+            return (s+" arrêts");
+        }
     }
 
     @Override
@@ -96,7 +100,10 @@ public class RideInstruction extends MoveInstruction implements Serializable {
 
     @Override
     public String getDurationString() {
+        if (transportMeanId!=TransportMean.ID_BUS&&transportMeanId!=4)
         return (getDuration()/60) + " minutes";
+        else
+            return "";
     }
 
     public void setTransportMeanId(int transportMeanId) {
