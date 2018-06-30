@@ -9,47 +9,69 @@ import java.util.ArrayList;
  */
 
 public class TransportMeansSelector {
-    private ArrayList<TransportMean> selectedTransportMeans;
+    private ArrayList<SelectorItem> selectedItems;
 
     public TransportMeansSelector() {
-        selectedTransportMeans = new ArrayList<>();
+        selectedItems = new ArrayList<>();
     }
 
-    public void ToggleTransportMean(int transportMeanId)
+    public void ToggleItem(int ItemId)
     {
-        if (isTransportMeanSelected(transportMeanId))
+        if (isItemSelected(ItemId))
         {
-            deselectTransportMean(transportMeanId);
+            deselectItem(ItemId);
         }
         else
         {
-            selectTransportMean(transportMeanId);
+            selectTransportMean(ItemId);
         }
     }
-    public boolean isTransportMeanSelected (int transportMeanId)
+
+    public ArrayList<TransportMean> getSelectedTransportMeans ()
     {
-        return selectedTransportMeans.contains(TransportMean.allTransportMeans.get(transportMeanId));
+        ArrayList<TransportMean> transportMeans = new ArrayList<>();
+        for (SelectorItem selectorItem:selectedItems)
+        {
+            if (selectorItem instanceof TransportMean)
+            {
+                transportMeans.add((TransportMean)selectorItem);
+            }
+        }
+        return transportMeans;
+    }
+
+    public boolean isItemSelected(int itemId)
+    {
+        //return selectedItems.contains(TransportMean.allTransportMeans.get(itemId));
+        for (SelectorItem selectorItem:selectedItems)
+        {
+            if (selectorItem.getId()==itemId)
+            {
+                return true;
+            }
+        }
+        return false;
     }
     public boolean allTransportMeansSelected ()
     {
-        return (selectedTransportMeans.size()==4);
+        return (selectedItems.size()==4);
     }
-    private void deselectTransportMean (int transportMeanId)
+    private void deselectItem(int transportMeanId)
     {
-        selectedTransportMeans.remove(TransportMean.allTransportMeans.get(transportMeanId));
+        selectedItems.remove(SelectorItem.allItems.get(transportMeanId));
     }
     private void selectTransportMean (int transportMeanId)
     {
-        selectedTransportMeans.add(TransportMean.allTransportMeans.get(transportMeanId));
+        selectedItems.add(SelectorItem.allItems.get(transportMeanId));
     }
-    public void selectAllTransportMeans ()
+    public void selectAllItems()
     {
-        selectedTransportMeans = new ArrayList<>();
-        for (TransportMean transportMean : TransportMean.allTransportMeans)
+        selectedItems = new ArrayList<>();
+        for (SelectorItem item : SelectorItem.allItems)
         {
-            if (!isTransportMeanSelected(transportMean.getId()))
+            if (!isItemSelected(item.getId()))
             {
-                this.ToggleTransportMean(transportMean.getId());
+                this.ToggleItem(item.getId());
             }
 
         }
@@ -57,15 +79,15 @@ public class TransportMeansSelector {
 
     private void deselectAllTransportMeans ()
     {
-        selectedTransportMeans = new ArrayList<>();
+        selectedItems = new ArrayList<>();
     }
 
-    public ArrayList<TransportMean> getSelectedTransportMeans() {
-        return selectedTransportMeans;
+    public ArrayList<SelectorItem> getSelectedItems() {
+        return selectedItems;
     }
 
 
-    public void setSelectedTransportMeans(ArrayList<TransportMean> selectedTransportMeans) {
-        this.selectedTransportMeans = selectedTransportMeans;
+    public void setSelectedItems(ArrayList<SelectorItem> selectedItems) {
+        this.selectedItems = selectedItems;
     }
 }

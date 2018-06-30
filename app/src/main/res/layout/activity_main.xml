@@ -8,7 +8,7 @@
     android:gravity="bottom"
     app:umanoFadeColor="@android:color/transparent"
     app:umanoOverlay="true"
-    app:umanoPanelHeight="100dp"
+    app:umanoPanelHeight="152dp"
     app:umanoShadowHeight="0dp">
 
     <android.support.v4.widget.DrawerLayout
@@ -80,7 +80,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginBottom="100dp"
+                        android:layout_marginBottom="148dp"
                         android:animateLayoutChanges="true"
                         android:orientation="vertical">
 
@@ -262,6 +262,7 @@
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
             app:menu="@menu/activity_main_drawer" />
+
     </android.support.v4.widget.DrawerLayout>
 
     <FrameLayout

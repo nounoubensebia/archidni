@@ -58,7 +58,6 @@ public interface MainContract {
         void onMapReady(Context context,BoundingBox boundingBox);
         void onMyLocationFabClick();
         void onShowSlidingPanelFabClick();
-        void onMapLongClick(Coordinate coordinate);
         void onLocationMarkerCreated(ArchidniMarker marker);
         void onMapShortClick();
         void onSearchPathClick();

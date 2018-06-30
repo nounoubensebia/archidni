@@ -30,7 +30,6 @@ import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.User;
-import com.archidni.archidni.Ui.AboutActivity;
 import com.archidni.archidni.Ui.Adapters.LineAdapter;
 import com.archidni.archidni.Ui.Adapters.StationAdapter;
 import com.archidni.archidni.Ui.ExchangePolesActivity;
@@ -41,13 +40,13 @@ import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.Ui.SearchLineStation.SearchLineStationActivity;
 import com.archidni.archidni.Ui.Settings.SettingsActivity;
-import com.archidni.archidni.Ui.Signup.SignupActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.Ui.TarifsActivity;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.UiUtils.ArchidniMarker;
+import com.archidni.archidni.UiUtils.SelectorItem;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.gson.Gson;
@@ -106,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     View openDrawerImage;
     @BindView(R.id.layout_search_underway)
     View searchUnderwayLayout;
+    @BindView(R.id.text_parking)
+    TextView parkingText;
 
     @BindView(R.id.image_transport_mean_icon)
     ImageView locationIcon;
@@ -147,12 +148,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             @Override
             public void onMapReady() {
                 presenter.onMapReady(MainActivity.this,archidniMap.getBoundingBox());
-                archidniMap.setOnMapLongClickListener(new ArchidniMap.OnMapLongClickListener() {
-                    @Override
-                    public void onMapLongClick(Coordinate coordinate) {
-                        presenter.onMapLongClick(coordinate);
-                    }
-                });
                 archidniMap.setOnMapShortClickListener(new ArchidniMap.OnMapShortClickListener() {
                     @Override
                     public void onMapShortClick(Coordinate coordinate) {
@@ -177,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 });
             }
         });
-        /*transportMean0Text.setOnClickListener(new View.OnClickListener() {
+        transportMean0Text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.toggleTransportMean(0);
@@ -206,7 +201,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             public void onClick(View view) {
                 presenter.toggleTransportMean(4);
             }
-        });*/
+        });
+        parkingText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.toggleTransportMean(5);
+            }
+        });
         stationsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,9 +251,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 drawerLayout.openDrawer(Gravity.START);
                 container.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 drawerOpened = true;
-                //myLocationFab.setVisibility(View.GONE);
-                //showSlidingUpPanelFab.setVisibility(View.GONE);
-                //getPathLayout.setVisibility(View.GONE);
                 hideOverlayLayout();
                 slideOutSearchText();
             }
@@ -292,12 +290,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 presenter.onRetryClicked(MainActivity.this,archidniMap.getCenter());
             }
         });
-        /*stationFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.onStationFabClick();
-            }
-        });*/
         findLinesStationsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -355,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void updateMeansSelectionLayout(TransportMeansSelector transportMeansSelector) {
-        if (transportMeansSelector.isTransportMeanSelected(0))
+        if (transportMeansSelector.isItemSelected(0))
         {
             ViewUtils.changeTextViewState(this,transportMean0Text,
                     TransportMean.allTransportMeans.get(0).getIconEnabled(),
@@ -369,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     R.color.color_transport_mean_not_selected
                     ,ViewUtils.DIRECTION_UP);
         }
-        if (transportMeansSelector.isTransportMeanSelected(1))
+        if (transportMeansSelector.isItemSelected(1))
         {
             ViewUtils.changeTextViewState(this,transportMean1Text,
                     TransportMean.allTransportMeans.get(1).getIconEnabled(),
@@ -383,7 +375,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     R.color.color_transport_mean_not_selected
                     ,ViewUtils.DIRECTION_UP);
         }
-        if (transportMeansSelector.isTransportMeanSelected(2))
+        if (transportMeansSelector.isItemSelected(2))
         {
             ViewUtils.changeTextViewState(this,transportMean2Text,
                     TransportMean.allTransportMeans.get(2).getIconEnabled(),
@@ -397,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     R.color.color_transport_mean_not_selected
                     ,ViewUtils.DIRECTION_UP);
         }
-        if (transportMeansSelector.isTransportMeanSelected(3))
+        if (transportMeansSelector.isItemSelected(3))
         {
             ViewUtils.changeTextViewState(this,transportMean3Text,
                     TransportMean.allTransportMeans.get(3).getIconEnabled(),
@@ -412,7 +404,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     ,ViewUtils.DIRECTION_UP);
         }
 
-        if (transportMeansSelector.isTransportMeanSelected(4))
+        if (transportMeansSelector.isItemSelected(4))
         {
             ViewUtils.changeTextViewState(this,transportMean4Text,
                     TransportMean.allTransportMeans.get(4).getIconEnabled(),
@@ -423,6 +415,20 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         {
             ViewUtils.changeTextViewState(this,transportMean4Text,
                     TransportMean.allTransportMeans.get(4).getIconDisabled(),
+                    R.color.color_transport_mean_not_selected
+                    ,ViewUtils.DIRECTION_UP);
+        }
+        if (transportMeansSelector.isItemSelected(5))
+        {
+            ViewUtils.changeTextViewState(this,parkingText,
+                    SelectorItem.allItems.get(5).getIconEnabled(),
+                    SelectorItem.allItems.get(5).getColor()
+                    ,ViewUtils.DIRECTION_UP);
+        }
+        else
+        {
+            ViewUtils.changeTextViewState(this,parkingText,
+                    SelectorItem.allItems.get(5).getIconDisabled(),
                     R.color.color_transport_mean_not_selected
                     ,ViewUtils.DIRECTION_UP);
         }
@@ -533,10 +539,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     station.getTransportMean().getColor()));
             Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab);
             animation.setRepeatCount(Animation.INFINITE);
-            //stationFab.setImageDrawable(ContextCompat.getDrawable(this,
-             //       station.getTransportMean().getFabIcon()));
-            //stationFab.startAnimation(animation);
-            //stationFab.setVisibility(View.VISIBLE);
             archidniMap.changeMarkerIcon(R.drawable.marker_selected,station);
         }
         if (oldSelectedPlace != null)
@@ -571,9 +573,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             Station station = (Station) archidniMarker.getTag();
             archidniMap.changeMarkerIcon(station.getTransportMean().getMarkerIcon(),
                     archidniMarker.getTag());
-            //stationFab.clearAnimation();
-            //stationFab.setVisibility(View.GONE);
-
         }
         else
         {
@@ -841,13 +840,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         switch (id)
         {
-            //case R.id.item_disconnect : presenter.onLogoutClick();
-            //break;
             case R.id.item_my_favorites_lines :presenter.onFavoritesClick();
             break;
             case R.id.item_my_settings : Intent intent = new Intent(this,
                     SettingsActivity.class);
-            //startActivity(intent);
+            startActivity(intent);
             break;
             case R.id.item_tarifs : Intent intent1 = new Intent(this, TarifsActivity.class);
             startActivity(intent1);
@@ -859,9 +856,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 Intent intent2 = new Intent(this, ExchangePolesActivity.class);
                 startActivity(intent2);
                 break;
-            //case R.id.item_about : Intent intent2 = new Intent(this, AboutActivity.class);
-            //startActivity(intent2);
-            //break;
         }
         return true;
     }

@@ -2,6 +2,7 @@ package com.archidni.archidni.Model;
 
 import com.archidni.archidni.App;
 import com.archidni.archidni.R;
+import com.archidni.archidni.UiUtils.SelectorItem;
 
 import java.util.ArrayList;
 
@@ -9,12 +10,14 @@ import java.util.ArrayList;
  * Created by noure on 02/02/2018.
  */
 
-public class TransportMean {
+public class TransportMean extends SelectorItem {
     public static final int ID_TRAMWAY = 3;
     public static final int ID_METRO = 0;
     public static final int ID_BUS = 2;
-    private int id;
-    private String name;
+    public static final int ID_TELEPHERIQUE = 4;
+    public static final int ID_TRAIN = 1;
+
+
     public static ArrayList<TransportMean> allTransportMeans =
             new ArrayList<TransportMean>(){{
                 add(new TransportMean(0, App.getAppContext().getString(R.string.metro)));
@@ -25,17 +28,13 @@ public class TransportMean {
             }};
 
     public TransportMean(int id, String name) {
-        this.id = id;
-        this.name = name;
+        super(id, name);
     }
 
-    public int getId() {
-        return id;
-    }
-
+    @Override
     public int getIconDisabled ()
     {
-        switch (id){
+        switch (getId()){
             case 0:return R.drawable.ic_transport_mean_0_disabled;
             case 1:return R.drawable.ic_transport_mean_1_disabled;
             case 2:return R.drawable.ic_transport_mean_2_disabled;
@@ -45,9 +44,10 @@ public class TransportMean {
         }
     }
 
+    @Override
     public int getIconEnabled ()
     {
-        switch (id){
+        switch (getId()){
             case 0:return R.drawable.ic_transport_mean_0_enabled;
             case 1:return R.drawable.ic_transport_mean_1_enabled;
             case 2:return R.drawable.ic_transport_mean_2_enabled;
@@ -57,9 +57,10 @@ public class TransportMean {
         }
     }
 
+    @Override
     public int getMarkerIcon()
     {
-        switch (id){
+        switch (getId()){
             case 0 : return R.drawable.marker_transport_mean_0;
             case 1 : return R.drawable.marker_transport_mean_1;
             case 2 : return R.drawable.marker_transport_mean_2;
@@ -71,7 +72,7 @@ public class TransportMean {
 
     public int getFabIcon()
     {
-        switch (id){
+        switch (getId()){
             case 0 : return R.drawable.ic_fab_transport_mean_0;
             case 1 : return R.drawable.ic_fab_transport_mean_1;
             case 2 : return R.drawable.ic_fab_transport_mean_2;
@@ -81,9 +82,10 @@ public class TransportMean {
         }
     }
 
+    @Override
     public int getColor()
     {
-        switch (id){
+        switch (getId()){
             case 0 : return R.color.color_transport_mean_selected_0;
             case 1 : return R.color.color_transport_mean_selected_1;
             case 2 : return R.color.color_transport_mean_selected_2;
@@ -93,9 +95,11 @@ public class TransportMean {
         }
     }
 
+
+    @Override
     public int getTheme()
     {
-        switch (id){
+        switch (getId()){
             case 0 : return R.style.TransportMeanTheme0;
             case 1 : return R.style.TransportMeanTheme1;
             case 2 : return R.style.TransportMeanTheme2;
@@ -107,7 +111,7 @@ public class TransportMean {
 
     public int getCircleDrawable ()
     {
-        switch (id){
+        switch (getId()){
             case 0 : return R.drawable.ic_circle_transport_mean_0;
             case 1 : return R.drawable.ic_circle_transport_mean_1;
             case 2 : return R.drawable.ic_circle_transport_mean_2;
@@ -117,9 +121,10 @@ public class TransportMean {
         }
     }
 
+    @Override
     public int getCoordinateDrawable ()
     {
-        switch (id)
+        switch (getId())
         {
             case 0 : return R.drawable.ic_coordinate_transport_mean_0;
             case 1 : return R.drawable.ic_coordinate_transport_mean_1;
@@ -132,7 +137,7 @@ public class TransportMean {
 
     public int getLinesSelectedDrawable ()
     {
-        switch (id)
+        switch (getId())
         {
             case 0 : return R.drawable.ic_line_enabled_transport_mean_0;
             case 1 : return R.drawable.ic_line_enabled_transport_mean_1;
@@ -145,7 +150,7 @@ public class TransportMean {
 
     public int getTimesSelectedDrawable ()
     {
-        switch (id)
+        switch (getId())
         {
             case 0 : return R.drawable.ic_time_transport_mean_0;
             case 1 : return R.drawable.ic_time_transport_mean_1;
@@ -156,12 +161,9 @@ public class TransportMean {
         }
     }
 
-    public String getName() {
-        return name;
-    }
 
     public int getStationCirleDrawableId() {
-        switch (id)
+        switch (getId())
         {
             case 0 : return R.drawable.selector_circle_button_transport_mean0;
             case 1 : return R.drawable.selector_circle_button_transport_mean1;
@@ -173,7 +175,7 @@ public class TransportMean {
     }
 
     public int getSeparationViewId() {
-        switch (id)
+        switch (getId())
         {
             case 0 : return R.id.view_separation_transport_mean1;
             case 1 : return R.id.view_separation_transport_mean2;
@@ -185,7 +187,7 @@ public class TransportMean {
     }
 
     public int getSeparationView2Id() {
-        switch (id)
+        switch (getId())
         {
             case 0 : return R.id.view_separation1_transport_mean1;
             case 1 : return R.id.view_separation1_transport_mean2;
@@ -197,7 +199,7 @@ public class TransportMean {
     }
 
     public int getExitDrawable() {
-        switch (id)
+        switch (getId())
         {
             case 0 : return R.drawable.ic_exit_transport_mean0;
             case 1 : return R.drawable.ic_exit_transport_mean1;
@@ -209,7 +211,7 @@ public class TransportMean {
     }
 
     public int getCircleFullDrawableId() {
-        switch (id)
+        switch (getId())
         {
             case 0 : return R.drawable.shape_button_circle_full_transport_mean0;
             case 1 : return R.drawable.shape_button_circle_full_transport_mean1;
@@ -221,7 +223,7 @@ public class TransportMean {
     }
 
     public int getWhiteIconDrawableId() {
-        switch (id)
+        switch (getId())
         {
             case 0 : return R.drawable.ic_transport_mean_0_white;
             case 1 : return R.drawable.ic_transport_mean_1_white;

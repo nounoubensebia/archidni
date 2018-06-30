@@ -11,7 +11,7 @@
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="Archidni2"
+        android:label="Archidni"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -93,7 +93,10 @@
         <activity android:name=".Ui.AboutActivity" />
         <activity android:name=".Ui.TelephericTarifsActivity" />
         <activity android:name=".Ui.ExchangePolesActivity" />
-        <activity android:name=".Ui.ParkingsActivity"></activity>
+        <activity android:name=".Ui.ParkingsActivity" />
+        <activity android:name=".Ui.TestActivity">
+
+        </activity>
     </application>
 
 </manifest>

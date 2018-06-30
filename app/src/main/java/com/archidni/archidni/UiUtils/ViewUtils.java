@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -72,6 +74,13 @@ public class ViewUtils {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
     }
 
+    public static float pxToDp (Context context,float px)
+    {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        return px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+
     public  static  void justifyListViewHeightBasedOnChildren (ListView listView) {
 
         ListAdapter adapter = listView.getAdapter();
@@ -90,6 +99,16 @@ public class ViewUtils {
         par.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
         listView.setLayoutParams(par);
         listView.requestLayout();
+    }
+
+    public static float getScreenHeight (Activity activity)
+    {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        float density  = activity.getResources().getDisplayMetrics().density;
+        return outMetrics.heightPixels / density;
     }
 
 

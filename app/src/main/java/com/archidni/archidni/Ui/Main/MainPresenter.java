@@ -4,23 +4,18 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Pair;
 
-import com.archidni.archidni.App;
 import com.archidni.archidni.Data.Lines.LinesRepository;
-import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
-import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.TransportUtils;
 import com.archidni.archidni.Model.User;
-import com.archidni.archidni.R;
 import com.archidni.archidni.UiUtils.ArchidniMarker;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 
 import java.util.ArrayList;
-import java.util.logging.Handler;
 
 /**
  * Created by noure on 02/02/2018.
@@ -48,7 +43,7 @@ public class MainPresenter implements MainContract.Presenter {
         this.view = view;
         this.user = user;
         this.transportMeansSelector = new TransportMeansSelector();
-        transportMeansSelector.selectAllTransportMeans();
+        transportMeansSelector.selectAllItems();
         view.updateMeansSelectionLayout(transportMeansSelector);
         linesRepository = new LinesRepository();
         lines = new ArrayList<>();
@@ -58,10 +53,10 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void toggleTransportMean(int transportMeanId) {
-        /*transportMeansSelector.ToggleTransportMean(transportMeanId);
+        transportMeansSelector.ToggleItem(transportMeanId);
         view.updateMeansSelectionLayout(transportMeansSelector);
-        view.showStationsOnMap(TransportUtils.getStationsFromLines(filteredLines()));
-        populateList();*/
+        //view.showStationsOnMap(TransportUtils.getStationsFromLines(filteredLines()));
+        populateList();
     }
 
     @Override
@@ -101,7 +96,7 @@ public class MainPresenter implements MainContract.Presenter {
     public void onMapReady(final Context context, BoundingBox boundingBox) {
         view.setUserLocationEnabled(true);
         currentBoundingBox = boundingBox;
-        transportMeansSelector.selectAllTransportMeans();
+        transportMeansSelector.selectAllItems();
         view.obtainUserLocation(new MainContract.OnUserLocationObtainedCallback() {
             @Override
             public void onLocationObtained(Coordinate userLocation) {
@@ -144,18 +139,6 @@ public class MainPresenter implements MainContract.Presenter {
         view.showSlidingPanel();
     }
 
-    @Override
-    public void onMapLongClick(Coordinate coordinate) {
-        /*if (!errorHappened)
-        {
-            Place se = new Place(StringUtils.getLocationString(coordinate),
-                    App.getAppContext().getString(R.string.on_map),coordinate);
-            view.showLocationLayout(se,selectedLocation);
-            locationLayoutVisible = true;
-            view.animateCameraToLocation(coordinate);
-            selectedLocation = se;
-        }*/
-    }
 
     @Override
     public void onLocationMarkerCreated(ArchidniMarker marker) {
@@ -296,14 +279,6 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onRetryClicked(final Context context, final Coordinate currentCoordinate) {
         view.hideSearchErrorLayout();
-        android.os.Handler handler = new android.os.Handler();
-        /*handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (errorHappened)
-                view.showLinesLoadingLayout();
-            }
-        },250);*/
         view.showLinesLoadingLayout();
         searchLines(context,currentCoordinate);
     }
@@ -355,7 +330,7 @@ public class MainPresenter implements MainContract.Presenter {
         ArrayList<Line> filteredLines = new ArrayList<>();
         for (Line line:lines)
         {
-            if (transportMeansSelector.isTransportMeanSelected(line.getTransportMean().getId()))
+            if (transportMeansSelector.isItemSelected(line.getTransportMean().getId()))
             {
                 filteredLines.add(line);
             }

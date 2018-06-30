@@ -25,7 +25,6 @@ import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Section;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.TransportMean;
-import com.archidni.archidni.TimeUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
