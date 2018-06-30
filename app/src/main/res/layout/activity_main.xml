@@ -23,11 +23,11 @@
             android:layout_height="match_parent"
             android:animateLayoutChanges="true">
 
-            <com.mapbox.mapboxsdk.maps.MapView
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/mapView"
+                android:name="com.google.android.gms.maps.MapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10" />
+                android:layout_height="match_parent" />
 
             <FrameLayout
                 android:layout_width="match_parent"

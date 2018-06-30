@@ -21,8 +21,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 
@@ -30,6 +32,8 @@ public class ArchidniGoogleMap {
     private GoogleMap map;
     private MapFragment mapFragment;
     private boolean mapLoaded = false;
+    private ClusterManager<ArchidniClusterItem> clusterManager;
+    private ArchidniClusterRenderer archidniClusterRenderer;
 
     public ArchidniGoogleMap(MapFragment mapFragment, final OnMapReadyCallback onMapReadyCallback) {
         mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -43,6 +47,22 @@ public class ArchidniGoogleMap {
                     }
                 });
                 onMapReadyCallback.onMapReady(googleMap);
+                map.setTrafficEnabled(true);
+            }
+        });
+    }
+
+    public void createClusters (Context context, final OnClusterItemClickListener onClusterItemClickListener)
+    {
+        clusterManager = new ClusterManager<>(context,map);
+        archidniClusterRenderer = new ArchidniClusterRenderer(context,map,clusterManager);
+        clusterManager.setRenderer(archidniClusterRenderer);
+        clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<ArchidniClusterItem>() {
+            @Override
+            public boolean onClusterItemClick(ArchidniClusterItem archidniClusterItem) {
+                Marker marker = archidniClusterRenderer.getMarkerOptionsHashMap().get(archidniClusterItem);
+                onClusterItemClickListener.onClusterItemClick(archidniClusterItem,marker);
+                return true;
             }
         });
     }
@@ -120,6 +140,13 @@ public class ArchidniGoogleMap {
         });
     }
 
+    public void addMarker (Coordinate coordinate,int markerDrawableResource)
+    {
+        //ArchidniMarker archidniMarker = new ArchidniMarker();
+
+        Marker marker = map.addMarker(new MarkerOptions().icon(getBitmapDescriptor(markerDrawableResource))
+                .position(coordinate.toGoogleMapLatLng()));
+    }
 
     public void prepareMarker (Coordinate coordinate,int markerDrawableResource,float anchorX,float anchorY)
     {
@@ -183,6 +210,35 @@ public class ArchidniGoogleMap {
         }
     }
 
+    public void prepareClusterItem (Coordinate coordinate,int drawable)
+    {
+        ArchidniClusterItem archidniClusterItem = new ArchidniClusterItem(coordinate,drawable);
+        clusterManager.addItem(archidniClusterItem);
+    }
+
+    public void renderClusters ()
+    {
+        map.setOnCameraIdleListener(clusterManager);
+        map.setOnMarkerClickListener(clusterManager);
+        clusterManager.cluster();
+    }
+
+    /*public ArchidniClusterItem addClusterItem (Coordinate coordinate,int clusterId)
+    {
+
+        clusterManagers.get(clusterId).cluster();
+        return archidniClusterItem;
+    }*/
+
+    public BoundingBox getBoundingBox()
+    {
+        LatLng northEast =  map.getProjection().getVisibleRegion().latLngBounds.northeast;
+        LatLng southWest = map.getProjection().getVisibleRegion().latLngBounds.southwest;
+        Coordinate northEastCoordinate = new Coordinate(northEast.latitude,northEast.longitude);
+        Coordinate southWestCoordinate = new Coordinate(southWest.latitude,southWest.longitude);
+        return new BoundingBox(northEastCoordinate,southWestCoordinate);
+    }
+
     public void addPreparedAnnotations ()
     {
 
@@ -193,7 +249,7 @@ public class ArchidniGoogleMap {
         map.clear();
     }
 
-    private BitmapDescriptor getBitmapDescriptor(int id) {
+    public static BitmapDescriptor getBitmapDescriptor(int id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Drawable vectorDrawable = App.getAppContext().getDrawable(id);
 
@@ -228,6 +284,10 @@ public class ArchidniGoogleMap {
 
     public interface OnMarkerClickListener {
         void onMarkerClick (ArchidniMarker archidniMarker);
+    }
+
+    public interface OnClusterItemClickListener {
+        void onClusterItemClick (ArchidniClusterItem archidniClusterItem,Marker marker);
     }
 
 }
