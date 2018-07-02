@@ -55,7 +55,7 @@ public class MainPresenter implements MainContract.Presenter {
     public void toggleTransportMean(int transportMeanId) {
         transportMeansSelector.ToggleItem(transportMeanId);
         view.updateMeansSelectionLayout(transportMeansSelector);
-        //view.showStationsOnMap(TransportUtils.getStationsFromLines(filteredLines()));
+        //view.showStationsOnMap(TransportUtils.getStationsFromLines(getfilteredLines()));
         populateList();
     }
 
@@ -174,9 +174,11 @@ public class MainPresenter implements MainContract.Presenter {
 
 
     @Override
-    public void onCameraMove(Context context,Coordinate coordinate, double zoom
-            ,BoundingBox boundingBox) {
-        currentBoundingBox = boundingBox;
+    public void onCameraMove(Context context,Coordinate coordinate) {
+
+        view.showStationsOnList(getNearbyFilteredStations(coordinate),userCoordinate);
+
+        /*currentBoundingBox = boundingBox;
         if (zoom<MIN_ZOOM)
         {
             if (!locationLayoutVisible)
@@ -193,7 +195,7 @@ public class MainPresenter implements MainContract.Presenter {
             {
                 currentZoomIsInsufficient = false;
                 view.hideZoomInsufficientLayout();
-                view.showStationsOnMap(TransportUtils.getStationsFromLines(filteredLines()));
+                view.showStationsOnMap(TransportUtils.getStationsFromLines(getfilteredLines()));
             }
             boolean found = false;
             /*for (Coordinate searchCoordinate:searchCoordinates)
@@ -228,8 +230,9 @@ public class MainPresenter implements MainContract.Presenter {
                     view.showLinesLoadingLayout();
                     searchLines(context,coordinate);
                 }
-            }*/
-        }
+            }
+        }*/
+
     }
 
     private void searchLines (Context context,Coordinate coordinate)
@@ -243,7 +246,7 @@ public class MainPresenter implements MainContract.Presenter {
                 view.hideLinesLoadingLayout();
                 view.showLinesOnList(lines);
                 populateList();
-                view.showStationsOnMap(TransportUtils.getStationsFromLines(filteredLines()));
+                view.showStationsOnMap(TransportUtils.getStationsFromLines(getfilteredLines()));
                 searchUnderway = false;
             }
 
@@ -321,11 +324,16 @@ public class MainPresenter implements MainContract.Presenter {
 
     private ArrayList<Station> filteredListStations ()
     {
-        ArrayList<Station> stations = TransportUtils.getStationsFromLines(filteredLines());
-        return TransportUtils.filterStations(stations,currentBoundingBox);
+        ArrayList<Station> stations = TransportUtils.getStationsFromLines(getfilteredLines());
+        return stations;
     }
 
-    private ArrayList<Line> filteredLines ()
+    private ArrayList<Station> getNearbyFilteredStations (Coordinate coordinate)
+    {
+        return TransportUtils.getNearbyStations(coordinate,filteredListStations(),1000);
+    }
+
+    private ArrayList<Line> getfilteredLines()
     {
         ArrayList<Line> filteredLines = new ArrayList<>();
         for (Line line:lines)
@@ -346,7 +354,7 @@ public class MainPresenter implements MainContract.Presenter {
         }
         else
         {
-            view.showLinesOnList(TransportUtils.filterLines(filteredLines(),currentBoundingBox));
+            view.showLinesOnList(TransportUtils.filterLines(getfilteredLines(),currentBoundingBox));
         }*/
         PopulateTask populateTask = new PopulateTask();
         populateTask.execute();
@@ -359,11 +367,11 @@ public class MainPresenter implements MainContract.Presenter {
             if (stationsSelected)
             {
                 //view.showStationsOnList(filteredListStations(),userCoordinate);
-                return new Pair<>(true,new Pair<ArrayList<Line>, ArrayList<Station>>(filteredLines(),filteredListStations()));
+                return new Pair<>(true,new Pair<ArrayList<Line>, ArrayList<Station>>(getfilteredLines(),filteredListStations()));
             }
             else
             {
-                return new Pair<>(false,new Pair<ArrayList<Line>, ArrayList<Station>>(filteredLines(),filteredListStations()));
+                return new Pair<>(false,new Pair<ArrayList<Line>, ArrayList<Station>>(getfilteredLines(),filteredListStations()));
             }
 
         }

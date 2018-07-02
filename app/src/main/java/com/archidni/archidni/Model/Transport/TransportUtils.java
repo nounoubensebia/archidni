@@ -22,13 +22,26 @@ public class TransportUtils {
         {
             for (Station station:line.getStations())
             {
-                if (!containsStation(station.getId(),stations))
+                if (!listContainsStation(station.getId(),stations))
                 {
                     stations.add(station);
                 }
             }
         }
         return stations;
+    }
+
+    public static ArrayList<Station> getNearbyStations (Coordinate coordinate,ArrayList<Station> stations,float maxDistance)
+    {
+        ArrayList<Station> closeStations = new ArrayList<>();
+        for (Station station:stations)
+        {
+            if (GeoUtils.distance(station.getCoordinate(),coordinate)<maxDistance)
+            {
+                closeStations.add(station);
+            }
+        }
+        return closeStations;
     }
 
     public static ArrayList<Coordinate> getCoordinatesFromStations (ArrayList<Station> stations)
@@ -52,7 +65,7 @@ public class TransportUtils {
         return stations;
     }
 
-    private static boolean containsStation (int stationId,ArrayList<Station> stations)
+    private static boolean listContainsStation(int stationId, ArrayList<Station> stations)
     {
         for (Station station:stations)
         {

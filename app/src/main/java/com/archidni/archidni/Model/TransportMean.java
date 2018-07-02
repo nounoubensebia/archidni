@@ -1,10 +1,17 @@
 package com.archidni.archidni.Model;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+
 import com.archidni.archidni.App;
 import com.archidni.archidni.R;
 import com.archidni.archidni.UiUtils.SelectorItem;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
+
+import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
 
 /**
  * Created by noure on 02/02/2018.
@@ -232,5 +239,14 @@ public class TransportMean extends SelectorItem {
             case 4 : return R.drawable.ic_transport_mean_4_white;
             default:return -1;
         }
+    }
+
+    public IconGenerator getClusterIconGenerator()
+    {
+        Drawable clusterIcon = getApplicationContext().getResources().getDrawable(R.drawable.ic_lens_black_24dp);
+        //clusterIcon.setColorFilter(getApplicationContext().getResources().getColor(android.R.color.holo_orange_light), PorterDuff.Mode.SRC_ATOP);
+        IconGenerator mClusterIconGenerator = new IconGenerator(getApplicationContext());
+        mClusterIconGenerator.setBackground(clusterIcon);
+        return mClusterIconGenerator;
     }
 }

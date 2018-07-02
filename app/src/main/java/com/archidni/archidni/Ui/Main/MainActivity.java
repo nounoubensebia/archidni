@@ -180,11 +180,26 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 });
             }
         });*/
+
         MapFragment mapView = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
         archidniMap = new ArchidniGoogleMap(mapView, new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 presenter.onMapReady(MainActivity.this,archidniMap.getBoundingBox());
+
+                for (TransportMean transportMean:TransportMean.allTransportMeans)
+                {
+                    archidniMap.addCluster(MainActivity.this,
+                            transportMean.getClusterIconGenerator());
+                }
+
+                archidniMap.setOnCameraMoveListener(new ArchidniGoogleMap.OnCameraMoveListener() {
+                    @Override
+                    public void onCameraMove(Coordinate coordinate, BoundingBox boundingBox, double zoom) {
+                        presenter.onCameraMove(MainActivity.this,coordinate);
+                    }
+                });
+
             }
         });
         transportMean0Text.setOnClickListener(new View.OnClickListener() {
@@ -616,18 +631,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void showStationsOnMap(ArrayList<Station> stations) {
-        //archidniMap.clearMarkersWithTags();
-        archidniMap.createClusters(this, new ArchidniGoogleMap.OnClusterItemClickListener() {
-            @Override
-            public void onClusterItemClick(ArchidniClusterItem archidniClusterItem, Marker marker) {
-                marker.setIcon(ArchidniGoogleMap.getBitmapDescriptor(R.drawable.marker_selected));
-            }
-        });
         for(Station station:stations)
         {
-            /*archidniMap.prepareMarker(station.getCoordinate(),
-                    station.getTransportMean().getMarkerIcon(),station);*/
-            archidniMap.prepareClusterItem(station.getCoordinate(),station.getTransportMean().getMarkerIcon());
+            archidniMap.prepareClusterItem(station.getCoordinate(),
+                    station.getTransportMean().getMarkerIcon(),
+                    station.getTransportMean().getId(),station);
         }
         archidniMap.renderClusters();
         archidniMap.addPreparedAnnotations();

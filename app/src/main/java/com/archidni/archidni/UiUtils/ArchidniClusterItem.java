@@ -8,14 +8,24 @@ public class ArchidniClusterItem implements ClusterItem {
 
     private Coordinate coordinate;
     private int drawable;
+    private Object tag;
 
-    public ArchidniClusterItem(Coordinate coordinate, int drawable) {
+    public ArchidniClusterItem(Coordinate coordinate, int drawable, Object tag) {
         this.coordinate = coordinate;
         this.drawable = drawable;
+        this.tag = tag;
     }
 
     public int getDrawable() {
         return drawable;
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public Object getTag() {
+        return tag;
     }
 
     @Override

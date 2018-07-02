@@ -25,6 +25,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 
@@ -32,10 +34,11 @@ public class ArchidniGoogleMap {
     private GoogleMap map;
     private MapFragment mapFragment;
     private boolean mapLoaded = false;
-    private ClusterManager<ArchidniClusterItem> clusterManager;
+    private ArrayList<ClusterManager<ArchidniClusterItem>> clusterManagers;
     private ArchidniClusterRenderer archidniClusterRenderer;
 
-    public ArchidniGoogleMap(MapFragment mapFragment, final OnMapReadyCallback onMapReadyCallback) {
+    public ArchidniGoogleMap(final MapFragment mapFragment, final OnMapReadyCallback onMapReadyCallback) {
+        clusterManagers = new ArrayList<>();
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -52,7 +55,24 @@ public class ArchidniGoogleMap {
         });
     }
 
-    public void createClusters (Context context, final OnClusterItemClickListener onClusterItemClickListener)
+    public void addCluster (Context context,IconGenerator iconGenerator)
+    {
+        ClusterManager<ArchidniClusterItem> clusterManager = new ClusterManager<>(context,map);
+        clusterManager.setRenderer(new ArchidniClusterRenderer(context,map,clusterManager,iconGenerator));
+        clusterManagers.add(clusterManager);
+    }
+
+    public void setOnCameraMoveListener (final OnCameraMoveListener onCameraMoveListener)
+    {
+        map.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                onCameraMoveListener.onCameraMove(getCenter(),getBoundingBox(),map.getCameraPosition().zoom);
+            }
+        });
+    }
+
+    /*public void createClusters (Context context, final OnClusterItemClickListener onClusterItemClickListener)
     {
         clusterManager = new ClusterManager<>(context,map);
         archidniClusterRenderer = new ArchidniClusterRenderer(context,map,clusterManager);
@@ -65,7 +85,7 @@ public class ArchidniGoogleMap {
                 return true;
             }
         });
-    }
+    }*/
 
     public Coordinate getCenter ()
     {
@@ -210,17 +230,40 @@ public class ArchidniGoogleMap {
         }
     }
 
-    public void prepareClusterItem (Coordinate coordinate,int drawable)
+    public void prepareClusterItem (Coordinate coordinate,int drawable,int clusterId,Object tag)
     {
-        ArchidniClusterItem archidniClusterItem = new ArchidniClusterItem(coordinate,drawable);
-        clusterManager.addItem(archidniClusterItem);
+        ArchidniClusterItem archidniClusterItem = new ArchidniClusterItem(coordinate,drawable,tag);
+        clusterManagers.get(clusterId).addItem(archidniClusterItem);
     }
 
     public void renderClusters ()
     {
-        map.setOnCameraIdleListener(clusterManager);
+        map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                for (ClusterManager<ArchidniClusterItem> clusterManager:clusterManagers)
+                {
+                    clusterManager.onCameraIdle();
+                }
+            }
+        });
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                for (ClusterManager<ArchidniClusterItem> clusterManager:clusterManagers)
+                {
+                    clusterManager.onMarkerClick(marker);
+                }
+                return true;
+            }
+        });
+        for (ClusterManager<ArchidniClusterItem> clusterManager:clusterManagers)
+        {
+            clusterManager.cluster();
+        }
+        /*map.setOnCameraIdleListener(clusterManager);
         map.setOnMarkerClickListener(clusterManager);
-        clusterManager.cluster();
+        clusterManager.cluster();*/
     }
 
     /*public ArchidniClusterItem addClusterItem (Coordinate coordinate,int clusterId)
@@ -289,5 +332,6 @@ public class ArchidniGoogleMap {
     public interface OnClusterItemClickListener {
         void onClusterItemClick (ArchidniClusterItem archidniClusterItem,Marker marker);
     }
+
 
 }

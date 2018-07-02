@@ -61,7 +61,7 @@ public interface MainContract {
         void onLocationMarkerCreated(ArchidniMarker marker);
         void onMapShortClick();
         void onSearchPathClick();
-        void onCameraMove(Context context, Coordinate coordinate, double zoom, BoundingBox boundingBox);
+        void onCameraMove(Context context, Coordinate coordinate);
         void onStationMarkerClick(Station station, ArchidniMarker marker);
         void onRetryClicked(Context context,Coordinate coordinate);
         void onStationFabClick();

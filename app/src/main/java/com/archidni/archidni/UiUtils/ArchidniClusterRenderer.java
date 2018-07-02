@@ -1,9 +1,15 @@
 package com.archidni.archidni.UiUtils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import com.archidni.archidni.R;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
@@ -19,16 +25,38 @@ import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
 
 public class ArchidniClusterRenderer extends DefaultClusterRenderer<ArchidniClusterItem> {
 
+    private IconGenerator iconGenerator;
     private HashMap<ArchidniClusterItem,Marker> markerOptionsHashMap;
+    private BitmapDescriptor clusterIcon;
 
-    public ArchidniClusterRenderer(Context context, GoogleMap map, ClusterManager<ArchidniClusterItem> clusterManager) {
+    public ArchidniClusterRenderer(Context context, GoogleMap map, ClusterManager<ArchidniClusterItem> clusterManager,IconGenerator iconGenerator) {
         super(context, map, clusterManager);
         markerOptionsHashMap = new HashMap<>();
+        this.iconGenerator= iconGenerator;
     }
 
     @Override
     protected void onBeforeClusterItemRendered(ArchidniClusterItem item, MarkerOptions markerOptions) {
         markerOptions.icon(ArchidniGoogleMap.getBitmapDescriptor(item.getDrawable()));
+    }
+
+    @Override
+    protected void onBeforeClusterRendered(Cluster<ArchidniClusterItem> cluster, MarkerOptions markerOptions) {
+        super.onBeforeClusterRendered(cluster, markerOptions);
+        /*final Drawable clusterIcon = getApplicationContext().getResources().getDrawable(R.drawable.marker_selected);
+        //clusterIcon.setColorFilter(getApplicationContext().getResources().getColor(android.R.color.holo_orange_light), PorterDuff.Mode.SRC_ATOP);
+
+        mClusterIconGenerator.setBackground(clusterIcon);
+        Bitmap icon = mClusterIconGenerator.makeIcon(String.valueOf(cluster.getSize()));*/
+        //iconGenerator.setTextAppearance(android.R.style.TextAppearance_DeviceDefault);
+        /*if (cluster.getSize() < 10) {
+            iconGenerator.setContentPadding(40, 20, 0, 0);
+        }
+        else {
+            iconGenerator.setContentPadding(30, 20, 0, 0);
+        }
+        Bitmap icon = iconGenerator.makeIcon(String.valueOf(cluster.getSize()));
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));*/
     }
 
     @Override
