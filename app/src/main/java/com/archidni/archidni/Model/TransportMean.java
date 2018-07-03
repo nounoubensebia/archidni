@@ -1,12 +1,10 @@
 package com.archidni.archidni.Model;
 
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 import com.archidni.archidni.App;
 import com.archidni.archidni.R;
 import com.archidni.archidni.UiUtils.SelectorItem;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
@@ -68,11 +66,17 @@ public class TransportMean extends SelectorItem {
     public int getMarkerIcon()
     {
         switch (getId()){
-            case 0 : return R.drawable.marker_transport_mean_0;
-            case 1 : return R.drawable.marker_transport_mean_1;
-            case 2 : return R.drawable.marker_transport_mean_2;
-            case 3 : return R.drawable.marker_transport_mean_3;
-            case 4 : return R.drawable.marker_transport_mean_4;
+            case 0 : //return R.drawable.marker_transport_mean_0;
+                return R.drawable.marker_transport_0;
+            case 1 :
+                //return R.drawable.marker_transport_mean_1;
+                return R.drawable.marker_transport_1;
+            case 2 : //return R.drawable.marker_transport_mean_2;
+                return R.drawable.marker_transport_2;
+            case 3 : //return R.drawable.marker_transport_mean_3;
+                return R.drawable.marker_transport_3;
+            case 4 : //return R.drawable.marker_transport_mean_4;
+                return R.drawable.marker_transport_3;
             default:return -1;
         }
     }

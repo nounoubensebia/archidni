@@ -37,9 +37,11 @@ public class ArchidniGoogleMap {
     private ArrayList<ClusterManager<ArchidniClusterItem>> clusterManagers;
     private ArchidniClusterRenderer archidniClusterRenderer;
     private OnCameraIdle onCameraIdle;
+    private ArrayList<ArchidniClusterItem> archidniClusterItems;
 
     public ArchidniGoogleMap(final MapFragment mapFragment, final OnMapReadyCallback onMapReadyCallback) {
         clusterManagers = new ArrayList<>();
+        archidniClusterItems = new ArrayList<>();
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -261,8 +263,23 @@ public class ArchidniGoogleMap {
     public void prepareClusterItem (Coordinate coordinate,int drawable,int clusterId,Object tag)
     {
         ArchidniClusterItem archidniClusterItem = new ArchidniClusterItem(coordinate,drawable,tag);
+        for (ArchidniClusterItem archidniClusterItem1:archidniClusterItems)
+        {
+            if (archidniClusterItem1.getCoordinate().equals(archidniClusterItem.getCoordinate()))
+            {
+                return;
+            }
+        }
         clusterManagers.get(clusterId).addItem(archidniClusterItem);
     }
+
+    /*public void removeClusterItemWithTag (Object tag)
+    {
+        for (ArchidniClusterItem archidniClusterItem:archidniClusterItems)
+        {
+            if (archidniClusterItem.getTag().equals(ta))
+        }
+    }*/
 
     public void renderClusters ()
     {
