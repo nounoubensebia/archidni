@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:orientation="vertical"
+    android:background="#EDEDED"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/text_coordinate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:drawableLeft="@drawable/ic_my_location_24dp"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:text="31.565,3.5659" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EDEDED"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:text="Détails"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/text_capacity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EDEDED"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:text="Capacité : 1000 Places"
+        android:textSize="16sp" />
+
+</LinearLayout>

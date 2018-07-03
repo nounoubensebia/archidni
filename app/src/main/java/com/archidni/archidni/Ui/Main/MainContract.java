@@ -5,6 +5,7 @@ import android.content.Context;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.User;
@@ -29,12 +30,12 @@ public interface MainContract {
         void obtainUserLocation(OnUserLocationObtainedCallback onUserLocationObtainedCallback);
         void trackUser();
         void showSlidingPanel();
-        void showLocationLayout(Place place,Place oldPlace);
-        void hideLocationLayout(ArchidniMarker archidniMarker);
+        void showLocationLayout(Place place, Place oldPlace, com.google.android.gms.maps.model.Marker marker);
+        void hideLocationLayout(com.google.android.gms.maps.model.Marker marker);
         void startPathSearchActivity(Place origin,Place destination);
         void showLinesLoadingLayout();
         void hideLinesLoadingLayout();
-        void showStationsOnMap(ArrayList<Station> stations);
+        void showPlacesOnMap(ArrayList<? extends Place> places);
         void showLinesOnList(ArrayList<Line> lines);
         void showStationsOnList(ArrayList<Station> stations,Coordinate userCoordinate);
         void showZoomInsufficientLayout();
@@ -49,20 +50,22 @@ public interface MainContract {
         void hideOverlayLayout();
         void showOverlayLayout();
         void startFavoritesActivity();
+        Coordinate getMapCenter ();
     }
 
     interface Presenter {
         void toggleTransportMean(int transportMeanId);
         void toggleStationsLines(boolean stationsTabbed);
         void onSearchClicked();
-        void onMapReady(Context context,BoundingBox boundingBox);
+        void onMapReady(Context context,BoundingBox boundingBox,Coordinate coordinate);
         void onMyLocationFabClick();
         void onShowSlidingPanelFabClick();
-        void onLocationMarkerCreated(ArchidniMarker marker);
+        void onLocationMarkerCreated(com.google.android.gms.maps.model.Marker marker);
         void onMapShortClick();
         void onSearchPathClick();
         void onCameraMove(Context context, Coordinate coordinate);
-        void onStationMarkerClick(Station station, ArchidniMarker marker);
+        void onStationMarkerClick(Station station, com.google.android.gms.maps.model.Marker marker);
+        void onParkingMarkerClick (Parking parking, com.google.android.gms.maps.model.Marker marker);
         void onRetryClicked(Context context,Coordinate coordinate);
         void onStationFabClick();
         void onStationItemClick(Station station);

@@ -13,6 +13,7 @@ public class IntentUtils {
     public static final String STATION_STATION = "STATION_STATION";
     public static final String LINE_LINE = "LINE_LINE";
     public static final String PATH = "PATH";
+    public static final String PARKING = "PARKING";
 
     public static class PathSearchIntents {
 

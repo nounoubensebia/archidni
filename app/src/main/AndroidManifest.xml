@@ -94,9 +94,8 @@
         <activity android:name=".Ui.TelephericTarifsActivity" />
         <activity android:name=".Ui.ExchangePolesActivity" />
         <activity android:name=".Ui.ParkingsActivity" />
-        <activity android:name=".Ui.TestActivity">
-
-        </activity>
+        <activity android:name=".Ui.TestActivity"></activity>
+        <activity android:name=".Ui.Parking.ParkingActivity"></activity>
     </application>
 
 </manifest>

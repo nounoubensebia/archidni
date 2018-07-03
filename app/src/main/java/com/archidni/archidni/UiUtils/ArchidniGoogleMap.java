@@ -36,6 +36,7 @@ public class ArchidniGoogleMap {
     private boolean mapLoaded = false;
     private ArrayList<ClusterManager<ArchidniClusterItem>> clusterManagers;
     private ArchidniClusterRenderer archidniClusterRenderer;
+    private OnCameraIdle onCameraIdle;
 
     public ArchidniGoogleMap(final MapFragment mapFragment, final OnMapReadyCallback onMapReadyCallback) {
         clusterManagers = new ArrayList<>();
@@ -55,10 +56,31 @@ public class ArchidniGoogleMap {
         });
     }
 
-    public void addCluster (Context context,IconGenerator iconGenerator)
+    public void setOnCameraIdle(OnCameraIdle onCameraIdle) {
+        this.onCameraIdle = onCameraIdle;
+    }
+
+    public void addCluster (Context context, IconGenerator iconGenerator)
     {
         ClusterManager<ArchidniClusterItem> clusterManager = new ClusterManager<>(context,map);
         clusterManager.setRenderer(new ArchidniClusterRenderer(context,map,clusterManager,iconGenerator));
+        clusterManagers.add(clusterManager);
+    }
+
+    public void addCluster (Context context, IconGenerator iconGenerator, final OnClusterItemClickListener onClusterItemClickListener)
+    {
+        final ClusterManager<ArchidniClusterItem> clusterManager = new ClusterManager<>(context,map);
+        clusterManager.setRenderer(new ArchidniClusterRenderer(context,map,clusterManager,iconGenerator));
+        clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<ArchidniClusterItem>() {
+            @Override
+            public boolean onClusterItemClick(ArchidniClusterItem archidniClusterItem) {
+                ArchidniClusterRenderer archidniClusterRenderer = (ArchidniClusterRenderer)
+                        clusterManager.getRenderer();
+                onClusterItemClickListener.onClusterItemClick(archidniClusterItem,
+                        archidniClusterRenderer.getMarker(archidniClusterItem));
+                return true;
+            }
+        });
         clusterManagers.add(clusterManager);
     }
 
@@ -120,6 +142,11 @@ public class ArchidniGoogleMap {
         });
     }
 
+    public void changeMarkerIcon (Marker marker,int drawableRes)
+    {
+        marker.setIcon(getBitmapDescriptor(drawableRes));
+    }
+
 
     public void setMyLocationEnabled (boolean enabled)
     {
@@ -139,6 +166,7 @@ public class ArchidniGoogleMap {
     {
        //TODO implement
     }
+
 
     public void setOnMapLongClickListener (final OnMapLongClickListener onMapLongClickListener)
     {
@@ -241,6 +269,7 @@ public class ArchidniGoogleMap {
         map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
+                onCameraIdle.onCameraIdle(getCenter(),getBoundingBox(),map.getCameraPosition().zoom);
                 for (ClusterManager<ArchidniClusterItem> clusterManager:clusterManagers)
                 {
                     clusterManager.onCameraIdle();
@@ -310,6 +339,10 @@ public class ArchidniGoogleMap {
         } else {
             return BitmapDescriptorFactory.fromResource(id);
         }
+    }
+
+    public interface OnCameraIdle {
+        void onCameraIdle (Coordinate coordinate,BoundingBox boundingBox,double zoom);
     }
 
     public interface OnCameraMoveListener {

@@ -29,7 +29,8 @@ public class ArchidniClusterRenderer extends DefaultClusterRenderer<ArchidniClus
     private HashMap<ArchidniClusterItem,Marker> markerOptionsHashMap;
     private BitmapDescriptor clusterIcon;
 
-    public ArchidniClusterRenderer(Context context, GoogleMap map, ClusterManager<ArchidniClusterItem> clusterManager,IconGenerator iconGenerator) {
+    public ArchidniClusterRenderer(Context context, GoogleMap map, ClusterManager<ArchidniClusterItem> clusterManager,
+                                   IconGenerator iconGenerator) {
         super(context, map, clusterManager);
         markerOptionsHashMap = new HashMap<>();
         this.iconGenerator= iconGenerator;
@@ -62,6 +63,7 @@ public class ArchidniClusterRenderer extends DefaultClusterRenderer<ArchidniClus
     @Override
     protected void onClusterItemRendered(ArchidniClusterItem clusterItem, Marker marker) {
         super.onClusterItemRendered(clusterItem, marker);
+        marker.setTag(clusterItem.getTag());
         markerOptionsHashMap.put(clusterItem,marker);
     }
 
