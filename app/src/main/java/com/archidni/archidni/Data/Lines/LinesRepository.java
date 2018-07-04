@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.LineStationSuggestion;
+import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 
@@ -41,13 +42,13 @@ public class LinesRepository {
         getLinesOnlineDataStoreInstance().cancelRequests(context);
     }
 
-    public void getLines(Context context,Coordinate coordinate, final OnSearchCompleted onSearchCompleted)
+    public void getLines(Context context,Coordinate coordinate, final OnLinesAndPlacesSearchCompleted onSearchCompleted)
     {
         LinesOnlineDataStore linesOnlineDataStore = getLinesOnlineDataStoreInstance();
-        linesOnlineDataStore.getLines(context,coordinate, new LinesOnlineDataStore.OnSearchCompleted() {
+        linesOnlineDataStore.getLines(context, coordinate, new LinesOnlineDataStore.OnLinesAndPlacesSearchCompleted() {
             @Override
-            public void onLinesFound(ArrayList<Line> lines) {
-                onSearchCompleted.onLinesFound(lines);
+            public void onLinesAndPlacesFound(ArrayList<Line> lines, ArrayList<Place> places) {
+                onSearchCompleted.onFound(lines,places);
             }
 
             @Override
@@ -60,7 +61,7 @@ public class LinesRepository {
     public void getLinesPassingByStation (Context context, Station station, final OnSearchCompleted onSearchCompleted)
     {
         LinesOnlineDataStore linesOnlineDataStore = getLinesOnlineDataStoreInstance();
-        linesOnlineDataStore.getLinesPassingByStation(context,station, new LinesOnlineDataStore.OnSearchCompleted() {
+        linesOnlineDataStore.getLinesPassingByStation(context,station, new LinesOnlineDataStore.OnLinesSearchCompleted() {
             @Override
             public void onLinesFound(ArrayList<Line> lines) {
                 onSearchCompleted.onLinesFound(lines);
@@ -76,6 +77,12 @@ public class LinesRepository {
     public interface OnSearchCompleted {
         void onLinesFound(ArrayList<Line> lines);
         void onError();
+    }
+
+    public interface OnLinesAndPlacesSearchCompleted
+    {
+        void onFound (ArrayList<Line> lines, ArrayList<Place> places);
+        void onError ();
     }
 
     private LinesOnlineDataStore getLinesOnlineDataStoreInstance ()

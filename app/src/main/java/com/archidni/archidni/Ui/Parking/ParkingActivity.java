@@ -49,8 +49,8 @@ public class ParkingActivity extends AppCompatActivity implements ParkingContrac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
         setContentView(R.layout.activity_parking);
+        ButterKnife.bind(this);
         Bundle bundle = getIntent().getExtras();
         Parking parking = Parking.fromJson(bundle.getString(IntentUtils.PARKING));
         presenter = new ParkingPresenter(parking,this);
@@ -85,7 +85,7 @@ public class ParkingActivity extends AppCompatActivity implements ParkingContrac
     @Override
     public void showParkingOnActivity(Parking parking) {
         coordinateText.setText(parking.getCoordinate().getLatitude()+","+parking.getCoordinate().getLongitude());
-        capacityText.setText(parking.getCapacity());
+        capacityText.setText("Capacité : "+parking.getCapacity()+" places");
         nameText.setText(parking.getMainText());
     }
 
@@ -99,7 +99,7 @@ public class ParkingActivity extends AppCompatActivity implements ParkingContrac
 
     @Override
     public void showParkingOnMap(Parking parking) {
-        archidniMap.moveCamera(parking.getCoordinate());
+        archidniMap.moveCamera(parking.getCoordinate(),14);
         archidniMap.addMarker(parking.getCoordinate(),R.drawable.marker_selected);
     }
 }

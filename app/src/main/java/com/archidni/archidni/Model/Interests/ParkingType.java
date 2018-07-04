@@ -2,6 +2,7 @@ package com.archidni.archidni.Model.Interests;
 
 import com.archidni.archidni.R;
 import com.archidni.archidni.UiUtils.SelectorItem;
+import com.google.maps.android.ui.IconGenerator;
 
 public class ParkingType extends SelectorItem {
 
@@ -37,5 +38,10 @@ public class ParkingType extends SelectorItem {
     @Override
     public int getCoordinateDrawable() {
         return R.drawable.ic_coordinate_transport_mean_1;
+    }
+
+    @Override
+    public IconGenerator getClusterIconGenerator() {
+        return null;
     }
 }

@@ -37,6 +37,7 @@ import com.archidni.archidni.Ui.Adapters.StationAdapter;
 import com.archidni.archidni.Ui.ExchangePolesActivity;
 import com.archidni.archidni.Ui.Favorites.FavoritesActivity;
 import com.archidni.archidni.Ui.Line.LineActivity;
+import com.archidni.archidni.Ui.Parking.ParkingActivity;
 import com.archidni.archidni.Ui.ParkingsActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
@@ -160,10 +161,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             public void onMapReady(GoogleMap googleMap) {
                 presenter.onMapReady(MainActivity.this,archidniMap.getBoundingBox(),archidniMap.getCenter());
 
-                for (TransportMean transportMean:TransportMean.allTransportMeans)
+                for (SelectorItem selectorItem:SelectorItem.allItems)
                 {
                     archidniMap.addCluster(MainActivity.this,
-                            transportMean.getClusterIconGenerator(), new ArchidniGoogleMap.OnClusterItemClickListener() {
+                            selectorItem.getClusterIconGenerator(), new ArchidniGoogleMap.OnClusterItemClickListener() {
                                 @Override
                                 public void onClusterItemClick(ArchidniClusterItem archidniClusterItem, Marker marker) {
                                     if (archidniClusterItem.getTag() instanceof Station)
@@ -489,7 +490,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void showLocationLayout(Place place,Place oldSelectedPlace,Marker marker) {
+    public void showLocationLayout(Place place,Marker oldSelectedMarker,Marker marker) {
         container.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         mainText.setText(place.getMainText());
         secondaryText.setText(place.getSecondaryText());
@@ -508,6 +509,20 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         {
             durationDistanceText.setText("");
         }
+
+        if (oldSelectedMarker!=null)
+        {
+            Object tag = oldSelectedMarker.getTag();
+            if (tag instanceof Station)
+            {
+                archidniMap.changeMarkerIcon(oldSelectedMarker,((Station) tag).getTransportMean().getMarkerIcon());
+            }
+            else
+            {
+                archidniMap.changeMarkerIcon(oldSelectedMarker,R.drawable.marker_selected);
+            }
+        }
+
         locationLayout.setVisibility(View.VISIBLE);
         showSlidingUpPanelFab.setVisibility(View.GONE);
         myLocationFab.setVisibility(View.GONE);
@@ -519,14 +534,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 container.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             }
         },250);
+        locationLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onPlaceClick();
+            }
+        });
         if (!(place instanceof Station))
         {
-            locationLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
             locationIcon.setImageDrawable(ContextCompat.getDrawable(this,
                     R.drawable.ic_marker_green_24dp));
             getPathLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
@@ -534,12 +549,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
         else
         {
-            locationLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    presenter.onStationFabClick();
-                }
-            });
             Station station = (Station) place;
             locationIcon.setImageDrawable(ContextCompat.getDrawable(this,
                     station.getTransportMean().getMarkerIcon()));
@@ -598,6 +607,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         searchUnderwayLayout.setVisibility(View.GONE);
     }
 
+    @Override
+    public void startParkingActivity(Parking parking) {
+        Intent intent = new Intent(this, ParkingActivity.class);
+        intent.putExtra(IntentUtils.PARKING,parking.toJson());
+        startActivity(intent);
+    }
 
 
     @Override
@@ -610,6 +625,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 archidniMap.prepareClusterItem(station.getCoordinate(),
                         station.getTransportMean().getMarkerIcon(),
                         station.getTransportMean().getId(),station);
+            }
+            else
+            {
+                Parking parking = (Parking) place;
+                archidniMap.prepareClusterItem(parking.getCoordinate(),
+                        R.drawable.marker_selected,5,parking);
             }
         }
         archidniMap.renderClusters();

@@ -12,6 +12,8 @@ import com.archidni.archidni.Data.OnlineDataStore;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.LineStationSuggestion;
+import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.LineSection;
 import com.archidni.archidni.Model.Transport.Station;
@@ -22,6 +24,7 @@ import com.archidni.archidni.Model.Transport.TramwayMetroLine;
 import com.archidni.archidni.Model.Transport.TramwayMetroTrip;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.TimeUtils;
+import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,37 +42,62 @@ public class LinesOnlineDataStore extends OnlineDataStore {
 
     private static final String GET_LINES_URL = "/api/v1/line";
     private static final String GET_STATIONS_URL = "/api/v1/station";
+    private static final String GET_LINES_AND_PLACES_URL = "/api/linesAndPlaces";
 
 
     public void getLines(Context context, final Coordinate position,
-                         final OnSearchCompleted onSearchCompleted) {
+                         final OnLinesAndPlacesSearchCompleted onLinesAndPlacesSearchCompleted) {
         LinkedHashMap map = new LinkedHashMap();
         String positionString = position.getLatitude() + "," + position.getLongitude();
         map.put("position", positionString);
         cancelRequests(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                AppSingleton.buildGetUrl(SharedPrefsUtils.getServerUrl(context)+GET_LINES_URL, map),
+                //AppSingleton.buildGetUrl(SharedPrefsUtils.getServerUrl(context)+GET_LINES_URL, map),
+                SharedPrefsUtils.getServerUrl(context)+GET_LINES_AND_PLACES_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
                         try {
                             JSONObject root = new JSONObject(response);
-                            JSONArray data = root.getJSONArray("data");
+                            JSONArray data = root.getJSONArray("lines");
                             ArrayList<Line> lines = parseLines(data);
-                            onSearchCompleted.onLinesFound(lines);
+                            ArrayList<Place> places = new ArrayList<>();
+                            ArrayList<Parking> parkings = parseParkings(root.getJSONArray("parkings"));
+                            places.addAll(parkings);
+                            onLinesAndPlacesSearchCompleted.onLinesAndPlacesFound(lines,places);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            onSearchCompleted.onLinesFound(new ArrayList<Line>());
+                            onLinesAndPlacesSearchCompleted.onError();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                onSearchCompleted.onError();
+                onLinesAndPlacesSearchCompleted.onError();
             }
         });
         AppSingleton.getInstance(context).addToRequestQueue(stringRequest, getTag());
+    }
+
+    public ArrayList<Parking> parseParkings (JSONArray parkingsJson)
+    {
+        ArrayList<Parking> parkings = new ArrayList<>();
+        for (int i=0;i<parkingsJson.length();i++)
+        {
+            try {
+                JSONObject parkingObject = parkingsJson.getJSONObject(i);
+                String name = parkingObject.getString("name");
+                double latitude = parkingObject.getDouble("latitude");
+                double longitude = parkingObject.getDouble("longitude");
+                int capacity = parkingObject.getInt("capacity");
+                long id = parkingObject.getLong("id");
+                parkings.add(new Parking(name,new Coordinate(latitude,longitude),capacity,id));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return parkings;
     }
 
 
@@ -103,7 +131,7 @@ public class LinesOnlineDataStore extends OnlineDataStore {
     }
 
     public void getLinesPassingByStation(Context context, final Station station,
-                                         final OnSearchCompleted onSearchCompleted) {
+                                         final OnLinesSearchCompleted onLinesSearchCompleted) {
         cancelRequests(context);
         String url = SharedPrefsUtils.getServerUrl(context)+GET_STATIONS_URL + "/" + station.getId()
                 + "/lines";
@@ -176,16 +204,16 @@ public class LinesOnlineDataStore extends OnlineDataStore {
                         }
                         lines.add(line);
                     }
-                    onSearchCompleted.onLinesFound(lines);
+                    onLinesSearchCompleted.onLinesFound(lines);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    onSearchCompleted.onLinesFound(new ArrayList<Line>());
+                    onLinesSearchCompleted.onLinesFound(new ArrayList<Line>());
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                onSearchCompleted.onError();
+                onLinesSearchCompleted.onError();
             }
         });
         AppSingleton.getInstance(context).addToRequestQueue(stringRequest, getTag());
@@ -248,7 +276,13 @@ public class LinesOnlineDataStore extends OnlineDataStore {
         return "LINE";
     }
 
-    public interface OnSearchCompleted {
+
+    public interface OnLinesAndPlacesSearchCompleted {
+        void onLinesAndPlacesFound (ArrayList<Line> lines, ArrayList<Place> places);
+        void onError();
+    }
+
+    public interface OnLinesSearchCompleted {
         void onLinesFound(ArrayList<Line> lines);
         void onError();
     }

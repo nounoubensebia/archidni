@@ -9,10 +9,16 @@ import java.io.Serializable;
 public class Parking extends Place implements Serializable {
 
     private int capacity;
+    private long id;
 
-    public Parking (String name,Coordinate coordinate)
-    {
-        super(name,"",coordinate);
+    public Parking(String mainText,Coordinate coordinate, int capacity, long id) {
+        super(mainText, "Capacité : "+capacity, coordinate);
+        this.capacity = capacity;
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public int getCapacity() {

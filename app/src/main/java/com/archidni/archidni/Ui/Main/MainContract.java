@@ -30,11 +30,12 @@ public interface MainContract {
         void obtainUserLocation(OnUserLocationObtainedCallback onUserLocationObtainedCallback);
         void trackUser();
         void showSlidingPanel();
-        void showLocationLayout(Place place, Place oldPlace, com.google.android.gms.maps.model.Marker marker);
+        void showLocationLayout(Place place, com.google.android.gms.maps.model.Marker oldSelectedMarker, com.google.android.gms.maps.model.Marker marker);
         void hideLocationLayout(com.google.android.gms.maps.model.Marker marker);
         void startPathSearchActivity(Place origin,Place destination);
         void showLinesLoadingLayout();
         void hideLinesLoadingLayout();
+        void startParkingActivity(Parking parking);
         void showPlacesOnMap(ArrayList<? extends Place> places);
         void showLinesOnList(ArrayList<Line> lines);
         void showStationsOnList(ArrayList<Station> stations,Coordinate userCoordinate);
@@ -67,11 +68,11 @@ public interface MainContract {
         void onStationMarkerClick(Station station, com.google.android.gms.maps.model.Marker marker);
         void onParkingMarkerClick (Parking parking, com.google.android.gms.maps.model.Marker marker);
         void onRetryClicked(Context context,Coordinate coordinate);
-        void onStationFabClick();
         void onStationItemClick(Station station);
         void onLineItemClicked(Line line);
         void onLinesStationsFindClick();
         void onLogoutClick();
+        void onPlaceClick();
         void onFavoritesClick();
         void onStop(Context context);
     }

@@ -29,6 +29,7 @@ public class MainPresenter implements MainContract.Presenter {
     private boolean locationLayoutVisible = false;
     private Place selectedLocation;
     private ArrayList<Line> lines;
+    private ArrayList<Place> interestPlaces;
     private LinesRepository linesRepository;
     private Marker selectedMarker;
     private static final int MIN_ZOOM = 12;
@@ -51,6 +52,7 @@ public class MainPresenter implements MainContract.Presenter {
         lines = new ArrayList<>();
         searchCoordinates = new ArrayList<>();
         view.showDrawerLayout(user);
+        interestPlaces = new ArrayList<>();
     }
 
     @Override
@@ -251,7 +253,7 @@ public class MainPresenter implements MainContract.Presenter {
     private void searchLines (Context context,Coordinate coordinate)
     {
         searchUnderway = true;
-        linesRepository.getLines(context,coordinate, new LinesRepository.OnSearchCompleted() {
+        /*linesRepository.getLines(context,coordinate, new LinesRepository.OnSearchCompleted() {
             @Override
             public void onLinesFound(ArrayList<Line> lines) {
                 errorHappened = false;
@@ -259,10 +261,10 @@ public class MainPresenter implements MainContract.Presenter {
                 view.hideLinesLoadingLayout();
                 view.showLinesOnList(lines);
                 mapCenterCoordinate = view.getMapCenter();
-                ArrayList<Place> places = new ArrayList<>();
-                places.addAll(TransportUtils.getStationsFromLines(getfilteredLines()));
+                ArrayList<Place> interestPlaces = new ArrayList<>();
+                interestPlaces.addAll(TransportUtils.getStationsFromLines(getfilteredLines()));
                 populateList();
-                view.showPlacesOnMap(places);
+                view.showPlacesOnMap(interestPlaces);
                 searchUnderway = false;
             }
 
@@ -271,6 +273,28 @@ public class MainPresenter implements MainContract.Presenter {
                 errorHappened = true;
                 view.hideLinesLoadingLayout();
                 view.showSearchErrorLayout();
+            }
+        });*/
+        linesRepository.getLines(context, coordinate, new LinesRepository.OnLinesAndPlacesSearchCompleted() {
+            @Override
+            public void onFound(ArrayList<Line> lines, ArrayList<Place> places) {
+                errorHappened = false;
+                addLines(lines);
+                view.hideLinesLoadingLayout();
+                view.showLinesOnList(lines);
+                mapCenterCoordinate = view.getMapCenter();
+                MainPresenter.this.interestPlaces.addAll(places);
+                ArrayList<Place> placesToShow = new ArrayList<>();
+                placesToShow.addAll(places);
+                placesToShow.addAll(TransportUtils.getStationsFromLines(getfilteredLines()));
+                populateList();
+                view.showPlacesOnMap(placesToShow);
+                searchUnderway = false;
+            }
+
+            @Override
+            public void onError() {
+
             }
         });
     }
@@ -288,7 +312,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onStationMarkerClick(Station station, Marker marker) {
-            view.showLocationLayout(station,selectedLocation,marker);
+            view.showLocationLayout(station,selectedMarker,marker);
             selectedMarker = marker;
             locationLayoutVisible = true;
             view.animateCameraToLocation(station.getCoordinate());
@@ -297,7 +321,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onParkingMarkerClick(Parking parking, Marker marker) {
-        view.showLocationLayout(parking,selectedLocation,marker);
+        view.showLocationLayout(parking,selectedMarker,marker);
         selectedMarker = marker;
         locationLayoutVisible = true;
         view.animateCameraToLocation(parking.getCoordinate());
@@ -311,10 +335,11 @@ public class MainPresenter implements MainContract.Presenter {
         searchLines(context,currentCoordinate);
     }
 
-    @Override
+    /*@Override
     public void onStationFabClick() {
         view.startStationActivity((Station)selectedLocation);
-    }
+    }*/
+
 
     @Override
     public void onStationItemClick(Station station) {
@@ -334,6 +359,18 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onLogoutClick() {
         view.logoutUser();
+    }
+
+    @Override
+    public void onPlaceClick() {
+        if (selectedLocation instanceof Station)
+        {
+            view.startStationActivity((Station)selectedLocation);
+        }
+        else
+        {
+            view.startParkingActivity((Parking)selectedLocation);
+        }
     }
 
     @Override
