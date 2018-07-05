@@ -26,6 +26,11 @@ public class PathDetailsPresenter implements PathDetailsContract.Presenter {
         view.showPathOnMap(path);
     }
 
+    /*@Override
+    public void onMapPrepared() {
+
+    }*/
+
     @Override
     public void onStartNavigationClick() {
         view.startPathNavigationActivity(path);

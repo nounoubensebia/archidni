@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class MainPresenter implements MainContract.Presenter {
     private MainContract.View view;
     private TransportMeansSelector transportMeansSelector;
-    private boolean stationsSelected = true;
+    private int selectedItem;
     private boolean locationLayoutVisible = false;
     private Place selectedLocation;
     private ArrayList<Line> lines;
@@ -41,6 +41,10 @@ public class MainPresenter implements MainContract.Presenter {
     private Coordinate userCoordinate;
     private boolean errorHappened = false;
     private User user;
+
+    public static final int STATIONS_SELECTED = 0;
+    public static final int LINES_SELECTED = 1;
+    public static final int INTERESTS_SELECTED = 2;
 
     public MainPresenter(MainContract.View view, User user) {
         this.view = view;
@@ -64,25 +68,38 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void toggleStationsLines(boolean stationsTabbed) {
-        if (stationsTabbed)
+    public void toggleStationsLines(int selectedItem) {
+        /*if (stationsTabbed)
         {
             if (!stationsSelected) stationsSelected = true;
         }
         else
         {
             if (stationsSelected) stationsSelected = false;
+        }*/
+        if (selectedItem!=this.selectedItem)
+        {
+            this.selectedItem = selectedItem;
         }
         populateList();
-        view.updateStationsLinesLayout(stationsSelected);
+        view.updateStationsLinesLayout(selectedItem);
     }
 
     public void populateList ()
     {
-        if (stationsSelected)
+        if (selectedItem == STATIONS_SELECTED)
             view.showStationsOnList(getNearbyFilteredStations(mapCenterCoordinate),userCoordinate);
-        else
+        if (selectedItem == LINES_SELECTED)
             view.showLinesOnList(getfilteredLines());
+        if (selectedItem == INTERESTS_SELECTED)
+        {
+            ArrayList<Parking> parkings = new ArrayList<>();
+            for (Place place:interestPlaces)
+            {
+                parkings.add((Parking)place);
+            }
+            view.showPlacesOnList(parkings);
+        }
     }
 
     @Override
@@ -384,6 +401,11 @@ public class MainPresenter implements MainContract.Presenter {
         //linesRepository.cancelAllRequests(context);
     }
 
+    @Override
+    public void onParkingClick(Parking parking) {
+        view.startParkingActivity(parking);
+    }
+
     private ArrayList<Station> filteredListStations ()
     {
         ArrayList<Station> stations = TransportUtils.getStationsFromLines(getfilteredLines());
@@ -410,11 +432,11 @@ public class MainPresenter implements MainContract.Presenter {
 
 
 
-    private class PopulateTask extends AsyncTask<Void,Void,Pair<Boolean,Pair<ArrayList<Line>,ArrayList<Station>>>>
+    /*private class PopulateTask extends AsyncTask<Void,Void,Pair<Boolean,Pair<ArrayList<Line>,ArrayList<Station>>>>
     {
         @Override
         protected Pair<Boolean,Pair<ArrayList<Line>,ArrayList<Station>>> doInBackground(Void... voids) {
-            if (stationsSelected)
+            /*if (stationsSelected)
             {
                 //view.showStationsOnList(filteredListStations(),userCoordinate);
                 return new Pair<>(true,new Pair<ArrayList<Line>, ArrayList<Station>>(getfilteredLines(),filteredListStations()));
@@ -422,16 +444,16 @@ public class MainPresenter implements MainContract.Presenter {
             else
             {
                 return new Pair<>(false,new Pair<ArrayList<Line>, ArrayList<Station>>(getfilteredLines(),filteredListStations()));
-            }
+            }*/
 
-        }
+       // }
 
-        @Override
+       /* @Override
         protected void onPostExecute(Pair<Boolean, Pair<ArrayList<Line>, ArrayList<Station>>> booleanPairPair) {
             if (booleanPairPair.first)
                 view.showStationsOnList(booleanPairPair.second.second,userCoordinate);
             else
                 view.showLinesOnList(booleanPairPair.second.first);
         }
-    }
+    }*/
 }

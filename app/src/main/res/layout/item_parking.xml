@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:id="@+id/container"
+    android:paddingBottom="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:background="@drawable/shape_rect_white_rounded__8dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@+id/image_transport_mean_icon"
+            app:srcCompat="@drawable/marker_parking"
+            android:layout_width="64dp"
+            android:layout_height="64dp" />
+        <LinearLayout
+            android:layout_gravity="top"
+            android:layout_marginLeft="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginLeft="16dp"
+                android:id="@+id/text_name"
+                android:textColor="@color/color_transport_mean_selected_1"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="16sp"
+                android:text="Parking Ali mellah"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginLeft="16dp"
+                    android:id="@+id/text_capacity"
+                    android:layout_width="wrap_content"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:drawablePadding="8dp"
+                    android:text="Capacité : 5000 places"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+</LinearLayout>

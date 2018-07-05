@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public interface MainContract {
     interface View {
         void updateMeansSelectionLayout(TransportMeansSelector transportMeansSelector);
-        void updateStationsLinesLayout(boolean stationsSelected);
+        void updateStationsLinesLayout(int selectedItem);
         void startSearchActivity(Place userLocation);
         void setUserLocationEnabled(boolean enable);
         void moveCameraToUserLocation();
@@ -51,12 +51,13 @@ public interface MainContract {
         void hideOverlayLayout();
         void showOverlayLayout();
         void startFavoritesActivity();
+        void showPlacesOnList(ArrayList<Parking> places);
         Coordinate getMapCenter ();
     }
 
     interface Presenter {
         void toggleTransportMean(int transportMeanId);
-        void toggleStationsLines(boolean stationsTabbed);
+        void toggleStationsLines(int selectedItem);
         void onSearchClicked();
         void onMapReady(Context context,BoundingBox boundingBox,Coordinate coordinate);
         void onMyLocationFabClick();
@@ -75,6 +76,7 @@ public interface MainContract {
         void onPlaceClick();
         void onFavoritesClick();
         void onStop(Context context);
+        void onParkingClick (Parking parking);
     }
 
     interface OnUserLocationObtainedCallback {

@@ -46,6 +46,8 @@ public class ArchidniGoogleMap {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
+                map.getUiSettings().setCompassEnabled(false);
+                map.getUiSettings().setMyLocationButtonEnabled(false);
                 map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                     @Override
                     public void onMapLoaded() {
@@ -213,6 +215,16 @@ public class ArchidniGoogleMap {
             points.add(new LatLng(c.getLatitude(),c.getLongitude()));
         }
         map.addPolyline(new PolylineOptions().addAll(points).color(ContextCompat.getColor(context,colorResourceId)).width(6));
+    }
+
+    public void preparePolyline (Context context, ArrayList<Coordinate> coordinates,int colorResourceId,int width)
+    {
+        ArrayList<LatLng> points = new ArrayList<>();
+        for (Coordinate c:coordinates)
+        {
+            points.add(new LatLng(c.getLatitude(),c.getLongitude()));
+        }
+        map.addPolyline(new PolylineOptions().addAll(points).color(ContextCompat.getColor(context,colorResourceId)).width(width));
     }
 
     public void animateCameraToBounds (ArrayList<Coordinate> bounds, final int padding, final int duration)

@@ -6,11 +6,12 @@
     android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <com.mapbox.mapboxsdk.maps.MapView
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mapView"
-        android:layout_width="match_parent"
         android:layout_weight="2"
-        app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
         android:layout_height="0dp" />
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"

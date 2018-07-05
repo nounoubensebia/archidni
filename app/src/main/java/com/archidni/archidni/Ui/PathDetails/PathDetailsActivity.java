@@ -15,8 +15,12 @@ import com.archidni.archidni.Model.Path.PathInstruction;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.PathInstructionAdapter;
 import com.archidni.archidni.Ui.PathNavigation.PathNavigationActivity;
+import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.UiUtils.ViewUtils;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.MapView;
 
 import java.util.ArrayList;
@@ -28,14 +32,13 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
 
     @BindView(R.id.list_instructions)
     ListView instructionsList;
-    @BindView(R.id.mapView)
-    MapView mapView;
+    MapFragment mapView;
     @BindView(R.id.text_start_navigation)
     TextView startNavigationText;
     @BindView(R.id.text_total_duration)
     TextView durationText;
 
-    private ArchidniMap archidniMap;
+    private ArchidniGoogleMap archidniMap;
 
     private PathDetailsContract.Presenter presenter;
 
@@ -52,13 +55,24 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     private void initViews (Bundle bundle)
     {
         ButterKnife.bind(this);
-        archidniMap = new ArchidniMap(mapView, bundle, new ArchidniMap.OnMapReadyCallback() {
+
+        mapView = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
+        archidniMap = new ArchidniGoogleMap(mapView, new OnMapReadyCallback() {
+
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                presenter.onMapReady();
+            }
+        });
+
+
+        /*archidniMap = new ArchidniMap(mapView, bundle, new ArchidniMap.OnMapReadyCallback() {
             @Override
             public void onMapReady() {
                 presenter.onMapReady();
                 archidniMap.setMyLocationEnabled(true);
             }
-        });
+        });*/
         startNavigationText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,7 +111,7 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
                 {
                     archidniMap.clearMap();
                     archidniMap.animateCameraToBounds(polyline,50,500);
-                    archidniMap.preparePolyline(PathDetailsActivity.this,polyline,R.color.black,8,1);
+                    archidniMap.preparePolyline(PathDetailsActivity.this,polyline,R.color.black,15);
                     archidniMap.addPreparedAnnotations();
                     showInstructionsAnnotations(path);
 
@@ -126,7 +140,7 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     private void showInstructionsAnnotations(Path path)
     {
         ArrayList<Coordinate> pathPolyline = path.getPolyline();
-        archidniMap.preparePolyline(this,pathPolyline,R.color.colorGreen,8,0.6f);
+        archidniMap.preparePolyline(this,pathPolyline,R.color.opaqGray,15);
         archidniMap.addMarker(pathPolyline.get(0),R.drawable.ic_marker_blue_24dp);
         archidniMap.addMarker(pathPolyline.get(pathPolyline.size()-1),R.drawable.ic_marker_red_24dp);
         archidniMap.addPreparedAnnotations();
@@ -136,7 +150,7 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     public void showPathOnMap(Path path) {
         ArrayList<Coordinate> pathPolyline = path.getPolyline();
         showInstructionsAnnotations(path);
-        archidniMap.moveCameraToBounds(pathPolyline,100);
+        archidniMap.animateCameraToBounds(pathPolyline,100,500);
     }
 
     @Override
@@ -149,42 +163,42 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     @Override
     public void onStart() {
         super.onStart();
-        mapView.onStart();
+        //mapView.onStart();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mapView.onResume();
+        //mapView.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mapView.onPause();
+        //mapView.onPause();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mapView.onStop();
+        //mapView.onStop();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mapView.onLowMemory();
+        //mapView.onLowMemory();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mapView.onDestroy();
+        //mapView.onDestroy();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
+        //mapView.onSaveInstanceState(outState);
     }
 }

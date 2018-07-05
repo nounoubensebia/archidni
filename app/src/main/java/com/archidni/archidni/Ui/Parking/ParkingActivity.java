@@ -100,6 +100,6 @@ public class ParkingActivity extends AppCompatActivity implements ParkingContrac
     @Override
     public void showParkingOnMap(Parking parking) {
         archidniMap.moveCamera(parking.getCoordinate(),14);
-        archidniMap.addMarker(parking.getCoordinate(),R.drawable.marker_selected);
+        archidniMap.addMarker(parking.getCoordinate(),R.drawable.marker_parking);
     }
 }

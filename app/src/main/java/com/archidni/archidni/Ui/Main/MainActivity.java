@@ -33,6 +33,7 @@ import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.User;
 import com.archidni.archidni.Ui.Adapters.LineAdapter;
+import com.archidni.archidni.Ui.Adapters.ParkingAdapter;
 import com.archidni.archidni.Ui.Adapters.StationAdapter;
 import com.archidni.archidni.Ui.ExchangePolesActivity;
 import com.archidni.archidni.Ui.Favorites.FavoritesActivity;
@@ -74,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     /*@BindView(R.id.mapView)
     MapView mapView;*/
 
+    @BindView(R.id.layout_restaurant)
+    TextView restaurantText;
     @BindView(R.id.text_transport_mean_0)
     TextView transportMean0Text;
     @BindView(R.id.text_transport_mean_1)
@@ -133,6 +136,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     TextView findLinesStationsText;
     @BindView(R.id.layout_overlay)
     View overlayLayout;
+
+    @BindView(R.id.layout_interests)
+    View interestsLayout;
+    @BindView(R.id.text_interests)
+    TextView interestsText;
 
     TextView usernameText;
 
@@ -231,13 +239,27 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         stationsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.toggleStationsLines(true);
+                presenter.toggleStationsLines(MainPresenter.STATIONS_SELECTED);
+            }
+        });
+        restaurantText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.toggleTransportMean(6);
+            }
+        });
+
+
+        interestsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.toggleStationsLines(MainPresenter.INTERESTS_SELECTED);
             }
         });
         linesLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.toggleStationsLines(false);
+                presenter.toggleStationsLines(MainPresenter.LINES_SELECTED);
             }
         });
         searchLayout.setOnClickListener(new View.OnClickListener() {
@@ -246,6 +268,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 presenter.onSearchClicked();
             }
         });
+
 
         myLocationFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -445,21 +468,31 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     R.color.color_transport_mean_not_selected
                     ,ViewUtils.DIRECTION_UP);
         }
+
+        if (transportMeansSelector.isItemSelected(6))
+        {
+            ViewUtils.changeTextViewState(this,restaurantText,
+                    R.drawable.ic_restaurant_black_24dp,
+                    R.color.color_transport_mean_selected_0
+                    ,ViewUtils.DIRECTION_UP);
+        }
+        else
+        {
+            ViewUtils.changeTextViewState(this,restaurantText,
+                    R.drawable.ic_restaurant_disabled_24dp,
+                    R.color.color_transport_mean_not_selected
+                    ,ViewUtils.DIRECTION_UP);
+        }
     }
 
     @Override
-    public void updateStationsLinesLayout(boolean stationsSelected) {
-        if (stationsSelected)
+    public void updateStationsLinesLayout(int selectedItem) {
+        if (selectedItem==MainPresenter.STATIONS_SELECTED)
         {
             ViewUtils.changeTextViewState(this,
                     stationsText,
                     R.drawable.ic_station_enabled,
                     R.color.colorGreen,
-                    ViewUtils.DIRECTION_RIGHT);
-            ViewUtils.changeTextViewState(this,
-                    linesText,
-                    R.drawable.ic_line_disabled,
-                    R.color.black,
                     ViewUtils.DIRECTION_RIGHT);
         }
         else
@@ -469,12 +502,42 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     R.drawable.ic_station_disabled,
                     R.color.black,
                     ViewUtils.DIRECTION_RIGHT);
+        }
+
+        if (selectedItem == MainPresenter.LINES_SELECTED)
+        {
             ViewUtils.changeTextViewState(this,
                     linesText,
                     R.drawable.ic_line_enabled,
                     R.color.colorGreen,
                     ViewUtils.DIRECTION_RIGHT);
         }
+        else
+        {
+            ViewUtils.changeTextViewState(this,
+                    linesText,
+                    R.drawable.ic_line_disabled,
+                    R.color.black,
+                    ViewUtils.DIRECTION_RIGHT);
+        }
+
+        if (selectedItem == MainPresenter.INTERESTS_SELECTED)
+        {
+            ViewUtils.changeTextViewState(this,
+                    interestsText,
+                    R.drawable.ic_star_enabled_24dp,
+                    R.color.colorGreen,
+                    ViewUtils.DIRECTION_RIGHT);
+        }
+        else
+        {
+            ViewUtils.changeTextViewState(this,
+                    interestsText,
+                    R.drawable.ic_star_disabled_24dp,
+                    R.color.black,
+                    ViewUtils.DIRECTION_RIGHT);
+        }
+
 
     }
 
@@ -630,7 +693,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             {
                 Parking parking = (Parking) place;
                 archidniMap.prepareClusterItem(parking.getCoordinate(),
-                        R.drawable.marker_selected,5,parking);
+                        R.drawable.marker_parking,5,parking);
             }
         }
         archidniMap.renderClusters();
@@ -757,6 +820,29 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         startActivity(intent);
     }
 
+    @Override
+    public void showPlacesOnList(ArrayList<Parking> places) {
+        if (recyclerView.getAdapter()!=null && recyclerView.getAdapter() instanceof ParkingAdapter)
+        {
+            ParkingAdapter stationAdapter = (ParkingAdapter) recyclerView.getAdapter();
+            //stationAdapter.updateItems(stations,userCoordinate);
+        }
+        else
+        {
+            ParkingAdapter parkingAdapter = new ParkingAdapter(places,
+                    new ParkingAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Parking parking) {
+                            presenter.onParkingClick(parking);
+                        }
+                    });
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(parkingAdapter);
+        }
+    }
+
 
     @Override
     public void moveCameraToUserLocation() {
@@ -871,7 +957,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             break;
             case R.id.item_my_settings : Intent intent = new Intent(this,
                     SettingsActivity.class);
-            startActivity(intent);
+            //startActivity(intent);
             break;
             case R.id.item_tarifs : Intent intent1 = new Intent(this, TarifsActivity.class);
             startActivity(intent1);
