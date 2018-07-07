@@ -25,8 +25,8 @@ import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Interests.ParkingType;
 import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.MapPlace;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
@@ -48,10 +48,8 @@ import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.Ui.TarifsActivity;
 import com.archidni.archidni.UiUtils.ArchidniClusterItem;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
-import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Model.TransportMean;
-import com.archidni.archidni.UiUtils.ArchidniMarker;
 import com.archidni.archidni.UiUtils.SelectorItem;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 import com.archidni.archidni.UiUtils.ViewUtils;
@@ -59,24 +57,19 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.maps.MapView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View,NavigationView.OnNavigationItemSelectedListener {
     MainContract.Presenter presenter;
-    /*@BindView(R.id.mapView)
-    MapView mapView;*/
 
-    @BindView(R.id.layout_restaurant)
-    TextView restaurantText;
     @BindView(R.id.text_transport_mean_0)
     TextView transportMean0Text;
     @BindView(R.id.text_transport_mean_1)
@@ -159,6 +152,23 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         presenter = new MainPresenter(this,user);
     }
 
+    private void createClusters ()
+    {
+        for (SelectorItem selectorItem:SelectorItem.allItems)
+        {
+            archidniMap.addCluster(MainActivity.this,
+                    selectorItem.getClusterIconGenerator(), new ArchidniGoogleMap.OnClusterItemClickListener() {
+                        @Override
+                        public void onClusterItemClick(ArchidniClusterItem archidniClusterItem, Marker marker) {
+                            if (archidniClusterItem.getTag() instanceof Station)
+                                presenter.onStationMarkerClick((Station) archidniClusterItem.getTag(),marker);
+                            if (archidniClusterItem.getTag() instanceof Parking)
+                                presenter.onParkingMarkerClick((Parking) archidniClusterItem.getTag(),marker);
+                        }
+                    });
+        }
+    }
+
     private void initViews(Bundle savedInstanceState)
     {
         ButterKnife.bind(this);
@@ -167,21 +177,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         archidniMap = new ArchidniGoogleMap(mapView, new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
+                createClusters();
                 presenter.onMapReady(MainActivity.this,archidniMap.getBoundingBox(),archidniMap.getCenter());
-
-                for (SelectorItem selectorItem:SelectorItem.allItems)
-                {
-                    archidniMap.addCluster(MainActivity.this,
-                            selectorItem.getClusterIconGenerator(), new ArchidniGoogleMap.OnClusterItemClickListener() {
-                                @Override
-                                public void onClusterItemClick(ArchidniClusterItem archidniClusterItem, Marker marker) {
-                                    if (archidniClusterItem.getTag() instanceof Station)
-                                        presenter.onStationMarkerClick((Station) archidniClusterItem.getTag(),marker);
-                                    if (archidniClusterItem.getTag() instanceof Parking)
-                                        presenter.onParkingMarkerClick((Parking) archidniClusterItem.getTag(),marker);
-                                }
-                            });
-                }
 
                 archidniMap.setOnCameraIdle(new ArchidniGoogleMap.OnCameraIdle() {
                     @Override
@@ -240,12 +237,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             @Override
             public void onClick(View view) {
                 presenter.toggleStationsLines(MainPresenter.STATIONS_SELECTED);
-            }
-        });
-        restaurantText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.toggleTransportMean(6);
             }
         });
 
@@ -469,20 +460,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     ,ViewUtils.DIRECTION_UP);
         }
 
-        if (transportMeansSelector.isItemSelected(6))
-        {
-            ViewUtils.changeTextViewState(this,restaurantText,
-                    R.drawable.ic_restaurant_black_24dp,
-                    R.color.color_transport_mean_selected_0
-                    ,ViewUtils.DIRECTION_UP);
-        }
-        else
-        {
-            ViewUtils.changeTextViewState(this,restaurantText,
-                    R.drawable.ic_restaurant_disabled_24dp,
-                    R.color.color_transport_mean_not_selected
-                    ,ViewUtils.DIRECTION_UP);
-        }
     }
 
     @Override
@@ -553,19 +530,19 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void showLocationLayout(Place place,Marker oldSelectedMarker,Marker marker) {
+    public void showLocationLayout(MapPlace mapPlace,Marker oldSelectedMarker,Marker marker) {
         container.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-        mainText.setText(place.getMainText());
-        secondaryText.setText(place.getSecondaryText());
+        mainText.setText(mapPlace.getMainText());
+        secondaryText.setText(mapPlace.getSecondaryText());
         slideOutSearchText();
         if (archidniMap.getUserLocation()!=null)
         {
             durationDistanceText.setText(StringUtils
                     .getTextFromDistance(GeoUtils.distance(archidniMap.getUserLocation(),
-                            place.getCoordinate()))+", "+
+                            mapPlace.getCoordinate()))+", "+
                     StringUtils.getTextFromDuration(GeoUtils.getOnFootDuration(archidniMap
                                     .getUserLocation(),
-                            place.getCoordinate()))+" de marche");
+                            mapPlace.getCoordinate()))+" de marche");
 
         }
         else
@@ -576,14 +553,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         if (oldSelectedMarker!=null)
         {
             Object tag = oldSelectedMarker.getTag();
-            if (tag instanceof Station)
-            {
-                archidniMap.changeMarkerIcon(oldSelectedMarker,((Station) tag).getTransportMean().getMarkerIcon());
-            }
-            else
-            {
-                archidniMap.changeMarkerIcon(oldSelectedMarker,R.drawable.marker_selected);
-            }
+            MapPlace oldMapPlace = (MapPlace) tag;
+            archidniMap.changeMarkerIcon(oldSelectedMarker,oldMapPlace.getMarkerDrawable());
         }
 
         locationLayout.setVisibility(View.VISIBLE);
@@ -603,24 +574,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 presenter.onPlaceClick();
             }
         });
-        if (!(place instanceof Station))
-        {
-            locationIcon.setImageDrawable(ContextCompat.getDrawable(this,
-                    R.drawable.ic_marker_green_24dp));
-            getPathLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
-                    R.color.colorGreen));
-        }
-        else
-        {
-            Station station = (Station) place;
-            locationIcon.setImageDrawable(ContextCompat.getDrawable(this,
-                    station.getTransportMean().getMarkerIcon()));
-            getPathLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
-                    station.getTransportMean().getColor()));
-            Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab);
-            animation.setRepeatCount(Animation.INFINITE);
-            archidniMap.changeMarkerIcon(marker,R.drawable.marker_selected);
-        }
+        locationIcon.setImageDrawable(ContextCompat.getDrawable(this,mapPlace.getMarkerDrawable()));
+        getPathLayout.setBackgroundColor(ContextCompat.getColor(this,mapPlace.getColor()));
+        archidniMap.changeMarkerIcon(marker,mapPlace.getSelectedMarkerDrawable());
     }
 
     @Override
@@ -636,19 +592,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 slideInSearchText();
             }
         },250);
-        if (marker.getTag()!=null)
-        {
-            if (marker.getTag()instanceof Station)
-            {
-                Station station = (Station) marker.getTag();
-                archidniMap.changeMarkerIcon(marker,station.getTransportMean().getMarkerIcon());
-            }
-            if (marker.getTag()instanceof Parking)
-            {
-                Parking parking = (Parking) marker.getTag();
-                archidniMap.changeMarkerIcon(marker,R.drawable.marker_selected);
-            }
-        }
+        MapPlace mapPlace = (MapPlace) marker.getTag();
+        archidniMap.changeMarkerIcon(marker,mapPlace.getMarkerDrawable());
     }
 
     @Override
@@ -679,7 +624,53 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
 
     @Override
-    public void showPlacesOnMap(ArrayList<? extends Place> places) {
+    public void showPlacesOnMap(ArrayList<? extends Place> places,TransportMeansSelector transportMeansSelector) {
+        /*LinkedHashSet<? extends Place> placesSet = new LinkedHashSet<>(places);
+        for (int i=0;i<archidniMap.getRenderedClusterItems().size();)
+        {
+            ArchidniClusterItem archidniClusterItem = archidniMap.getRenderedClusterItems().get(i);
+            Place place = (Place) archidniClusterItem.getTag();
+            if (!placesSet.contains(place))
+            {
+                archidniMap.removeClusterItem(archidniClusterItem);
+            }
+            else
+            {
+                i++;
+            }
+        }*/
+
+        for(Place place:places)
+        {
+            if (place instanceof Station)
+            {
+                Station station = (Station) place;
+                archidniMap.prepareClusterItem(station.getCoordinate(),
+                        station.getTransportMean().getMarkerIcon(),
+                        station.getTransportMean().getId(),station);
+            }
+            else
+            {
+                Parking parking = (Parking) place;
+                archidniMap.prepareClusterItem(parking.getCoordinate(),
+                        R.drawable.marker_parking,5,parking);
+            }
+        }
+        archidniMap.initClusters();
+        archidniMap.renderClusters();
+        archidniMap.addPreparedAnnotations();
+    }
+
+    @Override
+    public void updatePlacesOnMap(ArrayList<? extends Place> places, TransportMeansSelector transportMeansSelector) {
+        for (SelectorItem selectorItem:SelectorItem.allItems)
+        {
+            if (!transportMeansSelector.isItemSelected(selectorItem.getId()))
+            {
+                archidniMap.removeAllClusterItems(selectorItem.getId());
+            }
+        }
+
         for(Place place:places)
         {
             if (place instanceof Station)
@@ -697,7 +688,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             }
         }
         archidniMap.renderClusters();
-        archidniMap.addPreparedAnnotations();
+        //archidniMap.addPreparedAnnotations();
     }
 
     @Override

@@ -17,7 +17,6 @@ public abstract class SelectorItem {
             new ArrayList<SelectorItem>(){{
                 addAll(TransportMean.allTransportMeans);
                 add(new ParkingType(5,"Parkings"));
-                add(new ParkingType(6,"Restaurant"));
                 /*add(new TransportMean(0, App.getAppContext().getString(R.string.metro)));
                 add(new TransportMean(1, App.getAppContext().getString(R.string.train)));
                 add(new TransportMean(2, App.getAppContext().getString(R.string.bus)));

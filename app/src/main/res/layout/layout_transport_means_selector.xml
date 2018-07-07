@@ -152,13 +152,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:clickable="true"
-            android:drawableTop="@drawable/ic_restaurant_black_24dp"
             android:drawablePadding="4dp"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:text="Réstaurants"
+            android:text=""
             android:textColor="@color/color_transport_mean_selected_0" />
 
         <View

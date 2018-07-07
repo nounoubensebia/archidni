@@ -4,6 +4,7 @@ import com.archidni.archidni.App;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.MapPlace;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.google.gson.Gson;
@@ -15,7 +16,7 @@ import java.io.Serializable;
  * Created by noure on 07/02/2018.
  */
 
-public class Station extends Place implements Serializable {
+public class Station extends MapPlace implements Serializable {
     private String name;
     private int transportMean;
     private int id;
@@ -73,5 +74,20 @@ public class Station extends Place implements Serializable {
     public static Station fromJson (String json)
     {
         return new Gson().fromJson(json,Station.class);
+    }
+
+    @Override
+    public int getMarkerDrawable() {
+        return getTransportMean().getMarkerIcon();
+    }
+
+    @Override
+    public int getSelectedMarkerDrawable() {
+        return getTransportMean().getSelectedMarker();
+    }
+
+    @Override
+    public int getColor() {
+        return getTransportMean().getColor();
     }
 }

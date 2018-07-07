@@ -15,6 +15,30 @@ import java.util.ArrayList;
 public class TransportUtils {
     public static long NO_DEPARTURE = -1;
 
+    public static ArrayList<StationLines> getStationLines (ArrayList<Line> lines)
+    {
+        ArrayList<StationLines> stationLinesArrayList = new ArrayList<>();
+        ArrayList<Station> stations = getStationsFromLines(lines);
+        for (Station station:stations)
+        {
+            ArrayList<Line> linesPassingByStation = new ArrayList<>();
+            for (Line line:lines)
+            {
+                for (Station station1:line.getStations())
+                {
+                    if (station1.getId()==station.getId())
+                    {
+                        linesPassingByStation.add(line);
+                        break;
+                    }
+                }
+            }
+            stationLinesArrayList.add(new StationLines(station,linesPassingByStation));
+        }
+        return stationLinesArrayList;
+    }
+
+
     public static ArrayList<Station> getStationsFromLines (ArrayList<Line> lines)
     {
         ArrayList<Station> stations = new ArrayList<>();

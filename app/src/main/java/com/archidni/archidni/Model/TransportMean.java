@@ -76,7 +76,7 @@ public class TransportMean extends SelectorItem {
             case 3 : //return R.drawable.marker_transport_mean_3;
                 return R.drawable.marker_transport_3;
             case 4 : //return R.drawable.marker_transport_mean_4;
-                return R.drawable.marker_transport_3;
+                return R.drawable.marker_transport_4;
             default:return -1;
         }
     }
@@ -205,6 +205,19 @@ public class TransportMean extends SelectorItem {
             case 2 : return R.id.view_separation1_transport_mean3;
             case 3 : return R.id.view_separation1_transport_mean4;
             case 4 : return R.id.view_separation_transport_mean5;
+            default:return -1;
+        }
+    }
+
+    public int getSelectedMarker()
+    {
+        switch (getId())
+        {
+            case 0 : return R.drawable.marker_transport_0_selected;
+            case 1 : return R.drawable.marker_transport_1_selected;
+            case 2 : return R.drawable.marker_transport_2_selected;
+            case 3 : return R.drawable.marker_transport_3_selected;
+            case 4 : return R.drawable.marker_transport_4_selected;
             default:return -1;
         }
     }

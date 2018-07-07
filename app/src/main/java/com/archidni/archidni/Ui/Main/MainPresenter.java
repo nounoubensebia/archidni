@@ -5,18 +5,26 @@ import android.os.AsyncTask;
 import android.util.Pair;
 
 import com.archidni.archidni.Data.Lines.LinesRepository;
+import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.Model.Transport.StationLines;
 import com.archidni.archidni.Model.Transport.TransportUtils;
+import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.Model.User;
+import com.archidni.archidni.UiUtils.SelectorItem;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by noure on 02/02/2018.
@@ -41,6 +49,7 @@ public class MainPresenter implements MainContract.Presenter {
     private Coordinate userCoordinate;
     private boolean errorHappened = false;
     private User user;
+    private ArrayList<StationLines> stationLinesArrayList;
 
     public static final int STATIONS_SELECTED = 0;
     public static final int LINES_SELECTED = 1;
@@ -64,19 +73,27 @@ public class MainPresenter implements MainContract.Presenter {
         transportMeansSelector.ToggleItem(transportMeanId);
         view.updateMeansSelectionLayout(transportMeansSelector);
         //view.showPlacesOnMap(TransportUtils.getStationsFromLines(getfilteredLines()));
+        view.updatePlacesOnMap(getFilteredPlaces(),transportMeansSelector);
         populateList();
+    }
+
+    private ArrayList<Place> getFilteredPlaces ()
+    {
+        ArrayList<Place> filtredPlaces = new ArrayList<>();
+        for (Place place:interestPlaces)
+        {
+            if (place instanceof Parking && transportMeansSelector.isItemSelected(5))
+            {
+                filtredPlaces.add(place);
+            }
+        }
+
+        filtredPlaces.addAll(TransportUtils.getStationsFromLines(getfilteredLines()));
+        return filtredPlaces;
     }
 
     @Override
     public void toggleStationsLines(int selectedItem) {
-        /*if (stationsTabbed)
-        {
-            if (!stationsSelected) stationsSelected = true;
-        }
-        else
-        {
-            if (stationsSelected) stationsSelected = false;
-        }*/
         if (selectedItem!=this.selectedItem)
         {
             this.selectedItem = selectedItem;
@@ -90,7 +107,7 @@ public class MainPresenter implements MainContract.Presenter {
         if (selectedItem == STATIONS_SELECTED)
             view.showStationsOnList(getNearbyFilteredStations(mapCenterCoordinate),userCoordinate);
         if (selectedItem == LINES_SELECTED)
-            view.showLinesOnList(getfilteredLines());
+            view.showLinesOnList(getNearbyFilteredLines(mapCenterCoordinate));
         if (selectedItem == INTERESTS_SELECTED)
         {
             ArrayList<Parking> parkings = new ArrayList<>();
@@ -100,6 +117,17 @@ public class MainPresenter implements MainContract.Presenter {
             }
             view.showPlacesOnList(parkings);
         }
+    }
+
+    private void sortStations (ArrayList<Station> stations, final Coordinate coordinate)
+    {
+        Collections.sort(stations, new Comparator<Station>() {
+            @Override
+            public int compare(Station station, Station t1) {
+                return (GeoUtils.distance(station.getCoordinate(),coordinate)-
+                GeoUtils.distance(t1.getCoordinate(),coordinate));
+            }
+        });
     }
 
     @Override
@@ -207,7 +235,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onCameraMove(Context context,Coordinate coordinate) {
 
-        view.showStationsOnList(getNearbyFilteredStations(coordinate),userCoordinate);
+        populateList();
         mapCenterCoordinate = coordinate;
 
         /*currentBoundingBox = boundingBox;
@@ -305,8 +333,9 @@ public class MainPresenter implements MainContract.Presenter {
                 placesToShow.addAll(places);
                 placesToShow.addAll(TransportUtils.getStationsFromLines(getfilteredLines()));
                 populateList();
-                view.showPlacesOnMap(placesToShow);
+                view.showPlacesOnMap(placesToShow,transportMeansSelector);
                 searchUnderway = false;
+                stationLinesArrayList = TransportUtils.getStationLines(lines);
             }
 
             @Override
@@ -414,7 +443,62 @@ public class MainPresenter implements MainContract.Presenter {
 
     private ArrayList<Station> getNearbyFilteredStations (Coordinate coordinate)
     {
-        return TransportUtils.getNearbyStations(coordinate,filteredListStations(),1000);
+        ArrayList<Station> nearbyStations = TransportUtils.getNearbyStations(coordinate,
+                filteredListStations(),1000);
+        sortStations(nearbyStations,coordinate);
+        return nearbyStations;
+    }
+
+    private ArrayList<Line> getNearbyFilteredLines (Coordinate coordinate)
+    {
+        ArrayList<Line> nearbyLines = new ArrayList<>();
+        ArrayList<Station> stations = getNearbyFilteredStations(coordinate);
+        for (StationLines stationLines:stationLinesArrayList)
+        {
+            for (Station station : stations)
+            {
+                if (station.getId()==stationLines.getStation().getId())
+                {
+                    nearbyLines.addAll(stationLines.getLines());
+                }
+            }
+        }
+        Set<Line> lineSet = new HashSet<>(nearbyLines);
+        nearbyLines.clear();
+        nearbyLines.addAll(lineSet);
+        sortLines(nearbyLines);
+        return nearbyLines;
+    }
+
+    private void sortLines (ArrayList<Line> lines)
+    {
+        Collections.sort(lines, new Comparator<Line>() {
+            @Override
+            public int compare(Line line, Line t1) {
+                int firstLineTransportMean = line.getTransportMean().getId();
+                if (line.getTransportMean().getId()== TransportMean.ID_TRAMWAY)
+                {
+                    firstLineTransportMean = -1;
+                }
+
+                if (line.getTransportMean().getId()== TransportMean.ID_TELEPHERIQUE)
+                {
+                    firstLineTransportMean = -2;
+                }
+                int secondTransportMean = t1.getTransportMean().getId();
+                if (t1.getTransportMean().getId()== TransportMean.ID_TRAMWAY)
+                {
+                    secondTransportMean = -1;
+                }
+
+                if (t1.getTransportMean().getId()== TransportMean.ID_TELEPHERIQUE)
+                {
+                    secondTransportMean = -2;
+                }
+
+                return (firstLineTransportMean-secondTransportMean);
+            }
+        });
     }
 
     private ArrayList<Line> getfilteredLines()

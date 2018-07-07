@@ -1,12 +1,14 @@
 package com.archidni.archidni.Model.Places;
 
 import com.archidni.archidni.Model.Coordinate;
+import com.archidni.archidni.Model.Interests.ParkingType;
 import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.R;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
 
-public class Parking extends Place implements Serializable {
+public class Parking extends MapPlace implements Serializable {
 
     private int capacity;
     private long id;
@@ -34,5 +36,20 @@ public class Parking extends Place implements Serializable {
     public String toJson ()
     {
         return new Gson().toJson(this);
+    }
+
+    @Override
+    public int getMarkerDrawable() {
+        return R.drawable.marker_parking;
+    }
+
+    @Override
+    public int getSelectedMarkerDrawable() {
+        return R.drawable.marker_parking_selected;
+    }
+
+    @Override
+    public int getColor() {
+        return R.color.color_transport_mean_selected_1;
     }
 }

@@ -4,13 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 
 import com.archidni.archidni.App;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
+import com.archidni.archidni.Model.Transport.Station;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,14 +18,12 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.clustering.ClusterManager;
-import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
@@ -35,13 +33,12 @@ public class ArchidniGoogleMap {
     private MapFragment mapFragment;
     private boolean mapLoaded = false;
     private ArrayList<ClusterManager<ArchidniClusterItem>> clusterManagers;
-    private ArchidniClusterRenderer archidniClusterRenderer;
     private OnCameraIdle onCameraIdle;
-    private ArrayList<ArchidniClusterItem> archidniClusterItems;
+    private ArrayList<ArchidniClusterItem> archidniPreparedClusterItems;
 
     public ArchidniGoogleMap(final MapFragment mapFragment, final OnMapReadyCallback onMapReadyCallback) {
         clusterManagers = new ArrayList<>();
-        archidniClusterItems = new ArrayList<>();
+        archidniPreparedClusterItems = new ArrayList<>();
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -86,6 +83,47 @@ public class ArchidniGoogleMap {
             }
         });
         clusterManagers.add(clusterManager);
+    }
+
+    /*public void removeClusterItem (ArchidniClusterItem archidniClusterItem)
+    {
+        for (ClusterManager<ArchidniClusterItem> clusterManager:clusterManagers)
+        {
+            ArchidniClusterRenderer archidniClusterRenderer = (ArchidniClusterRenderer)
+                    clusterManager.getRenderer();
+            if (archidniClusterRenderer.getMarker(archidniClusterItem)!=null)
+            {
+                archidniClusterRenderer.getMarker(archidniClusterItem).remove();
+                archidniClusterRenderer.getArchidniClusterItems().remove(archidniClusterItem);
+                archidniClusterRenderer.getMarkerOptionsHashMap().remove(archidniClusterItem);
+                break;
+            }
+        }
+    }*/
+
+    public void removeAllClusterItems (int clusterId)
+    {
+        ClusterManager<ArchidniClusterItem> clusterManager = clusterManagers.get(clusterId);
+        ArchidniClusterRenderer archidniClusterRenderer = (ArchidniClusterRenderer) clusterManager.getRenderer();
+        archidniClusterRenderer.getMarkerOptionsHashMap().clear();
+        archidniClusterRenderer.getArchidniClusterItems().clear();
+        clusterManager.clearItems();
+    }
+
+    public ArrayList<ArchidniClusterItem> getArchidniPreparedClusterItems() {
+        return archidniPreparedClusterItems;
+    }
+
+    public ArrayList<ArchidniClusterItem> getRenderedClusterItems ()
+    {
+        ArrayList<ArchidniClusterItem> archidniClusterItems = new ArrayList<>();
+        for (ClusterManager<ArchidniClusterItem> clusterManager:clusterManagers)
+        {
+            ArchidniClusterRenderer archidniClusterRenderer = (ArchidniClusterRenderer)
+                    clusterManager.getRenderer();
+            archidniClusterItems.addAll(archidniClusterRenderer.getArchidniClusterItems());
+        }
+        return archidniClusterItems;
     }
 
     public void setOnCameraMoveListener (final OnCameraMoveListener onCameraMoveListener)
@@ -164,6 +202,11 @@ public class ArchidniGoogleMap {
         return new Coordinate(map.getMyLocation().getLatitude(),map.getMyLocation().getLongitude());
         else
             return null;
+    }
+
+    public void clearPreparedClusterItems ()
+    {
+        archidniPreparedClusterItems.clear();
     }
 
     public void trackUser ()
@@ -275,25 +318,55 @@ public class ArchidniGoogleMap {
     public void prepareClusterItem (Coordinate coordinate,int drawable,int clusterId,Object tag)
     {
         ArchidniClusterItem archidniClusterItem = new ArchidniClusterItem(coordinate,drawable,tag);
-        for (ArchidniClusterItem archidniClusterItem1:archidniClusterItems)
+        for (ArchidniClusterItem archidniClusterItem1: archidniPreparedClusterItems)
         {
             if (archidniClusterItem1.getCoordinate().equals(archidniClusterItem.getCoordinate()))
             {
                 return;
             }
         }
+        if (getRenderedClusterItems()!=null)
+            for (ArchidniClusterItem archidniClusterItem1:getRenderedClusterItems())
+            {
+                if (archidniClusterItem.getTag() instanceof Station && archidniClusterItem1.getTag() instanceof Station)
+                {
+                    Station station1 = (Station) archidniClusterItem.getTag();
+                    Station station2 = (Station) archidniClusterItem1.getTag();
+                    if (station1.getId()==station2.getId())
+                    {
+                        return;
+                    }
+                }
+
+
+                if (archidniClusterItem1.getTag().equals(archidniClusterItem.getTag()))
+                {
+                    return;
+                }
+            }
         clusterManagers.get(clusterId).addItem(archidniClusterItem);
+        ArchidniClusterRenderer archidniClusterRenderer = (ArchidniClusterRenderer)
+                clusterManagers.get(clusterId).getRenderer();
+        archidniClusterRenderer.getArchidniClusterItems().add(archidniClusterItem);
     }
 
-    /*public void removeClusterItemWithTag (Object tag)
-    {
-        for (ArchidniClusterItem archidniClusterItem:archidniClusterItems)
-        {
-            if (archidniClusterItem.getTag().equals(ta))
-        }
-    }*/
+
 
     public void renderClusters ()
+    {
+        for (ClusterManager<ArchidniClusterItem> clusterManager:clusterManagers)
+        {
+            clusterManager.cluster();
+        }
+
+        /*map.setOnCameraIdleListener(clusterManager);
+        map.setOnMarkerClickListener(clusterManager);
+        clusterManager.cluster();*/
+    }
+
+
+
+    public void initClusters ()
     {
         map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
@@ -315,15 +388,7 @@ public class ArchidniGoogleMap {
                 return true;
             }
         });
-        for (ClusterManager<ArchidniClusterItem> clusterManager:clusterManagers)
-        {
-            clusterManager.cluster();
-        }
-        /*map.setOnCameraIdleListener(clusterManager);
-        map.setOnMarkerClickListener(clusterManager);
-        clusterManager.cluster();*/
     }
-
     /*public ArchidniClusterItem addClusterItem (Coordinate coordinate,int clusterId)
     {
 
@@ -348,6 +413,8 @@ public class ArchidniGoogleMap {
     public void clearMap ()
     {
         map.clear();
+        clusterManagers = new ArrayList<>();
+        archidniPreparedClusterItems = new ArrayList<>();
     }
 
     public static BitmapDescriptor getBitmapDescriptor(int id) {
