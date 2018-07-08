@@ -105,7 +105,7 @@ public class MainPresenter implements MainContract.Presenter {
     public void populateList ()
     {
         if (selectedItem == STATIONS_SELECTED)
-            view.showStationsOnList(getNearbyFilteredStations(mapCenterCoordinate),userCoordinate);
+            view.showPlacesOnList(getNearbyFilteredStations(mapCenterCoordinate),userCoordinate);
         if (selectedItem == LINES_SELECTED)
             view.showLinesOnList(getNearbyFilteredLines(mapCenterCoordinate));
         if (selectedItem == INTERESTS_SELECTED)
@@ -115,7 +115,7 @@ public class MainPresenter implements MainContract.Presenter {
             {
                 parkings.add((Parking)place);
             }
-            view.showPlacesOnList(parkings);
+            view.showPlacesOnList(parkings,userCoordinate);
         }
     }
 
@@ -191,6 +191,12 @@ public class MainPresenter implements MainContract.Presenter {
                 }
             }
         });
+    }
+
+    @Override
+    public void onUserLocationUpdated(Coordinate userLocation) {
+        this.userCoordinate = userLocation;
+        populateList();
     }
 
     @Override
@@ -516,28 +522,4 @@ public class MainPresenter implements MainContract.Presenter {
 
 
 
-    /*private class PopulateTask extends AsyncTask<Void,Void,Pair<Boolean,Pair<ArrayList<Line>,ArrayList<Station>>>>
-    {
-        @Override
-        protected Pair<Boolean,Pair<ArrayList<Line>,ArrayList<Station>>> doInBackground(Void... voids) {
-            /*if (stationsSelected)
-            {
-                //view.showStationsOnList(filteredListStations(),userCoordinate);
-                return new Pair<>(true,new Pair<ArrayList<Line>, ArrayList<Station>>(getfilteredLines(),filteredListStations()));
-            }
-            else
-            {
-                return new Pair<>(false,new Pair<ArrayList<Line>, ArrayList<Station>>(getfilteredLines(),filteredListStations()));
-            }*/
-
-       // }
-
-       /* @Override
-        protected void onPostExecute(Pair<Boolean, Pair<ArrayList<Line>, ArrayList<Station>>> booleanPairPair) {
-            if (booleanPairPair.first)
-                view.showStationsOnList(booleanPairPair.second.second,userCoordinate);
-            else
-                view.showLinesOnList(booleanPairPair.second.first);
-        }
-    }*/
 }

@@ -1,16 +1,27 @@
 package com.archidni.archidni.UiUtils;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 
 import com.archidni.archidni.App;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Transport.Station;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,17 +39,41 @@ import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 
-public class ArchidniGoogleMap {
+import static android.content.Context.LOCATION_SERVICE;
+
+public class ArchidniGoogleMap  {
     private GoogleMap map;
     private MapFragment mapFragment;
     private boolean mapLoaded = false;
     private ArrayList<ClusterManager<ArchidniClusterItem>> clusterManagers;
+    private Coordinate userLocation;
     private OnCameraIdle onCameraIdle;
     private ArrayList<ArchidniClusterItem> archidniPreparedClusterItems;
+    FusedLocationProviderClient fusedLocationClient;
+    LocationRequest locationRequest;
+    private OnUserLocationCaptured onUserLocationCaptured;
 
-    public ArchidniGoogleMap(final MapFragment mapFragment, final OnMapReadyCallback onMapReadyCallback) {
+    @SuppressLint("MissingPermission")
+    public ArchidniGoogleMap( Activity activity,final MapFragment mapFragment, final OnMapReadyCallback onMapReadyCallback) {
         clusterManagers = new ArrayList<>();
         archidniPreparedClusterItems = new ArrayList<>();
+        createLocationRequest();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
+        LocationCallback locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                Location location = locationResult.getLastLocation();
+                userLocation = new Coordinate(location.getLatitude(),location.getLongitude());
+                if (onUserLocationCaptured!=null)
+                {
+                    onUserLocationCaptured.onUserLocationCaptured(userLocation);
+                }
+            }
+        };
+        fusedLocationClient.requestLocationUpdates(locationRequest,locationCallback,null);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -55,6 +90,22 @@ public class ArchidniGoogleMap {
                 map.setTrafficEnabled(true);
             }
         });
+    }
+
+
+    public ArchidniGoogleMap (Activity activity, MapFragment mapFragment, OnMapReadyCallback onMapReadyCallback,OnUserLocationCaptured onUserLocationCaptured)
+    {
+        this(activity,mapFragment,onMapReadyCallback);
+        this.onUserLocationCaptured = onUserLocationCaptured;
+    }
+
+
+
+    private void createLocationRequest() {
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
     public void setOnCameraIdle(OnCameraIdle onCameraIdle) {
@@ -190,6 +241,7 @@ public class ArchidniGoogleMap {
     }
 
 
+    @SuppressLint("MissingPermission")
     public void setMyLocationEnabled (boolean enabled)
     {
         map.setMyLocationEnabled(enabled);
@@ -197,11 +249,12 @@ public class ArchidniGoogleMap {
 
     public Coordinate getUserLocation ()
     {
-        map.setMyLocationEnabled(true);
+        /*map.setMyLocationEnabled(true);
         if (map.getMyLocation()!=null)
         return new Coordinate(map.getMyLocation().getLatitude(),map.getMyLocation().getLongitude());
         else
-            return null;
+            return null;*/
+        return userLocation;
     }
 
     public void clearPreparedClusterItems ()
@@ -437,6 +490,7 @@ public class ArchidniGoogleMap {
         }
     }
 
+
     public interface OnCameraIdle {
         void onCameraIdle (Coordinate coordinate,BoundingBox boundingBox,double zoom);
     }
@@ -462,5 +516,9 @@ public class ArchidniGoogleMap {
         void onClusterItemClick (ArchidniClusterItem archidniClusterItem,Marker marker);
     }
 
+    public interface OnUserLocationCaptured
+    {
+        void onUserLocationCaptured(Coordinate userLocation);
+    }
 
 }

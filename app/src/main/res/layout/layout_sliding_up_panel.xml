@@ -19,7 +19,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="12dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/shape_rect_white_rounded"
@@ -43,7 +43,7 @@
                 android:drawableRight="@drawable/ic_line_disabled"
                 android:fontFamily="sans-serif-condensed"
                 android:gravity="center"
-                android:padding="8dp"
+                android:padding="6dp"
                 android:text="@string/lines"
                 android:textColor="#000"
                 tools:ignore="UnusedAttribute"
@@ -73,7 +73,7 @@
                 android:drawableRight="@drawable/ic_station_enabled"
                 android:fontFamily="sans-serif-condensed"
                 android:gravity="center"
-                android:padding="8dp"
+                android:padding="6dp"
                 android:text="@string/stations"
                 android:textColor="@color/colorGreen"
                 android:drawableEnd="@drawable/ic_station_enabled"
@@ -101,31 +101,43 @@
                 android:drawablePadding="4dp"
                 android:fontFamily="sans-serif-condensed"
                 android:gravity="center"
-                android:padding="8dp"
+                android:padding="6dp"
                 android:text="Intérêts"
                 android:textColor="#000"
                 android:drawableRight="@drawable/ic_star_disabled_24dp"
                 tools:ignore="UnusedAttribute" />
         </FrameLayout>
 
-
     </LinearLayout>
+
+
+
     <TextView
         android:id="@+id/text_find_lines_stations"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:padding="8dp"
+        android:padding="6dp"
         android:text="Trouver une ligne ou une station"
         android:textColor="#000"
-        android:textSize="16sp"
         android:gravity="center"
+        android:textSize="16sp"
         android:drawablePadding="8dp"
         android:drawableLeft="@drawable/ic_search_green"
         android:background="@drawable/shape_rect_white_rounded__16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/text_list_type"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="24dp"
+            android:textSize="12sp"
+            android:visibility="visible"
+            android:drawablePadding="8dp"
+            android:text="Stations à proximité du lieu choisi sur la carte :"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_marginBottom="16dp"

@@ -4,6 +4,7 @@ import com.archidni.archidni.App;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.MainListPlace;
 import com.archidni.archidni.Model.Places.MapPlace;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
@@ -16,7 +17,7 @@ import java.io.Serializable;
  * Created by noure on 07/02/2018.
  */
 
-public class Station extends MapPlace implements Serializable {
+public class Station extends Place implements Serializable,MapPlace,MainListPlace {
     private String name;
     private int transportMean;
     private int id;
@@ -28,6 +29,11 @@ public class Station extends MapPlace implements Serializable {
         this.name = name;
         this.transportMean = transportMean;
         this.id = id;
+    }
+
+    @Override
+    public boolean hasSecondaryText() {
+        return false;
     }
 
     public String getName() {
@@ -89,5 +95,10 @@ public class Station extends MapPlace implements Serializable {
     @Override
     public int getColor() {
         return getTransportMean().getColor();
+    }
+
+    @Override
+    public int getIcon() {
+        return getTransportMean().getIconEnabled();
     }
 }

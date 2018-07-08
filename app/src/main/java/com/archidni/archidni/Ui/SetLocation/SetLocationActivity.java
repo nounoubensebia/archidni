@@ -41,7 +41,7 @@ public class SetLocationActivity extends AppCompatActivity {
     {
         ButterKnife.bind(this);
         mapView = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
-        archidniMap = new ArchidniGoogleMap(mapView, new OnMapReadyCallback() {
+        archidniMap = new ArchidniGoogleMap(this,mapView, new OnMapReadyCallback() {
 
             @Override
             public void onMapReady(GoogleMap googleMap) {

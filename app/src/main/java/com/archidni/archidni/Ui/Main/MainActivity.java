@@ -26,6 +26,7 @@ import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.MainListPlace;
 import com.archidni.archidni.Model.Places.MapPlace;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.StringUtils;
@@ -33,8 +34,7 @@ import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.User;
 import com.archidni.archidni.Ui.Adapters.LineAdapter;
-import com.archidni.archidni.Ui.Adapters.ParkingAdapter;
-import com.archidni.archidni.Ui.Adapters.StationAdapter;
+import com.archidni.archidni.Ui.Adapters.PlaceAdapter;
 import com.archidni.archidni.Ui.ExchangePolesActivity;
 import com.archidni.archidni.Ui.Favorites.FavoritesActivity;
 import com.archidni.archidni.Ui.Line.LineActivity;
@@ -62,7 +62,6 @@ import com.mapbox.mapboxsdk.Mapbox;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -130,6 +129,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @BindView(R.id.layout_overlay)
     View overlayLayout;
 
+    @BindView(R.id.text_list_type)
+    TextView listTypeText;
+
     @BindView(R.id.layout_interests)
     View interestsLayout;
     @BindView(R.id.text_interests)
@@ -174,16 +176,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         ButterKnife.bind(this);
 
         MapFragment mapView = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
-        archidniMap = new ArchidniGoogleMap(mapView, new OnMapReadyCallback() {
+        archidniMap = new ArchidniGoogleMap(this, mapView, new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 createClusters();
-                presenter.onMapReady(MainActivity.this,archidniMap.getBoundingBox(),archidniMap.getCenter());
+                presenter.onMapReady(MainActivity.this, archidniMap.getBoundingBox(), archidniMap.getCenter());
 
                 archidniMap.setOnCameraIdle(new ArchidniGoogleMap.OnCameraIdle() {
                     @Override
                     public void onCameraIdle(Coordinate coordinate, BoundingBox boundingBox, double zoom) {
-                        presenter.onCameraMove(MainActivity.this,coordinate);
+                        presenter.onCameraMove(MainActivity.this, coordinate);
                     }
                 });
 
@@ -194,6 +196,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     }
                 });
 
+            }
+        }, new ArchidniGoogleMap.OnUserLocationCaptured() {
+            @Override
+            public void onUserLocationCaptured(Coordinate userLocation) {
+                presenter.onUserLocationUpdated(userLocation);
             }
         });
 
@@ -471,6 +478,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     R.drawable.ic_station_enabled,
                     R.color.colorGreen,
                     ViewUtils.DIRECTION_RIGHT);
+            listTypeText.setText("Stations à proximité du lieu choisi sur la carte :");
         }
         else
         {
@@ -488,6 +496,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     R.drawable.ic_line_enabled,
                     R.color.colorGreen,
                     ViewUtils.DIRECTION_RIGHT);
+            listTypeText.setText("Lignes à proximité du lieu choisi sur la carte :");
         }
         else
         {
@@ -505,6 +514,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     R.drawable.ic_star_enabled_24dp,
                     R.color.colorGreen,
                     ViewUtils.DIRECTION_RIGHT);
+            listTypeText.setText("Lieux d'intérêt à proximité du lieu choisi sur la carte :");
         }
         else
         {
@@ -625,21 +635,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void showPlacesOnMap(ArrayList<? extends Place> places,TransportMeansSelector transportMeansSelector) {
-        /*LinkedHashSet<? extends Place> placesSet = new LinkedHashSet<>(places);
-        for (int i=0;i<archidniMap.getRenderedClusterItems().size();)
-        {
-            ArchidniClusterItem archidniClusterItem = archidniMap.getRenderedClusterItems().get(i);
-            Place place = (Place) archidniClusterItem.getTag();
-            if (!placesSet.contains(place))
-            {
-                archidniMap.removeClusterItem(archidniClusterItem);
-            }
-            else
-            {
-                i++;
-            }
-        }*/
-
         for(Place place:places)
         {
             if (place instanceof Station)
@@ -713,29 +708,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
     }
 
-    @Override
-    public void showStationsOnList(ArrayList<Station> stations,Coordinate userCoordinate) {
 
-        if (recyclerView.getAdapter()!=null && recyclerView.getAdapter() instanceof StationAdapter)
-        {
-            StationAdapter stationAdapter = (StationAdapter) recyclerView.getAdapter();
-            stationAdapter.updateItems(stations,userCoordinate);
-        }
-        else
-        {
-            StationAdapter stationAdapter = new StationAdapter(this, stations, userCoordinate,
-                    new StationAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(Station station) {
-                            presenter.onStationItemClick(station);
-                        }
-                    });
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-            recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(stationAdapter);
-        }
-    }
 
     @Override
     public void showZoomInsufficientLayout() {
@@ -812,25 +785,28 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void showPlacesOnList(ArrayList<Parking> places) {
-        if (recyclerView.getAdapter()!=null && recyclerView.getAdapter() instanceof ParkingAdapter)
+    public void showPlacesOnList(ArrayList<? extends MainListPlace> places, Coordinate userCoordinate) {
+        if (recyclerView.getAdapter()!=null && recyclerView.getAdapter() instanceof PlaceAdapter)
         {
-            ParkingAdapter stationAdapter = (ParkingAdapter) recyclerView.getAdapter();
-            //stationAdapter.updateItems(stations,userCoordinate);
+            PlaceAdapter placeAdapter = (PlaceAdapter) recyclerView.getAdapter();
+            placeAdapter.updateItems(places,userCoordinate);
         }
         else
         {
-            ParkingAdapter parkingAdapter = new ParkingAdapter(places,
-                    new ParkingAdapter.OnItemClickListener() {
+            PlaceAdapter placeAdapter = new PlaceAdapter(this, places, userCoordinate,
+                    new PlaceAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(Parking parking) {
-                            presenter.onParkingClick(parking);
+                        public void onItemClick(MainListPlace mainListPlace) {
+                            if (mainListPlace instanceof Station)
+                                presenter.onStationItemClick((Station)mainListPlace);
+                            if (mainListPlace instanceof Parking)
+                                presenter.onParkingClick((Parking)mainListPlace);
                         }
                     });
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(parkingAdapter);
+            recyclerView.setAdapter(placeAdapter);
         }
     }
 
@@ -948,7 +924,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             break;
             case R.id.item_my_settings : Intent intent = new Intent(this,
                     SettingsActivity.class);
-            //startActivity(intent);
+                    startActivity(intent);
             break;
             case R.id.item_tarifs : Intent intent1 = new Intent(this, TarifsActivity.class);
             startActivity(intent1);

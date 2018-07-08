@@ -5,11 +5,7 @@ import com.archidni.archidni.Model.Place;
 
 import java.io.Serializable;
 
-public abstract class MapPlace extends Place implements Serializable {
-
-    public MapPlace(String mainText, String secondaryText, Coordinate coordinate) {
-        super(mainText, secondaryText, coordinate);
-    }
+public interface MapPlace extends PlaceInterface{
 
     public abstract int getMarkerDrawable ();
 

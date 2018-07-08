@@ -8,7 +8,7 @@
     android:gravity="bottom"
     app:umanoFadeColor="@android:color/transparent"
     app:umanoOverlay="true"
-    app:umanoPanelHeight="152dp"
+    app:umanoPanelHeight="136dp"
     app:umanoShadowHeight="0dp">
 
     <android.support.v4.widget.DrawerLayout

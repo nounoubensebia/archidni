@@ -15,7 +15,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/image_transport_mean_icon"
+            android:id="@+id/image_icon"
             app:srcCompat="@drawable/ic_transport_mean_2_enabled"
             android:layout_width="64dp"
             android:layout_height="64dp" />
@@ -33,13 +33,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
-                android:id="@+id/text_duration"
+                android:id="@+id/text_main_text"
                 android:fontFamily="sans-serif-condensed"
                 android:text="à 12 minutes de marches"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
-                android:id="@+id/text_distance"
+                android:id="@+id/text_secondary_text"
                 android:fontFamily="sans-serif-condensed"
                 android:text="100 métres"
                 android:layout_width="wrap_content"

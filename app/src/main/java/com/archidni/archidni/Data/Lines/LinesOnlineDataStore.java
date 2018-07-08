@@ -91,7 +91,7 @@ public class LinesOnlineDataStore extends OnlineDataStore {
                 double latitude = parkingObject.getDouble("latitude");
                 double longitude = parkingObject.getDouble("longitude");
                 int capacity = parkingObject.getInt("capacity");
-                long id = parkingObject.getLong("id");
+                int id = parkingObject.getInt("id");
                 parkings.add(new Parking(name,new Coordinate(latitude,longitude),capacity,id));
             } catch (JSONException e) {
                 e.printStackTrace();

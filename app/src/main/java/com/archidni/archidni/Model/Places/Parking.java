@@ -8,18 +8,28 @@ import com.google.gson.Gson;
 
 import java.io.Serializable;
 
-public class Parking extends MapPlace implements Serializable {
+public class Parking extends Place implements Serializable, MapPlace,MainListPlace {
 
     private int capacity;
-    private long id;
+    private int id;
 
-    public Parking(String mainText,Coordinate coordinate, int capacity, long id) {
+    public Parking(String mainText,Coordinate coordinate, int capacity, int id) {
         super(mainText, "Capacité : "+capacity, coordinate);
         this.capacity = capacity;
         this.id = id;
     }
 
-    public long getId() {
+    @Override
+    public boolean hasSecondaryText() {
+        return true;
+    }
+
+    @Override
+    public String getName() {
+        return getMainText();
+    }
+
+    public int getId() {
         return id;
     }
 
@@ -51,5 +61,10 @@ public class Parking extends MapPlace implements Serializable {
     @Override
     public int getColor() {
         return R.color.color_transport_mean_selected_1;
+    }
+
+    @Override
+    public int getIcon() {
+        return R.drawable.marker_parking;
     }
 }

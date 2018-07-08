@@ -1,5 +1,6 @@
 package com.archidni.archidni.Model;
 
+import com.archidni.archidni.Model.Places.PlaceInterface;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
@@ -8,7 +9,7 @@ import java.io.Serializable;
  * Created by noure on 02/02/2018.
  */
 
-public class Place implements Serializable {
+public class Place implements Serializable,PlaceInterface {
     private String mainText;
     private String secondaryText;
     private Coordinate coordinate;

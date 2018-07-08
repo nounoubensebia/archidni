@@ -5,6 +5,7 @@ import android.content.Context;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.MainListPlace;
 import com.archidni.archidni.Model.Places.MapPlace;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Transport.Line;
@@ -40,7 +41,6 @@ public interface MainContract {
         void showPlacesOnMap(ArrayList<? extends Place> places,TransportMeansSelector transportMeansSelector);
         void updatePlacesOnMap (ArrayList<? extends Place> places,TransportMeansSelector transportMeansSelector);
         void showLinesOnList(ArrayList<Line> lines);
-        void showStationsOnList(ArrayList<Station> stations,Coordinate userCoordinate);
         void showZoomInsufficientLayout();
         void hideZoomInsufficientLayout();
         void showSearchErrorLayout();
@@ -53,7 +53,7 @@ public interface MainContract {
         void hideOverlayLayout();
         void showOverlayLayout();
         void startFavoritesActivity();
-        void showPlacesOnList(ArrayList<Parking> places);
+        void showPlacesOnList(ArrayList<? extends MainListPlace> places,Coordinate userCoordinate);
         Coordinate getMapCenter ();
     }
 
@@ -63,6 +63,7 @@ public interface MainContract {
         void onSearchClicked();
         void onMapReady(Context context,BoundingBox boundingBox,Coordinate coordinate);
         void onMyLocationFabClick();
+        void onUserLocationUpdated(Coordinate userLocation);
         void onShowSlidingPanelFabClick();
         void onLocationMarkerCreated(com.google.android.gms.maps.model.Marker marker);
         void onMapShortClick();

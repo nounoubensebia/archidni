@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
+    android:layout_marginBottom="12dp"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
-    android:layout_marginTop="16dp"
+    android:layout_marginTop="12dp"
     android:background="@drawable/shape_rect_white_rounded__8dp"
     android:orientation="vertical">
 
@@ -20,12 +20,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:clickable="true"
-            android:drawablePadding="4dp"
+            android:drawablePadding="2dp"
             android:drawableTop="@drawable/ic_transport_mean_0_disabled"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
             android:text="@string/metro"
             android:textColor="@color/color_transport_mean_not_selected" />
 
@@ -42,12 +42,12 @@
             android:layout_weight="1"
 
             android:clickable="true"
-            android:drawablePadding="4dp"
+            android:drawablePadding="2dp"
             android:drawableTop="@drawable/ic_transport_mean_1_disabled"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
             android:text="@string/train"
             android:textColor="@color/color_transport_mean_not_selected" />
 
@@ -64,12 +64,12 @@
             android:layout_weight="1"
 
             android:clickable="true"
-            android:drawablePadding="4dp"
+            android:drawablePadding="2dp"
             android:drawableTop="@drawable/ic_transport_mean_2_disabled"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
             android:text="@string/bus"
             android:textColor="@color/color_transport_mean_not_selected" />
 
@@ -85,12 +85,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:clickable="true"
-            android:drawablePadding="4dp"
+            android:drawablePadding="2dp"
             android:drawableTop="@drawable/ic_transport_mean_3_disabled"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
             android:text="@string/tramway"
             android:textColor="@color/color_transport_mean_not_selected" />
 
@@ -107,12 +107,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:clickable="true"
-            android:drawablePadding="4dp"
+            android:drawablePadding="2dp"
             android:drawableTop="@drawable/ic_transport_mean_4_disabled"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
             android:text="Téléphérique"
             android:textColor="@color/color_transport_mean_not_selected" />
 
@@ -131,12 +131,12 @@
             android:layout_weight="1"
 
             android:clickable="true"
-            android:drawablePadding="4dp"
+            android:drawablePadding="2dp"
             android:drawableTop="@drawable/ic_parking_disabled_24dp"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
             android:text="Parkings"
             android:textColor="@color/color_transport_mean_not_selected" />
 
@@ -155,8 +155,8 @@
             android:drawablePadding="4dp"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
             android:text=""
             android:textColor="@color/color_transport_mean_selected_0" />
 
@@ -173,8 +173,8 @@
             android:clickable="true"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
             android:textColor="@color/color_transport_mean_not_selected" />
     </LinearLayout>
 </LinearLayout>
