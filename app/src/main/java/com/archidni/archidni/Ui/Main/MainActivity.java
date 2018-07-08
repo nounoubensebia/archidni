@@ -478,7 +478,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     R.drawable.ic_station_enabled,
                     R.color.colorGreen,
                     ViewUtils.DIRECTION_RIGHT);
-            listTypeText.setText("Stations à proximité du lieu choisi sur la carte :");
+            listTypeText.setText("Stations à proximité du centre de la carte :");
         }
         else
         {
@@ -496,7 +496,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     R.drawable.ic_line_enabled,
                     R.color.colorGreen,
                     ViewUtils.DIRECTION_RIGHT);
-            listTypeText.setText("Lignes à proximité du lieu choisi sur la carte :");
+            listTypeText.setText("Lignes à proximité du centre de la carte :");
         }
         else
         {
@@ -514,7 +514,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     R.drawable.ic_star_enabled_24dp,
                     R.color.colorGreen,
                     ViewUtils.DIRECTION_RIGHT);
-            listTypeText.setText("Lieux d'intérêt à proximité du lieu choisi sur la carte :");
+            listTypeText.setText("Lieux d'intérêt à proximité du centre de la carte :");
         }
         else
         {

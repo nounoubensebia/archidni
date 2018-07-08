@@ -42,6 +42,10 @@
                 app:srcCompat="@drawable/ic_transport_mean_3_white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <ImageView
+                app:srcCompat="@drawable/ic_transport_mean_4_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
 

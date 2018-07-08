@@ -346,7 +346,9 @@ public class MainPresenter implements MainContract.Presenter {
 
             @Override
             public void onError() {
-
+                errorHappened = true;
+                view.hideLinesLoadingLayout();
+                view.showSearchErrorLayout();
             }
         });
     }
