@@ -7,10 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 
 import com.archidni.archidni.App;
@@ -39,8 +36,6 @@ import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 
-import static android.content.Context.LOCATION_SERVICE;
-
 public class ArchidniGoogleMap  {
     private GoogleMap map;
     private MapFragment mapFragment;
@@ -49,31 +44,11 @@ public class ArchidniGoogleMap  {
     private Coordinate userLocation;
     private OnCameraIdle onCameraIdle;
     private ArrayList<ArchidniClusterItem> archidniPreparedClusterItems;
-    FusedLocationProviderClient fusedLocationClient;
-    LocationRequest locationRequest;
-    private OnUserLocationCaptured onUserLocationCaptured;
 
     @SuppressLint("MissingPermission")
     public ArchidniGoogleMap( Activity activity,final MapFragment mapFragment, final OnMapReadyCallback onMapReadyCallback) {
         clusterManagers = new ArrayList<>();
         archidniPreparedClusterItems = new ArrayList<>();
-        createLocationRequest();
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
-        LocationCallback locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                Location location = locationResult.getLastLocation();
-                userLocation = new Coordinate(location.getLatitude(),location.getLongitude());
-                if (onUserLocationCaptured!=null)
-                {
-                    onUserLocationCaptured.onUserLocationCaptured(userLocation);
-                }
-            }
-        };
-        fusedLocationClient.requestLocationUpdates(locationRequest,locationCallback,null);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -93,20 +68,13 @@ public class ArchidniGoogleMap  {
     }
 
 
-    public ArchidniGoogleMap (Activity activity, MapFragment mapFragment, OnMapReadyCallback onMapReadyCallback,OnUserLocationCaptured onUserLocationCaptured)
-    {
-        this(activity,mapFragment,onMapReadyCallback);
-        this.onUserLocationCaptured = onUserLocationCaptured;
-    }
 
 
 
-    private void createLocationRequest() {
-        locationRequest = new LocationRequest();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
+
+
+
+
 
     public void setOnCameraIdle(OnCameraIdle onCameraIdle) {
         this.onCameraIdle = onCameraIdle;
@@ -264,7 +232,7 @@ public class ArchidniGoogleMap  {
 
     public void trackUser ()
     {
-       //TODO implement
+       //TODO IMPLEMENT
     }
 
 
@@ -367,6 +335,8 @@ public class ArchidniGoogleMap  {
             });
         }
     }
+
+
 
     public void prepareClusterItem (Coordinate coordinate,int drawable,int clusterId,Object tag)
     {
@@ -516,7 +486,7 @@ public class ArchidniGoogleMap  {
         void onClusterItemClick (ArchidniClusterItem archidniClusterItem,Marker marker);
     }
 
-    public interface OnUserLocationCaptured
+    public interface OnUserLocationUpdated
     {
         void onUserLocationCaptured(Coordinate userLocation);
     }

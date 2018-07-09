@@ -6,6 +6,7 @@ import com.google.maps.android.ui.IconGenerator;
 
 public class ParkingType extends SelectorItem {
 
+
     public ParkingType(int id, String name) {
         super(id, name);
     }

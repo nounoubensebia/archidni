@@ -27,10 +27,8 @@ public interface MainContract {
         void updateStationsLinesLayout(int selectedItem);
         void startSearchActivity(Place userLocation);
         void setUserLocationEnabled(boolean enable);
-        void moveCameraToUserLocation();
         void animateCameraToLocation(Coordinate coordinate);
-        void obtainUserLocation(OnUserLocationObtainedCallback onUserLocationObtainedCallback);
-        void trackUser();
+        void moveCameraToLocation (Coordinate coordinate);
         void showSlidingPanel();
         void showLocationLayout(MapPlace place, com.google.android.gms.maps.model.Marker oldSelectedMarker, com.google.android.gms.maps.model.Marker marker);
         void hideLocationLayout(com.google.android.gms.maps.model.Marker marker);

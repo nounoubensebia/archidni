@@ -42,6 +42,7 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
 
     @Override
     public void onMapReady() {
+        view.moveCameraToCoordinate(pathSettings.getDestination().getCoordinate());
         view.showOriginAndDestinationOnMap(pathSettings.getOrigin(), pathSettings.getDestination());
     }
 

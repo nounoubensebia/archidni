@@ -27,6 +27,7 @@ public interface PathSearchContract {
         void hidePathsLayout();
         void showErrorMessage();
         void showOriginNotSet();
+        void moveCameraToCoordinate (Coordinate coordinate);
         void startPathDetailsActivity(Path path);
     }
 

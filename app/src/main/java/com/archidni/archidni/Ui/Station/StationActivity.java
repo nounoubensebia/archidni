@@ -41,6 +41,7 @@ import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.maps.MapView;
 
 import java.util.ArrayList;
@@ -276,9 +277,11 @@ public class StationActivity extends AppCompatActivity implements StationContrac
 
     @Override
     public void startPathSearchActivity(Place origin, Place destination) {
-        /*TODO check if null*/
         Intent intent = new Intent(this, PathSearchActivity.class);
-        intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,origin.toJson());
+        if (origin!=null)
+            intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,origin.toJson());
+        else
+            intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,new Gson().toJson(null));
         intent.putExtra(IntentUtils.PATH_SEARCH_DESTINATION,destination.toJson());
         startActivity(intent);
     }

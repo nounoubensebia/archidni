@@ -21,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,7 +93,10 @@ public class ParkingActivity extends AppCompatActivity implements ParkingContrac
     @Override
     public void startPathSearchActivity(Place origin, Place destination) {
         Intent intent = new Intent(this, PathSearchActivity.class);
-        intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,origin.toJson());
+        if (origin!=null)
+            intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,origin.toJson());
+        else
+            intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,new Gson().toJson(null));
         intent.putExtra(IntentUtils.PATH_SEARCH_DESTINATION,destination.toJson());
         startActivity(intent);
     }

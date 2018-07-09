@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.IntentUtils;
+import com.archidni.archidni.LocationListener;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     ArchidniGoogleMap archidniMap;
     private boolean drawerOpened;
+    private LocationListener locationListener;
 
 
     @Override
@@ -151,7 +153,22 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         initViews(savedInstanceState);
         User user = User.fromJson(SharedPrefsUtils.loadString(this,
                 SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT));
+
         presenter = new MainPresenter(this,user);
+
+        locationListener.getLastKnownUserLocation(new LocationListener.OnUserLocationUpdated() {
+            @Override
+            public void onUserLocationUpdated(Coordinate userLocation) {
+                presenter.onUserLocationUpdated(userLocation);
+            }
+        });
+
+        locationListener.listenForLocationUpdates(new LocationListener.OnUserLocationUpdated() {
+            @Override
+            public void onUserLocationUpdated(Coordinate userLocation) {
+                presenter.onUserLocationUpdated(userLocation);
+            }
+        });
     }
 
     private void createClusters ()
@@ -174,13 +191,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private void initViews(Bundle savedInstanceState)
     {
         ButterKnife.bind(this);
-
+        locationListener = new LocationListener(this);
         MapFragment mapView = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
         archidniMap = new ArchidniGoogleMap(this, mapView, new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 createClusters();
-                presenter.onMapReady(MainActivity.this, archidniMap.getBoundingBox(), archidniMap.getCenter());
+                presenter.onMapReady(MainActivity.this, archidniMap.getBoundingBox(),
+                        archidniMap.getCenter());
 
                 archidniMap.setOnCameraIdle(new ArchidniGoogleMap.OnCameraIdle() {
                     @Override
@@ -195,12 +213,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                         presenter.onMapShortClick();
                     }
                 });
-
-            }
-        }, new ArchidniGoogleMap.OnUserLocationCaptured() {
-            @Override
-            public void onUserLocationCaptured(Coordinate userLocation) {
-                presenter.onUserLocationUpdated(userLocation);
             }
         });
 
@@ -610,7 +622,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void startPathSearchActivity(Place origin, Place destination) {
         /*TODO check if null*/
         Intent intent = new Intent(this, PathSearchActivity.class);
-        intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,origin.toJson());
+        if (origin!=null)
+            intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,origin.toJson());
+        else
+            intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,new Gson().toJson(null));
         intent.putExtra(IntentUtils.PATH_SEARCH_DESTINATION,destination.toJson());
         startActivity(intent);
     }
@@ -811,27 +826,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
 
-    @Override
-    public void moveCameraToUserLocation() {
-        archidniMap.moveCamera(archidniMap.getUserLocation(),15);
-    }
 
     @Override
     public void animateCameraToLocation(Coordinate coordinate) {
-        archidniMap.animateCamera(coordinate,15,250);
+        if (coordinate!=null)
+            archidniMap.animateCamera(coordinate,15,250);
     }
 
     @Override
-    public void obtainUserLocation(
-            MainContract.OnUserLocationObtainedCallback onUserLocationObtainedCallback) {
-        onUserLocationObtainedCallback.onLocationObtained(archidniMap.getUserLocation());
+    public void moveCameraToLocation(Coordinate coordinate) {
+        archidniMap.moveCamera(coordinate,15);
     }
 
-
-    @Override
-    public void trackUser() {
-        archidniMap.animateCamera(archidniMap.getUserLocation(),15,250);
-    }
 
     @Override
     public void showSlidingPanel() {

@@ -13,6 +13,8 @@ public abstract class SelectorItem {
     private int id;
     private String name;
 
+    public static final int PARKING_ID = 5;
+
     public static ArrayList<SelectorItem> allItems =
             new ArrayList<SelectorItem>(){{
                 addAll(TransportMean.allTransportMeans);

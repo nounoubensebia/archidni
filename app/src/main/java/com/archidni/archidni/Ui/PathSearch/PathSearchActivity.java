@@ -30,8 +30,12 @@ import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.PathSuggestionAdapter;
 import com.archidni.archidni.Ui.PathDetails.PathDetailsActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
+import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.UiUtils.ViewUtils;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.MapView;
 
 import java.util.ArrayList;
@@ -43,8 +47,7 @@ import butterknife.ButterKnife;
 public class PathSearchActivity extends AppCompatActivity implements PathSearchContract.View {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.mapView)
-    MapView mapView;
+    MapFragment mapView;
     @BindView(R.id.layout_path_suggestions)
     View pathSuggestionsLayout;
     @BindView(R.id.text_get_path)
@@ -72,7 +75,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     @BindView(R.id.text_departure_date)
     TextView departureDateText;
 
-    ArchidniMap archidniMap;
+    ArchidniGoogleMap archidniMap;
     PathSearchPresenter pathSearchPresenter;
 
     @Override
@@ -93,14 +96,16 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        archidniMap = new ArchidniMap(mapView, savedInstanceState,
-                new ArchidniMap.OnMapReadyCallback() {
+
+        mapView = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
+
+        archidniMap = new ArchidniGoogleMap(this, mapView, new OnMapReadyCallback() {
             @Override
-            public void onMapReady() {
-                archidniMap.disableAllGestures();
+            public void onMapReady(GoogleMap googleMap) {
                 pathSearchPresenter.onMapReady();
             }
         });
+
         getPathLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,48 +138,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mapView.onStart();
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        pathSearchPresenter.onStop(getApplicationContext());
-        super.onStop();
-        mapView.onStop();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
-    }
 
     @Override
     public void showOriginAndDestinationLabels(String origin, String destination) {
@@ -194,10 +158,9 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
             ArrayList<Coordinate> coordinates = new ArrayList<>();
             coordinates.add(origin.getCoordinate());
             coordinates.add(destination.getCoordinate());
-            archidniMap.moveCameraToBounds(coordinates, (int) ViewUtils.dpToPx(this,64),
-                    (int) ViewUtils.dpToPx(this,64),
-                    (int) ViewUtils.dpToPx(this,64),
-                    (int) ViewUtils.dpToPx(this,128));
+            archidniMap.animateCameraToBounds(coordinates, (int) ViewUtils.dpToPx(this,128),
+                    1000
+                    );
         }
         else
         {
@@ -297,7 +260,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
                 progressBar.setVisibility(View.VISIBLE);
                 pathSuggestionsLayout.setVisibility(View.GONE);
             }
-        },250);
+        },100);
     }
 
     @Override
@@ -309,6 +272,11 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     @Override
     public void showOriginNotSet() {
         Toast.makeText(this,"Veuillez choisir un point de départ",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void moveCameraToCoordinate(Coordinate coordinate) {
+        archidniMap.moveCamera(coordinate,15);
     }
 
     @Override

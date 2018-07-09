@@ -6,8 +6,10 @@ import android.util.Pair;
 
 import com.archidni.archidni.Data.Lines.LinesRepository;
 import com.archidni.archidni.GeoUtils;
+import com.archidni.archidni.LocationListener;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
+import com.archidni.archidni.Model.Interests.ParkingType;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Transport.Line;
@@ -113,7 +115,10 @@ public class MainPresenter implements MainContract.Presenter {
             ArrayList<Parking> parkings = new ArrayList<>();
             for (Place place:interestPlaces)
             {
-                parkings.add((Parking)place);
+                if (place instanceof Parking && transportMeansSelector.isItemSelected(SelectorItem.PARKING_ID))
+                {
+                    parkings.add((Parking)place);
+                }
             }
             view.showPlacesOnList(parkings,userCoordinate);
         }
@@ -132,21 +137,16 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onSearchClicked() {
-        view.obtainUserLocation(new MainContract.OnUserLocationObtainedCallback() {
-            @Override
-            public void onLocationObtained(Coordinate userLocation) {
-                if (userLocation!=null)
-                {
-                    Place place = new Place("Ma position","Ma position",
-                            userLocation);
-                    view.startSearchActivity(place);
-                }
-                else
-                {
-                    view.startSearchActivity(null);
-                }
-            }
-        });
+        if (userCoordinate!=null)
+        {
+            Place place = new Place("Ma position","Ma position",
+                    userCoordinate);
+            view.startSearchActivity(place);
+        }
+        else
+        {
+            view.startSearchActivity(null);
+        }
     }
 
     @Override
@@ -155,42 +155,30 @@ public class MainPresenter implements MainContract.Presenter {
         currentBoundingBox = boundingBox;
         mapCenterCoordinate = coordinate;
         transportMeansSelector.selectAllItems();
-        view.obtainUserLocation(new MainContract.OnUserLocationObtainedCallback() {
-            @Override
-            public void onLocationObtained(Coordinate userLocation) {
-                view.showLinesLoadingLayout();
-                Coordinate searchLocation;
+        view.showLinesLoadingLayout();
+        Coordinate searchLocation;
+        if (userCoordinate!=null)
+        {
+            view.moveCameraToLocation(userCoordinate);
+            searchLocation = userCoordinate;
+        }
+        else
+        {
+            searchLocation = Coordinate.DEFAULT_LOCATION;
+            view.moveCameraToLocation(Coordinate.DEFAULT_LOCATION);
+        }
 
-                if (userLocation!=null)
-                {
-                    view.moveCameraToUserLocation();
-                    searchLocation = userLocation;
-                }
-                else
-                {
-                    searchLocation = Coordinate.DEFAULT_LOCATION;
-                    view.animateCameraToLocation(Coordinate.DEFAULT_LOCATION);
-                }
-                userCoordinate = userLocation;
-                searchCoordinates.add(searchLocation);
-                searchLines(context,searchLocation);
-            }
-        });
+        searchLines(context,searchLocation);
+
     }
 
 
     @Override
     public void onMyLocationFabClick() {
-        view.trackUser();
-        view.obtainUserLocation(new MainContract.OnUserLocationObtainedCallback() {
-            @Override
-            public void onLocationObtained(Coordinate userLocation) {
-                if (userLocation!=null)
-                {
-                    userCoordinate = userLocation;
-                }
-            }
-        });
+        if (userCoordinate!=null)
+        {
+            view.animateCameraToLocation(userCoordinate);
+        }
     }
 
     @Override
@@ -227,14 +215,14 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onSearchPathClick() {
-        view.obtainUserLocation(new MainContract.OnUserLocationObtainedCallback() {
-            @Override
-            public void onLocationObtained(Coordinate userLocation) {
-                    Place userPlace = new Place("Ma position","Ma position",
-                            userLocation);
-                    view.startPathSearchActivity(userPlace,selectedLocation);
-            }
-        });
+        Place userPlace = null;
+        if (userCoordinate!=null)
+        {
+            userPlace = new Place("Ma position","Ma position",
+                    userCoordinate);
+        }
+        view.startPathSearchActivity(userPlace,selectedLocation);
+
     }
 
 
