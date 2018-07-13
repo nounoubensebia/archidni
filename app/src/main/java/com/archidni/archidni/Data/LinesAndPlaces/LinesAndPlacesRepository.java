@@ -1,8 +1,7 @@
-package com.archidni.archidni.Data.Lines;
+package com.archidni.archidni.Data.LinesAndPlaces;
 
 import android.content.Context;
 
-import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.LineStationSuggestion;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.Transport.Line;
@@ -14,9 +13,9 @@ import java.util.ArrayList;
  * Created by noure on 07/02/2018.
  */
 
-public class LinesRepository {
+public class LinesAndPlacesRepository {
 
-    private LinesOnlineDataStore linesOnlineDataStore;
+    private LinesAndPlacesOnlineDataStore linesAndPlacesOnlineDataStore;
 
 
 
@@ -24,7 +23,7 @@ public class LinesRepository {
                          final OnLineSearchCompleted onLineSearchCompleted)
     {
         getLinesOnlineDataStoreInstance().getLine(context, lineStationSuggestion,
-                new LinesOnlineDataStore.OnLineSearchCompleted() {
+                new LinesAndPlacesOnlineDataStore.OnLineSearchCompleted() {
             @Override
             public void onLineFound(Line line) {
                 onLineSearchCompleted.onLineFound(line);
@@ -42,10 +41,10 @@ public class LinesRepository {
         getLinesOnlineDataStoreInstance().cancelRequests(context);
     }
 
-    public void getLines(Context context,Coordinate coordinate, final OnLinesAndPlacesSearchCompleted onSearchCompleted)
+    public void getLinesAndPlaces(Context context, final OnLinesAndPlacesSearchCompleted onSearchCompleted)
     {
-        LinesOnlineDataStore linesOnlineDataStore = getLinesOnlineDataStoreInstance();
-        linesOnlineDataStore.getLines(context, coordinate, new LinesOnlineDataStore.OnLinesAndPlacesSearchCompleted() {
+        LinesAndPlacesOnlineDataStore linesAndPlacesOnlineDataStore = getLinesOnlineDataStoreInstance();
+        linesAndPlacesOnlineDataStore.getLinesAndPlaces(context,new LinesAndPlacesOnlineDataStore.OnLinesAndPlacesSearchCompleted() {
             @Override
             public void onLinesAndPlacesFound(ArrayList<Line> lines, ArrayList<Place> places) {
                 onSearchCompleted.onFound(lines,places);
@@ -60,8 +59,8 @@ public class LinesRepository {
 
     public void getLinesPassingByStation (Context context, Station station, final OnSearchCompleted onSearchCompleted)
     {
-        LinesOnlineDataStore linesOnlineDataStore = getLinesOnlineDataStoreInstance();
-        linesOnlineDataStore.getLinesPassingByStation(context,station, new LinesOnlineDataStore.OnLinesSearchCompleted() {
+        LinesAndPlacesOnlineDataStore linesAndPlacesOnlineDataStore = getLinesOnlineDataStoreInstance();
+        linesAndPlacesOnlineDataStore.getLinesPassingByStation(context,station, new LinesAndPlacesOnlineDataStore.OnLinesSearchCompleted() {
             @Override
             public void onLinesFound(ArrayList<Line> lines) {
                 onSearchCompleted.onLinesFound(lines);
@@ -85,11 +84,11 @@ public class LinesRepository {
         void onError ();
     }
 
-    private LinesOnlineDataStore getLinesOnlineDataStoreInstance ()
+    private LinesAndPlacesOnlineDataStore getLinesOnlineDataStoreInstance ()
     {
-        if (linesOnlineDataStore==null) return new LinesOnlineDataStore();
+        if (linesAndPlacesOnlineDataStore ==null) return new LinesAndPlacesOnlineDataStore();
         else
-            return linesOnlineDataStore;
+            return linesAndPlacesOnlineDataStore;
 
     }
 

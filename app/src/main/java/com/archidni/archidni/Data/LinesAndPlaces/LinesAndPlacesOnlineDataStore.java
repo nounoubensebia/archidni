@@ -1,4 +1,4 @@
-package com.archidni.archidni.Data.Lines;
+package com.archidni.archidni.Data.LinesAndPlaces;
 
 import android.content.Context;
 import android.util.Pair;
@@ -24,7 +24,6 @@ import com.archidni.archidni.Model.Transport.TramwayMetroLine;
 import com.archidni.archidni.Model.Transport.TramwayMetroTrip;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.TimeUtils;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,19 +36,16 @@ import java.util.LinkedHashMap;
  * Created by noure on 07/02/2018.
  */
 
-public class LinesOnlineDataStore extends OnlineDataStore {
+public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
 
 
     private static final String GET_LINES_URL = "/api/v1/line";
     private static final String GET_STATIONS_URL = "/api/v1/station";
-    private static final String GET_LINES_AND_PLACES_URL = "/api/linesAndPlaces";
+    private static final String GET_LINES_AND_PLACES_URL = "/api/v1/linesAndPlaces";
 
 
-    public void getLines(Context context, final Coordinate position,
-                         final OnLinesAndPlacesSearchCompleted onLinesAndPlacesSearchCompleted) {
-        LinkedHashMap map = new LinkedHashMap();
-        String positionString = position.getLatitude() + "," + position.getLongitude();
-        map.put("position", positionString);
+    public void getLinesAndPlaces(Context context,
+                                  final OnLinesAndPlacesSearchCompleted onLinesAndPlacesSearchCompleted) {
         cancelRequests(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 //AppSingleton.buildGetUrl(SharedPrefsUtils.getServerUrl(context)+GET_LINES_URL, map),

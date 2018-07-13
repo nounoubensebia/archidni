@@ -2,7 +2,7 @@ package com.archidni.archidni.Ui.Station;
 
 import android.content.Context;
 
-import com.archidni.archidni.Data.Lines.LinesRepository;
+import com.archidni.archidni.Data.LinesAndPlaces.LinesAndPlacesRepository;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.Transport.Line;
@@ -21,7 +21,7 @@ public class StationPresenter implements StationContract.Presenter {
     private Place userPlace;
     private boolean linesSelected = true;
     private ArrayList<Line> lines;
-    private LinesRepository linesRepository;
+    private LinesAndPlacesRepository linesAndPlacesRepository;
     private long departureTime;
     private long departureDate;
 
@@ -29,7 +29,7 @@ public class StationPresenter implements StationContract.Presenter {
         this.station = station;
         this.view = view;
         view.setTheme(station);
-        linesRepository = new LinesRepository();
+        linesAndPlacesRepository = new LinesAndPlacesRepository();
     }
 
     @Override
@@ -116,11 +116,11 @@ public class StationPresenter implements StationContract.Presenter {
 
     @Override
     public void onStop(Context context) {
-        linesRepository.cancelAllRequests(context);
+        linesAndPlacesRepository.cancelAllRequests(context);
     }
 
     private void getLines(Context context) {
-        linesRepository.getLinesPassingByStation(context, station, new LinesRepository.OnSearchCompleted() {
+        linesAndPlacesRepository.getLinesPassingByStation(context, station, new LinesAndPlacesRepository.OnSearchCompleted() {
             @Override
             public void onLinesFound(ArrayList<Line> lines) {
                 StationPresenter.this.lines = lines;

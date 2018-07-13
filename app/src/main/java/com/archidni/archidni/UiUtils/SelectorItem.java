@@ -4,7 +4,7 @@ import com.archidni.archidni.App;
 import com.archidni.archidni.Model.Interests.ParkingType;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
-import com.google.maps.android.ui.IconGenerator;
+
 
 import java.util.ArrayList;
 
@@ -45,6 +45,6 @@ public abstract class SelectorItem {
     public abstract int getColor();
     public abstract int getTheme();
     public abstract int getCoordinateDrawable();
-    public abstract IconGenerator getClusterIconGenerator();
+
 
 }

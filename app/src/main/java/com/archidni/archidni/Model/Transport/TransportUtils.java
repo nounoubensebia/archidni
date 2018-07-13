@@ -7,6 +7,8 @@ import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by noure on 07/02/2018.
@@ -18,8 +20,7 @@ public class TransportUtils {
     public static ArrayList<StationLines> getStationLines (ArrayList<Line> lines)
     {
         ArrayList<StationLines> stationLinesArrayList = new ArrayList<>();
-        ArrayList<Station> stations = getStationsFromLines(lines);
-        for (Station station:stations)
+        /*for (Station station:stations)
         {
             ArrayList<Line> linesPassingByStation = new ArrayList<>();
             for (Line line:lines)
@@ -34,9 +35,28 @@ public class TransportUtils {
                 }
             }
             stationLinesArrayList.add(new StationLines(station,linesPassingByStation));
+        }*/
+        for (Line line:lines)
+        {
+            for (Station station:line.getStations())
+            {
+                StationLines stationLines = getStationFromList(station.getId(),stationLinesArrayList);
+                if (stationLines!=null)
+                {
+                    if (!containsLine(line.getId(),stationLines.getLines()))
+                        stationLines.getLines().add(line);
+                }
+                else
+                {
+                    ArrayList<Line> lines1 = new ArrayList<>();
+                    lines1.add(line);
+                    stationLinesArrayList.add(new StationLines(station,lines1));
+                }
+            }
         }
         return stationLinesArrayList;
     }
+
 
 
     public static ArrayList<Station> getStationsFromLines (ArrayList<Line> lines)
@@ -44,13 +64,29 @@ public class TransportUtils {
         ArrayList<Station> stations = new ArrayList<>();
         for (Line line:lines)
         {
-            for (Station station:line.getStations())
+            stations.addAll(line.getStations());
+        }
+        Collections.sort(stations, new Comparator<Station>() {
+            @Override
+            public int compare(Station station, Station t1) {
+                return station.getId()-t1.getId();
+            }
+        });
+        if (stations.size()>0)
+        {
+            ArrayList<Station> stationsWithoutDuplicates = new ArrayList<>();
+            int i = 0;
+            while (i<stations.size())
             {
-                if (!listContainsStation(station.getId(),stations))
+                Station station = stations.get(i);
+                stationsWithoutDuplicates.add(station);
+                i++;
+                while (i<stations.size()&&stations.get(i).equals(station))
                 {
-                    stations.add(station);
+                    i++;
                 }
             }
+            return stationsWithoutDuplicates;
         }
         return stations;
     }
@@ -89,17 +125,49 @@ public class TransportUtils {
         return stations;
     }
 
-    private static boolean listContainsStation(int stationId, ArrayList<Station> stations)
+
+    private static void addStationToListOptimal (Station stationToAdd,ArrayList<Station> stations)
     {
-        for (Station station:stations)
+        stations.add(stationToAdd);
+
+        Collections.sort(stations, new Comparator<Station>() {
+            @Override
+            public int compare(Station station, Station t1) {
+                return station.getId()-t1.getId();
+            }
+        });
+    }
+
+    private static StationLines getStationFromList(int stationId, ArrayList<StationLines> stations)
+    {
+        int i=0;
+        int f=stations.size()-1;
+        int m = (f+i)/2;
+        int cmp;
+        while (i<=f)
         {
-            if (stationId==station.getId())
+            StationLines station = stations.get(m);
+            cmp = stationId - station.getStation().getId();
+            if (cmp<0)
             {
-                return true;
+                f=m-1;
+            }
+            if (cmp>0)
+            {
+                i=m+1;
+            }
+            if (cmp==0)
+            {
+                return station;
+            }
+            else
+            {
+                m=(f+i)/2;
             }
         }
-        return false;
+        return null;
     }
+
 
     public static boolean containsLine (int lineId,ArrayList<Line> lines)
     {

@@ -37,7 +37,8 @@ public interface MainContract {
         void hideLinesLoadingLayout();
         void startParkingActivity(Parking parking);
         void showPlacesOnMap(ArrayList<? extends Place> places,TransportMeansSelector transportMeansSelector);
-        void updatePlacesOnMap (ArrayList<? extends Place> places,TransportMeansSelector transportMeansSelector);
+        void updatePlacesOnMap (ArrayList<? extends Place> places,TransportMeansSelector newTransportMeansSelector,
+                                TransportMeansSelector oldTransportMeanSelector);
         void showLinesOnList(ArrayList<Line> lines);
         void showZoomInsufficientLayout();
         void hideZoomInsufficientLayout();
@@ -66,7 +67,7 @@ public interface MainContract {
         void onLocationMarkerCreated(com.google.android.gms.maps.model.Marker marker);
         void onMapShortClick();
         void onSearchPathClick();
-        void onCameraMove(Context context, Coordinate coordinate);
+        void onCameraMove(Context context, Coordinate coordinate,float zoom);
         void onStationMarkerClick(Station station, com.google.android.gms.maps.model.Marker marker);
         void onParkingMarkerClick (Parking parking, com.google.android.gms.maps.model.Marker marker);
         void onRetryClicked(Context context,Coordinate coordinate);

@@ -1,15 +1,15 @@
 package com.archidni.archidni.Ui.Main;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Pair;
+import android.util.Log;
 
-import com.archidni.archidni.Data.Lines.LinesRepository;
+import com.archidni.archidni.Data.LinesAndPlaces.LinesAndPlacesRepository;
 import com.archidni.archidni.GeoUtils;
-import com.archidni.archidni.LocationListener;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Interests.ParkingType;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Transport.Line;
@@ -18,6 +18,7 @@ import com.archidni.archidni.Model.Transport.StationLines;
 import com.archidni.archidni.Model.Transport.TransportUtils;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.Model.User;
+import com.archidni.archidni.TimeMonitor;
 import com.archidni.archidni.UiUtils.SelectorItem;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 import com.google.android.gms.maps.model.Marker;
@@ -40,7 +41,7 @@ public class MainPresenter implements MainContract.Presenter {
     private Place selectedLocation;
     private ArrayList<Line> lines;
     private ArrayList<Place> interestPlaces;
-    private LinesRepository linesRepository;
+    private LinesAndPlacesRepository linesAndPlacesRepository;
     private Marker selectedMarker;
     private static final int MIN_ZOOM = 12;
     private Coordinate mapCenterCoordinate;
@@ -63,7 +64,7 @@ public class MainPresenter implements MainContract.Presenter {
         this.transportMeansSelector = new TransportMeansSelector();
         transportMeansSelector.selectAllItems();
         view.updateMeansSelectionLayout(transportMeansSelector);
-        linesRepository = new LinesRepository();
+        linesAndPlacesRepository = new LinesAndPlacesRepository();
         lines = new ArrayList<>();
         searchCoordinates = new ArrayList<>();
         view.showDrawerLayout(user);
@@ -72,10 +73,18 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void toggleTransportMean(int transportMeanId) {
-        transportMeansSelector.ToggleItem(transportMeanId);
-        view.updateMeansSelectionLayout(transportMeansSelector);
+        TransportMeansSelector transportMeansSelector = new TransportMeansSelector();
+        for (SelectorItem selectorItem:SelectorItem.allItems)
+        {
+            if (this.transportMeansSelector.isItemSelected(selectorItem.getId()))
+            {
+                transportMeansSelector.ToggleItem(selectorItem.getId());
+            }
+        }
+        this.transportMeansSelector.ToggleItem(transportMeanId);
+        view.updateMeansSelectionLayout(this.transportMeansSelector);
         //view.showPlacesOnMap(TransportUtils.getStationsFromLines(getfilteredLines()));
-        view.updatePlacesOnMap(getFilteredPlaces(),transportMeansSelector);
+        view.updatePlacesOnMap(getFilteredPlaces(),this.transportMeansSelector,transportMeansSelector);
         populateList();
     }
 
@@ -227,109 +236,54 @@ public class MainPresenter implements MainContract.Presenter {
 
 
     @Override
-    public void onCameraMove(Context context,Coordinate coordinate) {
+    public void onCameraMove(Context context,Coordinate coordinate,float zoom) {
 
         populateList();
-        mapCenterCoordinate = coordinate;
+        //view.updatePlacesOnMap(getFilteredPlaces(),transportMeansSelector);
+        //view.showPlacesOnMap(getFilteredPlaces(),transportMeansSelector);
 
-        /*currentBoundingBox = boundingBox;
-        if (zoom<MIN_ZOOM)
-        {
-            if (!locationLayoutVisible)
-                view.showZoomInsufficientLayout();
-            view.showPlacesOnMap(new ArrayList<Station>());
-            currentZoomIsInsufficient = true;
-            populateList();
-        }
-        else
-        {
-            currentBoundingBox = boundingBox;
-            populateList();
-            if (currentZoomIsInsufficient)
-            {
-                currentZoomIsInsufficient = false;
-                view.hideZoomInsufficientLayout();
-                view.showPlacesOnMap(TransportUtils.getStationsFromLines(getfilteredLines()));
-            }
-            boolean found = false;
-            /*for (Coordinate searchCoordinate:searchCoordinates)
-            {
-                if (GeoUtils.distance(searchCoordinate,coordinate)<=15000)
-                {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found)
-            {
-                if (!searchUnderway&&!errorHappened)
-                {
-                    if (searchCoordinates.size()>=4)
-                    {
-                        searchCoordinates.remove(searchCoordinates.size()-1);
-                    }
-                    searchCoordinates.add(coordinate);
-                    int i = 0;
-                    while (i<lines.size())
-                    {
-                        if (!lines.get(i).insideSearchCircle(searchCoordinates,15000))
-                        {
-                            lines.remove(i);
-                        }
-                        else
-                        {
-                            i++;
-                        }
-                    }
-                    view.showLinesLoadingLayout();
-                    searchLines(context,coordinate);
-                }
-            }
-        }*/
+        mapCenterCoordinate = coordinate;
 
     }
 
     private void searchLines (Context context,Coordinate coordinate)
     {
         searchUnderway = true;
-        /*linesRepository.getLines(context,coordinate, new LinesRepository.OnSearchCompleted() {
+        linesAndPlacesRepository.getLinesAndPlaces(context,new LinesAndPlacesRepository.OnLinesAndPlacesSearchCompleted() {
             @Override
-            public void onLinesFound(ArrayList<Line> lines) {
-                errorHappened = false;
-                addLines(lines);
-                view.hideLinesLoadingLayout();
-                view.showLinesOnList(lines);
+            public void onFound(final ArrayList<Line> lines, final ArrayList<Place> places) {
                 mapCenterCoordinate = view.getMapCenter();
-                ArrayList<Place> interestPlaces = new ArrayList<>();
-                interestPlaces.addAll(TransportUtils.getStationsFromLines(getfilteredLines()));
-                populateList();
-                view.showPlacesOnMap(interestPlaces);
-                searchUnderway = false;
-            }
+                @SuppressLint("StaticFieldLeak") AsyncTask<Void,Void,ArrayList<Place>> asyncTask = new AsyncTask<Void, Void, ArrayList<Place>>() {
+                    @Override
+                    protected ArrayList<Place> doInBackground(Void... voids) {
+                        errorHappened = false;
+                        TimeMonitor timeMonitor = TimeMonitor.initTimeMonitor();
+                        addLines(lines);
+                        MainPresenter.this.interestPlaces.addAll(places);
+                        ArrayList<Place> placesToShow = new ArrayList<>();
+                        placesToShow.addAll(places);
+                        placesToShow.addAll(TransportUtils.getStationsFromLines(getfilteredLines()));
+                        searchUnderway = false;
+                        TimeMonitor stationsLinesList = TimeMonitor.initTimeMonitor();
+                        stationLinesArrayList = TransportUtils.getStationLines(lines);
+                        Log.i("StationsArrayList" ,stationsLinesList.getElapsedTime()+"");
+                        Log.i("LOGIC TIME",timeMonitor.getElapsedTime()+"");
+                        return placesToShow;
+                    }
 
-            @Override
-            public void onError() {
-                errorHappened = true;
-                view.hideLinesLoadingLayout();
-                view.showSearchErrorLayout();
-            }
-        });*/
-        linesRepository.getLines(context, coordinate, new LinesRepository.OnLinesAndPlacesSearchCompleted() {
-            @Override
-            public void onFound(ArrayList<Line> lines, ArrayList<Place> places) {
-                errorHappened = false;
-                addLines(lines);
-                view.hideLinesLoadingLayout();
-                view.showLinesOnList(lines);
-                mapCenterCoordinate = view.getMapCenter();
-                MainPresenter.this.interestPlaces.addAll(places);
-                ArrayList<Place> placesToShow = new ArrayList<>();
-                placesToShow.addAll(places);
-                placesToShow.addAll(TransportUtils.getStationsFromLines(getfilteredLines()));
-                populateList();
-                view.showPlacesOnMap(placesToShow,transportMeansSelector);
-                searchUnderway = false;
-                stationLinesArrayList = TransportUtils.getStationLines(lines);
+                    @Override
+                    protected void onPostExecute(ArrayList<Place> aVoid) {
+                        TimeMonitor timeMonitor = TimeMonitor.initTimeMonitor();
+                        populateList();
+                        Log.i("POPULATE LIST TIME" ,timeMonitor.getElapsedTime()+"");
+                        view.hideLinesLoadingLayout();
+                        view.showLinesOnList(lines);
+                        TimeMonitor timeMonitor1 = TimeMonitor.initTimeMonitor();
+                        view.showPlacesOnMap(aVoid,transportMeansSelector);
+                        Log.i("MAP TIME",timeMonitor1.getElapsedTime()+"");
+                    }
+                };
+                asyncTask.execute();
             }
 
             @Override
@@ -343,13 +297,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     private void addLines(ArrayList<Line> lines)
     {
-        for (Line line:lines)
-        {
-            if (!TransportUtils.containsLine(line.getId(),this.lines))
-            {
-                this.lines.add(line);
-            }
-        }
+        this.lines.addAll(lines);
     }
 
     @Override
@@ -423,7 +371,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onStop(Context context) {
 
-        //linesRepository.cancelAllRequests(context);
+        //linesAndPlacesRepository.cancelAllRequests(context);
     }
 
     @Override
@@ -431,7 +379,7 @@ public class MainPresenter implements MainContract.Presenter {
         view.startParkingActivity(parking);
     }
 
-    private ArrayList<Station> filteredListStations ()
+    private ArrayList<Station> getFilteredStations()
     {
         ArrayList<Station> stations = TransportUtils.getStationsFromLines(getfilteredLines());
         return stations;
@@ -439,8 +387,9 @@ public class MainPresenter implements MainContract.Presenter {
 
     private ArrayList<Station> getNearbyFilteredStations (Coordinate coordinate)
     {
+        ArrayList<Station> filteredStations = getFilteredStations();
         ArrayList<Station> nearbyStations = TransportUtils.getNearbyStations(coordinate,
-                filteredListStations(),1000);
+                filteredStations,1000);
         sortStations(nearbyStations,coordinate);
         return nearbyStations;
     }

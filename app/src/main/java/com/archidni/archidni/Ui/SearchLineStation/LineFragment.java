@@ -2,7 +2,6 @@ package com.archidni.archidni.Ui.SearchLineStation;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.archidni.archidni.Data.LineStationSuggestions.LineStationSuggestionsRepository;
-import com.archidni.archidni.Data.Lines.LinesOnlineDataStore;
-import com.archidni.archidni.Data.Lines.LinesRepository;
+import com.archidni.archidni.Data.LinesAndPlaces.LinesAndPlacesRepository;
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.LineStationSuggestion;
 import com.archidni.archidni.Model.Transport.Line;
@@ -28,7 +26,7 @@ import java.util.ArrayList;
 
 public class LineFragment extends LineStationFragment {
 
-    LinesRepository linesRepository;
+    LinesAndPlacesRepository linesAndPlacesRepository;
 
     @Override
     void updateQueryText(String text) {
@@ -68,12 +66,12 @@ public class LineFragment extends LineStationFragment {
             public void onItemClicked(LineStationSuggestion lineSuggestion) {
                 final Dialog dialog = DialogUtils.buildProgressDialog("Veuillez patientez",getActivity());
                 dialog.show();
-                if (linesRepository == null)
+                if (linesAndPlacesRepository == null)
                 {
-                    linesRepository = new LinesRepository();
+                    linesAndPlacesRepository = new LinesAndPlacesRepository();
                 }
-                linesRepository.getLine(getActivity(), lineSuggestion,
-                        new LinesRepository.OnLineSearchCompleted() {
+                linesAndPlacesRepository.getLine(getActivity(), lineSuggestion,
+                        new LinesAndPlacesRepository.OnLineSearchCompleted() {
                     @Override
                     public void onLineFound(Line line) {
                         dialog.hide();

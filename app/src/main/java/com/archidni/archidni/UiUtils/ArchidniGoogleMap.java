@@ -341,14 +341,14 @@ public class ArchidniGoogleMap  {
     public void prepareClusterItem (Coordinate coordinate,int drawable,int clusterId,Object tag)
     {
         ArchidniClusterItem archidniClusterItem = new ArchidniClusterItem(coordinate,drawable,tag);
-        for (ArchidniClusterItem archidniClusterItem1: archidniPreparedClusterItems)
+        /*for (ArchidniClusterItem archidniClusterItem1: archidniPreparedClusterItems)
         {
             if (archidniClusterItem1.getCoordinate().equals(archidniClusterItem.getCoordinate()))
             {
                 return;
             }
-        }
-        if (getRenderedClusterItems()!=null)
+        }*/
+        /*if (getRenderedClusterItems()!=null)
             for (ArchidniClusterItem archidniClusterItem1:getRenderedClusterItems())
             {
                 if (archidniClusterItem.getTag() instanceof Station && archidniClusterItem1.getTag() instanceof Station)
@@ -366,7 +366,7 @@ public class ArchidniGoogleMap  {
                 {
                     return;
                 }
-            }
+            }*/
         clusterManagers.get(clusterId).addItem(archidniClusterItem);
         ArchidniClusterRenderer archidniClusterRenderer = (ArchidniClusterRenderer)
                 clusterManagers.get(clusterId).getRenderer();

@@ -29,7 +29,7 @@ public class App extends Application {
         super.onCreate();
         appContext = this.getApplicationContext();
 
-        Mapbox.getInstance(getApplicationContext(), "pk.eyJ1Ijoibm91bm91OTYiLCJhIjoiY2o0Z29mMXNsMDVoazMzbzI1NTJ1MmRqbCJ9.CXczOhM2eznwR0Mv6h2Pgg");
+        //Mapbox.getInstance(getApplicationContext(), "pk.eyJ1Ijoibm91bm91OTYiLCJhIjoiY2o0Z29mMXNsMDVoazMzbzI1NTJ1MmRqbCJ9.CXczOhM2eznwR0Mv6h2Pgg");
 
     }
 }
