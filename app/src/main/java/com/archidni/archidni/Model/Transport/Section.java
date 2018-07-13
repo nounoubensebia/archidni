@@ -28,4 +28,6 @@ public class Section implements Serializable {
     {
         return GeoUtils.distance(getOrigin().getCoordinate(),getDestination().getCoordinate());
     }
+
+
 }

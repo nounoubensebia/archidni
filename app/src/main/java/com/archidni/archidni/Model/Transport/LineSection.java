@@ -9,12 +9,14 @@ import java.io.Serializable;
  */
 
 public class LineSection extends Section implements Serializable {
-
+    private String polylineString;
     private int mode;
     private int order;
 
-    public LineSection(Station origin, Station destination, int mode, int order) {
-        super(origin,destination);
+
+    public LineSection(Station origin, Station destination, String polylineString, int mode, int order) {
+        super(origin, destination);
+        this.polylineString = polylineString;
         this.mode = mode;
         this.order = order;
     }
@@ -27,6 +29,8 @@ public class LineSection extends Section implements Serializable {
         return order;
     }
 
-
+    public String getPolylineString() {
+        return polylineString;
+    }
 
 }

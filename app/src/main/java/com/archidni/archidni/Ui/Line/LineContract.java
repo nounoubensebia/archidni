@@ -1,5 +1,6 @@
 package com.archidni.archidni.Ui.Line;
 
+import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 
 public interface LineContract {
     public interface View {
-        void showStationsOnMap(ArrayList<Station> stations);
+        void showLineOnMap(ArrayList<Coordinate> polyline, ArrayList<Station> stations);
         void showLineOnActivity(Line line);
         void setTheme(Line line);
         void showSelectedStation (Station station);

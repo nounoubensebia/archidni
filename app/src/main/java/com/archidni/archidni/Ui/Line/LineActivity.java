@@ -168,15 +168,15 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     }
 
     @Override
-    public void showStationsOnMap(ArrayList<Station> stations) {
+    public void showLineOnMap(ArrayList<Coordinate> polyline,ArrayList<Station> stations) {
         archidniMap.clearMap();
         animateCameraToFitLine(stations);
-        archidniMap.preparePolyline(this, TransportUtils.getCoordinatesFromStations(stations)
-                ,stations.get(0).getTransportMean().getColor());
+        archidniMap.preparePolyline(this, polyline
+                ,stations.get(0).getTransportMean().getColor(),15);
         for (Station station:stations)
         {
             archidniMap.prepareMarker(station.getCoordinate(),station.getTransportMean()
-                    .getCircleDrawable(),0.5f,0.5f);
+                    .getMarkerInsideLineDrawable(),0.5f,0.5f);
         }
         archidniMap.addPreparedAnnotations();
     }

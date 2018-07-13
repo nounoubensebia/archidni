@@ -132,6 +132,18 @@ public class TransportMean extends SelectorItem {
         }
     }
 
+    public int getMarkerInsideLineDrawable ()
+    {
+        switch (getId()){
+            case 0 : return R.drawable.marker_station_inside_line_transport_mean_0;
+            case 1 : return R.drawable.marker_station_inside_line_transport_mean_1;
+            case 2 : return R.drawable.marker_station_inside_line_transport_mean_2;
+            case 3 : return R.drawable.marker_station_inside_line_transport_mean_3;
+            case 4 : return R.drawable.marker_station_inside_line_transport_mean_4;
+            default:return -1;
+        }
+    }
+
     @Override
     public int getCoordinateDrawable ()
     {

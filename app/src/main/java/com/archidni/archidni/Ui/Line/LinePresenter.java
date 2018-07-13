@@ -2,6 +2,7 @@ package com.archidni.archidni.Ui.Line;
 
 import com.archidni.archidni.App;
 import com.archidni.archidni.Data.Favorites.FavoritesRepository;
+import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 
@@ -63,7 +64,17 @@ public class LinePresenter implements LineContract.Presenter {
 
     @Override
     public void onMapReady() {
-        view.showStationsOnMap(getStations());
+        view.showLineOnMap(getPolyline(),getStations());
+    }
+
+    private ArrayList<Coordinate> getPolyline ()
+    {
+        if (line.isBusLine())
+        {
+            return line.getPolyline(outboundSelected);
+        }
+        else
+            return line.getPolyline();
     }
 
     private ArrayList<Station> getStations ()
@@ -124,6 +135,6 @@ public class LinePresenter implements LineContract.Presenter {
         outboundSelected = outboundClicked;
         view.updateInboundOutboundLayout(outboundSelected);
         view.showStationsOnList(getStations());
-        view.showStationsOnMap(getStations());
+        view.showLineOnMap(getPolyline(),getStations());
     }
 }

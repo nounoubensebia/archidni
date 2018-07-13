@@ -237,7 +237,8 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                         destinationObject.getDouble("longitude")));
                 int order = sectionObject.getInt("order");
                 int mode = sectionObject.getInt("mode");
-                LineSection lineSection = new LineSection(origin, destination,mode,order);
+                String polylineString = sectionObject.getString("polyline");
+                LineSection lineSection = new LineSection(origin, destination,polylineString,mode,order);
                 lineSections.add(lineSection);
             }
             TransportMean transportMean = TransportMean.allTransportMeans.get(

@@ -62,7 +62,7 @@ public class ArchidniGoogleMap  {
                     }
                 });
                 onMapReadyCallback.onMapReady(googleMap);
-                map.setTrafficEnabled(true);
+                //map.setTrafficEnabled(true);
             }
         });
     }
