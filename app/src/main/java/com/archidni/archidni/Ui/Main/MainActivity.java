@@ -54,6 +54,7 @@ import com.archidni.archidni.UiUtils.ArchidniClusterItem;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Model.TransportMean;
+import com.archidni.archidni.UiUtils.ClusterHandler;
 import com.archidni.archidni.UiUtils.SelectorItem;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 import com.archidni.archidni.UiUtils.ViewUtils;
@@ -178,13 +179,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         for (SelectorItem selectorItem:SelectorItem.allItems)
         {
             archidniMap.addCluster(MainActivity.this,
-                     new ArchidniGoogleMap.OnClusterItemClickListener() {
+                     new ClusterHandler.OnClusterItemClickListener() {
                         @Override
                         public void onClusterItemClick(ArchidniClusterItem archidniClusterItem, Marker marker) {
                             if (archidniClusterItem.getTag() instanceof Station)
-                                presenter.onStationMarkerClick((Station) archidniClusterItem.getTag(),marker);
+                                presenter.onStationMarkerClick((Station) archidniClusterItem.getTag(),marker,archidniClusterItem);
                             if (archidniClusterItem.getTag() instanceof Parking)
-                                presenter.onParkingMarkerClick((Parking) archidniClusterItem.getTag(),marker);
+                                presenter.onParkingMarkerClick((Parking) archidniClusterItem.getTag(),marker,archidniClusterItem);
                         }
                     });
         }
@@ -604,7 +605,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void hideLocationLayout(Marker marker) {
+    public void hideLocationLayout(Marker marker,ArchidniClusterItem archidniClusterItem) {
         container.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         myLocationFab.setVisibility(View.VISIBLE);
         showSlidingUpPanelFab.setVisibility(View.VISIBLE);
@@ -616,7 +617,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 slideInSearchText();
             }
         },250);
-        MapPlace mapPlace = (MapPlace) marker.getTag();
+        MapPlace mapPlace = (MapPlace) archidniClusterItem.getTag();
         archidniMap.changeMarkerIcon(marker,mapPlace.getMarkerDrawable());
     }
 

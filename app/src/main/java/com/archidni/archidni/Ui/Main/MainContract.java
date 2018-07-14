@@ -11,6 +11,7 @@ import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.User;
+import com.archidni.archidni.UiUtils.ArchidniClusterItem;
 import com.archidni.archidni.UiUtils.ArchidniMarker;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 
@@ -30,7 +31,7 @@ public interface MainContract {
         void moveCameraToLocation (Coordinate coordinate);
         void showSlidingPanel();
         void showLocationLayout(MapPlace place, com.google.android.gms.maps.model.Marker oldSelectedMarker, com.google.android.gms.maps.model.Marker marker);
-        void hideLocationLayout(com.google.android.gms.maps.model.Marker marker);
+        void hideLocationLayout(com.google.android.gms.maps.model.Marker marker, ArchidniClusterItem archidniClusterItem);
         void startPathSearchActivity(Place origin,Place destination);
         void showLinesLoadingLayout();
         void hideLinesLoadingLayout();
@@ -67,8 +68,10 @@ public interface MainContract {
         void onMapShortClick();
         void onSearchPathClick();
         void onCameraMove(Context context, Coordinate coordinate,float zoom);
-        void onStationMarkerClick(Station station, com.google.android.gms.maps.model.Marker marker);
-        void onParkingMarkerClick (Parking parking, com.google.android.gms.maps.model.Marker marker);
+        void onStationMarkerClick(Station station, com.google.android.gms.maps.model.Marker marker,
+                                  ArchidniClusterItem archidniClusterItem);
+        void onParkingMarkerClick (Parking parking, com.google.android.gms.maps.model.Marker marker,
+                                   ArchidniClusterItem archidniClusterItem);
         void onRetryClicked(Context context,Coordinate coordinate);
         void onStationItemClick(Station station);
         void onLineItemClicked(Line line);

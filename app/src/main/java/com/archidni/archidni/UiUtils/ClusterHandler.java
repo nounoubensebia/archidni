@@ -15,6 +15,7 @@ public interface ClusterHandler {
 
     public void prepareClusterItem (Coordinate coordinate,int drawable,int clusterId,Object tag);
 
+    public void removeAllClusterItems (int clusterId);
 
     public interface OnClusterItemClickListener {
         void onClusterItemClick (ArchidniClusterItem archidniClusterItem,Marker marker);

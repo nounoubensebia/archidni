@@ -19,6 +19,7 @@ import com.archidni.archidni.Model.Transport.TransportUtils;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.Model.User;
 import com.archidni.archidni.TimeMonitor;
+import com.archidni.archidni.UiUtils.ArchidniClusterItem;
 import com.archidni.archidni.UiUtils.SelectorItem;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 import com.google.android.gms.maps.model.Marker;
@@ -43,6 +44,7 @@ public class MainPresenter implements MainContract.Presenter {
     private ArrayList<Place> interestPlaces;
     private LinesAndPlacesRepository linesAndPlacesRepository;
     private Marker selectedMarker;
+    private ArchidniClusterItem selectedClusterItem;
     private static final int MIN_ZOOM = 12;
     private Coordinate mapCenterCoordinate;
     private boolean currentZoomIsInsufficient;
@@ -211,7 +213,7 @@ public class MainPresenter implements MainContract.Presenter {
     public void onMapShortClick() {
         if (locationLayoutVisible)
         {
-            view.hideLocationLayout(selectedMarker);
+            view.hideLocationLayout(selectedMarker,selectedClusterItem);
             locationLayoutVisible = false;
             selectedMarker = null;
             selectedLocation = null;
@@ -301,19 +303,21 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void onStationMarkerClick(Station station, Marker marker) {
+    public void onStationMarkerClick(Station station, Marker marker,ArchidniClusterItem archidniClusterItem) {
             view.showLocationLayout(station,selectedMarker,marker);
             selectedMarker = marker;
+            this.selectedClusterItem = archidniClusterItem;
             locationLayoutVisible = true;
             view.animateCameraToLocation(station.getCoordinate());
             selectedLocation = station;
     }
 
     @Override
-    public void onParkingMarkerClick(Parking parking, Marker marker) {
+    public void onParkingMarkerClick(Parking parking, Marker marker,ArchidniClusterItem archidniClusterItem) {
         view.showLocationLayout(parking,selectedMarker,marker);
         selectedMarker = marker;
         locationLayoutVisible = true;
+        this.selectedClusterItem = archidniClusterItem;
         view.animateCameraToLocation(parking.getCoordinate());
         selectedLocation = parking;
     }
