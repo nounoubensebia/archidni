@@ -21,20 +21,17 @@ import com.google.maps.android.ui.IconGenerator;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
+
 
 public class ArchidniClusterRenderer extends DefaultClusterRenderer<ArchidniClusterItem> {
 
-    private IconGenerator iconGenerator;
     private HashMap<ArchidniClusterItem,Marker> markerOptionsHashMap;
     private ArrayList<ArchidniClusterItem> archidniClusterItems;
     private BitmapDescriptor clusterIcon;
 
-    public ArchidniClusterRenderer(Context context, GoogleMap map, ClusterManager<ArchidniClusterItem> clusterManager,
-                                   IconGenerator iconGenerator) {
+    public ArchidniClusterRenderer(Context context, GoogleMap map, ClusterManager<ArchidniClusterItem> clusterManager) {
         super(context, map, clusterManager);
         markerOptionsHashMap = new HashMap<>();
-        this.iconGenerator= iconGenerator;
         archidniClusterItems = new ArrayList<>();
     }
 

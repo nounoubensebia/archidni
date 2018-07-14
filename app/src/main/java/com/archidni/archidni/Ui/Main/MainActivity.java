@@ -62,7 +62,6 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Marker;
 import com.google.gson.Gson;
-import com.mapbox.mapboxsdk.Mapbox;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
@@ -179,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         for (SelectorItem selectorItem:SelectorItem.allItems)
         {
             archidniMap.addCluster(MainActivity.this,
-                    null, new ArchidniGoogleMap.OnClusterItemClickListener() {
+                     new ArchidniGoogleMap.OnClusterItemClickListener() {
                         @Override
                         public void onClusterItemClick(ArchidniClusterItem archidniClusterItem, Marker marker) {
                             if (archidniClusterItem.getTag() instanceof Station)

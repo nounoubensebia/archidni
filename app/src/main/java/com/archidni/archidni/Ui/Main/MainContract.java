@@ -13,7 +13,6 @@ import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.User;
 import com.archidni.archidni.UiUtils.ArchidniMarker;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
-import com.mapbox.mapboxsdk.annotations.Marker;
 
 import java.util.ArrayList;
 

@@ -1,7 +1,7 @@
 package com.archidni.archidni.Model;
 
 import com.google.gson.Gson;
-import com.mapbox.mapboxsdk.geometry.LatLng;
+
 
 import java.io.Serializable;
 
@@ -21,11 +21,7 @@ public class Coordinate implements Serializable {
         this.longitude = longitude;
     }
 
-    public Coordinate (com.mapbox.mapboxsdk.geometry.LatLng latLng)
-    {
-        this.latitude = latLng.getLatitude();
-        this.longitude = latLng.getLongitude();
-    }
+
 
     public double getLatitude() {
         return latitude;
@@ -35,9 +31,7 @@ public class Coordinate implements Serializable {
         return longitude;
     }
 
-    public LatLng toMapBoxLatLng() {
-        return new LatLng(latitude,longitude);
-    }
+
 
     public com.google.android.gms.maps.model.LatLng toGoogleMapLatLng ()
     {

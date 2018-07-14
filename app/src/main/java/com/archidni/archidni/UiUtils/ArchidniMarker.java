@@ -1,6 +1,6 @@
 package com.archidni.archidni.UiUtils;
 
-import com.mapbox.mapboxsdk.annotations.Marker;
+
 
 /**
  * Created by nouno on 05/02/2018.
@@ -8,7 +8,7 @@ import com.mapbox.mapboxsdk.annotations.Marker;
 
 public class ArchidniMarker {
     
-    private Marker marker;
+    /*private Marker marker;
     private Object tag;
 
     public ArchidniMarker(Marker marker) {
@@ -26,5 +26,5 @@ public class ArchidniMarker {
 
     public Marker getMarker() {
         return marker;
-    }
+    }*/
 }

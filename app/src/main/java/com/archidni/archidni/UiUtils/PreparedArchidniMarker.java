@@ -1,14 +1,12 @@
 package com.archidni.archidni.UiUtils;
 
-import com.mapbox.mapboxsdk.annotations.MarkerOptions;
-import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
 
 /**
  * Created by nouno on 11/02/2018.
  */
 
 public class PreparedArchidniMarker {
-    private MarkerOptions markerViewOptions;
+    /*private MarkerOptions markerViewOptions;
     private Object tag;
 
     public PreparedArchidniMarker(MarkerOptions markerViewOptions, Object tag) {
@@ -26,5 +24,5 @@ public class PreparedArchidniMarker {
 
     public Object getTag() {
         return tag;
-    }
+    }*/
 }

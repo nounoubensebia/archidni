@@ -9,7 +9,7 @@ import com.archidni.archidni.UiUtils.SelectorItem;
 
 import java.util.ArrayList;
 
-import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
+
 
 /**
  * Created by noure on 02/02/2018.

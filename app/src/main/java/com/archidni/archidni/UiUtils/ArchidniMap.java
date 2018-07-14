@@ -13,22 +13,6 @@ import android.view.View;
 
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
-import com.mapbox.mapboxsdk.annotations.Icon;
-import com.mapbox.mapboxsdk.annotations.IconFactory;
-import com.mapbox.mapboxsdk.annotations.Marker;
-import com.mapbox.mapboxsdk.annotations.MarkerOptions;
-import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
-import com.mapbox.mapboxsdk.annotations.Polyline;
-import com.mapbox.mapboxsdk.annotations.PolylineOptions;
-import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.camera.CameraUpdate;
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
-import com.mapbox.mapboxsdk.constants.MyBearingTracking;
-import com.mapbox.mapboxsdk.constants.MyLocationTracking;
-import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.geometry.LatLngBounds;
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
 
 
 import java.util.ArrayList;
@@ -39,7 +23,7 @@ import java.util.List;
  */
 
 public class ArchidniMap {
-    private MapView mapView;
+    /*private MapView mapView;
     private MapboxMap mapboxMap;
     private Coordinate userLocation;
     private ArrayList<ArchidniMarker> archidniMarkers;
@@ -550,5 +534,5 @@ public class ArchidniMap {
 
     public interface OnMarkerClickListener {
         void onMarkerClick (ArchidniMarker archidniMarker);
-    }
+    }*/
 }

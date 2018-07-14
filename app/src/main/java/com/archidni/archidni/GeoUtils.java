@@ -1,7 +1,9 @@
 package com.archidni.archidni;
 
 import com.archidni.archidni.Model.Coordinate;
-import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.SphericalUtil;
+
 
 import java.util.ArrayList;
 
@@ -14,9 +16,9 @@ public class GeoUtils {
     private static float HUMAN_SPEED = 3.6f;
     public static int distance (Coordinate coordinate1, Coordinate coordinate2)
     {
-        LatLng latLng1 = coordinate1.toMapBoxLatLng();
-        LatLng latLng2 = coordinate2.toMapBoxLatLng();
-        return (int)latLng1.distanceTo(latLng2);
+        LatLng latLng1 = coordinate1.toGoogleMapLatLng();
+        LatLng latLng2 = coordinate2.toGoogleMapLatLng();
+        return (int) SphericalUtil.computeDistanceBetween(latLng1,latLng2);
     }
 
     public static boolean polylineContainsOnlyEquals (ArrayList<Coordinate> polyline)
@@ -39,7 +41,7 @@ public class GeoUtils {
         int distance = 0;
         for (int i = 1;i < coordinates.size();i++)
         {
-            distance+= prevCoordinate.toMapBoxLatLng().distanceTo(coordinates.get(i).toMapBoxLatLng());
+            distance+= distance(prevCoordinate,coordinates.get(i));
             prevCoordinate = coordinates.get(i);
         }
         return distance;

@@ -9,7 +9,6 @@ import com.archidni.archidni.Model.Places.MapPlace;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.google.gson.Gson;
-import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 
 import java.io.Serializable;
 

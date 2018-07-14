@@ -13,16 +13,18 @@ import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Path.PathStep;
 import com.archidni.archidni.R;
+import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.UiUtils.ArchidniMap;
-import com.mapbox.mapboxsdk.maps.MapView;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PathNavigationActivity extends AppCompatActivity implements PathNavigationContract.View {
 
-    @BindView(R.id.mapView)
-    MapView mapView;
     @BindView(R.id.image_step)
     ImageView mStepImage;
     @BindView(R.id.text_step)
@@ -41,7 +43,7 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
     TextView mMyPositionText;
     PathNavigationContract.Presenter mPresenter;
 
-    ArchidniMap mUiMapUtils;
+    ArchidniGoogleMap mUiMapUtils;
 
 
 
@@ -60,9 +62,10 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
     private void initViews (Bundle sis)
     {
         ButterKnife.bind(this);
-        mUiMapUtils = new ArchidniMap(mapView, sis, new ArchidniMap.OnMapReadyCallback() {
+        MapFragment mapView = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
+        mUiMapUtils = new ArchidniGoogleMap(this, mapView, new OnMapReadyCallback() {
             @Override
-            public void onMapReady() {
+            public void onMapReady(GoogleMap googleMap) {
                 mPresenter.onMapReady();
             }
         });
@@ -129,7 +132,7 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
         else
         {
             mUiMapUtils.clearMap();
-            mUiMapUtils.preparePolyline(this,pathStep.getPolyline(),R.color.colorGreen,8,1);
+            mUiMapUtils.preparePolyline(this,pathStep.getPolyline(),R.color.colorGreen,8);
             /*int i =0;
             for (Coordinate coordinate:pathStep.getPolyline())
             {
@@ -139,7 +142,7 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
             mUiMapUtils.addMarker(pathStep.getPolyline().get(pathStep.getPolyline().size()-1),
                     R.drawable.ic_marker_red_24dp);
             mUiMapUtils.animateCameraToBounds(pathStep.getPolyline(),
-                    50,50,50,800,500);
+                    50,250);
             mUiMapUtils.addPreparedAnnotations();
         }
     }
@@ -149,45 +152,7 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mapView.onStart();
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        mapView.onStop();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
-    }
 }

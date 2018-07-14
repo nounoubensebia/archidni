@@ -21,7 +21,6 @@ import com.archidni.archidni.Ui.Signup.SignupActivity;
 import com.archidni.archidni.UiUtils.DialogUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.mapbox.mapboxsdk.Mapbox;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -120,6 +119,6 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        },2000);
+        },250);
     }
 }

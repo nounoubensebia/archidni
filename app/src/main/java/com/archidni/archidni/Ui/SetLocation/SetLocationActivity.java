@@ -15,7 +15,6 @@ import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.MapView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

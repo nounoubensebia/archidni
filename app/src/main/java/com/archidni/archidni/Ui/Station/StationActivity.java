@@ -36,13 +36,17 @@ import com.archidni.archidni.Ui.Adapters.TrainTripAdapter;
 import com.archidni.archidni.Ui.Adapters.TramwayMetroTripAdapter;
 import com.archidni.archidni.Ui.Line.LineActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
+import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
-import com.mapbox.mapboxsdk.maps.MapView;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,8 +56,6 @@ import butterknife.ButterKnife;
 
 public class StationActivity extends AppCompatActivity implements StationContract.View {
 
-    @BindView(R.id.mapView)
-    MapView mapView;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.recyclerView)
@@ -78,7 +80,7 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     TextView timeText;
     @BindView(R.id.text_date)
     TextView dateText;
-    ArchidniMap archidniMap;
+    ArchidniGoogleMap archidniMap;
     StationContract.Presenter presenter;
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -106,10 +108,10 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     private void initViews (Bundle savedInstanceState)
     {
         ButterKnife.bind(this);
-        archidniMap = new ArchidniMap(mapView, savedInstanceState, new ArchidniMap.OnMapReadyCallback() {
+        MapFragment mapView = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
+        archidniMap = new ArchidniGoogleMap(this, mapView, new OnMapReadyCallback() {
             @Override
-            public void onMapReady() {
-                archidniMap.disableAllGestures();
+            public void onMapReady(GoogleMap googleMap) {
                 presenter.onMapReady();
             }
         });
@@ -364,46 +366,4 @@ public class StationActivity extends AppCompatActivity implements StationContrac
         timeText.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mapView.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        presenter.onStop(getApplicationContext());
-        mapView.onStop();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
-    }
 }
