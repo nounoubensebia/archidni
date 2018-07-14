@@ -14,6 +14,7 @@ import com.archidni.archidni.Model.User;
 import com.archidni.archidni.UiUtils.ArchidniClusterItem;
 import com.archidni.archidni.UiUtils.ArchidniMarker;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
 
@@ -60,14 +61,14 @@ public interface MainContract {
         void toggleTransportMean(int transportMeanId);
         void toggleStationsLines(int selectedItem);
         void onSearchClicked();
-        void onMapReady(Context context,BoundingBox boundingBox,Coordinate coordinate);
+        void onMapReady(Context context, LatLngBounds latLngBounds, Coordinate coordinate);
         void onMyLocationFabClick();
         void onUserLocationUpdated(Coordinate userLocation);
         void onShowSlidingPanelFabClick();
         void onLocationMarkerCreated(com.google.android.gms.maps.model.Marker marker);
         void onMapShortClick();
         void onSearchPathClick();
-        void onCameraMove(Context context, Coordinate coordinate,float zoom);
+        void onCameraMove(Context context, Coordinate coordinate,float zoom,LatLngBounds latLngBounds);
         void onStationMarkerClick(Station station, com.google.android.gms.maps.model.Marker marker,
                                   ArchidniClusterItem archidniClusterItem);
         void onParkingMarkerClick (Parking parking, com.google.android.gms.maps.model.Marker marker,
@@ -81,6 +82,7 @@ public interface MainContract {
         void onFavoritesClick();
         void onStop(Context context);
         void onParkingClick (Parking parking);
+        void onFirstLocationCaptured (Coordinate coordinate);
     }
 
     interface OnUserLocationObtainedCallback {

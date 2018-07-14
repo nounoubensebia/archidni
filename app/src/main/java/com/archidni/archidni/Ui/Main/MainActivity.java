@@ -61,6 +61,7 @@ import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.gson.Gson;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -156,22 +157,22 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         initViews(savedInstanceState);
         User user = User.fromJson(SharedPrefsUtils.loadString(this,
                 SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT));
-
-        presenter = new MainPresenter(this,user);
-
-        locationListener.getLastKnownUserLocation(new LocationListener.OnUserLocationUpdated() {
-            @Override
-            public void onUserLocationUpdated(Coordinate userLocation) {
-                presenter.onUserLocationUpdated(userLocation);
-            }
-        });
-
         locationListener.listenForLocationUpdates(new LocationListener.OnUserLocationUpdated() {
             @Override
             public void onUserLocationUpdated(Coordinate userLocation) {
                 presenter.onUserLocationUpdated(userLocation);
             }
         });
+        locationListener.getLastKnownUserLocation(new LocationListener.OnUserLocationUpdated() {
+            @Override
+            public void onUserLocationUpdated(Coordinate userLocation) {
+                presenter.onFirstLocationCaptured(userLocation);
+            }
+        });
+        presenter = new MainPresenter(this,user);
+
+
+
     }
 
     private void createClusters ()
@@ -199,14 +200,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         archidniMap = new ArchidniGoogleMap(this, mapView, new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
+                archidniMap.setMyLocationEnabled(true);
                 createClusters();
-                presenter.onMapReady(MainActivity.this, archidniMap.getBoundingBox(),
+                presenter.onMapReady(MainActivity.this,
+                        archidniMap.getMap().getProjection().getVisibleRegion().latLngBounds,
                         archidniMap.getCenter());
 
                 archidniMap.setOnCameraIdle(new ArchidniGoogleMap.OnCameraIdle() {
+
                     @Override
-                    public void onCameraIdle(Coordinate coordinate, BoundingBox boundingBox, double zoom) {
-                        presenter.onCameraMove(MainActivity.this, coordinate,(float) zoom);
+                    public void onCameraIdle(Coordinate coordinate, LatLngBounds latLngBounds, double zoom) {
+                        presenter.onCameraMove(MainActivity.this,coordinate,(float) zoom,latLngBounds);
                     }
                 });
 

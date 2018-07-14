@@ -1,6 +1,8 @@
 package com.archidni.archidni.Data.LinesAndPlaces;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Pair;
 
 import com.android.volley.Request;
@@ -49,23 +51,42 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
         cancelRequests(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 //AppSingleton.buildGetUrl(SharedPrefsUtils.getServerUrl(context)+GET_LINES_URL, map),
-                SharedPrefsUtils.getServerUrl(context)+GET_LINES_AND_PLACES_URL,
+                SharedPrefsUtils.getServerUrl(context) + GET_LINES_AND_PLACES_URL,
                 new Response.Listener<String>() {
+                    @SuppressLint("StaticFieldLeak")
                     @Override
                     public void onResponse(String response) {
 
-                        try {
-                            JSONObject root = new JSONObject(response);
-                            JSONArray data = root.getJSONArray("lines");
-                            ArrayList<Line> lines = parseLines(data);
-                            ArrayList<Place> places = new ArrayList<>();
-                            ArrayList<Parking> parkings = parseParkings(root.getJSONArray("parkings"));
-                            places.addAll(parkings);
-                            onLinesAndPlacesSearchCompleted.onLinesAndPlacesFound(lines,places);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            onLinesAndPlacesSearchCompleted.onError();
-                        }
+
+                        AsyncTask<String, Void, Pair<ArrayList<Line>, ArrayList<Place>>> asyncTask;
+                        asyncTask = new AsyncTask<String, Void, Pair<ArrayList<Line>, ArrayList<Place>>>() {
+                            @Override
+                            protected Pair<ArrayList<Line>, ArrayList<Place>> doInBackground(String... strings) {
+                                try {
+                                    JSONObject root = new JSONObject(strings[0]);
+                                    JSONArray data = root.getJSONArray("lines");
+                                    ArrayList<Line> lines = parseLines(data);
+                                    ArrayList<Place> places = new ArrayList<>();
+                                    ArrayList<Parking> parkings = parseParkings(root.getJSONArray("parkings"));
+                                    places.addAll(parkings);
+                                    return new Pair<>(lines, places);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    return null;
+                                }
+                            }
+
+                            @Override
+                            protected void onPostExecute(Pair<ArrayList<Line>, ArrayList<Place>> arrayListArrayListPair) {
+                                if (arrayListArrayListPair != null)
+                                    onLinesAndPlacesSearchCompleted.onLinesAndPlacesFound(
+                                            arrayListArrayListPair.first
+                                            , arrayListArrayListPair.second);
+                                else
+                                    onLinesAndPlacesSearchCompleted.onError();
+                            }
+                        };
+                        asyncTask.execute(response);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -76,11 +97,9 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
         AppSingleton.getInstance(context).addToRequestQueue(stringRequest, getTag());
     }
 
-    public ArrayList<Parking> parseParkings (JSONArray parkingsJson)
-    {
+    public ArrayList<Parking> parseParkings(JSONArray parkingsJson) {
         ArrayList<Parking> parkings = new ArrayList<>();
-        for (int i=0;i<parkingsJson.length();i++)
-        {
+        for (int i = 0; i < parkingsJson.length(); i++) {
             try {
                 JSONObject parkingObject = parkingsJson.getJSONObject(i);
                 String name = parkingObject.getString("name");
@@ -88,7 +107,7 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                 double longitude = parkingObject.getDouble("longitude");
                 int capacity = parkingObject.getInt("capacity");
                 int id = parkingObject.getInt("id");
-                parkings.add(new Parking(name,new Coordinate(latitude,longitude),capacity,id));
+                parkings.add(new Parking(name, new Coordinate(latitude, longitude), capacity, id));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -97,13 +116,11 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
     }
 
 
-
     public void getLine(Context context, LineStationSuggestion lineStationSuggestion,
-                        final OnLineSearchCompleted onLineSearchCompleted)
-    {
+                        final OnLineSearchCompleted onLineSearchCompleted) {
         cancelRequests(context);
-        String url = SharedPrefsUtils.getServerUrl(context)+
-                GET_LINES_URL+"/"+lineStationSuggestion.getId();
+        String url = SharedPrefsUtils.getServerUrl(context) +
+                GET_LINES_URL + "/" + lineStationSuggestion.getId();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>() {
             @Override
@@ -129,7 +146,7 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
     public void getLinesPassingByStation(Context context, final Station station,
                                          final OnLinesSearchCompleted onLinesSearchCompleted) {
         cancelRequests(context);
-        String url = SharedPrefsUtils.getServerUrl(context)+GET_STATIONS_URL + "/" + station.getId()
+        String url = SharedPrefsUtils.getServerUrl(context) + GET_STATIONS_URL + "/" + station.getId()
                 + "/lines";
         final ArrayList<Line> lines = new ArrayList<>();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -166,11 +183,9 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                                 line = new TrainLine(line.getId(), line.getName(),
                                         line.getTransportMean(), line.getLineSections(), trainTrips);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             JSONArray trips = lineObject.getJSONArray("trips");
-                            ArrayList<TramwayMetroTrip> tramwayMetroTrips  = new ArrayList<>();
+                            ArrayList<TramwayMetroTrip> tramwayMetroTrips = new ArrayList<>();
                             for (int j = 0; j < trips.length(); j++) {
                                 JSONObject tripObject = trips.getJSONObject(j);
                                 long days = tripObject.getLong("days");
@@ -183,7 +198,7 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                                     long end = TimeUtils.getTimeFromString(
                                             timePeriodJson.getString("end"));
                                     int waitingTime = timePeriodJson.getInt("waitingTime");
-                                    timePeriods.add(new TimePeriod(start,end,waitingTime));
+                                    timePeriods.add(new TimePeriod(start, end, waitingTime));
                                 }
                                 JSONArray stationsJsonArray = tripObject.getJSONArray("stations");
                                 ArrayList<Pair<Integer, Integer>> pairs = new ArrayList<>();
@@ -192,11 +207,11 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                                     pairs.add(new Pair<Integer, Integer>(stationObject.getInt("id"),
                                             stationObject.getInt("minutes")));
                                 }
-                                tramwayMetroTrips.add(new TramwayMetroTrip(days,pairs,timePeriods));
+                                tramwayMetroTrips.add(new TramwayMetroTrip(days, pairs, timePeriods));
                             }
 
-                            line = new TramwayMetroLine(line.getId(),line.getName(),
-                                    line.getTransportMean(),line.getLineSections(),tramwayMetroTrips);
+                            line = new TramwayMetroLine(line.getId(), line.getName(),
+                                    line.getTransportMean(), line.getLineSections(), tramwayMetroTrips);
                         }
                         lines.add(line);
                     }
@@ -227,24 +242,24 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                 JSONObject destinationObject = sectionObject.getJSONObject("destination");
                 Station origin = new Station(originObject.getInt("id"),
                         originObject.getString("name"),
-                        originObject.getInt("transport_mode_id")-1,
+                        originObject.getInt("transport_mode_id") - 1,
                         new Coordinate(originObject.getDouble("latitude"),
-                        originObject.getDouble("longitude")));
+                                originObject.getDouble("longitude")));
                 Station destination = new Station(destinationObject.getInt("id"),
                         destinationObject.getString("name"),
-                        destinationObject.getInt("transport_mode_id")-1,
+                        destinationObject.getInt("transport_mode_id") - 1,
                         new Coordinate(destinationObject.getDouble("latitude"),
-                        destinationObject.getDouble("longitude")));
+                                destinationObject.getDouble("longitude")));
                 int order = sectionObject.getInt("order");
                 int mode = sectionObject.getInt("mode");
                 String polylineString = sectionObject.getString("polyline");
-                LineSection lineSection = new LineSection(origin, destination,polylineString,mode,order);
+                LineSection lineSection = new LineSection(origin, destination, polylineString, mode, order);
                 lineSections.add(lineSection);
             }
             TransportMean transportMean = TransportMean.allTransportMeans.get(
                     jsonObject.getInt("transport_mode_id") - 1
             );
-            Line.Builder builder = new Line.Builder(id,name);
+            Line.Builder builder = new Line.Builder(id, name);
             builder.setLineSections(lineSections);
             builder.setTransportMean(transportMean);
             return builder.build();
@@ -275,17 +290,20 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
 
 
     public interface OnLinesAndPlacesSearchCompleted {
-        void onLinesAndPlacesFound (ArrayList<Line> lines, ArrayList<Place> places);
+        void onLinesAndPlacesFound(ArrayList<Line> lines, ArrayList<Place> places);
+
         void onError();
     }
 
     public interface OnLinesSearchCompleted {
         void onLinesFound(ArrayList<Line> lines);
+
         void onError();
     }
 
     public interface OnLineSearchCompleted {
-        void onLineFound (Line line);
+        void onLineFound(Line line);
+
         void onError();
     }
 }

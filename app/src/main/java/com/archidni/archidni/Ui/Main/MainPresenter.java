@@ -1,14 +1,12 @@
 package com.archidni.archidni.Ui.Main;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.archidni.archidni.Data.LinesAndPlaces.LinesAndPlacesRepository;
 import com.archidni.archidni.GeoUtils;
-import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.Places.Parking;
@@ -22,6 +20,7 @@ import com.archidni.archidni.TimeMonitor;
 import com.archidni.archidni.UiUtils.ArchidniClusterItem;
 import com.archidni.archidni.UiUtils.SelectorItem;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
@@ -45,16 +44,12 @@ public class MainPresenter implements MainContract.Presenter {
     private LinesAndPlacesRepository linesAndPlacesRepository;
     private Marker selectedMarker;
     private ArchidniClusterItem selectedClusterItem;
-    private static final int MIN_ZOOM = 12;
     private Coordinate mapCenterCoordinate;
-    private boolean currentZoomIsInsufficient;
-    private ArrayList<Coordinate> searchCoordinates;
-    private boolean searchUnderway = false;
-    private BoundingBox currentBoundingBox;
     private Coordinate userCoordinate;
-    private boolean errorHappened = false;
+    private TimeMonitor timeMonitor;
     private User user;
     private ArrayList<StationLines> stationLinesArrayList;
+    private LatLngBounds currentLatLngBounds;
 
     public static final int STATIONS_SELECTED = 0;
     public static final int LINES_SELECTED = 1;
@@ -68,9 +63,9 @@ public class MainPresenter implements MainContract.Presenter {
         view.updateMeansSelectionLayout(transportMeansSelector);
         linesAndPlacesRepository = new LinesAndPlacesRepository();
         lines = new ArrayList<>();
-        searchCoordinates = new ArrayList<>();
         view.showDrawerLayout(user);
         interestPlaces = new ArrayList<>();
+        timeMonitor = TimeMonitor.initTimeMonitor();
     }
 
     @Override
@@ -118,7 +113,7 @@ public class MainPresenter implements MainContract.Presenter {
     public void populateList ()
     {
         if (selectedItem == STATIONS_SELECTED)
-            view.showPlacesOnList(getNearbyFilteredStations(mapCenterCoordinate),userCoordinate);
+            view.showPlacesOnList(getMapAreaStations(mapCenterCoordinate),userCoordinate);
         if (selectedItem == LINES_SELECTED)
             view.showLinesOnList(getNearbyFilteredLines(mapCenterCoordinate));
         if (selectedItem == INTERESTS_SELECTED)
@@ -161,12 +156,12 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void onMapReady(final Context context, BoundingBox boundingBox,Coordinate coordinate) {
+    public void onMapReady(final Context context, LatLngBounds latLngBounds,Coordinate coordinate) {
         view.setUserLocationEnabled(true);
-        currentBoundingBox = boundingBox;
         mapCenterCoordinate = coordinate;
         transportMeansSelector.selectAllItems();
         view.showLinesLoadingLayout();
+        this.currentLatLngBounds = latLngBounds;
         Coordinate searchLocation;
         if (userCoordinate!=null)
         {
@@ -217,10 +212,6 @@ public class MainPresenter implements MainContract.Presenter {
             locationLayoutVisible = false;
             selectedMarker = null;
             selectedLocation = null;
-            if (currentZoomIsInsufficient)
-            {
-                view.showZoomInsufficientLayout();
-            }
         }
     }
 
@@ -238,8 +229,8 @@ public class MainPresenter implements MainContract.Presenter {
 
 
     @Override
-    public void onCameraMove(Context context,Coordinate coordinate,float zoom) {
-
+    public void onCameraMove(Context context,Coordinate coordinate,float zoom,LatLngBounds latLngBounds) {
+        currentLatLngBounds = latLngBounds;
         populateList();
         //view.updatePlacesOnMap(getFilteredPlaces(),transportMeansSelector);
         //view.showPlacesOnMap(getFilteredPlaces(),transportMeansSelector);
@@ -250,7 +241,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     private void searchLines (Context context,Coordinate coordinate)
     {
-        searchUnderway = true;
         linesAndPlacesRepository.getLinesAndPlaces(context,new LinesAndPlacesRepository.OnLinesAndPlacesSearchCompleted() {
             @Override
             public void onFound(final ArrayList<Line> lines, final ArrayList<Place> places) {
@@ -258,14 +248,12 @@ public class MainPresenter implements MainContract.Presenter {
                 @SuppressLint("StaticFieldLeak") AsyncTask<Void,Void,ArrayList<Place>> asyncTask = new AsyncTask<Void, Void, ArrayList<Place>>() {
                     @Override
                     protected ArrayList<Place> doInBackground(Void... voids) {
-                        errorHappened = false;
                         TimeMonitor timeMonitor = TimeMonitor.initTimeMonitor();
                         addLines(lines);
                         MainPresenter.this.interestPlaces.addAll(places);
                         ArrayList<Place> placesToShow = new ArrayList<>();
                         placesToShow.addAll(places);
                         placesToShow.addAll(TransportUtils.getStationsFromLines(getfilteredLines()));
-                        searchUnderway = false;
                         TimeMonitor stationsLinesList = TimeMonitor.initTimeMonitor();
                         stationLinesArrayList = TransportUtils.getStationLines(lines);
                         Log.i("StationsArrayList" ,stationsLinesList.getElapsedTime()+"");
@@ -290,7 +278,6 @@ public class MainPresenter implements MainContract.Presenter {
 
             @Override
             public void onError() {
-                errorHappened = true;
                 view.hideLinesLoadingLayout();
                 view.showSearchErrorLayout();
             }
@@ -383,25 +370,42 @@ public class MainPresenter implements MainContract.Presenter {
         view.startParkingActivity(parking);
     }
 
+    @Override
+    public void onFirstLocationCaptured(Coordinate coordinate) {
+        userCoordinate = coordinate;
+        if (timeMonitor.getElapsedTime()<1000)
+        {
+            view.moveCameraToLocation(coordinate);
+        }
+    }
+
     private ArrayList<Station> getFilteredStations()
     {
         ArrayList<Station> stations = TransportUtils.getStationsFromLines(getfilteredLines());
         return stations;
     }
 
-    private ArrayList<Station> getNearbyFilteredStations (Coordinate coordinate)
+    private ArrayList<Station> getMapAreaStations(Coordinate coordinate)
     {
         ArrayList<Station> filteredStations = getFilteredStations();
         ArrayList<Station> nearbyStations = TransportUtils.getNearbyStations(coordinate,
-                filteredStations,1000);
-        sortStations(nearbyStations,coordinate);
-        return nearbyStations;
+                filteredStations,2000);
+        ArrayList<Station> areaStations = new ArrayList<>();
+        for (Station station : nearbyStations)
+        {
+            if (station.getCoordinate().isInsideBounds(currentLatLngBounds))
+            {
+                areaStations.add(station);
+            }
+        }
+        sortStations(areaStations,coordinate);
+        return areaStations;
     }
 
     private ArrayList<Line> getNearbyFilteredLines (Coordinate coordinate)
     {
         ArrayList<Line> nearbyLines = new ArrayList<>();
-        ArrayList<Station> stations = getNearbyFilteredStations(coordinate);
+        ArrayList<Station> stations = getMapAreaStations(coordinate);
         for (StationLines stationLines:stationLinesArrayList)
         {
             for (Station station : stations)

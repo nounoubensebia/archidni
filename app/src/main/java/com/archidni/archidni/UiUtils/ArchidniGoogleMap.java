@@ -312,11 +312,11 @@ public class ArchidniGoogleMap  {
 
 
     public interface OnCameraIdle {
-        public void onCameraIdle (Coordinate coordinate,BoundingBox boundingBox,double zoom);
+        public void onCameraIdle (Coordinate coordinate,LatLngBounds latLngBounds,double zoom);
     }
 
     public interface OnCameraMoveListener {
-        void onCameraMove (Coordinate coordinate, BoundingBox boundingBox, double zoom);
+        void onCameraMove (Coordinate coordinate, LatLngBounds latLngBounds, double zoom);
     }
 
 

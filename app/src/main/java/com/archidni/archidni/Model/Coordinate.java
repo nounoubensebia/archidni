@@ -1,5 +1,6 @@
 package com.archidni.archidni.Model;
 
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.gson.Gson;
 
 
@@ -31,7 +32,10 @@ public class Coordinate implements Serializable {
         return longitude;
     }
 
-
+    public boolean isInsideBounds (LatLngBounds latLngBounds)
+    {
+        return latLngBounds.contains(this.toGoogleMapLatLng());
+    }
 
     public com.google.android.gms.maps.model.LatLng toGoogleMapLatLng ()
     {

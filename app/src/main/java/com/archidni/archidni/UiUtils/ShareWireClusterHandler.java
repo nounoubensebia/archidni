@@ -37,7 +37,9 @@ public class ShareWireClusterHandler implements ClusterHandler  {
             @Override
             public void onCameraIdle() {
                 ArchidniGoogleMap.OnCameraIdle onCameraIdle = archidniGoogleMap.getOnCameraIdle();
-                onCameraIdle.onCameraIdle(archidniGoogleMap.getCenter(),archidniGoogleMap.getBoundingBox(),archidniGoogleMap.getMap().getCameraPosition().zoom);
+                onCameraIdle.onCameraIdle(archidniGoogleMap.getCenter(),
+                        archidniGoogleMap.getMap().getProjection().getVisibleRegion().latLngBounds,
+                        archidniGoogleMap.getMap().getCameraPosition().zoom);
                 for (ClusterManager clusterManager:clusterManagers)
                 {
                     clusterManager.onCameraIdle();
