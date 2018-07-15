@@ -1,4 +1,4 @@
-package net.sharewire.googlemapsclustering;
+package com.archidni.clusteringlibrary.googlemapsclustering;
 
 interface QuadTreePoint {
     double getLatitude();

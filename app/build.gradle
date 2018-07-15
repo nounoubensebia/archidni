@@ -25,7 +25,9 @@ dependencies {
     repositories {
         mavenCentral()
     }
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':clusteringlibrary')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:support-media-compat:27.1.1'
     compile "com.android.support:support-core-utils:27.1.1"

@@ -1,4 +1,4 @@
-package net.sharewire.googlemapsclustering;
+package com.archidni.clusteringlibrary.googlemapsclustering;
 
 import android.content.Context;
 import android.support.annotation.ColorInt;
@@ -6,9 +6,9 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
-import com.archidni.archidni.R;
+import com.archidni.clusteringlibrary.R;
 
-import static net.sharewire.googlemapsclustering.Preconditions.checkNotNull;
+import static com.archidni.clusteringlibrary.googlemapsclustering.Preconditions.checkNotNull;
 
 /**
  * Represents the visual style of map marker icons. Supports customization

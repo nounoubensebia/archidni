@@ -4,17 +4,17 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.archidni.archidni.Model.Coordinate;
+import com.archidni.clusteringlibrary.googlemapsclustering.Cluster;
+import com.archidni.clusteringlibrary.googlemapsclustering.ClusterItem;
+import com.archidni.clusteringlibrary.googlemapsclustering.ClusterManager;
+import com.archidni.clusteringlibrary.googlemapsclustering.DefaultIconGenerator;
+import com.archidni.clusteringlibrary.googlemapsclustering.IconGenerator;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.Marker;
-import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
 
-import net.sharewire.googlemapsclustering.Cluster;
-import net.sharewire.googlemapsclustering.ClusterItem;
-import net.sharewire.googlemapsclustering.ClusterManager;
-import net.sharewire.googlemapsclustering.DefaultIconGenerator;
-import net.sharewire.googlemapsclustering.IconGenerator;
+
 
 import java.util.ArrayList;
 

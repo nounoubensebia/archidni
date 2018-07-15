@@ -4,7 +4,7 @@ import com.archidni.archidni.Model.Coordinate;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
-public class ArchidniClusterItem implements ClusterItem, net.sharewire.googlemapsclustering.ClusterItem {
+public class ArchidniClusterItem implements ClusterItem, com.archidni.clusteringlibrary.googlemapsclustering.ClusterItem {
 
     private Coordinate coordinate;
     private int drawable;

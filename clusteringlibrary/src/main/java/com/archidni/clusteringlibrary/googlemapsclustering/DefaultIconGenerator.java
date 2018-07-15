@@ -1,4 +1,4 @@
-package net.sharewire.googlemapsclustering;
+package com.archidni.clusteringlibrary.googlemapsclustering;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,11 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.archidni.archidni.R;
+
+import com.archidni.clusteringlibrary.R;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
-import static net.sharewire.googlemapsclustering.Preconditions.checkNotNull;
+import static com.archidni.clusteringlibrary.googlemapsclustering.Preconditions.checkNotNull;
 
 /**
  * The implementation of {@link IconGenerator} that generates icons with the default style
