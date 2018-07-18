@@ -1,7 +1,7 @@
 package com.archidni.archidni.Model.Path;
 
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.TransportMean;
 import com.google.gson.Gson;
@@ -14,13 +14,13 @@ import java.util.ArrayList;
  */
 
 public class Path implements Serializable {
-    private Place departure;
-    private Place destination;
+    private PathPlace departure;
+    private PathPlace destination;
     private PathSettings pathSettings;
     private ArrayList<PathInstruction> pathInstructions;
 
 
-    public Path(Place departure, Place destination, PathSettings pathSettings, ArrayList<PathInstruction> pathInstructions) {
+    public Path(PathPlace departure, PathPlace destination, PathSettings pathSettings, ArrayList<PathInstruction> pathInstructions) {
         this.departure = departure;
         this.destination = destination;
         this.pathSettings = pathSettings;
@@ -28,19 +28,19 @@ public class Path implements Serializable {
     }
 
 
-    public Place getDeparture() {
+    public PathPlace getDeparture() {
         return departure;
     }
 
-    public void setDeparture(Place departure) {
+    public void setDeparture(PathPlace departure) {
         this.departure = departure;
     }
 
-    public Place getDestination() {
+    public PathPlace getDestination() {
         return destination;
     }
 
-    public void setDestination(Place destination) {
+    public void setDestination(PathPlace destination) {
         this.destination = destination;
     }
 

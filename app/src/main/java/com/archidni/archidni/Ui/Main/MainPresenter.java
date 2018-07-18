@@ -8,8 +8,9 @@ import android.util.Log;
 import com.archidni.archidni.Data.LinesAndPlaces.LinesAndPlacesRepository;
 import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.Parking;
+import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.StationLines;
@@ -38,9 +39,9 @@ public class MainPresenter implements MainContract.Presenter {
     private TransportMeansSelector transportMeansSelector;
     private int selectedItem;
     private boolean locationLayoutVisible = false;
-    private Place selectedLocation;
+    private PathPlace selectedLocation;
     private ArrayList<Line> lines;
-    private ArrayList<Place> interestPlaces;
+    private ArrayList<MainActivityPlace> interestPlaces;
     private LinesAndPlacesRepository linesAndPlacesRepository;
     private Marker selectedMarker;
     private ArchidniClusterItem selectedClusterItem;
@@ -85,10 +86,10 @@ public class MainPresenter implements MainContract.Presenter {
         populateList();
     }
 
-    private ArrayList<Place> getFilteredPlaces ()
+    private ArrayList<MainActivityPlace> getFilteredPlaces ()
     {
-        ArrayList<Place> filtredPlaces = new ArrayList<>();
-        for (Place place:interestPlaces)
+        ArrayList<MainActivityPlace> filtredPlaces = new ArrayList<>();
+        for (MainActivityPlace place:interestPlaces)
         {
             if (place instanceof Parking && transportMeansSelector.isItemSelected(5))
             {
@@ -119,7 +120,7 @@ public class MainPresenter implements MainContract.Presenter {
         if (selectedItem == INTERESTS_SELECTED)
         {
             ArrayList<Parking> parkings = new ArrayList<>();
-            for (Place place:interestPlaces)
+            for (MainActivityPlace place:interestPlaces)
             {
                 if (place instanceof Parking && transportMeansSelector.isItemSelected(SelectorItem.PARKING_ID))
                 {
@@ -145,8 +146,7 @@ public class MainPresenter implements MainContract.Presenter {
     public void onSearchClicked() {
         if (userCoordinate!=null)
         {
-            Place place = new Place("Ma position","Ma position",
-                    userCoordinate);
+            PathPlace place = new PathPlace("Ma positoin",userCoordinate);
             view.startSearchActivity(place);
         }
         else
@@ -217,11 +217,10 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onSearchPathClick() {
-        Place userPlace = null;
+        PathPlace userPlace = null;
         if (userCoordinate!=null)
         {
-            userPlace = new Place("Ma position","Ma position",
-                    userCoordinate);
+            userPlace = new PathPlace("Ma position",userCoordinate);
         }
         view.startPathSearchActivity(userPlace,selectedLocation);
 
@@ -243,15 +242,15 @@ public class MainPresenter implements MainContract.Presenter {
     {
         linesAndPlacesRepository.getLinesAndPlaces(context,new LinesAndPlacesRepository.OnLinesAndPlacesSearchCompleted() {
             @Override
-            public void onFound(final ArrayList<Line> lines, final ArrayList<Place> places) {
+            public void onFound(final ArrayList<Line> lines, final ArrayList<MainActivityPlace> places) {
                 mapCenterCoordinate = view.getMapCenter();
-                @SuppressLint("StaticFieldLeak") AsyncTask<Void,Void,ArrayList<Place>> asyncTask = new AsyncTask<Void, Void, ArrayList<Place>>() {
+                @SuppressLint("StaticFieldLeak") AsyncTask<Void,Void,ArrayList<MainActivityPlace>> asyncTask = new AsyncTask<Void, Void, ArrayList<MainActivityPlace>>() {
                     @Override
-                    protected ArrayList<Place> doInBackground(Void... voids) {
+                    protected ArrayList<MainActivityPlace> doInBackground(Void... voids) {
                         TimeMonitor timeMonitor = TimeMonitor.initTimeMonitor();
                         addLines(lines);
                         MainPresenter.this.interestPlaces.addAll(places);
-                        ArrayList<Place> placesToShow = new ArrayList<>();
+                        ArrayList<MainActivityPlace> placesToShow = new ArrayList<>();
                         placesToShow.addAll(places);
                         placesToShow.addAll(TransportUtils.getStationsFromLines(getfilteredLines()));
                         TimeMonitor stationsLinesList = TimeMonitor.initTimeMonitor();
@@ -262,12 +261,12 @@ public class MainPresenter implements MainContract.Presenter {
                     }
 
                     @Override
-                    protected void onPostExecute(ArrayList<Place> aVoid) {
+                    protected void onPostExecute(ArrayList<MainActivityPlace> aVoid) {
                         TimeMonitor timeMonitor = TimeMonitor.initTimeMonitor();
                         populateList();
                         Log.i("POPULATE LIST TIME" ,timeMonitor.getElapsedTime()+"");
                         view.hideLinesLoadingLayout();
-                        view.showLinesOnList(lines);
+                        populateList();
                         TimeMonitor timeMonitor1 = TimeMonitor.initTimeMonitor();
                         view.showPlacesOnMap(aVoid,transportMeansSelector);
                         Log.i("MAP TIME",timeMonitor1.getElapsedTime()+"");
@@ -291,7 +290,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onStationMarkerClick(Station station, Marker marker,ArchidniClusterItem archidniClusterItem) {
-            view.showLocationLayout(station,selectedMarker,marker);
+            view.showLocationLayout(station,selectedMarker,(MainActivityPlace)selectedLocation,marker);
             selectedMarker = marker;
             this.selectedClusterItem = archidniClusterItem;
             locationLayoutVisible = true;
@@ -301,7 +300,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onParkingMarkerClick(Parking parking, Marker marker,ArchidniClusterItem archidniClusterItem) {
-        view.showLocationLayout(parking,selectedMarker,marker);
+        view.showLocationLayout(parking,selectedMarker,(MainActivityPlace)selectedLocation,marker);
         selectedMarker = marker;
         locationLayoutVisible = true;
         this.selectedClusterItem = archidniClusterItem;
@@ -377,6 +376,13 @@ public class MainPresenter implements MainContract.Presenter {
         {
             view.moveCameraToLocation(coordinate);
         }
+    }
+
+    @Override
+    public void onMapLoaded(Coordinate coordinate, LatLngBounds latLngBounds, double zoom) {
+        mapCenterCoordinate = coordinate;
+        this.currentLatLngBounds = latLngBounds;
+        populateList();
     }
 
     private ArrayList<Station> getFilteredStations()

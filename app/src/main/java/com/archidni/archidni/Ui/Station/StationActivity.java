@@ -23,12 +23,10 @@ import android.widget.TimePicker;
 
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
-import com.archidni.archidni.Model.Transport.TramwayMetroTrip;
-import com.archidni.archidni.Model.Transport.Trip;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.LineAdapter;
@@ -37,7 +35,6 @@ import com.archidni.archidni.Ui.Adapters.TramwayMetroTripAdapter;
 import com.archidni.archidni.Ui.Line.LineActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
-import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -278,7 +275,7 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     }
 
     @Override
-    public void startPathSearchActivity(Place origin, Place destination) {
+    public void startPathSearchActivity(PathPlace origin, PathPlace destination) {
         Intent intent = new Intent(this, PathSearchActivity.class);
         if (origin!=null)
             intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,origin.toJson());

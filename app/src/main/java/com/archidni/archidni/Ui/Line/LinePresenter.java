@@ -2,9 +2,12 @@ package com.archidni.archidni.Ui.Line;
 
 import com.archidni.archidni.App;
 import com.archidni.archidni.Data.Favorites.FavoritesRepository;
+import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.Model.Transport.TransportUtils;
+import com.google.android.gms.maps.model.Polyline;
 
 import java.util.ArrayList;
 
@@ -63,7 +66,9 @@ public class LinePresenter implements LineContract.Presenter {
     }
 
     @Override
-    public void onMapReady() {
+    public void onMapReady()
+    {
+        view.moveCamera(GeoUtils.getPolylineCenter(getPolyline()),18);
         view.showLineOnMap(getPolyline(),getStations());
     }
 
@@ -136,5 +141,10 @@ public class LinePresenter implements LineContract.Presenter {
         view.updateInboundOutboundLayout(outboundSelected);
         view.showStationsOnList(getStations());
         view.showLineOnMap(getPolyline(),getStations());
+    }
+
+    @Override
+    public void onMapLoaded() {
+        view.hideMapLoadingLayout();
     }
 }

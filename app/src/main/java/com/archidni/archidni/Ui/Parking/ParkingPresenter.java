@@ -1,14 +1,14 @@
 package com.archidni.archidni.Ui.Parking;
 
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.Places.Parking;
+import com.archidni.archidni.Model.Places.PathPlace;
 
 public class ParkingPresenter  implements ParkingContract.Presenter{
 
     Parking parking;
     ParkingContract.View view;
-    Place userPlace;
+    PathPlace userPlace;
 
     public ParkingPresenter(Parking parking, ParkingContract.View view) {
         this.parking = parking;
@@ -34,7 +34,7 @@ public class ParkingPresenter  implements ParkingContract.Presenter{
     public void onUserLocationCaptured(Coordinate coordinate) {
         if (coordinate!=null)
         {
-            userPlace = new Place("Ma Positon","Ma position",coordinate);
+            userPlace = new PathPlace("Ma Positon",coordinate);
         }
     }
 }

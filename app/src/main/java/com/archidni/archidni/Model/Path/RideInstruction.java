@@ -18,13 +18,15 @@ public class RideInstruction extends MoveInstruction implements Serializable {
     private ArrayList<Section> sections; //tronçons
     private String lineLabel; //name
     private String terminus; //for example dergana centre
+    private ArrayList<Coordinate> polyline;
 
-    public RideInstruction(int duration, long transportMean, ArrayList<Section> sections, String lineLabel, String terminus) {
+    public RideInstruction(int duration, long transportMeanId, ArrayList<Section> sections, String lineLabel, String terminus, ArrayList<Coordinate> polyline) {
         super(duration);
-        this.transportMeanId = transportMean;
+        this.transportMeanId = transportMeanId;
         this.sections = sections;
         this.lineLabel = lineLabel;
         this.terminus = terminus;
+        this.polyline = polyline;
     }
 
     public String getLineLabel() {
@@ -66,7 +68,7 @@ public class RideInstruction extends MoveInstruction implements Serializable {
         return 0;
     }
 
-    @Override
+    /*@Override
     public ArrayList<Coordinate> getPolyline() {
         Coordinate coordinate = sections.get(0).getOrigin().getCoordinate();
         ArrayList<Coordinate> coordinates = new ArrayList<>();
@@ -76,7 +78,7 @@ public class RideInstruction extends MoveInstruction implements Serializable {
             coordinates.add(sections.get(i).getDestination().getCoordinate());
         }
         return coordinates;
-    }
+    }*/
 
     public String getExitInstructionText ()
     {
@@ -96,6 +98,11 @@ public class RideInstruction extends MoveInstruction implements Serializable {
             distance+= section.getDistance();
         }
         return distance;
+    }
+
+    @Override
+    public ArrayList<Coordinate> getPolyline() {
+        return polyline;
     }
 
     @Override

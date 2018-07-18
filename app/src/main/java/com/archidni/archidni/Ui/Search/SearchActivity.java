@@ -1,7 +1,6 @@
 package com.archidni.archidni.Ui.Search;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,8 +22,8 @@ import android.widget.Toast;
 
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.PlaceSuggestion.PlaceSuggestion;
+import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.PlaceSuggestionsAdapter;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
@@ -70,7 +69,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
             presenter = new SearchPresenter(this,
                     extras.getInt(IntentUtils.SearchIntents.EXTRA_REQUEST_TYPE),
                     new Gson().fromJson(extras.getString(IntentUtils.LOCATION),
-                            Place.class));
+                            PathPlace.class));
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -202,7 +201,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     }
 
     @Override
-    public void startAskingActivity(int requestType,Place place) {
+    public void startAskingActivity(int requestType,PathPlace place) {
         Intent intent = new Intent();
         intent.putExtra(IntentUtils.LOCATION,place.toJson());
         setResult(1,intent);
@@ -216,7 +215,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     }
 
     @Override
-    public void startPathSearchActivity(Place origin, Place destination) {
+    public void startPathSearchActivity(PathPlace origin, PathPlace destination) {
         Intent intent = new Intent(this,PathSearchActivity.class);
         if (origin!=null)
             intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,origin.toJson());

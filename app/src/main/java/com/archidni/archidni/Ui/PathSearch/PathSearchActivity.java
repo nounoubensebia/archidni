@@ -24,14 +24,13 @@ import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Path.PathSettings;
-import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.PathSuggestionAdapter;
 import com.archidni.archidni.Ui.PathDetails.PathDetailsActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
-import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -75,7 +74,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     TextView departureDateText;
 
     ArchidniGoogleMap archidniMap;
-    PathSearchPresenter pathSearchPresenter;
+    PathSearchContract.Presenter pathSearchPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +83,8 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
         initViews(savedInstanceState);
         Bundle extras = getIntent().getExtras();
         pathSearchPresenter = new PathSearchPresenter(this,
-                Place.fromJson(extras.getString(IntentUtils.PATH_SEARCH_ORIGIN)),
-                Place.fromJson(extras.getString(IntentUtils.PATH_SEARCH_DESTINATION)));
+                PathPlace.fromJson(extras.getString(IntentUtils.PATH_SEARCH_ORIGIN)),
+                PathPlace.fromJson(extras.getString(IntentUtils.PATH_SEARCH_DESTINATION)));
     }
 
 
@@ -148,7 +147,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     }
 
     @Override
-    public void showOriginAndDestinationOnMap(Place origin, Place destination) {
+    public void showOriginAndDestinationOnMap(PathPlace origin, PathPlace destination) {
         archidniMap.clearMap();
         archidniMap.addMarker(destination.getCoordinate(),R.drawable.ic_marker_red_24dp);
         if (origin!=null)
@@ -289,6 +288,6 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == IntentUtils.RESULT_OK)
             pathSearchPresenter.onActivityResult(requestCode,
-                    Place.fromJson(data.getExtras().getString(IntentUtils.LOCATION)));
+                    PathPlace.fromJson(data.getExtras().getString(IntentUtils.LOCATION)));
     }
 }

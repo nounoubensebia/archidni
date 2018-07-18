@@ -1,6 +1,6 @@
 package com.archidni.archidni.Model.Path;
 
-import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 
 import java.io.Serializable;
@@ -10,12 +10,12 @@ import java.io.Serializable;
  */
 
 public class PathSettings implements Serializable {
-    private Place origin;
-    private Place destination;
+    private PathPlace origin;
+    private PathPlace destination;
     private long departureTime;
     private long departureDate;
 
-    public PathSettings(Place origin, Place destination, long departureTime,
+    public PathSettings(PathPlace origin, PathPlace destination, long departureTime,
                         long departureDate) {
         this.origin = origin;
         this.destination = destination;
@@ -23,19 +23,19 @@ public class PathSettings implements Serializable {
         this.departureDate = departureDate;
     }
 
-    public void setOrigin(Place origin) {
+    public void setOrigin(PathPlace origin) {
         this.origin = origin;
     }
 
-    public void setDestination(Place destination) {
+    public void setDestination(PathPlace destination) {
         this.destination = destination;
     }
 
-    public Place getOrigin() {
+    public PathPlace getOrigin() {
         return origin;
     }
 
-    public Place getDestination() {
+    public PathPlace getDestination() {
         return destination;
     }
 

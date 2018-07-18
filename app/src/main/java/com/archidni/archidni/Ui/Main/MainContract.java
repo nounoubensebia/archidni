@@ -2,17 +2,16 @@ package com.archidni.archidni.Ui.Main;
 
 import android.content.Context;
 
-import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Place;
-import com.archidni.archidni.Model.Places.MainListPlace;
-import com.archidni.archidni.Model.Places.MapPlace;
+import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.Parking;
+import com.archidni.archidni.Model.Places.PathPlace;
+
+
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.User;
 import com.archidni.archidni.UiUtils.ArchidniClusterItem;
-import com.archidni.archidni.UiUtils.ArchidniMarker;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 import com.google.android.gms.maps.model.LatLngBounds;
 
@@ -26,19 +25,22 @@ public interface MainContract {
     interface View {
         void updateMeansSelectionLayout(TransportMeansSelector transportMeansSelector);
         void updateStationsLinesLayout(int selectedItem);
-        void startSearchActivity(Place userLocation);
+        void startSearchActivity(PathPlace userLocation);
         void setUserLocationEnabled(boolean enable);
         void animateCameraToLocation(Coordinate coordinate);
         void moveCameraToLocation (Coordinate coordinate);
         void showSlidingPanel();
-        void showLocationLayout(MapPlace place, com.google.android.gms.maps.model.Marker oldSelectedMarker, com.google.android.gms.maps.model.Marker marker);
+        void showLocationLayout(MainActivityPlace place,
+                                com.google.android.gms.maps.model.Marker oldSelectedMarker,
+                                MainActivityPlace oldSelectedLocation,
+                                com.google.android.gms.maps.model.Marker marker);
         void hideLocationLayout(com.google.android.gms.maps.model.Marker marker, ArchidniClusterItem archidniClusterItem);
-        void startPathSearchActivity(Place origin,Place destination);
+        void startPathSearchActivity(PathPlace origin, PathPlace destination);
         void showLinesLoadingLayout();
         void hideLinesLoadingLayout();
         void startParkingActivity(Parking parking);
-        void showPlacesOnMap(ArrayList<? extends Place> places,TransportMeansSelector transportMeansSelector);
-        void updatePlacesOnMap (ArrayList<? extends Place> places,TransportMeansSelector newTransportMeansSelector,
+        void showPlacesOnMap(ArrayList<? extends MainActivityPlace> places,TransportMeansSelector transportMeansSelector);
+        void updatePlacesOnMap (ArrayList<? extends MainActivityPlace> places,TransportMeansSelector newTransportMeansSelector,
                                 TransportMeansSelector oldTransportMeanSelector);
         void showLinesOnList(ArrayList<Line> lines);
         void showZoomInsufficientLayout();
@@ -53,7 +55,7 @@ public interface MainContract {
         void hideOverlayLayout();
         void showOverlayLayout();
         void startFavoritesActivity();
-        void showPlacesOnList(ArrayList<? extends MainListPlace> places,Coordinate userCoordinate);
+        void showPlacesOnList(ArrayList<? extends MainActivityPlace> places, Coordinate userCoordinate);
         Coordinate getMapCenter ();
     }
 
@@ -83,6 +85,7 @@ public interface MainContract {
         void onStop(Context context);
         void onParkingClick (Parking parking);
         void onFirstLocationCaptured (Coordinate coordinate);
+        void onMapLoaded (Coordinate coordinate,LatLngBounds latLngBounds,double zoom);
     }
 
     interface OnUserLocationObtainedCallback {

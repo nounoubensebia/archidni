@@ -20,7 +20,7 @@ import com.archidni.archidni.Model.Path.PathSettings;
 import com.archidni.archidni.Model.Path.RideInstruction;
 import com.archidni.archidni.Model.Path.WaitInstruction;
 import com.archidni.archidni.Model.Path.WalkInstruction;
-import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Section;
 import com.archidni.archidni.Model.Transport.Station;
@@ -48,8 +48,8 @@ public class PathOnlineDataStore extends OnlineDataStore {
 
     public void getPaths (Context context, final PathSettings pathSettings, final OnSearchCompleted onSearchCompleted) {
         String url;
-        final Place departure = pathSettings.getOrigin();
-        final Place arrival = pathSettings.getDestination();
+        final PathPlace departure = pathSettings.getOrigin();
+        final PathPlace arrival = pathSettings.getDestination();
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("origin",departure.getCoordinate().getLatitude()+","+departure.getCoordinate().getLongitude());
         map.put("destination",arrival.getCoordinate().getLatitude()+","+arrival.getCoordinate().getLongitude());
@@ -132,9 +132,12 @@ public class PathOnlineDataStore extends OnlineDataStore {
                                     sections.add(new Section(stations.get(k),stations.get(k+1)));
                                     k++;
                                 }
-
+                                fooType = new TypeToken<ArrayList<Coordinate>>() {
+                                }.getType();
+                                ArrayList<Coordinate> polyline = gson.fromJson(jsonObject.
+                                        getJSONArray("polyline").toString(),fooType);
                                 RideInstruction rideInstruction = new RideInstruction(duration,
-                                        transportModeId,sections,lineLabel,destination);
+                                        transportModeId,sections,lineLabel,destination,polyline);
                                 waitInstruction.setRideInstruction(rideInstruction);
                                 pathInstructions.add(rideInstruction);
                             }

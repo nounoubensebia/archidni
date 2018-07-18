@@ -28,6 +28,8 @@ public interface LineContract {
         void showStationsOnList (ArrayList<Station> stations);
         void updateInboundOutboundLayout (boolean outboundSelected);
         void showInboundOutboundLayout();
+        void hideMapLoadingLayout ();
+        void moveCamera (Coordinate coordinate,int zoom);
     }
 
     public interface Presenter {
@@ -39,5 +41,6 @@ public interface LineContract {
         void onAddDeleteFromFavoritesClicked();
         void onSignalDisturbanceClicked();
         void onInboundOutboundClicked(boolean outboundClicked);
+        void onMapLoaded ();
     }
 }

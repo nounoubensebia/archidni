@@ -54,7 +54,7 @@ public class ShareWireClusterHandler implements ClusterHandler  {
         clusterManager.setCallbacks(new ClusterManager.Callbacks() {
             @Override
             public boolean onClusterClick(@NonNull Cluster cluster, Marker marker) {
-                return false;
+                return true;
             }
 
             @Override

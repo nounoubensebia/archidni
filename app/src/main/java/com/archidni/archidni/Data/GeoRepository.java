@@ -9,8 +9,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.App;
 import com.archidni.archidni.AppSingleton;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.PlaceSuggestion.TextQuerySuggestion;
+import com.archidni.archidni.Model.Places.PathPlace;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -109,8 +109,8 @@ public class GeoRepository extends OnlineDataStore {
                             JSONObject location = geometry.getJSONObject("location");
                             Coordinate coordinate = new Coordinate(location.getDouble("lat"),
                                     location.getDouble("lng"));
-                            onPlaceDetailsSearchComplete.onResultFound(new Place(textQuerySuggestion.getMainText(),
-                                    textQuerySuggestion.getSecondaryText(),coordinate));
+                            onPlaceDetailsSearchComplete.onResultFound(new PathPlace(textQuerySuggestion.getMainText(),
+                                    coordinate));
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -139,7 +139,7 @@ public class GeoRepository extends OnlineDataStore {
     }
 
     public interface OnPlaceDetailsSearchComplete {
-        public void onResultFound(Place place);
+        public void onResultFound(PathPlace place);
         public void onError();
     }
 }

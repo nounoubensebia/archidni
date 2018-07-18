@@ -25,13 +25,12 @@ import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.LocationListener;
-import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Interests.ParkingType;
-import com.archidni.archidni.Model.Place;
-import com.archidni.archidni.Model.Places.MainListPlace;
-import com.archidni.archidni.Model.Places.MapPlace;
+import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.Parking;
+import com.archidni.archidni.Model.Places.PathPlace;
+import com.archidni.archidni.Model.Places.PathPlaceAbstract;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
@@ -210,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
                     @Override
                     public void onCameraIdle(Coordinate coordinate, LatLngBounds latLngBounds, double zoom) {
-                        presenter.onCameraMove(MainActivity.this,coordinate,(float) zoom,latLngBounds);
+                        presenter.onCameraMove(MainActivity.this, coordinate, (float) zoom, latLngBounds);
                     }
                 });
 
@@ -221,7 +220,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     }
                 });
             }
-        });
+        },
+                new ArchidniGoogleMap.OnMapLoaded() {
+                    @Override
+                    public void onMapLoaded(Coordinate coordinate, LatLngBounds latLngBounds, double zoom) {
+                        presenter.onMapLoaded(coordinate,latLngBounds,zoom);
+                    }
+                });
 
         transportMean0Text.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -548,7 +553,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void startSearchActivity(Place userLocation) {
+    public void startSearchActivity(PathPlace userLocation) {
         Intent intent = new Intent(this, SearchActivity.class);
         String json = new Gson().toJson(userLocation);
         intent.putExtra(IntentUtils.LOCATION,json);
@@ -559,10 +564,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void showLocationLayout(MapPlace mapPlace,Marker oldSelectedMarker,Marker marker) {
+    public void showLocationLayout(MainActivityPlace mapPlace, Marker oldSelectedMarker,
+                                   MainActivityPlace oldMapPlace,Marker marker) {
         container.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-        mainText.setText(mapPlace.getMainText());
-        secondaryText.setText(mapPlace.getSecondaryText());
+        mainText.setText(mapPlace.getName());
+        secondaryText.setText(mapPlace.getDescription());
         slideOutSearchText();
         if (archidniMap.getUserLocation()!=null)
         {
@@ -581,9 +587,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         if (oldSelectedMarker!=null)
         {
-            Object tag = oldSelectedMarker.getTag();
-            MapPlace oldMapPlace = (MapPlace) tag;
-            archidniMap.changeMarkerIcon(oldSelectedMarker,oldMapPlace.getMarkerDrawable());
+            archidniMap.changeMarkerIcon(oldSelectedMarker,oldMapPlace.getMarkerResource());
         }
 
         locationLayout.setVisibility(View.VISIBLE);
@@ -603,9 +607,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 presenter.onPlaceClick();
             }
         });
-        locationIcon.setImageDrawable(ContextCompat.getDrawable(this,mapPlace.getMarkerDrawable()));
+        locationIcon.setImageDrawable(ContextCompat.getDrawable(this,mapPlace.getMarkerResource()));
         getPathLayout.setBackgroundColor(ContextCompat.getColor(this,mapPlace.getColor()));
-        archidniMap.changeMarkerIcon(marker,mapPlace.getSelectedMarkerDrawable());
+        archidniMap.changeMarkerIcon(marker,mapPlace.getSelectedMarkerResource());
     }
 
     @Override
@@ -621,12 +625,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 slideInSearchText();
             }
         },250);
-        MapPlace mapPlace = (MapPlace) archidniClusterItem.getTag();
-        archidniMap.changeMarkerIcon(marker,mapPlace.getMarkerDrawable());
+        MainActivityPlace mapPlace = (MainActivityPlace) archidniClusterItem.getTag();
+        archidniMap.changeMarkerIcon(marker,mapPlace.getMarkerResource());
     }
 
     @Override
-    public void startPathSearchActivity(Place origin, Place destination) {
+    public void startPathSearchActivity(PathPlace origin, PathPlace destination) {
         /*TODO check if null*/
         Intent intent = new Intent(this, PathSearchActivity.class);
         if (origin!=null)
@@ -656,9 +660,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
 
     @Override
-    public void showPlacesOnMap(ArrayList<? extends Place> places,TransportMeansSelector transportMeansSelector) {
+    public void showPlacesOnMap(ArrayList<? extends MainActivityPlace> places,TransportMeansSelector transportMeansSelector) {
         TimeMonitor timeMonitor = TimeMonitor.initTimeMonitor();
-        for(Place place:places)
+        for(MainActivityPlace place:places)
         {
             if (place instanceof Station)
             {
@@ -683,7 +687,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void updatePlacesOnMap(ArrayList<? extends Place> places, TransportMeansSelector newTransportMeansSelector,
+    public void updatePlacesOnMap(ArrayList<? extends MainActivityPlace> places, TransportMeansSelector newTransportMeansSelector,
                                   TransportMeansSelector oldTransportMeanSelector) {
         for (SelectorItem selectorItem:SelectorItem.allItems)
         {
@@ -693,7 +697,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             }
         }
 
-        for(Place place:places)
+        for(MainActivityPlace place:places)
         {
             if (place instanceof Station)
             {
@@ -816,7 +820,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void showPlacesOnList(ArrayList<? extends MainListPlace> places, Coordinate userCoordinate) {
+    public void showPlacesOnList(ArrayList<? extends MainActivityPlace> places, Coordinate userCoordinate) {
         if (recyclerView.getAdapter()!=null && recyclerView.getAdapter() instanceof PlaceAdapter)
         {
             PlaceAdapter placeAdapter = (PlaceAdapter) recyclerView.getAdapter();
@@ -827,7 +831,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             PlaceAdapter placeAdapter = new PlaceAdapter(this, places, userCoordinate,
                     new PlaceAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(MainListPlace mainListPlace) {
+                        public void onItemClick(MainActivityPlace mainListPlace) {
                             if (mainListPlace instanceof Station)
                                 presenter.onStationItemClick((Station)mainListPlace);
                             if (mainListPlace instanceof Parking)

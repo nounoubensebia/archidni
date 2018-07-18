@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.archidni.archidni.Data.LinesAndPlaces.LinesAndPlacesRepository;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.TimeUtils;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class StationPresenter implements StationContract.Presenter {
     private Station station;
     private StationContract.View view;
-    private Place userPlace;
+    private PathPlace userPlace;
     private boolean linesSelected = true;
     private ArrayList<Line> lines;
     private LinesAndPlacesRepository linesAndPlacesRepository;
@@ -61,7 +61,7 @@ public class StationPresenter implements StationContract.Presenter {
     public void onUserLocationCaptured(Coordinate coordinate) {
         if (coordinate!=null)
         {
-            userPlace = new Place("Ma Positon","Ma position",coordinate);
+            userPlace = new PathPlace("Ma Positon",coordinate);
         }
     }
 

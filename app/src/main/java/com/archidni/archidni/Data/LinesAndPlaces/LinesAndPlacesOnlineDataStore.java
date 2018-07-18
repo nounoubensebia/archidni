@@ -14,7 +14,7 @@ import com.archidni.archidni.Data.OnlineDataStore;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.LineStationSuggestion;
-import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.LineSection;
@@ -32,7 +32,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 /**
  * Created by noure on 07/02/2018.
@@ -58,15 +57,15 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                     public void onResponse(String response) {
 
 
-                        AsyncTask<String, Void, Pair<ArrayList<Line>, ArrayList<Place>>> asyncTask;
-                        asyncTask = new AsyncTask<String, Void, Pair<ArrayList<Line>, ArrayList<Place>>>() {
+                        AsyncTask<String, Void, Pair<ArrayList<Line>, ArrayList<MainActivityPlace>>> asyncTask;
+                        asyncTask = new AsyncTask<String, Void, Pair<ArrayList<Line>, ArrayList<MainActivityPlace>>>() {
                             @Override
-                            protected Pair<ArrayList<Line>, ArrayList<Place>> doInBackground(String... strings) {
+                            protected Pair<ArrayList<Line>, ArrayList<MainActivityPlace>> doInBackground(String... strings) {
                                 try {
                                     JSONObject root = new JSONObject(strings[0]);
                                     JSONArray data = root.getJSONArray("lines");
                                     ArrayList<Line> lines = parseLines(data);
-                                    ArrayList<Place> places = new ArrayList<>();
+                                    ArrayList<MainActivityPlace> places = new ArrayList<>();
                                     ArrayList<Parking> parkings = parseParkings(root.getJSONArray("parkings"));
                                     places.addAll(parkings);
                                     return new Pair<>(lines, places);
@@ -77,7 +76,7 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                             }
 
                             @Override
-                            protected void onPostExecute(Pair<ArrayList<Line>, ArrayList<Place>> arrayListArrayListPair) {
+                            protected void onPostExecute(Pair<ArrayList<Line>, ArrayList<MainActivityPlace>> arrayListArrayListPair) {
                                 if (arrayListArrayListPair != null)
                                     onLinesAndPlacesSearchCompleted.onLinesAndPlacesFound(
                                             arrayListArrayListPair.first
@@ -107,7 +106,7 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                 double longitude = parkingObject.getDouble("longitude");
                 int capacity = parkingObject.getInt("capacity");
                 int id = parkingObject.getInt("id");
-                parkings.add(new Parking(name, new Coordinate(latitude, longitude), capacity, id));
+                parkings.add(new Parking(name, new Coordinate(latitude, longitude), id, capacity));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -290,7 +289,7 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
 
 
     public interface OnLinesAndPlacesSearchCompleted {
-        void onLinesAndPlacesFound(ArrayList<Line> lines, ArrayList<Place> places);
+        void onLinesAndPlacesFound(ArrayList<Line> lines, ArrayList<MainActivityPlace> places);
 
         void onError();
     }

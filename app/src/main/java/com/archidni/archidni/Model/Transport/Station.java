@@ -3,9 +3,9 @@ package com.archidni.archidni.Model.Transport;
 import com.archidni.archidni.App;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Place;
-import com.archidni.archidni.Model.Places.MainListPlace;
-import com.archidni.archidni.Model.Places.MapPlace;
+import com.archidni.archidni.Model.Places.MainActivityPlace;
+import com.archidni.archidni.Model.Places.PathPlace;
+import com.archidni.archidni.Model.Places.PathPlaceAbstract;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.google.gson.Gson;
@@ -16,28 +16,18 @@ import java.io.Serializable;
  * Created by noure on 07/02/2018.
  */
 
-public class Station extends Place implements Serializable,MapPlace,MainListPlace {
-    private String name;
+public class Station extends PathPlace implements Serializable,MainActivityPlace {
     private int transportMean;
     private int id;
 
-    public Station(int id,String name,int transportMean,Coordinate coordinate) {
-        super(App.getAppContext().getString(R.string.station) +" "+
-                name,App.getAppContext().getString(R.string.station_of)+" "+
-                TransportMean.allTransportMeans.get(transportMean).getName(), coordinate);
-        this.name = name;
+
+    public Station(int id, String name,int transportMean, Coordinate coordinate) {
+        super(name, coordinate);
         this.transportMean = transportMean;
         this.id = id;
     }
 
-    @Override
-    public boolean hasSecondaryText() {
-        return false;
-    }
 
-    public String getName() {
-        return name;
-    }
 
     public TransportMean getTransportMean() {
         return TransportMean.allTransportMeans.get(transportMean);
@@ -81,15 +71,7 @@ public class Station extends Place implements Serializable,MapPlace,MainListPlac
         return new Gson().fromJson(json,Station.class);
     }
 
-    @Override
-    public int getMarkerDrawable() {
-        return getTransportMean().getMarkerIcon();
-    }
 
-    @Override
-    public int getSelectedMarkerDrawable() {
-        return getTransportMean().getSelectedMarker();
-    }
 
     @Override
     public int getColor() {
@@ -99,5 +81,25 @@ public class Station extends Place implements Serializable,MapPlace,MainListPlac
     @Override
     public int getIcon() {
         return getTransportMean().getIconEnabled();
+    }
+
+    @Override
+    public int getMarkerResource() {
+        return getTransportMean().getMarkerIcon();
+    }
+
+    @Override
+    public int getSelectedMarkerResource() {
+        return getTransportMean().getSelectedMarker();
+    }
+
+    @Override
+    public String getDescription() {
+        return "Station de "+TransportMean.allTransportMeans.get(transportMean).getName();
+    }
+
+    @Override
+    public String getTitle() {
+        return getDescription();
     }
 }

@@ -11,29 +11,28 @@ import android.widget.TextView;
 
 import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Places.MainListPlace;
+import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.internal.Utils;
 
 /**
  * Created by noure on 08/02/2018.
  */
 
 public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> {
-    private ArrayList<MainListPlace> mainListPlaces;
+    private ArrayList<MainActivityPlace> mainListPlaces;
     private Coordinate userCoordinate;
     private Coordinate sortCoordinate;
     private Context context;
     private OnItemClickListener onItemClickListener;
 
-    public PlaceAdapter(Context context, ArrayList<? extends  MainListPlace> places, final Coordinate userCoordinate,
+    public PlaceAdapter(Context context, ArrayList<? extends  MainActivityPlace> places, final Coordinate userCoordinate,
                         OnItemClickListener onItemClickListener) {
         this.mainListPlaces = new ArrayList<>(places);
         this.sortCoordinate = sortCoordinate;
@@ -43,8 +42,8 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void updateItems(ArrayList<? extends MainListPlace> newItems, final Coordinate userCoordinate) {
-        ArrayList<MainListPlace> places = new ArrayList<>(newItems);
+    public void updateItems(ArrayList<? extends MainActivityPlace> newItems, final Coordinate userCoordinate) {
+        ArrayList<MainActivityPlace> places = new ArrayList<>(newItems);
 
         this.userCoordinate = userCoordinate;
         this.mainListPlaces.clear();
@@ -66,7 +65,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final MainListPlace place = mainListPlaces.get(position);
+        final MainActivityPlace place = mainListPlaces.get(position);
         holder.nameText.setText(place.getName());
         holder.nameText.setTextColor(ContextCompat.getColor(context,place.getColor()));
         holder.mainText.setVisibility(View.GONE);
@@ -77,10 +76,10 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
             holder.mainText.setText("à "+StringUtils.getTextFromDistance(distance)+" de votre position");
         }
 
-        if (place.hasSecondaryText())
+        if (userCoordinate!=null)
         {
             holder.secondaryText.setVisibility(View.VISIBLE);
-            holder.secondaryText.setText(place.getSecondaryText());
+            holder.secondaryText.setText(StringUtils.getTextFromDistance(GeoUtils.distance(userCoordinate,place.getCoordinate())));
         }
         else
         {
@@ -123,6 +122,6 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
     }
 
     public interface OnItemClickListener {
-        void onItemClick (MainListPlace mainListPlace);
+        void onItemClick (MainActivityPlace mainListPlace);
     }
 }

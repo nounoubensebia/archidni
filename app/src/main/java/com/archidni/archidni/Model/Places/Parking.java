@@ -1,33 +1,22 @@
 package com.archidni.archidni.Model.Places;
 
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Interests.ParkingType;
-import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.R;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
 
-public class Parking extends Place implements Serializable, MapPlace,MainListPlace {
+public class Parking extends PathPlace implements Serializable, MainActivityPlace {
 
-    private int capacity;
     private int id;
+    private int capacity;
 
-    public Parking(String mainText,Coordinate coordinate, int capacity, int id) {
-        super(mainText, "Capacité : "+capacity, coordinate);
-        this.capacity = capacity;
+    public Parking(String name, Coordinate coordinate, int id, int capacity) {
+        super(name, coordinate);
         this.id = id;
+        this.capacity = capacity;
     }
 
-    @Override
-    public boolean hasSecondaryText() {
-        return true;
-    }
-
-    @Override
-    public String getName() {
-        return getMainText();
-    }
 
     public int getId() {
         return id;
@@ -48,13 +37,14 @@ public class Parking extends Place implements Serializable, MapPlace,MainListPla
         return new Gson().toJson(this);
     }
 
+
     @Override
-    public int getMarkerDrawable() {
+    public int getMarkerResource() {
         return R.drawable.marker_parking;
     }
 
     @Override
-    public int getSelectedMarkerDrawable() {
+    public int getSelectedMarkerResource() {
         return R.drawable.marker_parking_selected;
     }
 
@@ -64,7 +54,18 @@ public class Parking extends Place implements Serializable, MapPlace,MainListPla
     }
 
     @Override
+    public String getDescription() {
+        return "Capacité : "+capacity;
+    }
+
+    @Override
     public int getIcon() {
         return R.drawable.marker_parking;
+    }
+
+
+    @Override
+    public String getTitle() {
+        return getName();
     }
 }

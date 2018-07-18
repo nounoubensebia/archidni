@@ -6,7 +6,7 @@ import com.archidni.archidni.Data.Paths.PathRepository;
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Path.PathSettings;
 import com.archidni.archidni.Model.Path.Path;
-import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.TimeUtils;
 
 import java.util.ArrayList;
@@ -21,21 +21,21 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
     private PathSettings pathSettings;
     private PathRepository pathRepository;
 
-    public PathSearchPresenter(PathSearchContract.View view, Place origin, Place destination) {
+    public PathSearchPresenter(PathSearchContract.View view, PathPlace origin, PathPlace destination) {
         this.view = view;
         pathSettings = new PathSettings(origin,destination,
                 TimeUtils.getSecondsFromMidnight(),TimeUtils.getCurrentTimeInSeconds());
-        String originString = (origin!=null) ? origin.getMainText():"";
-        String destinationString = (destination!=null) ? destination.getMainText():"";
+        String originString = (origin!=null) ? origin.getTitle():"";
+        String destinationString = (destination!=null) ? destination.getTitle():"";
         view.showOriginAndDestinationLabels(originString,destinationString);
         pathRepository = new PathRepository();
     }
 
     private void updateOriginDestination ()
     {
-        String originString = (pathSettings.getOrigin()!=null) ? pathSettings.getOrigin().getMainText():"";
-        String destinationString = (pathSettings.getDestination().getMainText()!=null) ?
-                pathSettings.getDestination().getMainText():"";
+        String originString = (pathSettings.getOrigin()!=null) ? pathSettings.getOrigin().getTitle():"";
+        String destinationString = (pathSettings.getDestination().getTitle()!=null) ?
+                pathSettings.getDestination().getTitle():"";
         view.showOriginAndDestinationLabels(originString,destinationString);
         view.showOriginAndDestinationOnMap(pathSettings.getOrigin(), pathSettings.getDestination());
     }
@@ -75,7 +75,7 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
     }
 
     @Override
-    public void onActivityResult(int requestType, Place newPlace) {
+    public void onActivityResult(int requestType, PathPlace newPlace) {
         if (requestType == IntentUtils.SearchIntents.TYPE_LOOK_FOR_OR)
         {
             if (pathSettings.getOrigin()==null||!newPlace.getCoordinate().equals(pathSettings.getOrigin().getCoordinate()))

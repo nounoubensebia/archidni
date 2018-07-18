@@ -43,6 +43,7 @@ public class ArchidniGoogleMap  {
     private Coordinate userLocation;
     private OnCameraIdle onCameraIdle;
     private ClusterHandler clusterHandler;
+    private OnMapLoaded onMapLoaded;
 
     @SuppressLint("MissingPermission")
     public ArchidniGoogleMap(final Activity activity, final MapFragment mapFragment, final OnMapReadyCallback onMapReadyCallback) {
@@ -58,6 +59,34 @@ public class ArchidniGoogleMap  {
                 map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                     @Override
                     public void onMapLoaded() {
+                        mapLoaded = true;
+                    }
+                });
+                onMapReadyCallback.onMapReady(googleMap);
+
+                //map.setTrafficEnabled(true);
+            }
+        });
+    }
+
+    @SuppressLint("MissingPermission")
+    public ArchidniGoogleMap(final Activity activity, final MapFragment mapFragment,
+                             final OnMapReadyCallback onMapReadyCallback, final OnMapLoaded onMapLoaded) {
+        clusterHandler =
+                //new GoogleUtilsClusterHandler(ArchidniGoogleMap.this,activity);
+                new ShareWireClusterHandler(activity,ArchidniGoogleMap.this);
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                map = googleMap;
+                map.getUiSettings().setCompassEnabled(false);
+                map.getUiSettings().setMyLocationButtonEnabled(false);
+                ArchidniGoogleMap.this.onMapLoaded = onMapLoaded;
+                map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                    @Override
+                    public void onMapLoaded() {
+                        LatLngBounds latLngBounds = map.getProjection().getVisibleRegion().latLngBounds;
+                        onMapLoaded.onMapLoaded(getCenter(),latLngBounds,map.getCameraPosition().zoom);
                         mapLoaded = true;
                     }
                 });
@@ -228,6 +257,8 @@ public class ArchidniGoogleMap  {
             map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                 @Override
                 public void onMapLoaded() {
+                    LatLngBounds latLngBounds = map.getProjection().getVisibleRegion().latLngBounds;
+                    onMapLoaded.onMapLoaded(getCenter(),latLngBounds,map.getCameraPosition().zoom);
                     mapLoaded = true;
                     map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), padding),
                             duration, new GoogleMap.CancelableCallback() {
@@ -313,6 +344,10 @@ public class ArchidniGoogleMap  {
 
     public interface OnCameraIdle {
         public void onCameraIdle (Coordinate coordinate,LatLngBounds latLngBounds,double zoom);
+    }
+
+    public interface OnMapLoaded {
+        public void onMapLoaded (Coordinate coordinate,LatLngBounds latLngBounds,double zoom);
     }
 
     public interface OnCameraMoveListener {

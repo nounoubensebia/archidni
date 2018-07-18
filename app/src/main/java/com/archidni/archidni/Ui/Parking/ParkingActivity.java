@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.Places.Parking;
+import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
@@ -87,11 +87,11 @@ public class ParkingActivity extends AppCompatActivity implements ParkingContrac
     public void showParkingOnActivity(Parking parking) {
         coordinateText.setText(parking.getCoordinate().getLatitude()+","+parking.getCoordinate().getLongitude());
         capacityText.setText("Capacité : "+parking.getCapacity()+" places");
-        nameText.setText(parking.getMainText());
+        nameText.setText(parking.getName());
     }
 
     @Override
-    public void startPathSearchActivity(Place origin, Place destination) {
+    public void startPathSearchActivity(PathPlace origin, PathPlace destination) {
         Intent intent = new Intent(this, PathSearchActivity.class);
         if (origin!=null)
             intent.putExtra(IntentUtils.PATH_SEARCH_ORIGIN,origin.toJson());

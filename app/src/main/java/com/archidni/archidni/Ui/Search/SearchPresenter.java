@@ -6,11 +6,11 @@ import com.archidni.archidni.App;
 import com.archidni.archidni.Data.GeoRepository;
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Place;
 import com.archidni.archidni.Model.PlaceSuggestion.CommonPlaceSuggestion;
 import com.archidni.archidni.Model.PlaceSuggestion.GpsSuggestion;
 import com.archidni.archidni.Model.PlaceSuggestion.PlaceSuggestion;
 import com.archidni.archidni.Model.PlaceSuggestion.TextQuerySuggestion;
+import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.R;
 
@@ -24,10 +24,10 @@ public class SearchPresenter implements SearchContract.Presenter {
     private GeoRepository geoRepository;
     private SearchContract.View view;
     private int requestType;
-    private Place bundledPlace;
+    private PathPlace bundledPlace;
     private Coordinate userLocation;
 
-    public SearchPresenter(SearchContract.View view,int requestType,Place place) {
+    public SearchPresenter(SearchContract.View view,int requestType,PathPlace place) {
         this.view = view;
         this.requestType = requestType;
         this.bundledPlace = place;
@@ -98,7 +98,7 @@ public class SearchPresenter implements SearchContract.Presenter {
             geoRepository.getPlaceDetails(context,(TextQuerySuggestion)placeSuggestion,
                     new GeoRepository.OnPlaceDetailsSearchComplete() {
                         @Override
-                        public void onResultFound(Place place) {
+                        public void onResultFound(PathPlace place) {
                             if (requestType == IntentUtils.SearchIntents.TYPE_LOOK_ONLY_FOR_DESTINATION)
                             {
                                 view.startPathSearchActivity(bundledPlace,place);
@@ -134,7 +134,7 @@ public class SearchPresenter implements SearchContract.Presenter {
             {
                 if (userLocation!=null)
                 {
-                    Place userPlace = new Place("Ma position","Ma position",
+                    PathPlace userPlace = new PathPlace("Ma position",
                             userLocation);
                     view.startAskingActivity(requestType,userPlace);
                 }
@@ -152,8 +152,8 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void onSetMarkerResult(Coordinate coordinate) {
-        Place selectedLocation = new Place(StringUtils.getLocationString(coordinate),
-                App.getAppContext().getString(R.string.on_map),coordinate);
+        PathPlace selectedLocation = new PathPlace(StringUtils.getLocationString(coordinate),
+                coordinate);
         switch (requestType) {
             case IntentUtils.SearchIntents.TYPE_LOOK_ONLY_FOR_DESTINATION :
                 view.startPathSearchActivity(bundledPlace,selectedLocation);

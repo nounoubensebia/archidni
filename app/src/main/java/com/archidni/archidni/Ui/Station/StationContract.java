@@ -3,10 +3,9 @@ package com.archidni.archidni.Ui.Station;
 import android.content.Context;
 
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
-import com.archidni.archidni.Model.Transport.Trip;
 
 import java.util.ArrayList;
 
@@ -24,7 +23,7 @@ public interface StationContract {
         void showDateDialog (long selectedDate);
         void updateTime(long newTime);
         void updateDate(long newDate);
-        void startPathSearchActivity (Place origin,Place destination);
+        void startPathSearchActivity (PathPlace origin, PathPlace destination);
         void showStationOnActivity(Station station);
         void showStationOnMap (Station station);
         void updateLinesTripsLayout(boolean linesSelected,Station station);

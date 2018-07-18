@@ -3,7 +3,7 @@ package com.archidni.archidni.Data.LinesAndPlaces;
 import android.content.Context;
 
 import com.archidni.archidni.Model.LineStationSuggestion;
-import com.archidni.archidni.Model.Place;
+import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 
@@ -46,7 +46,7 @@ public class LinesAndPlacesRepository {
         LinesAndPlacesOnlineDataStore linesAndPlacesOnlineDataStore = getLinesOnlineDataStoreInstance();
         linesAndPlacesOnlineDataStore.getLinesAndPlaces(context,new LinesAndPlacesOnlineDataStore.OnLinesAndPlacesSearchCompleted() {
             @Override
-            public void onLinesAndPlacesFound(ArrayList<Line> lines, ArrayList<Place> places) {
+            public void onLinesAndPlacesFound(ArrayList<Line> lines, ArrayList<MainActivityPlace> places) {
                 onSearchCompleted.onFound(lines,places);
             }
 
@@ -80,7 +80,7 @@ public class LinesAndPlacesRepository {
 
     public interface OnLinesAndPlacesSearchCompleted
     {
-        void onFound (ArrayList<Line> lines, ArrayList<Place> places);
+        void onFound (ArrayList<Line> lines, ArrayList<MainActivityPlace> places);
         void onError ();
     }
 

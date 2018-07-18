@@ -133,7 +133,7 @@
             android:textSize="12sp"
             android:visibility="visible"
             android:drawablePadding="8dp"
-            android:text="Stations à proximité du lieu choisi sur la carte :"
+            android:text="Stations à proximité du centre de la carte :"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     <android.support.v7.widget.RecyclerView

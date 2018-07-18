@@ -30,6 +30,7 @@ import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
 
@@ -42,7 +43,10 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     TextView addToFavoritesText;
     @BindView(R.id.text_report)
     TextView signalDisturbanceText;
-
+    @BindView(R.id.layout_map_loading)
+    View mapLoadingLayout;
+    @BindView(R.id.layout_map_container)
+    View mapContainerLayout;
     MapFragment mapView;
     @BindView(R.id.text_name)
     TextView nameText;
@@ -91,11 +95,16 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
             }
         });*/
         mapView = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
-        archidniMap = new ArchidniGoogleMap(this,mapView, new OnMapReadyCallback() {
+        archidniMap = new ArchidniGoogleMap(this, mapView, new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                    presenter.onMapReady();
-                    archidniMap.moveCamera(new Coordinate(36.773479, 3.052176),10);
+                presenter.onMapReady();
+                //archidniMap.moveCamera(new Coordinate(36.773479, 3.052176), 10);
+            }
+        }, new ArchidniGoogleMap.OnMapLoaded() {
+            @Override
+            public void onMapLoaded(Coordinate coordinate, LatLngBounds latLngBounds, double zoom) {
+                presenter.onMapLoaded();
             }
         });
         addToFavoritesText.setOnClickListener(new View.OnClickListener() {
@@ -328,6 +337,23 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     @Override
     public void showInboundOutboundLayout() {
         outboundInboudLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideMapLoadingLayout() {
+        mapLoadingLayout.setVisibility(View.GONE);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mapContainerLayout.setVisibility(View.VISIBLE);
+            }
+        },250);
+    }
+
+    @Override
+    public void moveCamera(Coordinate coordinate, int zoom) {
+        archidniMap.moveCamera(coordinate,zoom);
     }
 
 
