@@ -34,7 +34,7 @@ public class LinePresenter implements LineContract.Presenter {
     public void onStationClicked(Station station) {
         if (selectedStation!=null&&selectedStation.getId()==station.getId())
         {
-            view.deselectStation(getStations());
+            view.deselectStation(getStations(),getPolyline());
             selectedStation = null;
         }
         else
@@ -68,7 +68,7 @@ public class LinePresenter implements LineContract.Presenter {
     @Override
     public void onMapReady()
     {
-        view.moveCamera(GeoUtils.getPolylineCenter(getPolyline()),18);
+        view.moveCamera(GeoUtils.getPolylineCenter(getPolyline()),12);
         view.showLineOnMap(getPolyline(),getStations());
     }
 

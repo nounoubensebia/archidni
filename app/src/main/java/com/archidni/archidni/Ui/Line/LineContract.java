@@ -16,7 +16,7 @@ public interface LineContract {
         void showLineOnActivity(Line line);
         void setTheme(Line line);
         void showSelectedStation (Station station);
-        void deselectStation (ArrayList<Station> stations);
+        void deselectStation (ArrayList<Station> stations,ArrayList<Coordinate> polyline);
         void startStationActivity(Station station);
         void inflateTripMenu();
         void inflateStationMenu();

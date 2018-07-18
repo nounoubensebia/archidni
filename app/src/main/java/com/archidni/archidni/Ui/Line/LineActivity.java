@@ -178,7 +178,7 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     @Override
     public void showLineOnMap(ArrayList<Coordinate> polyline,ArrayList<Station> stations) {
         archidniMap.clearMap();
-        animateCameraToFitLine(stations);
+        animateCameraToFitLine(polyline);
         archidniMap.preparePolyline(this, polyline
                 ,stations.get(0).getTransportMean().getColor(),15);
         for (Station station:stations)
@@ -189,15 +189,10 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
         archidniMap.addPreparedAnnotations();
     }
 
-    private void animateCameraToFitLine (ArrayList<Station> stations)
+    private void animateCameraToFitLine (ArrayList<Coordinate> polyline)
     {
-        ArrayList<Coordinate> bounds = new ArrayList<>();
-        for (Station station: stations)
-        {
-            bounds.add(station.getCoordinate());
-        }
         float padding = ViewUtils.dpToPx(this,8);
-        archidniMap.animateCameraToBounds(bounds,(int)padding,1000);
+        archidniMap.animateCameraToBounds(polyline,(int)padding,1000);
     }
 
     @Override
@@ -225,8 +220,8 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     }
 
     @Override
-    public void deselectStation(ArrayList<Station> stations) {
-        animateCameraToFitLine(stations);
+    public void deselectStation(ArrayList<Station> stations,ArrayList<Coordinate> polyline) {
+        animateCameraToFitLine(polyline);
         StationInsideLineAdapter stationInsideLineAdapter = (StationInsideLineAdapter) listView.getAdapter();
         stationInsideLineAdapter.selectStation(null);
         invalidateOptionsMenu();
