@@ -47,6 +47,11 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
     }
 
     @Override
+    public void onMapLoaded() {
+        view.hideMapLoadingLayout();
+    }
+
+    @Override
     public void onSearchPathsClick(Context context) {
         if (pathSettings.getOrigin()!=null&&pathSettings.getDestination()!=null) {
             view.showLoadingBar();

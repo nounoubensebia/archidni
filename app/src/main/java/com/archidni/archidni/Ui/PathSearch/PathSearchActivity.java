@@ -35,6 +35,7 @@ import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -72,6 +73,10 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     TextView departureTimeText;
     @BindView(R.id.text_departure_date)
     TextView departureDateText;
+    @BindView(R.id.layout_path_and_map)
+    View pathAndMapLayout;
+    @BindView(R.id.layout_map_loading)
+    View mapLoadingLayout;
 
     ArchidniGoogleMap archidniMap;
     PathSearchContract.Presenter pathSearchPresenter;
@@ -101,6 +106,11 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 pathSearchPresenter.onMapReady();
+            }
+        }, new ArchidniGoogleMap.OnMapLoaded() {
+            @Override
+            public void onMapLoaded(Coordinate coordinate, LatLngBounds latLngBounds, double zoom) {
+                pathSearchPresenter.onMapLoaded();
             }
         });
 
@@ -282,6 +292,18 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
         Intent intent = new Intent(this, PathDetailsActivity.class);
         intent.putExtra(IntentUtils.PATH,path);
         startActivity(intent);
+    }
+
+    @Override
+    public void hideMapLoadingLayout() {
+        mapLoadingLayout.setVisibility(View.GONE);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                pathAndMapLayout.setVisibility(View.VISIBLE);
+            }
+        },250);
     }
 
     @Override

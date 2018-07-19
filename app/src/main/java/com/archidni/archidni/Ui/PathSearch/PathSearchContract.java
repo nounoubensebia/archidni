@@ -29,10 +29,12 @@ public interface PathSearchContract {
         void showOriginNotSet();
         void moveCameraToCoordinate (Coordinate coordinate);
         void startPathDetailsActivity(Path path);
+        void hideMapLoadingLayout();
     }
 
     interface Presenter {
         void onMapReady();
+        void onMapLoaded();
         void onSearchPathsClick(Context context);
         void lookForLocation (int requestType);
         void onActivityResult (int requestType,PathPlace newPlace);

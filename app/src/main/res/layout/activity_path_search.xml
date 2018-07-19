@@ -28,82 +28,103 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/mapView"
-            android:name="com.google.android.gms.maps.MapFragment"
+        <FrameLayout
+            android:id="@+id/layout_map_loading"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:id="@+id/layout_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:animateLayoutChanges="true"
+            android:layout_height="match_parent"
             android:background="#FFF"
-            android:orientation="vertical">
+            android:elevation="4dp">
 
-            <FrameLayout
-                android:id="@+id/layout_get_path"
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
+
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/layout_path_and_map"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/mapView"
+                android:name="com.google.android.gms.maps.MapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent" />
 
-                <TextView
-                    android:id="@+id/text_get_path"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/get_path"
-                    android:textColor="#4CAF50"
-                    android:textSize="20sp" />
-            </FrameLayout>
-
-            <android.support.design.widget.CoordinatorLayout
-                android:id="@+id/layout_paths_list"
+            <LinearLayout
+                android:id="@+id/layout_bottom"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:animateLayoutChanges="true"
-                android:visibility="gone">
+                android:background="#FFF"
+                android:orientation="vertical">
 
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:layout_gravity="center"
-                    android:theme="@style/progressBarGreenTheme"
-                    android:visibility="visible" />
-
-                <LinearLayout
-                    android:id="@+id/layout_path_suggestions"
+                <FrameLayout
+                    android:id="@+id/layout_get_path"
                     android:layout_width="match_parent"
-                    android:background="#EDEDED"
-                    android:layout_height="match_parent"
-                    android:animateLayoutChanges="true"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/text_get_path"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:layout_marginLeft="16dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="16dp"
                         android:layout_marginTop="16dp"
-                        android:text="@string/suggested_paths" />
+                        android:text="@string/get_path"
+                        android:textColor="#4CAF50"
+                        android:textSize="20sp" />
+                </FrameLayout>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/list_paths"
+                <android.support.design.widget.CoordinatorLayout
+                    android:id="@+id/layout_paths_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:animateLayoutChanges="true"
+                    android:visibility="gone">
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center"
+                        android:theme="@style/progressBarGreenTheme"
+                        android:visibility="visible" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_path_suggestions"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                        android:layout_height="match_parent"
+                        android:animateLayoutChanges="true"
+                        android:background="#EDEDED"
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                </LinearLayout>
-            </android.support.design.widget.CoordinatorLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/suggested_paths" />
 
-        </LinearLayout>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/list_paths"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 
+                    </LinearLayout>
+
+                </android.support.design.widget.CoordinatorLayout>
+
+            </LinearLayout>
+        </android.support.design.widget.CoordinatorLayout>
     </android.support.design.widget.CoordinatorLayout>
 
 </LinearLayout>
