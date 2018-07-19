@@ -258,6 +258,7 @@ public class ArchidniGoogleMap  {
                 @Override
                 public void onMapLoaded() {
                     LatLngBounds latLngBounds = map.getProjection().getVisibleRegion().latLngBounds;
+                    if (onMapLoaded!=null)
                     onMapLoaded.onMapLoaded(getCenter(),latLngBounds,map.getCameraPosition().zoom);
                     mapLoaded = true;
                     map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), padding),

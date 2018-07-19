@@ -134,10 +134,9 @@ public class PathOnlineDataStore extends OnlineDataStore {
                                 }
                                 fooType = new TypeToken<ArrayList<Coordinate>>() {
                                 }.getType();
-                                ArrayList<Coordinate> polyline = gson.fromJson(jsonObject.
-                                        getJSONArray("polyline").toString(),fooType);
+                                String polylineString = jsonObject.getString("polyline");
                                 RideInstruction rideInstruction = new RideInstruction(duration,
-                                        transportModeId,sections,lineLabel,destination,polyline);
+                                        transportModeId,sections,lineLabel,destination,polylineString);
                                 waitInstruction.setRideInstruction(rideInstruction);
                                 pathInstructions.add(rideInstruction);
                             }

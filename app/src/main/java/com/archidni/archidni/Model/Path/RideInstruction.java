@@ -1,5 +1,6 @@
 package com.archidni.archidni.Model.Path;
 
+import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Transport.LineSection;
 import com.archidni.archidni.Model.Transport.Section;
@@ -18,9 +19,9 @@ public class RideInstruction extends MoveInstruction implements Serializable {
     private ArrayList<Section> sections; //tronçons
     private String lineLabel; //name
     private String terminus; //for example dergana centre
-    private ArrayList<Coordinate> polyline;
+    private String polyline;
 
-    public RideInstruction(int duration, long transportMeanId, ArrayList<Section> sections, String lineLabel, String terminus, ArrayList<Coordinate> polyline) {
+    public RideInstruction(int duration, long transportMeanId, ArrayList<Section> sections, String lineLabel, String terminus, String polyline) {
         super(duration);
         this.transportMeanId = transportMeanId;
         this.sections = sections;
@@ -102,7 +103,7 @@ public class RideInstruction extends MoveInstruction implements Serializable {
 
     @Override
     public ArrayList<Coordinate> getPolyline() {
-        return polyline;
+        return GeoUtils.getPolylineFromGoogleMapsString(polyline);
     }
 
     @Override
