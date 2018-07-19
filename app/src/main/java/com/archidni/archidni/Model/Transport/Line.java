@@ -45,33 +45,25 @@ public class Line implements Serializable {
         ArrayList<LineSection> selectedLineSections;
         if (outBound) {
             selectedLineSections = getOutboundSections();
-        }
-        else
-        {
+        } else {
             selectedLineSections = getInboundSections();
         }
-            for (LineSection lineSection : selectedLineSections) {
-                List<LatLng> latLngs = PolyUtil.decode(lineSection.getPolylineString());
-                Coordinate firstCoordinate = new Coordinate(latLngs.get(0).latitude, latLngs.get(1).longitude);
-                Coordinate lastCoordinate = new Coordinate(latLngs.get(latLngs.size() - 1).latitude,
-                        latLngs.get(latLngs.size() - 1).longitude);
-                if (GeoUtils.distance(firstCoordinate,lineSection.getOrigin().getCoordinate())>
-                        GeoUtils.distance(lastCoordinate,lineSection.getOrigin().getCoordinate()))
-                {
-                    Collections.reverse(latLngs);
-                }
-                for (LatLng latLng:latLngs)
-                {
-                    coordinates.add(new Coordinate(latLng.latitude,latLng.longitude));
-                }
+        for (LineSection lineSection : selectedLineSections) {
+            List<LatLng> latLngs = PolyUtil.decode(lineSection.getPolylineString());
+            for (LatLng latLng : latLngs) {
+                coordinates.add(new Coordinate(latLng.latitude, latLng.longitude));
             }
-
+        }
         return coordinates;
     }
 
-    public ArrayList<Coordinate> getPolyline ()
-    {
-        return getDirectPolyline();
+    public ArrayList<Coordinate> getPolyline() {
+        ArrayList<Coordinate> coordinates = new ArrayList<>();
+        for (LineSection lineSection:lineSections)
+        {
+            coordinates.addAll(GeoUtils.getPolylineFromGoogleMapsString(lineSection.getPolylineString()));
+        }
+        return coordinates;
     }
 
     public TransportMean getTransportMean() {

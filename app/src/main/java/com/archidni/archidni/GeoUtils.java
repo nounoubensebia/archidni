@@ -3,10 +3,12 @@ package com.archidni.archidni;
 import com.archidni.archidni.Model.Coordinate;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.maps.android.PolyUtil;
 import com.google.maps.android.SphericalUtil;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by noure on 04/02/2018.
@@ -34,6 +36,17 @@ public class GeoUtils {
             }
         }
         return true;
+    }
+
+    public static ArrayList<Coordinate> getPolylineFromGoogleMapsString (String polylineString)
+    {
+        ArrayList<Coordinate> coordinates = new ArrayList<>();
+        List<LatLng> latLngs = PolyUtil.decode(polylineString);
+        for (LatLng latLng:latLngs)
+        {
+            coordinates.add(new Coordinate(latLng.latitude,latLng.longitude));
+        }
+        return coordinates;
     }
 
     public static int distance (ArrayList<Coordinate> coordinates)

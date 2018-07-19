@@ -49,7 +49,6 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                                   final OnLinesAndPlacesSearchCompleted onLinesAndPlacesSearchCompleted) {
         cancelRequests(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                //AppSingleton.buildGetUrl(SharedPrefsUtils.getServerUrl(context)+GET_LINES_URL, map),
                 SharedPrefsUtils.getServerUrl(context) + GET_LINES_AND_PLACES_URL,
                 new Response.Listener<String>() {
                     @SuppressLint("StaticFieldLeak")
