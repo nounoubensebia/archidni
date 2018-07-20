@@ -20,14 +20,18 @@ public class RideInstruction extends MoveInstruction implements Serializable {
     private String lineLabel; //name
     private String terminus; //for example dergana centre
     private String polyline;
+    private float errorMargin;
 
-    public RideInstruction(int duration, long transportMeanId, ArrayList<Section> sections, String lineLabel, String terminus, String polyline) {
+
+    public RideInstruction(long duration, long transportMeanId, ArrayList<Section> sections,
+                           String lineLabel, String terminus, String polyline, float errorMargin) {
         super(duration);
         this.transportMeanId = transportMeanId;
         this.sections = sections;
         this.lineLabel = lineLabel;
         this.terminus = terminus;
         this.polyline = polyline;
+        this.errorMargin = errorMargin;
     }
 
     public String getLineLabel() {
@@ -51,12 +55,7 @@ public class RideInstruction extends MoveInstruction implements Serializable {
     public String getSecondaryText ()
     {
         int s = sections.size();
-        if (transportMeanId!=TransportMean.ID_BUS&&transportMeanId!=4)
-        return (s+" arrêts"+" ("+(getDuration()/60)+" minutes)");
-        else
-        {
-            return (s+" arrêts");
-        }
+        return (s+" arrêts"+" (environ "+(getDuration()/60)+" minutes)");
     }
 
     @Override
@@ -69,17 +68,10 @@ public class RideInstruction extends MoveInstruction implements Serializable {
         return 0;
     }
 
-    /*@Override
-    public ArrayList<Coordinate> getPolyline() {
-        Coordinate coordinate = sections.get(0).getOrigin().getCoordinate();
-        ArrayList<Coordinate> coordinates = new ArrayList<>();
-        coordinates.add(coordinate);
-        for (int i=0;i<sections.size();i++)
-        {
-            coordinates.add(sections.get(i).getDestination().getCoordinate());
-        }
-        return coordinates;
-    }*/
+    @Override
+    public long getDuration() {
+        return (long) (super.getDuration() + super.duration*errorMargin);
+    }
 
     public String getExitInstructionText ()
     {
@@ -93,12 +85,7 @@ public class RideInstruction extends MoveInstruction implements Serializable {
 
     @Override
     public float getDistance() {
-        float distance = 0;
-        for (Section section:sections)
-        {
-            distance+= section.getDistance();
-        }
-        return distance;
+        return GeoUtils.distance(getPolyline());
     }
 
     @Override
@@ -109,12 +96,9 @@ public class RideInstruction extends MoveInstruction implements Serializable {
     @Override
     public String getDurationString() {
         if (transportMeanId!=TransportMean.ID_BUS&&transportMeanId!=4)
-        return (getDuration()/60) + " minutes";
+        return ("environ "+getDuration()/60) + " minutes";
         else
             return "";
     }
 
-    public void setTransportMeanId(int transportMeanId) {
-        this.transportMeanId = transportMeanId;
-    }
 }

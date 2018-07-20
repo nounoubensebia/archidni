@@ -17,11 +17,11 @@ public class WaitInstruction extends PathInstruction implements Serializable {
     private RideInstruction rideInstruction;
 
 
-    public WaitInstruction(int duration, Coordinate coordinate) {
+    public WaitInstruction(long duration, Coordinate coordinate, boolean isAverage) {
         super(duration);
         this.coordinate = coordinate;
+        this.isAverage = isAverage;
     }
-
 
     @Override
     public String getMainText() {

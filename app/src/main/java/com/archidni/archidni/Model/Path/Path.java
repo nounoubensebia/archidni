@@ -14,34 +14,30 @@ import java.util.ArrayList;
  */
 
 public class Path implements Serializable {
-    private PathPlace departure;
-    private PathPlace destination;
+
     private PathSettings pathSettings;
     private ArrayList<PathInstruction> pathInstructions;
 
 
-    public Path(PathPlace departure, PathPlace destination, PathSettings pathSettings, ArrayList<PathInstruction> pathInstructions) {
-        this.departure = departure;
-        this.destination = destination;
+    public Path(PathSettings pathSettings, ArrayList<PathInstruction> pathInstructions) {
         this.pathSettings = pathSettings;
         this.pathInstructions = pathInstructions;
     }
 
-
-    public PathPlace getDeparture() {
-        return departure;
+    public PathPlace getOrigin() {
+        return pathSettings.getOrigin();
     }
 
-    public void setDeparture(PathPlace departure) {
-        this.departure = departure;
+    public void setOrigin(PathPlace departure) {
+        pathSettings.setOrigin(departure);
     }
 
     public PathPlace getDestination() {
-        return destination;
+        return pathSettings.getDestination();
     }
 
     public void setDestination(PathPlace destination) {
-        this.destination = destination;
+        pathSettings.setDestination(destination);
     }
 
     public PathSettings getPathSettings() {
@@ -85,36 +81,13 @@ public class Path implements Serializable {
         long timeOfArrival = timeOfDeparture + getDuration();
         long hours = timeOfArrival / 3600;
         long minutes = (timeOfArrival - hours * 3600) / 60;
-        return "Arrivée estimée vers " + StringUtils.getTimeString(timeOfArrival);
+        return StringUtils.getTimeString(timeOfArrival);
     }
 
     public long getDurationInMinutes() {
         return (getDuration() / 60);
     }
 
-    /*public static Path fromJson (String json)
-    {
-        Path path = null;
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            int duration = jsonObject.getInt("duration");
-            int distance = jsonObject.getInt("distance");
-
-            JSONArray jsonArray = jsonObject.getJSONArray("pathInstructions");
-            for (int i=0;i<jsonArray.length();i++)
-            {
-                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                if (jsonObject1.has("sections"))
-                {
-                    String sectionsString = jsonObject1.toString();
-                    RideInstruction rideInstruction = new Gson().fromJson(sectionsString,RideInstruction.class);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return path;
-    }*/
 
     public ArrayList<Coordinate> getPolyline() {
         ArrayList<Coordinate> coordinates = new ArrayList<>();
@@ -177,6 +150,32 @@ public class Path implements Serializable {
             }
         }
         return pathSteps;
+    }
+
+    public long getWalkingTime ()
+    {
+        long walkingTime = 0;
+        for (PathInstruction pathInstruction:pathInstructions)
+        {
+            if (pathInstruction instanceof WalkInstruction)
+            {
+                walkingTime+=pathInstruction.duration;
+            }
+        }
+        return walkingTime;
+    }
+
+    public int getTransferNumber ()
+    {
+        int transferNumber = 0;
+        for (PathInstruction pathInstruction:pathInstructions)
+        {
+            if (pathInstruction instanceof WaitInstruction)
+            {
+                transferNumber++;
+            }
+        }
+        return transferNumber;
     }
 
     public String toJson() {

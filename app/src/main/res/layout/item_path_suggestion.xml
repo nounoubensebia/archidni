@@ -10,19 +10,34 @@
     <LinearLayout
         android:layout_marginBottom="16dp"
         android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Environ"
+            android:textColor="@color/colorGreen"
+            android:textSize="16sp" />
+        <TextView
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:id="@+id/text_eta_minutes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
             android:text="20"
             android:textColor="@color/colorGreen"
             android:textSize="20sp" />
         <TextView
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -31,6 +46,14 @@
             android:textColor="@color/colorGreen"/>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_width="0dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/image_transport_mean_1"
@@ -52,11 +75,35 @@
         app:srcCompat="@drawable/ic_transport_mean_0_enabled"
         android:layout_width="40dp"
         android:layout_height="40dp" />
-    <TextView
-        android:id="@+id/text_eta"
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginRight="16dp"
+        android:orientation="vertical"
         android:layout_gravity="center"
-        android:text="Arrivée estimée à 17:30"
-        android:textColor="#000"
+        android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+        <TextView
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Arrivée estimée"
+            android:textColor="@color/colorGreen"
+            android:textSize="16sp" />
+        <TextView
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:id="@+id/text_eta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="10:50"
+            android:textColor="@color/colorGreen"
+            android:textSize="20sp" />
+    </LinearLayout>
 </LinearLayout>

@@ -10,9 +10,10 @@ import java.util.ArrayList;
 
 public abstract class MoveInstruction extends PathInstruction {
 
-    public MoveInstruction(int duration) {
+    public MoveInstruction(long duration) {
         super(duration);
     }
+
     public abstract float getDistance ();
     public abstract ArrayList<Coordinate> getPolyline ();
 }

@@ -14,13 +14,14 @@ public class PathSettings implements Serializable {
     private PathPlace destination;
     private long departureTime;
     private long departureDate;
+    private PathPreferences pathPreferences;
 
-    public PathSettings(PathPlace origin, PathPlace destination, long departureTime,
-                        long departureDate) {
+    public PathSettings(PathPlace origin, PathPlace destination, long departureTime, long departureDate, PathPreferences pathPreferences) {
         this.origin = origin;
         this.destination = destination;
         this.departureTime = departureTime;
         this.departureDate = departureDate;
+        this.pathPreferences = pathPreferences;
     }
 
     public void setOrigin(PathPlace origin) {
@@ -57,5 +58,13 @@ public class PathSettings implements Serializable {
 
     public void setDepartureDate(long departureDate) {
         this.departureDate = departureDate;
+    }
+
+    public PathPreferences getPathPreferences() {
+        return pathPreferences;
+    }
+
+    public void setPathPreferences(PathPreferences pathPreferences) {
+        this.pathPreferences = pathPreferences;
     }
 }

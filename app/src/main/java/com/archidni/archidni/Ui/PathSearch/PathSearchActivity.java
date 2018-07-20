@@ -1,6 +1,7 @@
 package com.archidni.archidni.Ui.PathSearch;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Handler;
@@ -12,9 +13,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -23,9 +27,11 @@ import android.widget.Toast;
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Path.Path;
+import com.archidni.archidni.Model.Path.PathPreferences;
 import com.archidni.archidni.Model.Path.PathSettings;
 import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.StringUtils;
+import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.PathSuggestionAdapter;
 import com.archidni.archidni.Ui.PathDetails.PathDetailsActivity;
@@ -77,6 +83,8 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     View pathAndMapLayout;
     @BindView(R.id.layout_map_loading)
     View mapLoadingLayout;
+    @BindView(R.id.text_options)
+    TextView optionsText;
 
     ArchidniGoogleMap archidniMap;
     PathSearchContract.Presenter pathSearchPresenter;
@@ -142,6 +150,12 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
             @Override
             public void onClick(View view) {
                 pathSearchPresenter.onDepartureDateClick();
+            }
+        });
+        optionsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pathSearchPresenter.onOptionsLayoutClicked();
             }
         });
     }
@@ -304,6 +318,102 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
                 pathAndMapLayout.setVisibility(View.VISIBLE);
             }
         },250);
+    }
+
+    @Override
+    public void showOptionsDialog(PathPreferences pathPreferences) {
+        //initialisation
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_path_options);
+        dialog.setTitle("Options");
+        final CheckBox transportMode0 = (CheckBox) dialog.findViewById(R.id.checkbox_transport_mean_0);
+        final CheckBox transportMode1 = (CheckBox) dialog.findViewById(R.id.checkbox_transport_mean_1);
+        final CheckBox transportMode2 = (CheckBox) dialog.findViewById(R.id.checkbox_transport_mean_2);
+        final CheckBox transportMode3 = (CheckBox) dialog.findViewById(R.id.checkbox_transport_mean_3);
+        CheckBox transportMode4 = (CheckBox) dialog.findViewById(R.id.checkbox_transport_mean_4);
+        final RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.radiogroup_sort);
+        final RadioButton timeRadioButton = dialog.findViewById(R.id.radiobutton_minimum_time);
+        RadioButton transfersRadioButton = dialog.findViewById(R.id.radio_button_minimum_transfers);
+        RadioButton walkingTimeRadioButton = dialog.findViewById(R.id.radio_button_minimum_walking_time);
+        TextView okText = dialog.findViewById(R.id.text_ok);
+        TextView cancelText = dialog.findViewById(R.id.text_cancel);
+
+        if (pathPreferences.getTransportModesNotUsed().contains(TransportMean.allTransportMeans.get(0)))
+        {
+            transportMode0.setChecked(false);
+        }
+        if (pathPreferences.getTransportModesNotUsed().contains(TransportMean.allTransportMeans.get(1)))
+        {
+            transportMode1.setChecked(false);
+        }
+        if (pathPreferences.getTransportModesNotUsed().contains(TransportMean.allTransportMeans.get(2)))
+        {
+            transportMode2.setChecked(false);
+        }
+        if (pathPreferences.getTransportModesNotUsed().contains(TransportMean.allTransportMeans.get(3)))
+        {
+            transportMode3.setChecked(false);
+        }
+        if (pathPreferences.getTransportModesNotUsed().contains(TransportMean.allTransportMeans.get(4)))
+        {
+            transportMode4.setChecked(false);
+        }
+        switch (pathPreferences.getSortPreference())
+        {
+            case PathPreferences.SORT_BY_MINIMUM_TIME:
+                timeRadioButton.setChecked(true);
+            break;
+            case PathPreferences.SORT_BY_MINIMUM_TRANSFERS:
+                transfersRadioButton.setChecked(true);
+                break;
+            case PathPreferences.SORT_BY_MINIMUM_WALKING_TIME:
+                walkingTimeRadioButton.setChecked(true);
+                break;
+        }
+
+        okText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int sortMethod = 0;
+                switch (radioGroup.getCheckedRadioButtonId())
+                {
+                    case R.id.radiobutton_minimum_time : sortMethod = PathPreferences.SORT_BY_MINIMUM_TIME;
+                    break;
+                    case R.id.radio_button_minimum_transfers: sortMethod = PathPreferences.SORT_BY_MINIMUM_TRANSFERS;
+                        break;
+                    case R.id.radio_button_minimum_walking_time : sortMethod = PathPreferences.SORT_BY_MINIMUM_WALKING_TIME;
+                        break;
+                }
+                ArrayList<TransportMean> blackListedTransportModes = new ArrayList<>();
+                if (!transportMode0.isChecked())
+                {
+                    blackListedTransportModes.add(TransportMean.allTransportMeans.get(0));
+                }
+                if (!transportMode1.isChecked())
+                {
+                    blackListedTransportModes.add(TransportMean.allTransportMeans.get(1));
+                }
+                if (!transportMode2.isChecked())
+                {
+                    blackListedTransportModes.add(TransportMean.allTransportMeans.get(2));
+                }
+                if (!transportMode3.isChecked())
+                {
+                    blackListedTransportModes.add(TransportMean.allTransportMeans.get(3));
+                }
+                PathPreferences newPathPreferences = new PathPreferences(sortMethod,blackListedTransportModes);
+                dialog.hide();
+                pathSearchPresenter.onOptionsUpdated(newPathPreferences);
+            }
+        });
+        cancelText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.hide();
+            }
+        });
+
+        dialog.show();
     }
 
     @Override

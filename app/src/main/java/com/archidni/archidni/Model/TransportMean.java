@@ -270,4 +270,8 @@ public class TransportMean extends SelectorItem {
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof TransportMean && ((TransportMean) obj).getId() == getId();
+    }
 }

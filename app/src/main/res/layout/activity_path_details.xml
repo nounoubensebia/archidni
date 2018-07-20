@@ -48,7 +48,7 @@
                         android:paddingRight="8dp"
                         android:background="@drawable/shape_green_empty_rect"
                         android:gravity="center"
-                        android:text="55 minutes"
+                        android:text="Environ 55 minutes"
                         android:layout_marginLeft="16dp"
                         android:textSize="16sp"
                         android:textColor="@color/color_transport_mean_selected_2"

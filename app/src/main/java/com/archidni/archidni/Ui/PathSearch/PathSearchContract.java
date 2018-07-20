@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Path.Path;
+import com.archidni.archidni.Model.Path.PathPreferences;
 import com.archidni.archidni.Model.Path.PathSettings;
 import com.archidni.archidni.Model.Places.PathPlace;
 
@@ -30,6 +31,7 @@ public interface PathSearchContract {
         void moveCameraToCoordinate (Coordinate coordinate);
         void startPathDetailsActivity(Path path);
         void hideMapLoadingLayout();
+        void showOptionsDialog(PathPreferences pathPreferences);
     }
 
     interface Presenter {
@@ -44,5 +46,7 @@ public interface PathSearchContract {
         void updateDate(long departureDate);
         void onPathItemClick (Path path);
         void onStop(Context context);
+        void onOptionsLayoutClicked();
+        void onOptionsUpdated(PathPreferences pathPreferences);
     }
 }

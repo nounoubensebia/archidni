@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="304dp"
+        android:layout_height="wrap_content">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="16dp"
+            android:text="Modes de transport à prendre en considération"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
+    <View
+        android:layout_marginTop="8dp"
+        android:background="#EDEDED"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <CheckBox
+        android:id="@+id/checkbox_transport_mean_0"
+        android:layout_marginTop="8dp"
+        android:checked="true"
+        android:layout_marginLeft="16dp"
+        android:text="Métro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <CheckBox
+        android:checked="true"
+        android:id="@+id/checkbox_transport_mean_1"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:text="Train"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <CheckBox
+        android:checked="true"
+        android:id="@+id/checkbox_transport_mean_2"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:text="Bus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <CheckBox
+        android:checked="true"
+        android:id="@+id/checkbox_transport_mean_3"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:text="Tramway"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <CheckBox
+        android:checked="true"
+        android:id="@+id/checkbox_transport_mean_4"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:text="Téléphérique"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginTop="4dp"
+        android:background="#EDEDED"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <TextView
+        android:layout_marginTop="16dp"
+        android:text="Trier par : "
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <RadioGroup
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:id="@+id/radiogroup_sort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/radiobutton_minimum_time"
+            android:text="Itinéraire le plus rapide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:layout_marginTop="4dp"
+            android:id="@+id/radio_button_minimum_walking_time"
+            android:text="Itinéraire ayant le moins de marche à pied"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:layout_marginTop="4dp"
+            android:id="@+id/radio_button_minimum_transfers"
+            android:text="Itinéraire ayant moins de correspondonces"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RadioGroup>
+        <View
+            android:layout_marginTop="8dp"
+            android:background="#EDEDED"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+    <LinearLayout
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="32dp"
+        android:orientation="horizontal"
+        android:layout_gravity="right"
+        android:layout_marginBottom="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/text_ok"
+            android:layout_gravity="right"
+            android:layout_marginTop="8dp"
+            android:text="OK"
+            android:textColor="@color/colorPrimary"
+            android:textAppearance="?android:attr/textAppearanceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_gravity="right"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:id="@+id/text_cancel"
+            android:text="Annuler"
+            android:textColor="@color/colorPrimary"
+            android:textAppearance="?android:attr/textAppearanceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    </LinearLayout>
+</ScrollView>

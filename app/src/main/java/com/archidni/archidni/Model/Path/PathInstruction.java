@@ -25,6 +25,8 @@ public abstract class PathInstruction implements Serializable {
     public abstract int getInstructionWhiteIcon();
     public String getDurationString ()
     {
-        return getDuration()/60+" minutes";
+        return (getDuration()/60+" minutes");
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.archidni.archidni.Model.Path;
 
+import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.R;
 
@@ -11,10 +12,10 @@ import java.util.ArrayList;
  */
 
 public class WalkInstruction extends MoveInstruction implements Serializable {
-    private ArrayList<Coordinate> polyline;
+    private String polyline;
     private float distance;
     private String destination;
-    public WalkInstruction(int duration, float distance, ArrayList<Coordinate> polyline,String destination) {
+    public WalkInstruction(int duration, float distance, String polyline,String destination) {
         super(duration);
         this.distance = distance;
         this.polyline = polyline;
@@ -43,7 +44,7 @@ public class WalkInstruction extends MoveInstruction implements Serializable {
 
     @Override
     public ArrayList<Coordinate> getPolyline() {
-        return polyline;
+        return GeoUtils.getPolylineFromGoogleMapsString(polyline);
     }
 
 
