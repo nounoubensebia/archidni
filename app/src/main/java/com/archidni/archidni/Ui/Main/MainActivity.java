@@ -41,6 +41,7 @@ import com.archidni.archidni.Ui.Adapters.PlaceAdapter;
 import com.archidni.archidni.Ui.ExchangePolesActivity;
 import com.archidni.archidni.Ui.Favorites.FavoritesActivity;
 import com.archidni.archidni.Ui.Line.LineActivity;
+import com.archidni.archidni.Ui.Notifications.NotificationsActivity;
 import com.archidni.archidni.Ui.Parking.ParkingActivity;
 import com.archidni.archidni.Ui.ParkingsActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
@@ -962,6 +963,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 Intent intent2 = new Intent(this, ExchangePolesActivity.class);
                 startActivity(intent2);
                 break;
+            case R.id.item_notifications:
+                Intent intent4 = new Intent(this, NotificationsActivity.class);
+                startActivity(intent4);
         }
         return true;
     }

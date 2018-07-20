@@ -94,7 +94,10 @@
         <activity android:name=".Ui.TelephericTarifsActivity" />
         <activity android:name=".Ui.ExchangePolesActivity" />
         <activity android:name=".Ui.ParkingsActivity" />
-        <activity android:name=".Ui.Parking.ParkingActivity" android:theme="@style/TransportMeanTheme1"></activity>
+        <activity
+            android:name=".Ui.Parking.ParkingActivity"
+            android:theme="@style/TransportMeanTheme1" />
+        <activity android:name=".Ui.Notifications.NotificationsActivity" android:label="Notifications et alertes"></activity>
     </application>
 
 </manifest>

@@ -63,15 +63,7 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
                 presenter.onMapReady();
             }
         });
-
-
-        /*archidniMap = new ArchidniMap(mapView, bundle, new ArchidniMap.OnMapReadyCallback() {
-            @Override
-            public void onMapReady() {
-                presenter.onMapReady();
-                archidniMap.setMyLocationEnabled(true);
-            }
-        });*/
+        
         startNavigationText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

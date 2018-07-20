@@ -10,6 +10,13 @@
         android:visible="true">
     </item>
 
+    <item android:title="Notifications et alertes"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:id="@+id/item_notifications"
+        android:visible="true">
+    </item>
+
     <item android:title="Tarrifications"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_attach_money_black_24dp"
