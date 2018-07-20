@@ -97,7 +97,10 @@
         <activity
             android:name=".Ui.Parking.ParkingActivity"
             android:theme="@style/TransportMeanTheme1" />
-        <activity android:name=".Ui.Notifications.NotificationsActivity" android:label="Notifications et alertes"></activity>
+        <activity
+            android:name=".Ui.Notifications.NotificationsActivity"
+            android:label="Notifications et alertes" />
+        <activity android:name=".Ui.LineNotifications.LineNotificationsActivity"></activity>
     </application>
 
 </manifest>

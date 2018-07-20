@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.SearchLineStation.LineFragment;
+import com.archidni.archidni.Ui.SearchLineStation.LineStationFragment;
 import com.archidni.archidni.Ui.SearchLineStation.SearchLineStationActivity;
 import com.archidni.archidni.Ui.SearchLineStation.StationFragment;
 
@@ -22,8 +23,10 @@ public class NotificationsActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.pager)
     ViewPager viewPager;
-
     PgAdapter mPgAdapter;
+
+    NotificationsFragment allLinesFragment;
+    NotificationsFragment favoritesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +54,11 @@ public class NotificationsActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                LineFragment lineFragment = new LineFragment();
-                return lineFragment;
+                allLinesFragment = new NotificationsFragment();
+                return allLinesFragment;
             } else {
-                StationFragment stationFragment = new StationFragment();
-                return stationFragment;
+                favoritesFragment = new NotificationsFragment();
+                return favoritesFragment;
             }
         }
 

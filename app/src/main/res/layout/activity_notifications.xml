@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Ui.Notifications.NotificationsActivity">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -14,23 +15,25 @@
         android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ToolbarTheme"
-        app:popupTheme="@style/ToolbarTheme"/>
-    <android.support.v4.view.ViewPager
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        app:popupTheme="@style/ToolbarTheme" />
+
+    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
-        android:visibility="gone"
-        android:elevation="4dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:elevation="4dp">
+
         <android.support.design.widget.TabLayout
-            app:tabBackground="@color/colorGreen"
-            app:tabTextColor="#EAEAEA"
-            app:tabSelectedTextColor="#FFF"
-            app:tabIndicatorColor="@android:color/holo_orange_dark"
-            app:tabIndicatorHeight="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top" />
+            android:layout_gravity="top"
+            app:tabBackground="@color/colorGreen"
+            app:tabIndicatorColor="@android:color/holo_orange_dark"
+            app:tabIndicatorHeight="4dp"
+            app:tabSelectedTextColor="#FFF"
+            app:tabTextColor="#EAEAEA" />
     </android.support.v4.view.ViewPager>
-    <include layout="@layout/item_notification"></include>
+
+
+
 </LinearLayout>

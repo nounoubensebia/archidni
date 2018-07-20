@@ -41,6 +41,7 @@ import com.archidni.archidni.Ui.Adapters.PlaceAdapter;
 import com.archidni.archidni.Ui.ExchangePolesActivity;
 import com.archidni.archidni.Ui.Favorites.FavoritesActivity;
 import com.archidni.archidni.Ui.Line.LineActivity;
+import com.archidni.archidni.Ui.LineNotifications.LineNotificationsActivity;
 import com.archidni.archidni.Ui.Notifications.NotificationsActivity;
 import com.archidni.archidni.Ui.Parking.ParkingActivity;
 import com.archidni.archidni.Ui.ParkingsActivity;
