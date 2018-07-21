@@ -125,6 +125,22 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/text_show_notifications"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:background="@drawable/shape_green_rounded"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="8dp"
+                        android:text="Actualités et informations trafic"
+                        android:textAllCaps="false"
+                        android:textAppearance="?android:attr/textAppearanceButton"
+                        android:textColor="#FFF" />
+
+                    <TextView
+                        android:layout_marginTop="8dp"
                         android:id="@+id/text_add_to_favorites"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

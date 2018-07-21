@@ -30,6 +30,12 @@ public class Line implements Serializable {
         this.lineSections = lineSections;
     }
 
+    public Line(int id, String name, TransportMean transportMean) {
+        this.id = id;
+        this.name = name;
+        this.transportMean = transportMean;
+    }
+
     public ArrayList<Station> getStations() {
         Station first = lineSections.get(0).getOrigin();
         ArrayList<Station> stations = new ArrayList<>();

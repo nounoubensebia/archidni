@@ -8,16 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import com.archidni.archidni.Model.Notifications.Notification;
 import com.archidni.archidni.R;
-import com.archidni.archidni.Ui.SearchLineStation.LineFragment;
-import com.archidni.archidni.Ui.SearchLineStation.LineStationFragment;
-import com.archidni.archidni.Ui.SearchLineStation.SearchLineStationActivity;
-import com.archidni.archidni.Ui.SearchLineStation.StationFragment;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NotificationsActivity extends AppCompatActivity {
+public class NotificationsActivity extends AppCompatActivity implements NotificationsContract.View {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -27,23 +26,43 @@ public class NotificationsActivity extends AppCompatActivity {
 
     NotificationsFragment allLinesFragment;
     NotificationsFragment favoritesFragment;
+    int fragmentsReady = 0;
+
+    private NotificationsContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
         initViews();
+        presenter = new NotificationsPresenter(this);
     }
 
     private void initViews() {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mPgAdapter =
-                new PgAdapter(
-                        getSupportFragmentManager());
+        mPgAdapter = new PgAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mPgAdapter);
     }
+
+
+    @Override
+    public void showNotifications(ArrayList<Notification> allLinesNotifications, ArrayList<Notification> favoritesNotifications) {
+        allLinesFragment.showNotifications(allLinesNotifications);
+        favoritesFragment.showNotifications(favoritesNotifications);
+    }
+
+    @Override
+    public void hideLoadingLayout() {
+
+    }
+
+    @Override
+    public void showLoadingLayout() {
+
+    }
+
 
     public class PgAdapter extends FragmentPagerAdapter {
 
@@ -52,14 +71,31 @@ public class NotificationsActivity extends AppCompatActivity {
         }
 
         @Override
-        public Fragment getItem(int position) {
+        public Fragment getItem(final int position) {
             if (position == 0) {
-                allLinesFragment = new NotificationsFragment();
+                if (allLinesFragment==null)
+                    allLinesFragment = new NotificationsFragment(new NotificationsFragment.OnReadyListener() {
+                        @Override
+                        public void onReady() {
+                            fragmentsReady++;
+                            if (fragmentsReady == 2)
+                                presenter.onActivityReady();
+                        }
+                    });
                 return allLinesFragment;
             } else {
-                favoritesFragment = new NotificationsFragment();
+                if (favoritesFragment==null)
+                    favoritesFragment = new NotificationsFragment(new NotificationsFragment.OnReadyListener() {
+                        @Override
+                        public void onReady() {
+                            fragmentsReady++;
+                            if (fragmentsReady == 2)
+                                presenter.onActivityReady();
+                        }
+                    });
                 return favoritesFragment;
             }
+
         }
 
         @Override

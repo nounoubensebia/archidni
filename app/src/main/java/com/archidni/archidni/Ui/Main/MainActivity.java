@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -56,6 +57,7 @@ import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.UiUtils.ClusterHandler;
+import com.archidni.archidni.UiUtils.NestedScrollableHelper;
 import com.archidni.archidni.UiUtils.SelectorItem;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 import com.archidni.archidni.UiUtils.ViewUtils;
@@ -144,6 +146,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     TextView interestsText;
 
     TextView usernameText;
+
+    @BindView(R.id.scrollView)
+    NestedScrollView nestedScrollView;
 
     ArchidniGoogleMap archidniMap;
     private boolean drawerOpened;
@@ -349,7 +354,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
             }
         });
-        container.setScrollableView(recyclerView);
+        container.setScrollableViewHelper(new NestedScrollableHelper());
+        container.setScrollableView(nestedScrollView);
+        nestedScrollView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
         retryFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -823,6 +830,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void showPlacesOnList(ArrayList<? extends MainActivityPlace> places, Coordinate userCoordinate) {
+        recyclerView.setNestedScrollingEnabled(false);
         if (recyclerView.getAdapter()!=null && recyclerView.getAdapter() instanceof PlaceAdapter)
         {
             PlaceAdapter placeAdapter = (PlaceAdapter) recyclerView.getAdapter();
