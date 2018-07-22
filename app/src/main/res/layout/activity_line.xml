@@ -32,231 +32,235 @@
         android:visibility="visible">
 
         <FrameLayout
-            android:animateLayoutChanges="true"
             android:id="@+id/layout_map"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="2.5"
+            android:animateLayoutChanges="true"
+            android:elevation="0dp"
             android:visibility="visible">
+
             <FrameLayout
                 android:id="@+id/layout_map_loading"
-                android:background="#FFF"
-                android:elevation="4dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ProgressBar
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </FrameLayout>
-            <FrameLayout
-                android:visibility="visible"
-                android:id="@+id/layout_map_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/mapView"
-                android:name="com.google.android.gms.maps.MapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-            </FrameLayout>
-        </FrameLayout>
-
-        <ScrollView
-            android:id="@+id/scrollView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2.5"
-            android:elevation="4dp">
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#FFF"
+                android:elevation="4dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/text_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Tramway d'alger"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/text_line_state"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="8dp"
-                    android:drawableLeft="@drawable/ic_check_circle_black_24dp"
-                    android:drawablePadding="8dp"
-                    android:gravity="center"
-                    android:text="Aucune perturbation n'a été signalée"
-                    android:visibility="gone" />
-
                 <ProgressBar
-                    android:id="@+id/progressBar_line_state"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="8dp"
-                    android:visibility="gone" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#BDBDBD"
-                    android:visibility="gone" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/text_show_notifications"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:background="@drawable/shape_green_rounded"
-                        android:paddingBottom="8dp"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:paddingTop="8dp"
-                        android:text="Actualités et informations trafic"
-                        android:textAllCaps="false"
-                        android:textAppearance="?android:attr/textAppearanceButton"
-                        android:textColor="#FFF" />
-
-                    <TextView
-                        android:layout_marginTop="8dp"
-                        android:id="@+id/text_add_to_favorites"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:background="@drawable/shape_green_empty_rect"
-                        android:paddingBottom="8dp"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:paddingTop="8dp"
-                        android:text="Ajouter aux favoris"
-                        android:textAllCaps="false"
-                        android:textAppearance="?android:attr/textAppearanceButton"
-                        android:textColor="@color/color_transport_mean_selected_2" />
-
-                    <TextView
-                        android:id="@+id/text_report"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/shape_red_rounded"
-                        android:paddingBottom="8dp"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:paddingTop="8dp"
-                        android:text="Signaler des perturbations"
-                        android:textAllCaps="false"
-                        android:textAppearance="?android:attr/textAppearanceButton"
-                        android:textColor="#FFF"
-                        android:visibility="gone" />
-
-
-                </LinearLayout>
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Stations"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
+                    android:layout_gravity="center" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/layout_map_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible">
+
+                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/mapView"
+                    android:name="com.google.android.gms.maps.MapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+        </FrameLayout>
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2.5"
+            android:background="#FFF"
+            android:clipToPadding="false">
+
+
+
+            <LinearLayout
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:elevation="8dp"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/layout_outbound_inbound"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="64dp"
-                    android:layout_marginRight="64dp"
-                    android:layout_marginTop="16dp"
-                    android:animateLayoutChanges="false"
-                    android:background="@drawable/shape_rect_white_rounded"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <FrameLayout
-                        android:id="@+id/layout_outbound"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/shape_full_green_rounded_left"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <TextView
-                            android:id="@+id/text_outbound"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_weight="1"
-                            android:drawablePadding="16dp"
-                            android:fontFamily="sans-serif-condensed"
-                            android:gravity="center"
-                            android:padding="8dp"
-                            android:text="Aller"
-                            android:textColor="#FFF" />
-                    </FrameLayout>
-
-
-                    <FrameLayout
-                        android:id="@+id/layout_inbound"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/shape_green_empty_rect_right"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <TextView
-                            android:id="@+id/text_inbound"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_weight="1"
-                            android:drawablePadding="16dp"
-                            android:fontFamily="sans-serif-condensed"
-                            android:gravity="center"
-                            android:padding="8dp"
-                            android:text="Retour"
-                            android:textColor="#000" />
-                    </FrameLayout>
-
-                </LinearLayout>
-
-                <android.support.design.widget.CoordinatorLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ListView
-                        android:id="@+id/list_station"
+                    android:layout_height="match_parent"
+                    android:background="#FFF"
+                    android:elevation="8dp"
+                    android:orientation="vertical">
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:listSelector="@android:color/transparent"></ListView>
-                </android.support.design.widget.CoordinatorLayout>
+                        android:orientation="vertical">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="#FFF"
+                            android:clipToPadding="false">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="16dp"
+                                android:textSize="16sp"
+                                android:layout_weight="1"
+                                android:textStyle="bold"
+                                android:text="Actualités et informations trafic "
+                                android:textColor="@color/color_transport_mean_selected_1" />
+                            <ImageView
+                                android:layout_gravity="center"
+                                android:layout_marginRight="16dp"
+                                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_marginBottom="16dp"
+                            android:background="#EDEDED"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"/>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:orientation="vertical">
+
+
+
+                            <TextView
+                                android:id="@+id/text_add_to_favorites"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="16dp"
+                                android:background="@drawable/shape_green_empty_rect"
+                                android:paddingBottom="8dp"
+                                android:paddingLeft="8dp"
+                                android:paddingRight="8dp"
+                                android:paddingTop="8dp"
+                                android:text="Ajouter cette ligne aux favoris"
+                                android:textAllCaps="false"
+                                android:textAppearance="?android:attr/textAppearanceButton"
+                                android:textColor="@color/color_transport_mean_selected_2" />
+
+                            <TextView
+                                android:id="@+id/text_report"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/shape_red_rounded"
+                                android:paddingBottom="8dp"
+                                android:paddingLeft="8dp"
+                                android:paddingRight="8dp"
+                                android:paddingTop="8dp"
+                                android:text="Signaler des perturbations"
+                                android:textAllCaps="false"
+                                android:textAppearance="?android:attr/textAppearanceButton"
+                                android:textColor="#FFF"
+                                android:visibility="gone" />
+
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="Stations"
+                            android:textColor="#000"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:id="@+id/layout_outbound_inbound"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="64dp"
+                            android:layout_marginRight="64dp"
+                            android:layout_marginTop="16dp"
+                            android:animateLayoutChanges="false"
+                            android:background="@drawable/shape_rect_white_rounded"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <FrameLayout
+                                android:id="@+id/layout_outbound"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/shape_full_green_rounded_left"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                                <TextView
+                                    android:id="@+id/text_outbound"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_weight="1"
+                                    android:drawablePadding="16dp"
+                                    android:fontFamily="sans-serif-condensed"
+                                    android:gravity="center"
+                                    android:padding="8dp"
+                                    android:text="Aller"
+                                    android:textColor="#FFF" />
+                            </FrameLayout>
+
+
+                            <FrameLayout
+                                android:id="@+id/layout_inbound"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/shape_green_empty_rect_right"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                                <TextView
+                                    android:id="@+id/text_inbound"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_weight="1"
+                                    android:drawablePadding="16dp"
+                                    android:fontFamily="sans-serif-condensed"
+                                    android:gravity="center"
+                                    android:padding="8dp"
+                                    android:text="Retour"
+                                    android:textColor="#000" />
+                            </FrameLayout>
+
+                        </LinearLayout>
+
+                        <android.support.design.widget.CoordinatorLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ListView
+                                android:id="@+id/list_station"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:listSelector="@android:color/transparent"></ListView>
+                        </android.support.design.widget.CoordinatorLayout>
+                    </LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
             </LinearLayout>
-        </ScrollView>
+        </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>
 
 

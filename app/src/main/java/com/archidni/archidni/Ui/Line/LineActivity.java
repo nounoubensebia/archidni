@@ -48,8 +48,6 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     @BindView(R.id.layout_map_container)
     View mapContainerLayout;
     MapFragment mapView;
-    @BindView(R.id.text_name)
-    TextView nameText;
     @BindView(R.id.list_station)
     ListView listView;
     @BindView(R.id.layout_outbound_inbound)
@@ -201,7 +199,7 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(line.getName());
         getSupportActionBar().setElevation(0);
-        nameText.setText(line.getName());
+        //nameText.setText(line.getName());
 
 
     }
@@ -262,7 +260,7 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
 
     @Override
     public void showDeleteLineFromFavoritesText() {
-        addToFavoritesText.setText("Supprimer des favoris");
+        addToFavoritesText.setText("Supprimer cette ligne des favoris");
     }
 
     @Override

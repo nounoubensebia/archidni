@@ -36,9 +36,13 @@ public class Notification {
         if (lines.size()>0)
         {
             StringBuilder stringBuilder = new StringBuilder();
+            int i = 0;
             for (Line line:lines)
             {
                 stringBuilder.append(line.getName());
+                if (i<lines.size()-1)
+                    stringBuilder.append(System.getProperty ("line.separator"));
+                i++;
             }
             return stringBuilder.toString();
         }
