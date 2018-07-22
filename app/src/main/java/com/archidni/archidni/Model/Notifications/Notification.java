@@ -6,13 +6,16 @@ import com.archidni.archidni.Model.TransportMean;
 import java.util.ArrayList;
 
 public class Notification {
-    private ArrayList<Line> lines;
+
+    private String title;
     private TransportMean transportMean;
+    private ArrayList<Line> lines;
     private String description;
 
-    public Notification(ArrayList<Line> lines, TransportMean transportMean, String description) {
-        this.lines = lines;
+    public Notification(String title, TransportMean transportMean, ArrayList<Line> lines, String description) {
+        this.title = title;
         this.transportMean = transportMean;
+        this.lines = lines;
         this.description = description;
     }
 

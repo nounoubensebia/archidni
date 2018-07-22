@@ -1,12 +1,17 @@
 package com.archidni.archidni.Ui.Notifications;
 
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.archidni.archidni.Model.Notifications.Notification;
 import com.archidni.archidni.R;
@@ -23,6 +28,10 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
     @BindView(R.id.pager)
     ViewPager viewPager;
     PgAdapter mPgAdapter;
+
+    @BindView(R.id.fab)
+    View fab;
+
 
     NotificationsFragment allLinesFragment;
     NotificationsFragment favoritesFragment;
@@ -44,6 +53,12 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mPgAdapter = new PgAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mPgAdapter);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onUpdateClicked();
+            }
+        });
     }
 
 
@@ -55,12 +70,19 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
 
     @Override
     public void hideLoadingLayout() {
-
+       allLinesFragment.hideLoadingLayout();
+       favoritesFragment.hideLoadingLayout();
     }
 
     @Override
     public void showLoadingLayout() {
+        allLinesFragment.showLoadingLayout();
+        favoritesFragment.showLoadingLayout();
+    }
 
+    @Override
+    public void showErrorMessage() {
+        Toast.makeText(this,"Une erreur s'est produite veuillez réessayer",Toast.LENGTH_LONG);
     }
 
 

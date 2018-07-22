@@ -11,6 +11,7 @@ public interface NotificationsContract {
                                 ArrayList<Notification> favoritesNotifications);
         void hideLoadingLayout();
         void showLoadingLayout();
+        void showErrorMessage();
     }
 
     public interface Presenter {

@@ -3,14 +3,17 @@ package com.archidni.archidni.Ui.Notifications;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.archidni.archidni.Model.Notifications.Notification;
 import com.archidni.archidni.R;
@@ -27,12 +30,17 @@ public class NotificationsFragment extends Fragment {
     @BindView(R.id.recyclerView)
     RecyclerView notificationsList;
 
+    @BindView(R.id.progressBar)
+    View progressBar;
+
     OnReadyListener onReadyListener;
+
 
     @SuppressLint("ValidFragment")
     public NotificationsFragment(OnReadyListener onReadyListener) {
         super();
         this.onReadyListener = onReadyListener;
+
     }
 
     public View onCreateView(LayoutInflater inflater,
@@ -56,6 +64,16 @@ public class NotificationsFragment extends Fragment {
         notificationsList.setNestedScrollingEnabled(false);
     }
 
+    public void hideLoadingLayout() {
+        progressBar.setVisibility(View.GONE);
+        notificationsList.setVisibility(View.VISIBLE);
+    }
+
+    public void showLoadingLayout() {
+        notificationsList.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+
+    }
 
 
     public interface OnReadyListener {
