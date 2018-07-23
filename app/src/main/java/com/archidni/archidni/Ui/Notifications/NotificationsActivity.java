@@ -50,7 +50,7 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
     private void initViews() {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mPgAdapter = new PgAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mPgAdapter);
         fab.setOnClickListener(new View.OnClickListener() {

@@ -310,6 +310,7 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                 onNotificationsFound.onError();
             }
         });
+        AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,getTag());
     }
 
     @Override

@@ -17,6 +17,7 @@ public class LineNotificationsPresenter implements LineNotificationsContract.Pre
         this.view = view;
         this.line = line;
         linesAndPlacesRepository = new LinesAndPlacesRepository();
+        view.setTheme(line);
     }
 
     @Override

@@ -100,7 +100,8 @@
         <activity
             android:name=".Ui.Notifications.NotificationsActivity"
             android:label="Notifications et alertes" />
-        <activity android:name=".Ui.LineNotifications.LineNotificationsActivity"></activity>
+        <activity android:name=".Ui.LineNotifications.LineNotificationsActivity"
+            android:label="Notifications et alertes"></activity>
 
         <service android:name=".MyFirebaseMessagingService">
             <intent-filter>

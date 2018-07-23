@@ -34,18 +34,33 @@ public class LineNotificationsActivity extends AppCompatActivity implements Line
     @BindView(R.id.recyclerView)
     RecyclerView notificationsList;
 
+    @BindView(R.id.fab)
+    View fab;
+
     private LineNotificationsContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Bundle extras = getIntent().getExtras();
+        Line line = Line.fromJson(extras.getString(IntentUtils.LINE_LINE));
+        presenter = new LineNotificationsPresenter(this,line);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_notifications);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Bundle extras = getIntent().getExtras();
-        Line line = Line.fromJson(extras.getString(IntentUtils.LINE_LINE));
-        presenter = new LineNotificationsPresenter(this,line);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onRefreshClicked();
+            }
+        });
+
+        presenter.onActivityReady();
+    }
+
+    @Override
+    public void setTheme(Line line) {
+        setTheme(line.getTransportMean().getTheme());
     }
 
     @Override
