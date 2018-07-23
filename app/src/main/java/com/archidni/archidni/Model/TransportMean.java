@@ -270,6 +270,19 @@ public class TransportMean extends SelectorItem {
         }
     }
 
+    public int getArriwIconDrawableId ()
+    {
+        switch (getId())
+        {
+            case 0 : return R.drawable.ic_arrow_right_transport_mean_0_24dp;
+            case 1 : return R.drawable.ic_arrow_right_transport_mean_1_24dp;
+            case 2 : return R.drawable.ic_arrow_right_transport_mean_2_24dp;
+            case 3 : return R.drawable.ic_arrow_right_transport_mean_3_24dp;
+            case 4 : return R.drawable.ic_arrow_right_transport_mean_4_24dp;
+            default:return -1;
+        }
+    }
+
     @Override
     public boolean equals(Object obj) {
         return obj instanceof TransportMean && ((TransportMean) obj).getId() == getId();

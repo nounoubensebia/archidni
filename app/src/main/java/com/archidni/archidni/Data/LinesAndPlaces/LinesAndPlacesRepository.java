@@ -3,6 +3,7 @@ package com.archidni.archidni.Data.LinesAndPlaces;
 import android.content.Context;
 
 import com.archidni.archidni.Model.LineStationSuggestion;
+import com.archidni.archidni.Model.Notifications.Notification;
 import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 public class LinesAndPlacesRepository {
 
     private LinesAndPlacesOnlineDataStore linesAndPlacesOnlineDataStore;
+
 
 
 
@@ -73,6 +75,12 @@ public class LinesAndPlacesRepository {
         });
     }
 
+    public void getNotifications (Line line,OnNotificationsFound onNotificationsFound)
+    {
+        LinesAndPlacesOnlineDataStore linesAndPlacesOnlineDataStore = getLinesOnlineDataStoreInstance();
+        linesAndPlacesOnlineDataStore.getNotifications(line,onNotificationsFound);
+    }
+
     public interface OnSearchCompleted {
         void onLinesFound(ArrayList<Line> lines);
         void onError();
@@ -94,6 +102,11 @@ public class LinesAndPlacesRepository {
 
     public interface OnLineSearchCompleted {
         void onLineFound (Line line);
+        void onError();
+    }
+
+    public interface OnNotificationsFound {
+        void onNotificationsFound (ArrayList<Notification> notifications);
         void onError();
     }
 

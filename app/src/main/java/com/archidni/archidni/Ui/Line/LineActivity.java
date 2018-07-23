@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.TransportUtils;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.StationInsideLineAdapter;
+import com.archidni.archidni.Ui.LineNotifications.LineNotificationsActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.UiUtils.ArchidniMap;
@@ -60,6 +62,10 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     TextView inboundTextView;
     @BindView(R.id.text_outbound)
     TextView outboundTextView;
+    @BindView(R.id.text_news_and_notifications)
+    TextView newsAndNotificationsText;
+    @BindView(R.id.image_arrow)
+    ImageView arrowImage;
 
     private Menu mMenu;
 
@@ -199,9 +205,14 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(line.getName());
         getSupportActionBar().setElevation(0);
-        //nameText.setText(line.getName());
-
-
+        newsAndNotificationsText.setTextColor(ContextCompat.getColor(this,line.getTransportMean().getColor()));
+        arrowImage.setImageDrawable(ContextCompat.getDrawable(this,line.getTransportMean().getArriwIconDrawableId()));
+        newsAndNotificationsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onShowNewsAndNotificationsClick();
+            }
+        });
     }
 
     @Override
@@ -347,6 +358,13 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     @Override
     public void moveCamera(Coordinate coordinate, int zoom) {
         archidniMap.moveCamera(coordinate,zoom);
+    }
+
+    @Override
+    public void startNewsAndNotificationsActivity(Line line) {
+        Intent intent = new Intent(this, LineNotificationsActivity.class);
+        intent.putExtra(IntentUtils.LINE_LINE,line.toJson());
+        startActivity(intent);
     }
 
 

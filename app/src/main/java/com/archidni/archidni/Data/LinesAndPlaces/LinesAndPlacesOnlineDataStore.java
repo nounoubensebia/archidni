@@ -9,11 +9,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.archidni.archidni.App;
 import com.archidni.archidni.AppSingleton;
 import com.archidni.archidni.Data.OnlineDataStore;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.LineStationSuggestion;
+import com.archidni.archidni.Model.Notifications.Notification;
 import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Transport.Line;
@@ -279,6 +281,35 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
             return new ArrayList<>();
         }
         return lines;
+    }
+
+    public void getNotifications (Line line, final LinesAndPlacesRepository.OnNotificationsFound onNotificationsFound)
+    {
+        String url = SharedPrefsUtils.getServerUrl(App.getAppContext()) + GET_LINES_URL + "/"+line.getId()+"/notifications";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ArrayList<Notification> notifications = new ArrayList<>();
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    for (int i=0;i<jsonArray.length();i++)
+                    {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Notification notification = Notification.fromJson(jsonObject.toString());
+                        notifications.add(notification);
+                    }
+                    onNotificationsFound.onNotificationsFound(notifications);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    onNotificationsFound.onError();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onNotificationsFound.onError();
+            }
+        });
     }
 
     @Override

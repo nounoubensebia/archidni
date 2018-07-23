@@ -55,8 +55,8 @@ public class NotificationsOnlineDataSource implements NotificationsDataSource {
                         Notification notification = new Notification(title,
                                 TransportMean.allTransportMeans.get(transportModeId),lines,description);
                         notifications.add(notification);
-                        onNotificationsFound.onNotificationsFound(notifications);
                     }
+                    onNotificationsFound.onNotificationsFound(notifications);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     onNotificationsFound.onError();

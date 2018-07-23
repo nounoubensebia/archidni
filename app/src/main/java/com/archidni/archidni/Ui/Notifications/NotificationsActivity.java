@@ -82,7 +82,7 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
 
     @Override
     public void showErrorMessage() {
-        Toast.makeText(this,"Une erreur s'est produite veuillez réessayer",Toast.LENGTH_LONG);
+        Toast.makeText(this,"Une erreur s'est produite veuillez réessayer",Toast.LENGTH_LONG).show();
     }
 
 

@@ -30,6 +30,7 @@ public interface LineContract {
         void showInboundOutboundLayout();
         void hideMapLoadingLayout ();
         void moveCamera (Coordinate coordinate,int zoom);
+        void startNewsAndNotificationsActivity(Line line);
     }
 
     public interface Presenter {
@@ -42,5 +43,6 @@ public interface LineContract {
         void onSignalDisturbanceClicked();
         void onInboundOutboundClicked(boolean outboundClicked);
         void onMapLoaded ();
+        void onShowNewsAndNotificationsClick();
     }
 }

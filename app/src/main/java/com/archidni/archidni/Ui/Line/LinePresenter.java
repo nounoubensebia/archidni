@@ -147,4 +147,9 @@ public class LinePresenter implements LineContract.Presenter {
     public void onMapLoaded() {
         view.hideMapLoadingLayout();
     }
+
+    @Override
+    public void onShowNewsAndNotificationsClick() {
+        view.startNewsAndNotificationsActivity(line);
+    }
 }

@@ -43,15 +43,25 @@ public class NotificationsFragment extends Fragment {
 
     }
 
+    public void setOnReadyListener(OnReadyListener onReadyListener) {
+        this.onReadyListener = onReadyListener;
+    }
+
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(
                 R.layout.fragment_notifications, container, false);
-        ButterKnife.bind(this,rootView);
-        onReadyListener.onReady();
+
+
         return rootView;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ButterKnife.bind(this,getView());
+        onReadyListener.onReady();
+    }
 
     public void showNotifications(ArrayList<Notification> notifications)
     {
@@ -60,8 +70,7 @@ public class NotificationsFragment extends Fragment {
         notificationsList.setLayoutManager(mLayoutManager);
         notificationsList.setItemAnimator(new DefaultItemAnimator());
         notificationsList.setAdapter(notificationAdapter);
-        notificationsList.setHasFixedSize(true);
-        notificationsList.setNestedScrollingEnabled(false);
+
     }
 
     public void hideLoadingLayout() {
