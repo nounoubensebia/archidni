@@ -42,7 +42,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         Notification notification = notifications.get(position);
         holder.transportModeImage.setImageDrawable(ContextCompat.getDrawable(context,
                 notification.getTransportMean().getIconEnabled()));
-        holder.linesText.setText(notification.getTitleText());
+        holder.titleText.setText(notification.getTitle());
         holder.descriptionText.setText(notification.getDescription());
     }
 
@@ -55,8 +55,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         @BindView(R.id.image_transport_mode)
         ImageView transportModeImage;
-        @BindView(R.id.text_lines)
-        TextView linesText;
+        @BindView(R.id.text_title)
+        TextView titleText;
         @BindView(R.id.text_description)
         TextView descriptionText;
 

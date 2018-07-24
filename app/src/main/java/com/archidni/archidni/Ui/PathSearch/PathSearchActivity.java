@@ -85,6 +85,8 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     View mapLoadingLayout;
     @BindView(R.id.text_options)
     TextView optionsText;
+    @BindView(R.id.text_suggested_paths_no_paths_found)
+    TextView suggestedPathsNoPathsText;
 
     ArchidniGoogleMap archidniMap;
     PathSearchContract.Presenter pathSearchPresenter;
@@ -217,6 +219,14 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(pathSuggestionAdapter);
+        if (paths.size()==0)
+        {
+            suggestedPathsNoPathsText.setText("Aucun itinéraire en transport en commun n'a été trouvé");
+        }
+        else
+        {
+            suggestedPathsNoPathsText.setText("Itinéraires suggérés");
+        }
     }
 
     @Override

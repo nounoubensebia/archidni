@@ -66,6 +66,8 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     TextView newsAndNotificationsText;
     @BindView(R.id.image_arrow)
     ImageView arrowImage;
+    @BindView(R.id.layout_news_and_notifications)
+    View newsAndNotificationsLayout;
 
     private Menu mMenu;
 
@@ -92,12 +94,6 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     private void initViews (Bundle bundle)
     {
         ButterKnife.bind(this);
-        /*archidniMap = new ArchidniMap(mapView, bundle, new ArchidniMap.OnMapReadyCallback() {
-            @Override
-            public void onMapReady() {
-                presenter.onMapReady();
-            }
-        });*/
         mapView = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
         archidniMap = new ArchidniGoogleMap(this, mapView, new OnMapReadyCallback() {
             @Override
@@ -207,7 +203,7 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
         getSupportActionBar().setElevation(0);
         newsAndNotificationsText.setTextColor(ContextCompat.getColor(this,line.getTransportMean().getColor()));
         arrowImage.setImageDrawable(ContextCompat.getDrawable(this,line.getTransportMean().getArriwIconDrawableId()));
-        newsAndNotificationsText.setOnClickListener(new View.OnClickListener() {
+        newsAndNotificationsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.onShowNewsAndNotificationsClick();
