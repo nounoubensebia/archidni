@@ -146,8 +146,10 @@
 
                             <TextView
                                 android:id="@+id/text_add_to_favorites"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_marginRight="16dp"
                                 android:layout_height="wrap_content"
+                                android:gravity="center"
                                 android:layout_marginLeft="16dp"
                                 android:background="@drawable/shape_green_empty_rect"
                                 android:paddingBottom="8dp"
@@ -158,25 +160,62 @@
                                 android:textAllCaps="false"
                                 android:textAppearance="?android:attr/textAppearanceButton"
                                 android:textColor="@color/color_transport_mean_selected_2" />
+                            <View
+                                android:visibility="gone"
+                                android:layout_marginTop="16dp"
+                                android:background="#EDEDED"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"/>
+                            <LinearLayout
+                                android:visibility="gone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:background="#FFF"
+                                android:clipToPadding="false">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_weight="1"
+                                    android:text="Signaler des perturbations ou des informations érronées "
+                                    android:textColor="@color/colorRed" />
+                                <ImageView
+                                    android:layout_gravity="center"
+                                    android:layout_marginRight="16dp"
+                                    app:srcCompat="@drawable/ic_add_alert_red_24dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+                            <View
+                                android:visibility="gone"
+                                android:layout_marginBottom="16dp"
+                                android:background="#EDEDED"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"/>
 
                             <TextView
                                 android:id="@+id/text_report"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="16dp"
                                 android:layout_marginTop="8dp"
+                                android:layout_marginRight="16dp"
                                 android:background="@drawable/shape_red_rounded"
                                 android:paddingBottom="8dp"
                                 android:paddingLeft="8dp"
                                 android:paddingRight="8dp"
                                 android:paddingTop="8dp"
-                                android:text="Signaler des perturbations"
+                                android:text="Signaler des perturbations ou des informations erronées"
+                                android:gravity="center"
+                                android:drawableRight="@drawable/ic_add_alert_red_24dp"
                                 android:textAllCaps="false"
                                 android:textAppearance="?android:attr/textAppearanceButton"
                                 android:textColor="#FFF"
-                                android:visibility="gone" />
-
-
+                                android:visibility="visible" />
                         </LinearLayout>
 
                         <TextView
