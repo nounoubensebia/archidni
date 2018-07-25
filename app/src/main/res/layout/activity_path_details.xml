@@ -64,13 +64,10 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="8dp"
                     android:background="#BDBDBD"/>
-                <LinearLayout
-                    android:layout_marginRight="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+
                     <TextView
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
                         android:id="@+id/text_start_navigation"
                         android:paddingRight="8dp"
                         android:paddingLeft="8dp"
@@ -78,13 +75,34 @@
                         android:paddingBottom="8dp"
                         android:text="Commencer la navigation"
                         android:textAllCaps="false"
-                        android:layout_gravity="center"
+                        android:gravity="center"
                         android:background="@drawable/shape_green_rounded"
                         android:textColor="#FFF"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_report"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/shape_red_rounded"
+                    android:drawableRight="@drawable/ic_add_alert_red_24dp"
+                    android:gravity="center"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="8dp"
+                    android:text="Signaler des perturbations ou des informations erronées"
+                    android:textAllCaps="false"
+                    android:textAppearance="?android:attr/textAppearanceButton"
+                    android:textColor="#FFF"
+                    android:visibility="visible" />
 
                 <TextView
                     android:layout_marginTop="8dp"

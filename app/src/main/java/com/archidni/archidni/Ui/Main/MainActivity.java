@@ -47,6 +47,7 @@ import com.archidni.archidni.Ui.Notifications.NotificationsActivity;
 import com.archidni.archidni.Ui.Parking.ParkingActivity;
 import com.archidni.archidni.Ui.ParkingsActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
+import com.archidni.archidni.Ui.Report.ChooseReportTypeActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.Ui.SearchLineStation.SearchLineStationActivity;
 import com.archidni.archidni.Ui.Settings.SettingsActivity;
@@ -975,6 +976,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             case R.id.item_notifications:
                 Intent intent4 = new Intent(this, NotificationsActivity.class);
                 startActivity(intent4);
+            case R.id.item_report:
+                Intent intent5 = new Intent(this, ChooseReportTypeActivity.class);
+                startActivity(intent5);
         }
         return true;
     }

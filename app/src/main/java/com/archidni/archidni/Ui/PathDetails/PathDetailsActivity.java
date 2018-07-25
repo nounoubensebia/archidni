@@ -36,6 +36,8 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     TextView startNavigationText;
     @BindView(R.id.text_total_duration)
     TextView durationText;
+    @BindView(R.id.scrollView)
+    View scrollView;
 
     private ArchidniGoogleMap archidniMap;
 
@@ -68,6 +70,11 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
             @Override
             public void onClick(View view) {
                 presenter.onStartNavigationClick();
+            }
+        });
+        scrollView.post(new Runnable() {
+            public void run() {
+                scrollView.scrollTo(0, 0);
             }
         });
     }

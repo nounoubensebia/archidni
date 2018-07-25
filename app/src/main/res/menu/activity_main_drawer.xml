@@ -3,10 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
+
+
+
     <item android:title="@string/favorites"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_favorites_black_24dp"
         android:id="@+id/item_my_favorites_lines"
+        android:visible="true">
+    </item>
+
+    <item android:title="Signaler des perturbations ou des informations érronées"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_add_alert_red_24dp"
+        android:id="@+id/item_report"
         android:visible="true">
     </item>
 
