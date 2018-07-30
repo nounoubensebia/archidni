@@ -25,6 +25,7 @@ import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Section;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.TransportMean;
+import com.archidni.archidni.OauthStringRequest;
 import com.archidni.archidni.TimeUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -75,7 +76,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
         }
         cancelRequests(context);
         url = SharedPrefsUtils.getServerUrl(context)+AppSingleton.buildGetUrl(URL_GET_PATH,map);
-        final StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        final OauthStringRequest stringRequest = new OauthStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 ArrayList<Path> foundPaths = new ArrayList<>();
@@ -171,7 +172,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
             }
         });
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(1000000,10, (float) 1.0));
-        AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,getTag());
+        stringRequest.performRequest(getTag());
     }
 
     @Override

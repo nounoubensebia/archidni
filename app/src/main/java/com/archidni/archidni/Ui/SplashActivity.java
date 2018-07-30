@@ -43,8 +43,6 @@ public class SplashActivity extends AppCompatActivity {
         }
         else
         {
-
-
             int permissionCheck = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE);
             ActivityCompat.requestPermissions(this,
@@ -80,10 +78,10 @@ public class SplashActivity extends AppCompatActivity {
                     // contacts-related task you need to do.
                     if (!SharedPrefsUtils.verifyKey(this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT))
                     {
-                        /*Intent intent = new Intent(SplashActivity.this,SignupActivity.class);
-                        startActivity(intent);
-                        finish();*/
-                        Intent intent = new Intent(SplashActivity.this,TermsOfUseActivity.class);
+                        Intent intent = new Intent(SplashActivity.this,SignupActivity.class);
+                        //startActivity(intent);
+                        //finish();
+                        //Intent intent = new Intent(SplashActivity.this,TermsOfUseActivity.class);
                         startNextActivity(intent);
                     }
                     else

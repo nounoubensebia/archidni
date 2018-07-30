@@ -55,6 +55,13 @@
         android:visible="true">
     </item>
 
+    <item android:title="Se déconnecter"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_exit_transport_mean0"
+        android:id="@+id/item_disconnect"
+        android:visible="true">
+    </item>
+
 
 
 

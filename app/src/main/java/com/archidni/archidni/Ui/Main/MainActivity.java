@@ -51,6 +51,7 @@ import com.archidni.archidni.Ui.Report.ChooseReportTypeActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.Ui.SearchLineStation.SearchLineStationActivity;
 import com.archidni.archidni.Ui.Settings.SettingsActivity;
+import com.archidni.archidni.Ui.Signup.SignupActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.Ui.TarifsActivity;
 import com.archidni.archidni.UiUtils.ArchidniClusterItem;
@@ -962,10 +963,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             case R.id.item_my_settings : Intent intent = new Intent(this,
                     SettingsActivity.class);
                     startActivity(intent);
-            break;
+                break;
             case R.id.item_tarifs : Intent intent1 = new Intent(this, TarifsActivity.class);
-            startActivity(intent1);
-            break;
+                startActivity(intent1);
+                break;
             case R.id.item_parkings : Intent intent3 = new Intent(this, ParkingsActivity.class);
                 startActivity(intent3);
                 break;
@@ -976,9 +977,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             case R.id.item_notifications:
                 Intent intent4 = new Intent(this, NotificationsActivity.class);
                 startActivity(intent4);
+                break;
             case R.id.item_report:
                 Intent intent5 = new Intent(this, ChooseReportTypeActivity.class);
                 startActivity(intent5);
+                break;
+            case R.id.item_disconnect:
+                Intent intent6 = new Intent(this, SignupActivity.class);
+                SharedPrefsUtils.disconnectUser(this);
+                startActivity(intent6);
+                break;
         }
         return true;
     }

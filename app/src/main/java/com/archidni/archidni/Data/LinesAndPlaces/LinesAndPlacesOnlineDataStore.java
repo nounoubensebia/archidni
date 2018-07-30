@@ -27,6 +27,7 @@ import com.archidni.archidni.Model.Transport.TrainTrip;
 import com.archidni.archidni.Model.Transport.TramwayMetroLine;
 import com.archidni.archidni.Model.Transport.TramwayMetroTrip;
 import com.archidni.archidni.Model.TransportMean;
+import com.archidni.archidni.OauthStringRequest;
 import com.archidni.archidni.TimeUtils;
 
 import org.json.JSONArray;
@@ -50,51 +51,48 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
     public void getLinesAndPlaces(Context context,
                                   final OnLinesAndPlacesSearchCompleted onLinesAndPlacesSearchCompleted) {
         cancelRequests(context);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                SharedPrefsUtils.getServerUrl(context) + GET_LINES_AND_PLACES_URL,
-                new Response.Listener<String>() {
-                    @SuppressLint("StaticFieldLeak")
+        OauthStringRequest oauthStringRequest = new OauthStringRequest(Request.Method.GET,
+                SharedPrefsUtils.getServerUrl(context) + GET_LINES_AND_PLACES_URL, new Response.Listener<String>() {
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            public void onResponse(String response) {
+                AsyncTask<String, Void, Pair<ArrayList<Line>, ArrayList<MainActivityPlace>>> asyncTask;
+                asyncTask = new AsyncTask<String, Void, Pair<ArrayList<Line>, ArrayList<MainActivityPlace>>>() {
                     @Override
-                    public void onResponse(String response) {
-
-
-                        AsyncTask<String, Void, Pair<ArrayList<Line>, ArrayList<MainActivityPlace>>> asyncTask;
-                        asyncTask = new AsyncTask<String, Void, Pair<ArrayList<Line>, ArrayList<MainActivityPlace>>>() {
-                            @Override
-                            protected Pair<ArrayList<Line>, ArrayList<MainActivityPlace>> doInBackground(String... strings) {
-                                try {
-                                    JSONObject root = new JSONObject(strings[0]);
-                                    JSONArray data = root.getJSONArray("lines");
-                                    ArrayList<Line> lines = parseLines(data);
-                                    ArrayList<MainActivityPlace> places = new ArrayList<>();
-                                    ArrayList<Parking> parkings = parseParkings(root.getJSONArray("parkings"));
-                                    places.addAll(parkings);
-                                    return new Pair<>(lines, places);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    return null;
-                                }
-                            }
-
-                            @Override
-                            protected void onPostExecute(Pair<ArrayList<Line>, ArrayList<MainActivityPlace>> arrayListArrayListPair) {
-                                if (arrayListArrayListPair != null)
-                                    onLinesAndPlacesSearchCompleted.onLinesAndPlacesFound(
-                                            arrayListArrayListPair.first
-                                            , arrayListArrayListPair.second);
-                                else
-                                    onLinesAndPlacesSearchCompleted.onError();
-                            }
-                        };
-                        asyncTask.execute(response);
+                    protected Pair<ArrayList<Line>, ArrayList<MainActivityPlace>> doInBackground(String... strings) {
+                        try {
+                            JSONObject root = new JSONObject(strings[0]);
+                            JSONArray data = root.getJSONArray("lines");
+                            ArrayList<Line> lines = parseLines(data);
+                            ArrayList<MainActivityPlace> places = new ArrayList<>();
+                            ArrayList<Parking> parkings = parseParkings(root.getJSONArray("parkings"));
+                            places.addAll(parkings);
+                            return new Pair<>(lines, places);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            return null;
+                        }
                     }
-                }, new Response.ErrorListener() {
+
+                    @Override
+                    protected void onPostExecute(Pair<ArrayList<Line>, ArrayList<MainActivityPlace>> arrayListArrayListPair) {
+                        if (arrayListArrayListPair != null)
+                            onLinesAndPlacesSearchCompleted.onLinesAndPlacesFound(
+                                    arrayListArrayListPair.first
+                                    , arrayListArrayListPair.second);
+                        else
+                            onLinesAndPlacesSearchCompleted.onError();
+                    }
+                };
+                asyncTask.execute(response);
+            }
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 onLinesAndPlacesSearchCompleted.onError();
             }
         });
-        AppSingleton.getInstance(context).addToRequestQueue(stringRequest, getTag());
+        oauthStringRequest.performRequest(getTag());
     }
 
     public ArrayList<Parking> parseParkings(JSONArray parkingsJson) {
@@ -121,26 +119,25 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
         cancelRequests(context);
         String url = SharedPrefsUtils.getServerUrl(context) +
                 GET_LINES_URL + "/" + lineStationSuggestion.getId();
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    onLineSearchCompleted.onLineFound(parseLine(jsonObject.getJSONObject("data")));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    onLineSearchCompleted.onError();
-                }
-
-            }
-        }, new Response.ErrorListener() {
+        OauthStringRequest oauthStringRequest = new OauthStringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            onLineSearchCompleted.onLineFound(parseLine(jsonObject.getJSONObject("data")));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            onLineSearchCompleted.onError();
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 onLineSearchCompleted.onError();
             }
         });
-        AppSingleton.getInstance(context).addToRequestQueue(stringRequest, getTag());
+        oauthStringRequest.performRequest(getTag());
     }
 
     public void getLinesPassingByStation(Context context, final Station station,
@@ -149,7 +146,10 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
         String url = SharedPrefsUtils.getServerUrl(context) + GET_STATIONS_URL + "/" + station.getId()
                 + "/lines";
         final ArrayList<Line> lines = new ArrayList<>();
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+
+        OauthStringRequest oauthStringRequest = new OauthStringRequest(Request.Method.GET,
+                url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -227,7 +227,7 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                 onLinesSearchCompleted.onError();
             }
         });
-        AppSingleton.getInstance(context).addToRequestQueue(stringRequest, getTag());
+        oauthStringRequest.performRequest(getTag());
     }
 
     private Line parseLine(JSONObject jsonObject) {
@@ -286,7 +286,7 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
     public void getNotifications (Line line, final LinesAndPlacesRepository.OnNotificationsFound onNotificationsFound)
     {
         String url = SharedPrefsUtils.getServerUrl(App.getAppContext()) + GET_LINES_URL + "/"+line.getId()+"/notifications";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        OauthStringRequest stringRequest = new OauthStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 ArrayList<Notification> notifications = new ArrayList<>();
@@ -310,7 +310,7 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                 onNotificationsFound.onError();
             }
         });
-        AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,getTag());
+        stringRequest.performRequest(getTag());
     }
 
     @Override

@@ -12,28 +12,36 @@ import java.util.ArrayList;
 public class NotificationsUtils {
     public static ArrayList<Notification> getFavoritesNotifications (Context context,ArrayList<Notification> notifications)
     {
+        //TODO show no favorites message
         FavoritesRepository favoritesRepository = new FavoritesRepository();
         Favorites favorites = favoritesRepository.getFavorites(context);
-        ArrayList<Notification> favoritesNotifications = new ArrayList<>();
-        for (Notification notification : notifications)
+        if (favorites!=null)
         {
-            if (notification.getLines().size()>0)
-                for (Line line:notification.getLines())
-                {
-                    if (TransportUtils.containsLine(line.getId(),favorites.getLines()))
+            ArrayList<Notification> favoritesNotifications = new ArrayList<>();
+            for (Notification notification : notifications)
+            {
+                if (notification.getLines().size()>0)
+                    for (Line line:notification.getLines())
                     {
-                        favoritesNotifications.add(notification);
-                    }
-                }
-                else
-                    for (Line line:favorites.getLines())
-                    {
-                        if (line.getTransportMean().getId()==notification.getTransportMean().getId())
+                        if (TransportUtils.containsLine(line.getId(),favorites.getLines()))
                         {
                             favoritesNotifications.add(notification);
                         }
                     }
+                    else
+                        for (Line line:favorites.getLines())
+                        {
+                            if (line.getTransportMean().getId()==notification.getTransportMean().getId())
+                            {
+                                favoritesNotifications.add(notification);
+                            }
+                        }
+            }
+            return favoritesNotifications;
         }
-        return favoritesNotifications;
+        else
+        {
+            return new ArrayList<>();
+        }
     }
 }

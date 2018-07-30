@@ -11,6 +11,7 @@ import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.Notifications.Notification;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.TransportMean;
+import com.archidni.archidni.OauthStringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +30,7 @@ public class NotificationsOnlineDataSource implements NotificationsDataSource {
     @Override
     public void getNotifications(final NotificationsRepository.OnNotificationsFound onNotificationsFound) {
         String url = SharedPrefsUtils.getServerUrl(App.getAppContext())+GET_NOTIFICATIONS_URL;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        OauthStringRequest stringRequest = new OauthStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 ArrayList<Notification> notifications = new ArrayList<>();
@@ -67,14 +68,7 @@ public class NotificationsOnlineDataSource implements NotificationsDataSource {
             public void onErrorResponse(VolleyError error) {
                 onNotificationsFound.onError();
             }
-        }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                LinkedHashMap<String,String> map = new LinkedHashMap<>();
-                map.put("mobile","1");
-                return map;
-            }
-        };
-        AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,"TAG_NOTIFICATIONS");
+        });
+        stringRequest.performRequest("TAG_NOTIFICATIONS");
     }
 }

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.archidni.archidni.AccessToken;
+import com.google.gson.Gson;
+
 /**
  * Created by noure on 03/02/2018.
  */
@@ -13,11 +16,13 @@ public class SharedPrefsUtils {
     public static String SHARED_PREFS_ENTRY_USER_OBJECT = "USER_OBJECT";
     public static String SHARED_PREFS_ENTRY_FAVORITES = "FAVORITES";
     public static String SHARED_PREFS_ENTRY_SERVER_URL= "SERVER_URL";
-
+    public static String SHARED_PREFS_ENTRY_ACCESS_TOKEN = "ACCESS_TOKEN";
+    public static String SHARED_PREFS_ENTRY_REFRESH_TOKEN = "REFRESH_TOKEN";
 
     public static String getServerUrl (Context context)
     {
-        if (verifyKey(context,SHARED_PREFS_ENTRY_SERVER_URL))
+        return "http://192.168.1.6:8000";
+        /*if (verifyKey(context,SHARED_PREFS_ENTRY_SERVER_URL))
         {
             return loadString(context,SHARED_PREFS_ENTRY_SERVER_URL);
         }
@@ -25,7 +30,29 @@ public class SharedPrefsUtils {
         {
             saveString(context,SHARED_PREFS_ENTRY_SERVER_URL,"http://000sitehostapp.xyz");
             return loadString(context,SHARED_PREFS_ENTRY_SERVER_URL);
-        }
+        }*/
+    }
+
+    public static void setAccessToken (Context context,AccessToken accessToken)
+    {
+        String json = new Gson().toJson(accessToken);
+        saveString(context,SHARED_PREFS_ENTRY_ACCESS_TOKEN,json);
+    }
+
+    public static void setRefreshToken (Context context,String refreshToken)
+    {
+        saveString(context,SHARED_PREFS_ENTRY_REFRESH_TOKEN,refreshToken);
+    }
+
+    public static String getRefreshToken (Context context) {
+        return loadString(context,SHARED_PREFS_ENTRY_REFRESH_TOKEN);
+    }
+
+    public static AccessToken getAccessToken (Context context)
+    {
+        AccessToken accessToken = new Gson().fromJson(loadString(context,SHARED_PREFS_ENTRY_ACCESS_TOKEN),
+                AccessToken.class);
+        return accessToken;
     }
 
     public static void saveString (Context context,String key,String s)

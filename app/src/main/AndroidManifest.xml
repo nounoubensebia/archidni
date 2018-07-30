@@ -116,6 +116,9 @@
         <activity android:name=".Ui.Report.ReportAlertChooseTransportMeanActivity" />
         <activity android:name=".Ui.Report.ReportAlertChooseLineActivity" />
         <activity android:name=".Ui.Report.ReportAlertExplainActivity"></activity>
+        <activity android:name=".Ui.TestActivity">
+
+        </activity>
     </application>
 
 </manifest>

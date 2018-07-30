@@ -7,11 +7,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.archidni.archidni.AccessToken;
 import com.archidni.archidni.AppSingleton;
 import com.archidni.archidni.Data.LineStationSuggestions.LineStationDataStore;
 import com.archidni.archidni.Data.OnlineDataStore;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.User;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +40,7 @@ public class UsersRepository extends OnlineDataStore {
             @Override
             public void onResponse(String response) {
 
-                signupRequestCallback.onSuccess(getUser(response));
+                //signupRequestCallback.onSuccess(getUser(response));
 
             }
         }, new Response.ErrorListener() {
@@ -67,7 +69,7 @@ public class UsersRepository extends OnlineDataStore {
         AppSingleton.getInstance(context).addToRequestQueue(stringRequest,getTag());
     }
 
-    public void login (Context context, final String email, final String password,
+    public void login (final Context context, final String email, final String password,
                        final LoginRequestCallback loginRequestCallback)
     {
         cancelRequests(context);
@@ -76,7 +78,18 @@ public class UsersRepository extends OnlineDataStore {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                       loginRequestCallback.onSuccess(getUser(response));
+                        try {
+                            JSONObject root = new JSONObject(response);
+                            JSONObject userObject = root.getJSONObject("user");
+                            JSONObject tokensObject = root.getJSONObject("tokens");
+                            User user = getUser(userObject);
+                            parseAndSaveTokens(context,tokensObject);
+                            loginRequestCallback.onSuccess(user);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -102,20 +115,21 @@ public class UsersRepository extends OnlineDataStore {
         AppSingleton.getInstance(context).addToRequestQueue(stringRequest,getTag());
     }
 
-    private User getUser (String response)
-    {
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            JSONObject userObject = jsonObject.getJSONObject("user");
-            int id = userObject.getInt("id");
-            String firstName = userObject.getString("first_name");
-            String lastName = userObject.getString("last_name");
-            String email = userObject.getString("email");
-            return new User(id,email,firstName,lastName);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
+    private User getUser (JSONObject userObject) throws JSONException {
+        int id = userObject.getInt("id");
+        String firstName = userObject.getString("first_name");
+        String lastName = userObject.getString("last_name");
+        String email = userObject.getString("email");
+        return new User(id,email,firstName,lastName);
+    }
+
+    private void parseAndSaveTokens (Context context,JSONObject tokensJson) throws JSONException {
+        int expiresIn = tokensJson.getInt("expires_in");
+        String accessTokenString = tokensJson.getString("access_token");
+        String refreshToken = tokensJson.getString("refresh_token");
+        SharedPrefsUtils.setRefreshToken(context,refreshToken);
+        long timeAquirred = (System.currentTimeMillis()/1000)-60;
+        SharedPrefsUtils.setAccessToken(context,new AccessToken(accessTokenString,expiresIn,timeAquirred));
     }
 
     @Override

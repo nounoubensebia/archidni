@@ -12,6 +12,7 @@ import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.LineStationSuggestion;
 import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.OauthStringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +31,7 @@ public class StationDataStore extends OnlineDataStore {
         cancelRequests(context);
         String url = SharedPrefsUtils.getServerUrl(context) +
                 GET_LINE_SUGGESTIONS_URL + "/" + lineStationSuggestion.getId();
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        OauthStringRequest stringRequest = new OauthStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -55,7 +56,7 @@ public class StationDataStore extends OnlineDataStore {
                 onSearchComplete.onError();
             }
         });
-        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,getTag());
+        stringRequest.performRequest(getTag());
     }
 
     @Override

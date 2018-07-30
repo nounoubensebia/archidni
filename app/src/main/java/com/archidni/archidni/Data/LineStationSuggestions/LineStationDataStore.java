@@ -10,6 +10,7 @@ import com.archidni.archidni.AppSingleton;
 import com.archidni.archidni.Data.OnlineDataStore;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.LineStationSuggestion;
+import com.archidni.archidni.OauthStringRequest;
 import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
@@ -37,7 +38,7 @@ public class LineStationDataStore extends OnlineDataStore {
         map.put("text",text);
         String url = SharedPrefsUtils.getServerUrl(context) +
                 AppSingleton.buildGetUrl(GET_LINE_SUGGESTIONS_URL,map);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        OauthStringRequest stringRequest = new OauthStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 onSearchComplete.onSearchComplete(fromJson(response));
@@ -48,7 +49,7 @@ public class LineStationDataStore extends OnlineDataStore {
                 onSearchComplete.onError();
             }
         });
-        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,"LinesSuggestions");
+        stringRequest.performRequest("LinesSuggestions");
     }
 
     public void getStationSuggestions (Context context, String text,
@@ -59,7 +60,7 @@ public class LineStationDataStore extends OnlineDataStore {
         map.put("text",text);
         String url = SharedPrefsUtils.getServerUrl(context)+
                 AppSingleton.buildGetUrl(GET_STATION_SUGGESTIONS_URL,map);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        OauthStringRequest oauthStringRequest = new OauthStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 onSearchComplete.onSearchComplete(fromJson(response));
@@ -70,7 +71,7 @@ public class LineStationDataStore extends OnlineDataStore {
                 onSearchComplete.onError();
             }
         });
-        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,"StationSuggestions");
+        oauthStringRequest.performRequest("StationSuggestions");
     }
 
     private ArrayList<LineStationSuggestion> fromJson (String response)
