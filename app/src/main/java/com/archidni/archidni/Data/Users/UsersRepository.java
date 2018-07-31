@@ -29,7 +29,7 @@ public class UsersRepository extends OnlineDataStore {
     private static  String SIGNUP_URL = "/api/v1/user/signup";
     private static  String LOGIN_URL = "/api/v1/user/login";
 
-    public void signup (Context context, final String email, final String password,
+    public void signup (final Context context, final String email, final String password,
                         final String firstName, final String lastName,
                         final SignupRequestCallback signupRequestCallback)
     {
@@ -40,7 +40,18 @@ public class UsersRepository extends OnlineDataStore {
             @Override
             public void onResponse(String response) {
 
-                //signupRequestCallback.onSuccess(getUser(response));
+                JSONObject root = null;
+                try {
+                    root = new JSONObject(response);
+                    JSONObject userObject = root.getJSONObject("user");
+                    JSONObject tokensObject = root.getJSONObject("tokens");
+                    User user = getUser(userObject);
+                    parseAndSaveTokens(context,tokensObject);
+                signupRequestCallback.onSuccess(user);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    signupRequestCallback.onNetworkError();
+                }
 
             }
         }, new Response.ErrorListener() {

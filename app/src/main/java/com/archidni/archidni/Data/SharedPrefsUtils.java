@@ -21,8 +21,7 @@ public class SharedPrefsUtils {
 
     public static String getServerUrl (Context context)
     {
-        return "http://192.168.1.6:8000";
-        /*if (verifyKey(context,SHARED_PREFS_ENTRY_SERVER_URL))
+        if (verifyKey(context,SHARED_PREFS_ENTRY_SERVER_URL))
         {
             return loadString(context,SHARED_PREFS_ENTRY_SERVER_URL);
         }
@@ -30,7 +29,7 @@ public class SharedPrefsUtils {
         {
             saveString(context,SHARED_PREFS_ENTRY_SERVER_URL,"http://000sitehostapp.xyz");
             return loadString(context,SHARED_PREFS_ENTRY_SERVER_URL);
-        }*/
+        }
     }
 
     public static void setAccessToken (Context context,AccessToken accessToken)

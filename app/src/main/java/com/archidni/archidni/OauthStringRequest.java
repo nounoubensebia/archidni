@@ -1,12 +1,16 @@
 package com.archidni.archidni;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.Data.SharedPrefsUtils;
+import com.archidni.archidni.Ui.Login.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +22,6 @@ public class OauthStringRequest extends NetworkRequest {
 
     private static final String OauthRefreshUri = "/oauth/token";
     Response.Listener<String> listener;
-
 
     public OauthStringRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener errorListener) {
         super(method, url, listener, errorListener);
@@ -38,7 +41,7 @@ public class OauthStringRequest extends NetworkRequest {
                     try {
                         updateTokens(context,response);
                         AccessToken accessToken1 = SharedPrefsUtils.getAccessToken(context);
-                        makeOauthRequest(context,accessToken1,tag);
+                        makeOauthRequest(accessToken1,tag);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         OauthStringRequest.this.getErrorListener();
@@ -48,8 +51,11 @@ public class OauthStringRequest extends NetworkRequest {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    String errorText = error.getMessage();
                     OauthStringRequest.this.getErrorListener().onErrorResponse(error);
+                    if (error.networkResponse !=null&&error.networkResponse.statusCode==401)
+                        disconnectUser();
+                    else
+                        getErrorListener();
                 }
             }){
                 @Override
@@ -67,13 +73,23 @@ public class OauthStringRequest extends NetworkRequest {
         }
         else
         {
-            makeOauthRequest(context,accessToken,tag);
+            makeOauthRequest(accessToken,tag);
         }
     }
 
-    private void makeOauthRequest (Context context, final AccessToken accessToken,String tag)
+    private void makeOauthRequest (final AccessToken accessToken,String tag)
     {
-        StringRequest request = new StringRequest(getMethod(),getUrl(),listener,getErrorListener())
+        Context context = App.getAppContext();
+        StringRequest request = new StringRequest(getMethod(), getUrl(), listener, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                OauthStringRequest.this.getErrorListener().onErrorResponse(error);
+                if (error.networkResponse !=null&&error.networkResponse.statusCode==401)
+                    disconnectUser();
+                else
+                    getErrorListener();
+            }
+        })
         {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -83,6 +99,17 @@ public class OauthStringRequest extends NetworkRequest {
             }
         };
         AppSingleton.getInstance(context).addToRequestQueue(request,tag);
+    }
+
+    private void disconnectUser()
+    {
+        Context context = App.getAppContext();
+        Toast.makeText(context,"Authentification échouée",Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        context.startActivity(intent);
+        SharedPrefsUtils.disconnectUser(context);
+
     }
 
     private void updateTokens (Context context,String response) throws JSONException
