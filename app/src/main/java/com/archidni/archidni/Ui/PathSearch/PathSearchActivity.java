@@ -43,6 +43,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -314,7 +315,8 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     @Override
     public void startPathDetailsActivity(Path path) {
         Intent intent = new Intent(this, PathDetailsActivity.class);
-        intent.putExtra(IntentUtils.PATH,path);
+        intent.putExtra(IntentUtils.PATH,path.toJson());
+        intent.putExtra("PATHas","HI");
         startActivity(intent);
     }
 

@@ -259,10 +259,10 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
             TransportMean transportMean = TransportMean.allTransportMeans.get(
                     jsonObject.getInt("transport_mode_id") - 1
             );
-            Line.Builder builder = new Line.Builder(id, name);
-            builder.setLineSections(lineSections);
-            builder.setTransportMean(transportMean);
-            return builder.build();
+            //Line.Builder builder = new Line.Builder(id, name);
+            //builder.setLineSections(lineSections);
+            //builder.setTransportMean(transportMean);
+            return new Line(id,name,transportMean,lineSections);
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

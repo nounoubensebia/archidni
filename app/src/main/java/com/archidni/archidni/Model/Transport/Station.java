@@ -11,6 +11,7 @@ import com.archidni.archidni.R;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by noure on 07/02/2018.

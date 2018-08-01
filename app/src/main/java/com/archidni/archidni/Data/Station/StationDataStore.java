@@ -59,6 +59,12 @@ public class StationDataStore extends OnlineDataStore {
         stringRequest.performRequest(getTag());
     }
 
+    public void getTransfers (Context context, Station station,
+                              StationDataRepository.OnTransferSearchCompleted onTransferSearchCompleted)
+    {
+
+    }
+
     @Override
     public String getTag() {
         return "STATIONS";

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.archidni.archidni.Data.Favorites.FavoritesRepository;
 import com.archidni.archidni.Model.Favorites;
 import com.archidni.archidni.Model.Transport.Line;
+import com.archidni.archidni.Model.Transport.LineSkeleton;
 import com.archidni.archidni.Model.Transport.TransportUtils;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class NotificationsUtils {
             for (Notification notification : notifications)
             {
                 if (notification.getLines().size()>0)
-                    for (Line line:notification.getLines())
+                    for (LineSkeleton line:notification.getLines())
                     {
                         if (TransportUtils.containsLine(line.getId(),favorites.getLines()))
                         {

@@ -18,16 +18,21 @@ import com.archidni.archidni.Model.Path.PathInstruction;
 
 import com.archidni.archidni.Model.Path.PathSettings;
 import com.archidni.archidni.Model.Path.RideInstruction;
+import com.archidni.archidni.Model.Path.RideLine;
 import com.archidni.archidni.Model.Path.WaitInstruction;
+import com.archidni.archidni.Model.Path.WaitLine;
 import com.archidni.archidni.Model.Path.WalkInstruction;
 import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.StringUtils;
+import com.archidni.archidni.Model.Transport.Line;
+import com.archidni.archidni.Model.Transport.LineSkeleton;
 import com.archidni.archidni.Model.Transport.Section;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.OauthStringRequest;
 import com.archidni.archidni.TimeUtils;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -80,7 +85,6 @@ public class PathOnlineDataStore extends OnlineDataStore {
             @Override
             public void onResponse(String response) {
                 ArrayList<Path> foundPaths = new ArrayList<>();
-                WaitInstruction waitInstruction = null;
                 try {
                     JSONArray rootJsonArray = new JSONArray(response);
                     for (int j=0;j<rootJsonArray.length();j++) {
@@ -103,43 +107,75 @@ public class PathOnlineDataStore extends OnlineDataStore {
                                 {
                                     destination = "votre destination";
                                 }
-                                WalkInstruction walkInstruction = new WalkInstruction(duration, (float) distance, polyline, destination);
+                                WalkInstruction walkInstruction = new WalkInstruction((float) distance, polyline, destination);
                                 if (!GeoUtils.polylineContainsOnlyEquals(walkInstruction.getPolyline()))
                                 pathInstructions.add(walkInstruction);
                             }
                             if (jsonObject.getString("type").equals("wait_instruction"))
                             {
                                 Coordinate coordinate = new Gson().fromJson(jsonObject.getJSONObject("coordinate").toString(), Coordinate.class);
-                                waitInstruction = new WaitInstruction((int) jsonObject.getDouble("duration"), coordinate,jsonObject.getBoolean("exact_waiting_time"));
-                                waitInstruction.setAverage(!jsonObject.getBoolean("exact_waiting_time"));
-                                waitInstruction.setDuration(jsonObject.getInt("duration")*60);
-                                pathInstructions.add(waitInstruction);
+                                JSONArray linesArray = jsonObject.getJSONArray("lines");
+                                ArrayList<WaitLine> waitLines = new ArrayList<>();
+                                for (int l=0;l<linesArray.length();l++)
+                                {
+                                    JSONObject lineObject = linesArray.getJSONObject(l);
+                                    String lineName = lineObject.getString("line_name");
+                                    int transportModeId = lineObject.getInt("transport_mode_id")-1;
+                                    long duration = lineObject.getInt("duration");
+                                    String destination = lineObject.getString("destination");
+                                    boolean exactWaitingTime = lineObject.getBoolean("exact_waiting_time");
+                                    int id = lineObject.getInt("id");
+                                    waitLines.add(new WaitLine(new LineSkeleton(id,
+                                            lineName,
+                                            TransportMean.allTransportMeans.get(transportModeId)),
+                                            destination,duration,exactWaitingTime));
+                                }
+                                pathInstructions.add(new WaitInstruction(coordinate,waitLines));
                             }
                             if (jsonObject.getString("type").equals("ride_instruction"))
                             {
-                                String lineLabel = jsonObject.getString("line_name");
                                 int duration = jsonObject.getInt("duration")*60;
                                 int transportModeId = jsonObject.getInt("transport_mode_id")-1;
-                                String destination = jsonObject.getString("destination");
+                                TransportMean transportMean = TransportMean.allTransportMeans.get(transportModeId);
                                 Gson gson = new Gson();
                                 Type fooType = new TypeToken<ArrayList<Station>>() {
                                 }.getType();
                                 ArrayList<Station> stations = gson.fromJson(jsonObject.get("stations").toString(), fooType);
                                 ArrayList<Section> sections = new ArrayList<>();
+
+                                ArrayList<RideLine> rideLines = new ArrayList<>();
+
+                                JSONArray linesJson = jsonObject.getJSONArray("lines");
+
+                                for (int l=0;l<linesJson.length();l++)
+                                {
+                                    JSONObject lineObject = linesJson.getJSONObject(l);
+                                    int id = lineObject.getInt("id");
+                                    String lineName = lineObject.getString("line_name");
+                                    String destination = lineObject.getString("destination");
+                                    rideLines.add(new RideLine(new LineSkeleton(id,lineName,transportMean),destination));
+                                }
+
+
                                 int k=0;
                                 while (k<stations.size()-1)
                                 {
                                     sections.add(new Section(stations.get(k),stations.get(k+1)));
                                     k++;
                                 }
-                                fooType = new TypeToken<ArrayList<Coordinate>>() {
-                                }.getType();
+
                                 String polylineString = jsonObject.getString("polyline");
                                 float errorMargin = (float)jsonObject.getDouble("error_margin");
-                                RideInstruction rideInstruction = new RideInstruction(duration,
+                                /*RideInstruction rideInstruction = new RideInstruction(duration,
                                         transportModeId,sections,lineLabel,destination,polylineString
+                                        ,errorMargin);*/
+                                RideInstruction rideInstruction = new RideInstruction(duration,
+                                        transportModeId
+                                        ,sections
+                                        ,rideLines
+                                        ,polylineString
                                         ,errorMargin);
-                                waitInstruction.setRideInstruction(rideInstruction);
+
                                 pathInstructions.add(rideInstruction);
                             }
                         }

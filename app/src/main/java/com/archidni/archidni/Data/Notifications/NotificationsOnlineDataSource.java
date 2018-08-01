@@ -10,6 +10,7 @@ import com.archidni.archidni.AppSingleton;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.Notifications.Notification;
 import com.archidni.archidni.Model.Transport.Line;
+import com.archidni.archidni.Model.Transport.LineSkeleton;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.OauthStringRequest;
 
@@ -43,14 +44,14 @@ public class NotificationsOnlineDataSource implements NotificationsDataSource {
                         int transportModeId = jsonObject.getInt("transport_mode_id")-1;
                         String description = jsonObject.getString("description");
                         JSONArray linesJsonArray = jsonObject.getJSONArray("lines");
-                        ArrayList<Line> lines = new ArrayList<>();
+                        ArrayList<LineSkeleton> lines = new ArrayList<>();
                         for (int j=0;j<linesJsonArray.length();j++)
                         {
                             JSONObject lineJson = linesJsonArray.getJSONObject(j);
                             int id = lineJson.getInt("id");
                             String name = lineJson.getString("name");
                             int transportMeanId = lineJson.getInt("transport_mode_id")-1;
-                            Line line = new Line(id,name, TransportMean.allTransportMeans.get(transportMeanId));
+                            LineSkeleton line = new LineSkeleton(id,name, TransportMean.allTransportMeans.get(transportMeanId));
                             lines.add(line);
                         }
                         Notification notification = new Notification(title,

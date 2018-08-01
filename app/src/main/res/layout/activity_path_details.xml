@@ -26,6 +26,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <LinearLayout
                     android:layout_marginTop="16dp"
                     android:layout_width="match_parent"
@@ -113,9 +114,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
+                <View
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="#EDEDED"/>
+
                 <ListView
                     android:listSelector="@android:color/transparent"
-                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:id="@+id/list_instructions"
                     android:layout_width="match_parent"

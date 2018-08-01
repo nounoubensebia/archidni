@@ -5,6 +5,7 @@ import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by noure on 03/02/2018.
@@ -13,17 +14,14 @@ import java.io.Serializable;
 public class WaitInstruction extends PathInstruction implements Serializable {
 
     private Coordinate coordinate;
-    private boolean isAverage = false;
-    private RideInstruction rideInstruction;
+    private ArrayList<WaitLine> waitLines;
 
-
-    public WaitInstruction(long duration, Coordinate coordinate, boolean isAverage) {
-        super(duration);
+    public WaitInstruction(Coordinate coordinate, ArrayList<WaitLine> waitLines) {
         this.coordinate = coordinate;
-        this.isAverage = isAverage;
+        this.waitLines = waitLines;
     }
 
-    @Override
+    /*@Override
     public String getMainText() {
         if (rideInstruction.getTransportMean().getId()==4)
         {
@@ -36,37 +34,36 @@ public class WaitInstruction extends PathInstruction implements Serializable {
         else
             return "Attendre le "+rideInstruction.getTransportMean().getName()+
                     " "+rideInstruction.getLineLabel()+" vers "+rideInstruction.getTerminus();
-    }
+    }*/
 
-    @Override
+
+
+    /*@Override
     public String getSecondaryText() {
         if (isAverage) return ("Temps d'attente moyen "+ getDuration()/60+" minutes");
         else return (getDuration()/60+" minutes");
-    }
+    }*/
 
-    @Override
+
     public long getInstructionIcon() {
         return R.drawable.ic_time_transport_mean_2 ;
     }
 
-    @Override
-    public int getInstructionWhiteIcon() {
-        return R.drawable.ic_time_white_24dp;
-    }
 
     public Coordinate getCoordinate() {
         return coordinate;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+
+
+
+    @Override
+    public String getTtile() {
+        return "Attendre";
     }
 
-    public void setAverage(boolean average) {
-        this.isAverage = average;
-    }
-
-    public void setRideInstruction(RideInstruction rideInstruction) {
-        this.rideInstruction = rideInstruction;
+    @Override
+    public long getDuration() {
+        return waitLines.get(0).getTime();
     }
 }

@@ -15,62 +15,39 @@ import java.util.ArrayList;
 
 public class RideInstruction extends MoveInstruction implements Serializable {
 
+    private long duration;
     private long transportMeanId; //id berk
     private ArrayList<Section> sections; //tronçons
-    private String lineLabel; //name
-    private String terminus; //for example dergana centre
+    private ArrayList<RideLine> rideLines; //name//for example dergana centre
     private String polyline;
     private float errorMargin;
 
 
-    public RideInstruction(long duration, long transportMeanId, ArrayList<Section> sections,
-                           String lineLabel, String terminus, String polyline, float errorMargin) {
-        super(duration);
+    public RideInstruction(long duration, long transportMeanId, ArrayList<Section> sections, ArrayList<RideLine> rideLines, String polyline, float errorMargin) {
+        this.duration = duration;
         this.transportMeanId = transportMeanId;
         this.sections = sections;
-        this.lineLabel = lineLabel;
-        this.terminus = terminus;
+        this.rideLines = rideLines;
         this.polyline = polyline;
         this.errorMargin = errorMargin;
-    }
-
-    public String getLineLabel() {
-        return lineLabel;
-    }
-
-    public String getTerminus() {
-        return terminus;
     }
 
     public ArrayList<Section> getSections() {
         return sections;
     }
 
-    @Override
-    public String getMainText() {
-        return ("Prendre le "+getTransportMean().getName()+" Ligne : "+lineLabel);
-    }
-
-    @Override
-    public String getSecondaryText ()
-    {
-        int s = sections.size();
-        return (s+" arrêts"+" (environ "+(getDuration()/60)+" minutes)");
-    }
-
-    @Override
-    public long getInstructionIcon() {
-        return getTransportMean().getStationCirleDrawableId();
-    }
-
-    @Override
-    public int getInstructionWhiteIcon() {
-        return 0;
+    public ArrayList<RideLine> getRideLines() {
+        return rideLines;
     }
 
     @Override
     public long getDuration() {
-        return (long) (super.getDuration() + super.duration*errorMargin);
+        return (long) (duration + duration*errorMargin);
+    }
+
+    @Override
+    public String getTtile() {
+        return "Prendre le bus";
     }
 
     public String getExitInstructionText ()
@@ -93,7 +70,6 @@ public class RideInstruction extends MoveInstruction implements Serializable {
         return GeoUtils.getPolylineFromGoogleMapsString(polyline);
     }
 
-    @Override
     public String getDurationString() {
         if (transportMeanId!=TransportMean.ID_BUS&&transportMeanId!=4)
         return ("environ "+getDuration()/60) + " minutes";

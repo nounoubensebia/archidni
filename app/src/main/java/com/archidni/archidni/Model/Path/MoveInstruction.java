@@ -2,6 +2,7 @@ package com.archidni.archidni.Model.Path;
 
 import com.archidni.archidni.Model.Coordinate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,8 +11,7 @@ import java.util.ArrayList;
 
 public abstract class MoveInstruction extends PathInstruction {
 
-    public MoveInstruction(long duration) {
-        super(duration);
+    public MoveInstruction() {
     }
 
     public abstract float getDistance ();

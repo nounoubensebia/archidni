@@ -7,7 +7,7 @@
         android:width="128dp"
         android:height="128dp" />
     <stroke
-        android:width="4dp"
+        android:width="16dp"
         android:color="@color/color_transport_mean_selected_2"></stroke>
     <corners android:radius="8dp" />
 </shape>

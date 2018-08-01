@@ -45,8 +45,9 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        presenter = new PathDetailsPresenter((Path)getIntent().getExtras()
-                .getSerializable(IntentUtils.PATH),this);
+
+        Path path = Path.fromJson(getIntent().getExtras().getString(IntentUtils.PATH));
+        presenter = new PathDetailsPresenter(path,this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_path_details);
         initViews(savedInstanceState);

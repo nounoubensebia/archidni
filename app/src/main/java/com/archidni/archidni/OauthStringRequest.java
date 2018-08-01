@@ -106,7 +106,8 @@ public class OauthStringRequest extends NetworkRequest {
         Context context = App.getAppContext();
         Toast.makeText(context,"Authentification échouée",Toast.LENGTH_LONG).show();
         Intent intent = new Intent(context, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_SINGLE_TOP);
         context.startActivity(intent);
         SharedPrefsUtils.disconnectUser(context);
 

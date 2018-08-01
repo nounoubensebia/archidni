@@ -17,23 +17,12 @@ import java.util.List;
  * Created by noure on 07/02/2018.
  */
 
-public class Line implements Serializable {
-    private int id;
-    private String name;
-    private TransportMean transportMean;
+public class Line extends LineSkeleton implements Serializable {
     private ArrayList<LineSection> lineSections;
 
-    Line(int id, String name, TransportMean transportMean, ArrayList<LineSection> lineSections) {
-        this.id = id;
-        this.name = name;
-        this.transportMean = transportMean;
+    public Line(int id, String name, TransportMean transportMean, ArrayList<LineSection> lineSections) {
+        super(id, name, transportMean);
         this.lineSections = lineSections;
-    }
-
-    public Line(int id, String name, TransportMean transportMean) {
-        this.id = id;
-        this.name = name;
-        this.transportMean = transportMean;
     }
 
     public ArrayList<Station> getStations() {
@@ -72,9 +61,7 @@ public class Line implements Serializable {
         return coordinates;
     }
 
-    public TransportMean getTransportMean() {
-        return transportMean;
-    }
+
 
     public boolean insideSearchCircle(ArrayList<Coordinate> coordinates, float distance) {
         for (Station station : getStations()) {
@@ -86,9 +73,7 @@ public class Line implements Serializable {
         return false;
     }
 
-    public int getId() {
-        return id;
-    }
+
 
     public Station getOrigin() {
         if (!isBusLine())
@@ -106,9 +91,7 @@ public class Line implements Serializable {
         }
     }
 
-    public String getName() {
-        return name;
-    }
+
 
     public boolean hasStationInsideBoundingBox(BoundingBox boundingBox) {
         return (TransportUtils.filterStations(getStations(), boundingBox).size() > 0);
@@ -169,27 +152,4 @@ public class Line implements Serializable {
         return sectionsByMode;
     }
 
-    public static class Builder {
-        private int id;
-        private String name;
-        private TransportMean transportMean;
-        private ArrayList<LineSection> lineSections;
-
-        public Builder(int id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public void setTransportMean(TransportMean transportMean) {
-            this.transportMean = transportMean;
-        }
-
-        public void setLineSections(ArrayList<LineSection> lineSections) {
-            this.lineSections = lineSections;
-        }
-
-        public Line build() {
-            return new Line(id, name, transportMean, lineSections);
-        }
-    }
 }

@@ -6,6 +6,10 @@ import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.TransportMean;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -100,8 +104,16 @@ public class Path implements Serializable {
         return coordinates;
     }
 
+    /*public boolean isSimilar (Path path)
+    {
+        if (pathInstructions.size()!=path.pathInstructions.size())
+        {
+            return false;
+        }
+    }*/
+
     public ArrayList<PathStep> getPathSteps() {
-        ArrayList<PathStep> pathSteps = new ArrayList<>();
+        /*ArrayList<PathStep> pathSteps = new ArrayList<>();
         for (int i = 0; i < pathInstructions.size(); i++) {
             PathInstruction pathInstruction = pathInstructions.get(i);
 
@@ -148,8 +160,8 @@ public class Path implements Serializable {
                     pathSteps.add(builder.build());
                 }
             }
-        }
-        return pathSteps;
+        }*/
+        return null;
     }
 
     public long getWalkingTime ()
@@ -159,7 +171,7 @@ public class Path implements Serializable {
         {
             if (pathInstruction instanceof WalkInstruction)
             {
-                walkingTime+=pathInstruction.duration;
+                walkingTime+=pathInstruction.getDuration();
             }
         }
         return walkingTime;
@@ -181,5 +193,39 @@ public class Path implements Serializable {
     public String toJson() {
         Gson gson = new Gson();
         return gson.toJson(this);
+    }
+
+    public static Path fromJson (String json)
+    {
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            PathSettings pathSettings = new Gson()
+                    .fromJson(jsonObject.getJSONObject("pathSettings").toString(),PathSettings.class);
+            JSONArray jsonArray = jsonObject.getJSONArray("pathInstructions");
+            ArrayList<PathInstruction> pathInstructions = new ArrayList<>();
+            for (int i=0;i<jsonArray.length();i++)
+            {
+                JSONObject arrayObj = jsonArray.getJSONObject(i);
+                if (arrayObj.has("type"))
+                {
+                    pathInstructions.add(new Gson().fromJson(arrayObj.toString(),WalkInstruction.class));
+                }
+                else
+                {
+                    if (arrayObj.has("coordinate"))
+                    {
+                        pathInstructions.add(new Gson().fromJson(arrayObj.toString(),WaitInstruction.class));
+                    }
+                    else
+                    {
+                        pathInstructions.add(new Gson().fromJson(arrayObj.toString(),RideInstruction.class));
+                    }
+                }
+            }
+            return new Path(pathSettings,pathInstructions);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

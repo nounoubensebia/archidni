@@ -7,6 +7,7 @@ import com.archidni.archidni.R;
 import com.archidni.archidni.UiUtils.SelectorItem;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
  * Created by noure on 02/02/2018.
  */
 
-public class TransportMean extends SelectorItem {
+public class TransportMean extends SelectorItem implements Serializable {
     public static final int ID_TRAMWAY = 3;
     public static final int ID_METRO = 0;
     public static final int ID_BUS = 2;

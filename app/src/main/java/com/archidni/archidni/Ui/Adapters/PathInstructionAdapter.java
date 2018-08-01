@@ -65,315 +65,39 @@ public class PathInstructionAdapter extends ArrayAdapter<PathInstruction> {
         final PathInstruction pathInstruction = getItem(position);
         View item = convertView;
 
-        if (pathInstruction instanceof RideInstruction ||position==pathInstructions.size()-1)
+        /*if (pathInstruction instanceof RideInstruction ||position==pathInstructions.size()-1)
         {
             item = LayoutInflater.from(getContext()).inflate(R.layout.item_path_instruction_transport ,parent, false);
         }
         else
-            item = LayoutInflater.from(getContext()).inflate(R.layout.item_path_instruction ,parent, false);
-
-
-        if (pathInstruction instanceof RideInstruction ||position==pathInstructions.size()-1)
+            item = LayoutInflater.from(getContext()).inflate(R.layout.item_path_instruction ,parent, false);*/
+        if (pathInstruction instanceof RideInstruction)
         {
-            ImageView imageInstruction1 = (ImageView) item.findViewById(R.id.image_instruction1);
-            ImageView imageInstruction2 = (ImageView) item.findViewById(R.id.image_instruction2);
-            TextView mainInstructionText = (TextView)item.findViewById(R.id.text_instruction_label);
-            TextView mainInstructionText2 = (TextView)item.findViewById(R.id.text_instruction2);
-            ImageView circle1Image = (ImageView)item.findViewById(R.id.image_circle1);
-            ImageView circle2Image = (ImageView)item.findViewById(R.id.image_circle2);
-            TextView secondaryText = (TextView) item.findViewById(R.id.text_instruction_details);
-            View instruction1TextLayout = item.findViewById(R.id.layout_text_instruction);
-            View instruction2TextLayout = item.findViewById(R.id.layout_text_instruction2);
-            View instruction1Layout = item.findViewById(R.id.layout_instruction1);
-            View instruction2Layout = item.findViewById(R.id.layout_instruction2);
-            if (pathInstruction instanceof RideInstruction)
-            {
-
-                final RideInstruction rideInstruction = (RideInstruction) pathInstruction;
-                View separationView2 = item.findViewById(rideInstruction.getTransportMean().getSeparationView2Id());
-                View separationView = item.findViewById(rideInstruction.getTransportMean().getSeparationViewId());
-                if (position!=getCount()-1)
-                    separationView2.setVisibility(View.VISIBLE);
-                Drawable drawable = ContextCompat.getDrawable(getContext(),(rideInstruction.getTransportMean().getIconEnabled()));
-                imageInstruction1.setImageDrawable(drawable);
-                drawable = ContextCompat.getDrawable(getContext(),rideInstruction.getTransportMean().getExitDrawable());
-                imageInstruction2.setImageDrawable(drawable);
-                separationView.setVisibility(View.VISIBLE);
-                mainInstructionText.setText(rideInstruction.getMainText());
-                mainInstructionText2.setText(rideInstruction.getExitInstructionText());
-                drawable = ContextCompat.getDrawable(getContext(),rideInstruction.getTransportMean().getStationCirleDrawableId());
-                if (position*10==selectedItem)
-                {
-                    Drawable drawable1 = ContextCompat.getDrawable(getContext(),rideInstruction.getTransportMean().getCircleFullDrawableId());
-                    circle1Image.setImageDrawable(drawable1);
-                    drawable1 = ContextCompat.getDrawable(getContext(),rideInstruction.getTransportMean().getWhiteIconDrawableId());
-                    imageInstruction1.setImageDrawable(drawable1);
-                }
-                else
-                {
-                    circle1Image.setImageDrawable(drawable);
-                }
-                if ((position*10+1)==selectedItem)
-                {
-                    Drawable drawable1 = ContextCompat.getDrawable(getContext(),rideInstruction.getTransportMean().getCircleFullDrawableId());
-                    circle2Image.setImageDrawable(drawable1);
-                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.ic_exit_white);
-                    imageInstruction2.setImageDrawable(drawable1);
-                }
-                else
-                {
-                    circle2Image.setImageDrawable(drawable);
-                }
-                secondaryText.setText(pathInstruction.getSecondaryText());
-                instruction1TextLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (selectedItem!=position*10)
-                        {
-                            onPolylineSelected.onPolylineSelected(rideInstruction.getPolyline(),position*10);
-                        }
-                        else
-                        {
-                            onPolylineSelected.onPolylineSelected(rideInstruction.getPolyline(),-1);
-                        }
-                    }
-                });
-                instruction1Layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (selectedItem!=position*10)
-                        {
-                            onPolylineSelected.onPolylineSelected(rideInstruction.getPolyline(),position*10);
-                        }
-                        else
-                        {
-                            onPolylineSelected.onPolylineSelected(rideInstruction.getPolyline(),-1);
-                        }
-                    }
-                });
-                instruction2TextLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (selectedItem != position*10+1)
-                        {
-                            onCoordinateSelected.onCoordinateSelected(rideInstruction.getPolyline().
-                                            get(rideInstruction.getPolyline().size()-1),
-                                    position*10+1);
-                        }
-                        else
-                        {
-                            onCoordinateSelected.onCoordinateSelected(rideInstruction.getPolyline().
-                                            get(rideInstruction.getPolyline().size()-1),
-                                    -1);
-                        }
-                    }
-                });
-                instruction2Layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (selectedItem != position*10+1)
-                        {
-                            onCoordinateSelected.onCoordinateSelected(rideInstruction.getPolyline().
-                                            get(rideInstruction.getPolyline().size()-1),
-                                    position*10+1);
-                        }
-                        else
-                        {
-                            onCoordinateSelected.onCoordinateSelected(rideInstruction.getPolyline().
-                                            get(rideInstruction.getPolyline().size()-1),
-                                    -1);
-                        }
-                    }
-                });
-            }
-            else
-            {
-                View separationView1 = item.findViewById(R.id.view_separation_transport_mean3);
-                separationView1.setVisibility(View.VISIBLE);
-                Drawable drawable1;
-                Drawable drawable;
-                if (selectedItem!=position*10+1)
-                {
-                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_empty_transport_mean2);
-                    drawable = ContextCompat.getDrawable(getContext(),R.drawable.ic_marker_green_24dp);
-                }
-                else
-                {
-                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_full_transport_mean2);
-                    drawable = ContextCompat.getDrawable(getContext(),R.drawable.ic_marker_white_24dp);
-                }
-                circle2Image.setImageDrawable(drawable1);
-                imageInstruction2.setImageDrawable(drawable);
-                mainInstructionText.setText(pathInstruction.getMainText());
-                secondaryText.setText(pathInstruction.getSecondaryText());
-                mainInstructionText2.setText("Destination atteinte !");
-                if (selectedItem!=position*10)
-                {
-                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_empty_transport_mean2);
-                    drawable = ContextCompat.getDrawable(getContext(), (int) pathInstruction.getInstructionIcon());
-                }
-                else
-                {
-                    drawable1 = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_full_transport_mean2);
-                    drawable = ContextCompat.getDrawable(getContext(), (int) pathInstruction.getInstructionWhiteIcon());
-                }
-                imageInstruction1.setImageDrawable(drawable);
-                circle1Image.setImageDrawable(drawable1);
-                instruction1TextLayout.setOnClickListener(new View.OnClickListener() {
-                    WalkInstruction walkInstruction = (WalkInstruction) pathInstruction;
-                    @Override
-                    public void onClick(View v) {
-                        if (selectedItem!=position*10)
-                        {
-                            onPolylineSelected.onPolylineSelected(walkInstruction.getPolyline(),position*10);
-                        }
-                        else
-                        {
-                            onPolylineSelected.onPolylineSelected(walkInstruction.getPolyline(),-1);
-                        }
-                    }
-                });
-                instruction1Layout.setOnClickListener(new View.OnClickListener() {
-                    WalkInstruction walkInstruction = (WalkInstruction) pathInstruction;
-                    @Override
-                    public void onClick(View v) {
-                        if (selectedItem!=position*10)
-                        {
-                            onPolylineSelected.onPolylineSelected(walkInstruction.getPolyline(),position*10);
-                        }
-                        else
-                        {
-                            onPolylineSelected.onPolylineSelected(walkInstruction.getPolyline(),-1);
-                        }
-                    }
-                });
-                instruction2TextLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        WalkInstruction walkInstruction = (WalkInstruction) pathInstruction;
-                        if (selectedItem != position*10+1)
-                        {
-                            onCoordinateSelected.onCoordinateSelected(walkInstruction.getPolyline().
-                                            get(walkInstruction.getPolyline().size()-1),
-                                    position*10+1);
-                        }
-                        else
-                        {
-                            onCoordinateSelected.onCoordinateSelected(walkInstruction.getPolyline().
-                                            get(walkInstruction.getPolyline().size()-1),
-                                    -1);
-                        }
-                    }
-                });
-                instruction2Layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        WalkInstruction walkInstruction = (WalkInstruction) pathInstruction;
-                        if (selectedItem != position*10+1)
-                        {
-                            onCoordinateSelected.onCoordinateSelected(walkInstruction.getPolyline().
-                                            get(walkInstruction.getPolyline().size()-1),
-                                    position*10+1);
-                        }
-                        else
-                        {
-                            onCoordinateSelected.onCoordinateSelected(walkInstruction.getPolyline().
-                                            get(walkInstruction.getPolyline().size()-1),
-                                    -1);
-                        }
-                    }
-                });
-            }
+            item = LayoutInflater.from(getContext()).inflate(R.layout.item_ride_instruction
+                    ,parent, false);
         }
-        else
+
+        if (pathInstruction instanceof WalkInstruction)
+
         {
-            View textInstructionLayout = item.findViewById(R.id.layout_text_instruction);
-            TextView instructionText = (TextView) item.findViewById(R.id.text_instruction_label);
-            TextView secondaryText = (TextView) item.findViewById(R.id.text_instruction_details);
-            View instructionLayout = item.findViewById(R.id.layout_instruction1);
-            instructionText.setText(pathInstruction.getMainText());
-            secondaryText.setText(pathInstruction.getSecondaryText());
-            ImageView imageView = (ImageView) item.findViewById(R.id.image_instruction1);
-            ImageView circleImage = (ImageView) item.findViewById(R.id.circle_instruction1);
-            if (selectedItem!=position*10)
-            {
-                Drawable drawable = ContextCompat.getDrawable(getContext(),(int)pathInstruction.getInstructionIcon());
-                imageView.setImageDrawable(drawable);
-                drawable = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_empty_transport_mean2);
-                circleImage.setImageDrawable(drawable);
-            }
-            else
-            {
-                Drawable drawable = ContextCompat.getDrawable(getContext(),(int)pathInstruction.getInstructionWhiteIcon());
-                imageView.setImageDrawable(drawable);
-                drawable = ContextCompat.getDrawable(getContext(),R.drawable.shape_button_circle_full_transport_mean2);
-                circleImage.setImageDrawable(drawable);
-            }
-            View separationView = item.findViewById(R.id.view_separation_transport_mean3);
-            separationView.setVisibility(View.VISIBLE);
+            item = LayoutInflater.from(getContext()).inflate(R.layout.item_walk_instruction
+                    ,parent, false);
+        }
 
-            instructionLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (pathInstruction instanceof WaitInstruction)
-                    {
-                        WaitInstruction waitInstruction = (WaitInstruction) pathInstruction;
-                        if (selectedItem!=position*10)
-                        {
-                            onCoordinateSelected.onCoordinateSelected(waitInstruction.getCoordinate(),position*10);
-                        }
-                        else
-                        {
-                            onCoordinateSelected.onCoordinateSelected(waitInstruction.getCoordinate(),-1);
-                        }
-                    }
-                    else
-                    {
-                        WalkInstruction walkInstruction = (WalkInstruction) pathInstruction;
-                        if (selectedItem!=position*10)
-                        {
-                            onPolylineSelected.onPolylineSelected(walkInstruction.getPolyline(),position*10);
-                        }
-                        else
-                        {
-                            onPolylineSelected.onPolylineSelected(walkInstruction.getPolyline(),-1);
-                        }
-                    }
-                }
-            });
+        if (pathInstruction instanceof WaitInstruction)
 
-            textInstructionLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (pathInstruction instanceof WaitInstruction)
-                    {
-                        WaitInstruction waitInstruction = (WaitInstruction) pathInstruction;
-                        if (selectedItem!=position*10)
-                        {
-                            onCoordinateSelected.onCoordinateSelected(waitInstruction.getCoordinate(),position*10);
-                        }
-                        else
-                        {
-                            onCoordinateSelected.onCoordinateSelected(waitInstruction.getCoordinate(),-1);
-                        }
-                    }
-                    else
-                    {
-                        WalkInstruction walkInstruction = (WalkInstruction) pathInstruction;
-                        if (selectedItem!=position*10)
-                        {
-                            onPolylineSelected.onPolylineSelected(walkInstruction.getPolyline(),position*10);
-                        }
-                        else
-                        {
-                            onPolylineSelected.onPolylineSelected(walkInstruction.getPolyline(),-1);
-                        }
-                    }
-                }
-            });
+        {
+            item = LayoutInflater.from(getContext()).inflate(R.layout.item_wait_instruction
+                    ,parent, false);
         }
 
         return item;
+    }
+
+    private void inflateRideInstructionView (RideInstruction rideInstruction,View view)
+    {
+        //TextView titleText = view.findViewById(R.id.text_line_name);
+
     }
 
     public interface OnPolylineSelected {

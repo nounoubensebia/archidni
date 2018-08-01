@@ -15,29 +15,31 @@ public class WalkInstruction extends MoveInstruction implements Serializable {
     private String polyline;
     private float distance;
     private String destination;
-    public WalkInstruction(int duration, float distance, String polyline,String destination) {
-        super(duration);
+    private int type;
+
+    public static final int TYPE_DEPARTURE = 0;
+    public static final int TYPE_TRANSFER = 1;
+    public static final int TYPE_ARRIVAL = 2;
+    public WalkInstruction(float distance, String polyline,String destination) {
+        super();
         this.distance = distance;
         this.polyline = polyline;
         this.destination = destination;
     }
 
-    @Override
+    public int getType() {
+        return type;
+    }
+
     public String getMainText() {
         return "Marcher pour atteindre "+destination;
     }
 
-    @Override
-    public String getSecondaryText() {
-        return ((int)getDuration()/60+" minutes, "+(int)(getDistance())+" mètres");
-    }
 
-    @Override
     public long getInstructionIcon() {
         return R.drawable.ic_walk_green_24dp;
     }
 
-    @Override
     public int getInstructionWhiteIcon() {
         return R.drawable.ic_walk_white_24dp;
     }
@@ -47,7 +49,21 @@ public class WalkInstruction extends MoveInstruction implements Serializable {
         return GeoUtils.getPolylineFromGoogleMapsString(polyline);
     }
 
+    @Override
+    public String getTtile() {
+        switch (type)
+        {
+            case TYPE_DEPARTURE : return "Départ";
+            case TYPE_TRANSFER : return "Correspendance";
+            case TYPE_ARRIVAL : return "Arrivée";
+        }
+        return null;
+    }
 
+    @Override
+    public long getDuration() {
+        return GeoUtils.getOnFootDuration((double)distance);
+    }
 
     public String getDistanceString ()
     {
