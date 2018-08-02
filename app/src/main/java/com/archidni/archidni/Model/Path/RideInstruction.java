@@ -4,6 +4,7 @@ import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Transport.LineSection;
 import com.archidni.archidni.Model.Transport.Section;
+import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.TransportMean;
 
 import java.io.Serializable;
@@ -48,6 +49,16 @@ public class RideInstruction extends MoveInstruction implements Serializable {
     @Override
     public String getTtile() {
         return "Prendre le bus";
+    }
+
+    public Station getDestination ()
+    {
+        return (sections.get(sections.size()-1).getDestination());
+    }
+
+    public Station getOrigin ()
+    {
+        return (sections.get(0).getOrigin());
     }
 
     public String getExitInstructionText ()

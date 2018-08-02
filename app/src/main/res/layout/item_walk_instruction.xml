@@ -25,6 +25,7 @@
             android:layout_marginLeft="16dp"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/text_type"
                 android:text="Départ"
                 android:textSize="20sp"
                 android:textColor="#000"
@@ -46,13 +47,12 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/text_time"
+                    android:id="@+id/text_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:background="@drawable/shape_green_empty_rect_all_sides"
                     android:gravity="center"
-
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:paddingTop="4dp"

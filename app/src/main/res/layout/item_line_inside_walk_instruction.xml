@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/container"
+    android:layout_marginRight="8dp">
+
+    <View
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EDEDED"/>
+    <LinearLayout
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/text_line_name"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:drawablePadding="4dp"
+            android:drawableLeft="@drawable/ic_transport_mean_2_enabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ligne 12 vers Hind"
+            android:textColor="#000" />
+
+
+        <TextView
+            android:id="@+id/text_duration"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_green_empty_rect_all_sides"
+            android:gravity="center"
+            android:text="Temps d'attente moyen 12 minutes"
+            android:textColor="@color/colorGreen"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+    <View
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EDEDED"/>
+</LinearLayout>

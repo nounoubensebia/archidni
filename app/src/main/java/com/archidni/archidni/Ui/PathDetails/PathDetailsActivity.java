@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,6 +17,7 @@ import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Path.PathInstruction;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.PathInstructionAdapter;
+import com.archidni.archidni.Ui.Adapters.PathInstructionRecyclerAdapter;
 import com.archidni.archidni.Ui.PathNavigation.PathNavigationActivity;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.UiUtils.ArchidniMap;
@@ -30,7 +34,7 @@ import butterknife.ButterKnife;
 public class PathDetailsActivity extends AppCompatActivity implements PathDetailsContract.View {
 
     @BindView(R.id.list_instructions)
-    ListView instructionsList;
+    RecyclerView instructionsList;
     MapFragment mapView;
     @BindView(R.id.text_start_navigation)
     TextView startNavigationText;
@@ -85,7 +89,7 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
         durationText.setText(path.getDuration()/60+" minutes");
         ArrayList<PathInstruction> pathInstructions = path.getPathInstructions();
         final PathInstructionAdapter pathInstructionAdapter = new PathInstructionAdapter(this,pathInstructions);
-        pathInstructionAdapter.setOnCoordinateSelected(new PathInstructionAdapter.OnCoordinateSelected() {
+        /*pathInstructionAdapter.setOnCoordinateSelected(new PathInstructionAdapter.OnCoordinateSelected() {
             @Override
             public void onCoordinateSelected(Coordinate coordinate, int selectedItem) {
                 if (selectedItem!=-1)
@@ -123,16 +127,26 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
                 }
                 pathInstructionAdapter.selectElement(selectedItem);
             }
-        });
-        instructionsList.setAdapter(pathInstructionAdapter);
-        instructionsList.setDividerHeight(0);
-        Handler handler = new Handler();
+        });*/
+        //instructionsList.setAdapter(pathInstructionAdapter);
+        //instructionsList.setDividerHeight(0);
+        /*Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 ViewUtils.justifyListViewHeightBasedOnChildren(instructionsList);
             }
-        },250);
+        },250);*/
+        PathInstructionRecyclerAdapter pathInstructionRecyclerAdapter =
+                new PathInstructionRecyclerAdapter(this,path.getPathInstructions());
+        instructionsList.setLayoutManager(new LinearLayoutManager(this){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        instructionsList.setItemAnimator(new DefaultItemAnimator());
+        instructionsList.setAdapter(pathInstructionRecyclerAdapter);
 
     }
 

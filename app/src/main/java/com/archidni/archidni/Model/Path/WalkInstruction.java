@@ -20,11 +20,12 @@ public class WalkInstruction extends MoveInstruction implements Serializable {
     public static final int TYPE_DEPARTURE = 0;
     public static final int TYPE_TRANSFER = 1;
     public static final int TYPE_ARRIVAL = 2;
-    public WalkInstruction(float distance, String polyline,String destination) {
-        super();
-        this.distance = distance;
+
+    public WalkInstruction(String polyline, float distance, String destination, int type) {
         this.polyline = polyline;
+        this.distance = distance;
         this.destination = destination;
+        this.type = type;
     }
 
     public int getType() {

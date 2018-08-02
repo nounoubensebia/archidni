@@ -107,7 +107,15 @@ public class PathOnlineDataStore extends OnlineDataStore {
                                 {
                                     destination = "votre destination";
                                 }
-                                WalkInstruction walkInstruction = new WalkInstruction((float) distance, polyline, destination);
+                                int type = 0;
+                                if (i>0&&i<jsonArray.length()-1)
+                                    type = WalkInstruction.TYPE_TRANSFER;
+                                else
+                                    if (i==jsonArray.length()-1)
+                                        type = WalkInstruction.TYPE_ARRIVAL;
+                                WalkInstruction walkInstruction = new WalkInstruction(polyline,
+                                        (float)distance
+                                        ,destination,type);
                                 if (!GeoUtils.polylineContainsOnlyEquals(walkInstruction.getPolyline()))
                                 pathInstructions.add(walkInstruction);
                             }

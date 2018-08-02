@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <LinearLayout
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
@@ -13,6 +13,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/icon_transport_mode"
             android:layout_gravity="center"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -24,19 +25,10 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/text_take"
                 android:text="Prendre le bus"
                 android:textColor="#000"
                 android:textSize="20sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:text="Ligne 16 Alger-Bacretios vers Bacretios"
-                android:textColor="#000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:text="Ligne 14 Hind-Bacretios vers Bacretios"
-                android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             android:layout_height="1dp" />
@@ -56,6 +48,7 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp" />
                     <TextView
+                        android:id="@+id/text_origin"
                         android:layout_gravity="center"
                         android:text="Alger"
                         android:textColor="#000"
@@ -74,6 +67,7 @@
                     android:background="@color/color_transport_mean_selected_2"
                     />
                     <TextView
+                        android:id="@+id/text_stations_number"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
                         android:textSize="12sp"
@@ -93,6 +87,7 @@
                         android:layout_width="16dp"
                         android:layout_height="16dp" />
                     <TextView
+                        android:id="@+id/text_destination"
                         android:layout_gravity="center"
                         android:text="Agha"
                         android:textColor="#000"

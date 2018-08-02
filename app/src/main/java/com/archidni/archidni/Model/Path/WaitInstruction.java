@@ -44,6 +44,9 @@ public class WaitInstruction extends PathInstruction implements Serializable {
         else return (getDuration()/60+" minutes");
     }*/
 
+    public ArrayList<WaitLine> getWaitLines() {
+        return waitLines;
+    }
 
     public long getInstructionIcon() {
         return R.drawable.ic_time_transport_mean_2 ;
@@ -55,11 +58,17 @@ public class WaitInstruction extends PathInstruction implements Serializable {
     }
 
 
-
+    public String getTakeLineText ()
+    {
+        if (waitLines.size()==1)
+            return "Prendre la ligne suivante";
+        else
+            return "Prendre l'une des lignes suivantes";
+    }
 
     @Override
     public String getTtile() {
-        return "Attendre";
+        return "Attendre le "+waitLines.get(0).getLine().getTransportMean().getName();
     }
 
     @Override
