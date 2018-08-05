@@ -19,6 +19,7 @@ import com.archidni.archidni.Model.Path.WaitInstruction;
 import com.archidni.archidni.Model.Path.WaitLine;
 import com.archidni.archidni.Model.Path.WalkInstruction;
 import com.archidni.archidni.R;
+import com.archidni.archidni.UiUtils.ViewUtils;
 
 import java.util.ArrayList;
 
@@ -151,6 +152,12 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
         holder.originText.setText(rideInstruction.getOrigin().getName());
         holder.stationsText.setText(rideInstruction.getSections().size()+" arrêts");
         holder.takeText.setText("Prendre le "+rideInstruction.getTransportMean().getName());
+        holder.separationView.setBackgroundColor(ContextCompat.getColor(context
+                ,rideInstruction.getTransportMean().getColor()));
+        holder.originCircle.setImageDrawable(ContextCompat.getDrawable(context,
+                rideInstruction.getTransportMean().getStationCirleDrawableId()));
+        holder.destinationCircle.setImageDrawable(ContextCompat.getDrawable(context,
+                rideInstruction.getTransportMean().getStationCirleDrawableId()));
     }
 
     @Override
@@ -186,6 +193,12 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
         TextView stationsText;
         @BindView(R.id.text_take)
         TextView takeText;
+        @BindView(R.id.view_separation)
+        View separationView;
+        @BindView(R.id.image_origin_circle)
+        ImageView originCircle;
+        @BindView(R.id.image_destination_circle)
+        ImageView destinationCircle;
         public RideInstructionViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

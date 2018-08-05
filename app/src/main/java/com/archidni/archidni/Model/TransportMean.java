@@ -222,6 +222,19 @@ public class TransportMean extends SelectorItem implements Serializable {
         }
     }
 
+    public int getWaitTextBackground ()
+    {
+        switch (getId())
+        {
+            case 0 : return R.drawable.shape_green_empty_rect_transport_mean_0;
+            case 1 : return R.drawable.shape_green_empty_rect_transport_mean_1;
+            case 2 : return R.drawable.shape_green_empty_rect_transport_mean_2;
+            case 3 : return R.drawable.shape_green_empty_rect_transport_mean_3;
+            case 4 : return R.drawable.shape_green_empty_rect_transport_mean_4;
+            default: return -1;
+        }
+    }
+
     public int getSelectedMarker()
     {
         switch (getId())

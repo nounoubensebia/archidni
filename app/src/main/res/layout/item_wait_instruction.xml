@@ -14,7 +14,6 @@
 
         <ImageView
             android:id="@+id/icon_wait"
-            android:layout_gravity="center"
             android:layout_width="48dp"
             android:layout_height="48dp"
             app:srcCompat="@drawable/ic_time_transport_mean_2" />
@@ -23,7 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:orientation="vertical">
 
             <TextView

@@ -42,6 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/image_origin_circle"
                     android:layout_gravity="bottom"
                     android:layout_marginLeft="2dp"
                     android:src="@drawable/shape_button_circle_empty_transport_mean2"
@@ -61,6 +62,7 @@
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
                 <View
+                    android:id="@+id/view_separation"
                     android:layout_width="4dp"
                     android:layout_height="62dp"
                     android:layout_marginLeft="8dp"
@@ -81,6 +83,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <ImageView
+                        android:id="@+id/image_destination_circle"
                         android:layout_gravity="top"
                         android:layout_marginLeft="2dp"
                         android:src="@drawable/shape_button_circle_empty_transport_mean2"
@@ -101,22 +104,11 @@
     </LinearLayout>
 
     <View
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:background="#EDEDED"
         android:layout_height="1dp" />
-    <TextView
-        android:visibility="gone"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:textColor="@color/colorGreen"
-        android:padding="4dp"
-        android:background="@drawable/shape_green_empty_rect"
-        android:text="Voir sur la carte"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>

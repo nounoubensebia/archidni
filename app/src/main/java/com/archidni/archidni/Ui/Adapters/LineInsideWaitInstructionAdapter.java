@@ -2,6 +2,7 @@ package com.archidni.archidni.Ui.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,14 @@ public class LineInsideWaitInstructionAdapter extends RecyclerView.Adapter<LineI
                 onItemClick.onItemClick(waitLine);
             }
         });
+        holder.durationText.setBackground(ContextCompat.getDrawable(context
+                ,waitLine.getLine().getTransportMean().getWaitTextBackground()));
+        holder.durationText.setTextColor(ContextCompat.getColor(context,
+                waitLine.getLine().getTransportMean().getColor()));
+        holder.durationText.setPadding((int)ViewUtils.dpToPx(context,8f),
+                (int)ViewUtils.dpToPx(context,4f),
+                (int)ViewUtils.dpToPx(context,8f),
+                (int)ViewUtils.dpToPx(context,4f));
         ViewUtils.changeTextViewState(context,holder.lineNameText,
                 waitLine.getLine().getTransportMean().getIconEnabled(),ViewUtils.DIRECTION_LEFT);
     }

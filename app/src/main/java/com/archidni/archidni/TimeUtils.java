@@ -9,13 +9,13 @@ import java.util.Date;
 
 public class TimeUtils {
 
-    private static final long DAY_SUNDAY = 0;
-    private static final long DAY_MONDAY = 1;
-    private static final long DAY_THURSDAY =2;
-    private static final long DAY_WEDNESDAY = 3;
-    private static final long DAY_TUESDAY = 4;
-    private static final long DAY_FRIDAY = 5;
-    private static final long DAY_SATURDAY = 6;
+    private static final long DAY_SUNDAY = 1;
+    private static final long DAY_MONDAY = 2;
+    private static final long DAY_THURSDAY =3;
+    private static final long DAY_WEDNESDAY = 4;
+    private static final long DAY_TUESDAY = 5;
+    private static final long DAY_FRIDAY = 6;
+    private static final long DAY_SATURDAY = 7;
 
     public static long getDayFromTimeStamp (long timeStamp)
     {
