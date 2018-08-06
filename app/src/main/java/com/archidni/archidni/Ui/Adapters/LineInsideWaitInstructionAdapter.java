@@ -65,6 +65,14 @@ public class LineInsideWaitInstructionAdapter extends RecyclerView.Adapter<LineI
                 (int)ViewUtils.dpToPx(context,4f));
         ViewUtils.changeTextViewState(context,holder.lineNameText,
                 waitLine.getLine().getTransportMean().getIconEnabled(),ViewUtils.DIRECTION_LEFT);
+        if (waitLine.hasPerturbations())
+        {
+            holder.perturbationsText.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            holder.perturbationsText.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -80,6 +88,8 @@ public class LineInsideWaitInstructionAdapter extends RecyclerView.Adapter<LineI
         TextView durationText;
         @BindView(R.id.container)
         View container;
+        @BindView(R.id.text_perturbations)
+        TextView perturbationsText;
 
         public ViewHolder(View itemView) {
             super(itemView);

@@ -132,11 +132,12 @@ public class PathOnlineDataStore extends OnlineDataStore {
                                     long duration = lineObject.getInt("duration");
                                     String destination = lineObject.getString("destination");
                                     boolean exactWaitingTime = lineObject.getBoolean("exact_waiting_time");
+                                    boolean hasPerturbations = lineObject.getBoolean("has_perturbations");
                                     int id = lineObject.getInt("id");
                                     waitLines.add(new WaitLine(new LineSkeleton(id,
                                             lineName,
                                             TransportMean.allTransportMeans.get(transportModeId)),
-                                            destination,duration,exactWaitingTime));
+                                            destination,duration,exactWaitingTime,hasPerturbations));
                                 }
                                 pathInstructions.add(new WaitInstruction(coordinate,waitLines));
                             }

@@ -152,4 +152,9 @@ public class LinePresenter implements LineContract.Presenter {
     public void onShowNewsAndNotificationsClick() {
         view.startNewsAndNotificationsActivity(line);
     }
+
+    @Override
+    public void onTarifsClicked() {
+        view.startTarifsActivity(line);
+    }
 }

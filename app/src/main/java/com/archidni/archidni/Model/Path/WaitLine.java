@@ -10,12 +10,18 @@ public class WaitLine implements Serializable {
     private String destination;
     private long time;
     private boolean isExactWaitingTime;
+    private boolean hasPerturbations;
 
-    public WaitLine(LineSkeleton line, String destination, long time, boolean isExactWaitingTime) {
+    public WaitLine(LineSkeleton line, String destination, long time, boolean isExactWaitingTime, boolean hasPerturbations) {
         this.line = line;
         this.destination = destination;
         this.time = time;
         this.isExactWaitingTime = isExactWaitingTime;
+        this.hasPerturbations = hasPerturbations;
+    }
+
+    public boolean hasPerturbations() {
+        return hasPerturbations;
     }
 
     public LineSkeleton getLine() {

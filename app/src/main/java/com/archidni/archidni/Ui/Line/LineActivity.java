@@ -11,9 +11,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,10 +24,16 @@ import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.TransportUtils;
+import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.StationInsideLineAdapter;
+import com.archidni.archidni.Ui.BusTarifsActivity;
 import com.archidni.archidni.Ui.LineNotifications.LineNotificationsActivity;
+import com.archidni.archidni.Ui.MetroTarifsActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
+import com.archidni.archidni.Ui.TelephericTarifsActivity;
+import com.archidni.archidni.Ui.TrainTarifsActivity;
+import com.archidni.archidni.Ui.TramwayTarifsActivity;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.UiUtils.ViewUtils;
@@ -64,12 +72,22 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     TextView outboundTextView;
     @BindView(R.id.text_news_and_notifications)
     TextView newsAndNotificationsText;
-    @BindView(R.id.image_arrow)
-    ImageView arrowImage;
+    @BindView(R.id.image_arrow1)
+    ImageView arrow1Image;
     @BindView(R.id.layout_news_and_notifications)
     View newsAndNotificationsLayout;
+    @BindView(R.id.layout_tarifs)
+    View tarifsLayout;
+    @BindView(R.id.text_tarifs)
+    TextView tarifsText;
+    @BindView(R.id.image_arrow2)
+    ImageView arrow2Image;
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
 
     private Menu mMenu;
+
+    private boolean scrolled;
 
     ArchidniGoogleMap archidniMap;
     LineContract.Presenter presenter;
@@ -202,11 +220,35 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
         getSupportActionBar().setTitle(line.getName());
         getSupportActionBar().setElevation(0);
         newsAndNotificationsText.setTextColor(ContextCompat.getColor(this,line.getTransportMean().getColor()));
-        arrowImage.setImageDrawable(ContextCompat.getDrawable(this,line.getTransportMean().getArriwIconDrawableId()));
+        arrow1Image.setImageDrawable(ContextCompat.getDrawable(this,line.getTransportMean().getArriwIconDrawableId()));
         newsAndNotificationsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.onShowNewsAndNotificationsClick();
+            }
+        });
+        arrow2Image.setImageDrawable(ContextCompat.getDrawable(this,line.getTransportMean().getArriwIconDrawableId()));
+        newsAndNotificationsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onShowNewsAndNotificationsClick();
+            }
+        });
+        tarifsText.setTextColor(ContextCompat.getColor(this,line.getTransportMean().getColor()));
+        tarifsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onTarifsClicked();
+            }
+        });
+        scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (!scrolled)
+                {
+                    scrollView.scrollTo(0, 0);
+                    scrolled = true;
+                }
             }
         });
     }
@@ -361,6 +403,32 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
         Intent intent = new Intent(this, LineNotificationsActivity.class);
         intent.putExtra(IntentUtils.LINE_LINE,line.toJson());
         startActivity(intent);
+    }
+
+    @Override
+    public void startTarifsActivity(Line line) {
+        Intent intent = null;
+        switch (line.getTransportMean().getId())
+        {
+            case TransportMean.ID_METRO :
+                intent = new Intent(this, MetroTarifsActivity.class);
+                break;
+            case TransportMean.ID_TRAMWAY :
+                intent = new Intent(this, TramwayTarifsActivity.class);
+                break;
+            case TransportMean.ID_BUS :
+                intent = new Intent(this, BusTarifsActivity.class);
+                break;
+            case TransportMean.ID_TELEPHERIQUE :
+                intent = new Intent(this, TelephericTarifsActivity.class);
+                break;
+            case TransportMean.ID_TRAIN :
+                intent = new Intent(this, TrainTarifsActivity.class);
+                break;
+
+        }
+        if (intent!=null)
+            startActivity(intent);
     }
 
 

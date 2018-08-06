@@ -7,6 +7,7 @@ import com.archidni.archidni.Model.TransportMean;
 public class PathLine extends LineSkeleton{
     private String shortName;
 
+
     public PathLine(int id, String name, TransportMean transportMean, String shortName) {
         super(id, name, transportMean);
         this.shortName = shortName;

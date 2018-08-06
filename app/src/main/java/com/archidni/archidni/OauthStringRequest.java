@@ -32,7 +32,7 @@ public class OauthStringRequest extends NetworkRequest {
     {
         final Context context = App.getAppContext();
         final AccessToken accessToken = SharedPrefsUtils.getAccessToken(context);
-        if (accessToken.hasExpired())
+        if (accessToken==null || accessToken.hasExpired())
         {
             StringRequest refreshTokenRequest = new StringRequest(Method.POST,
                     SharedPrefsUtils.getServerUrl(context) + OauthRefreshUri, new Response.Listener<String>() {

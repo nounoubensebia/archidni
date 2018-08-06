@@ -16,7 +16,7 @@
         android:layout_height="wrap_content">
 
         <FrameLayout
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="18dp"
             android:id="@+id/image_instruction1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -58,7 +58,7 @@
             android:layout_below="@id/image_instruction1"
             android:id="@+id/view_separation_transport_mean1"
             android:layout_marginLeft="24dp"
-            android:layout_width="1dp"
+            android:layout_width="4dp"
             android:layout_height="32dp"
             android:background="@color/color_transport_mean_selected_0"
             android:visibility="gone"
@@ -67,7 +67,7 @@
             android:layout_below="@id/image_instruction1"
             android:id="@+id/view_separation_transport_mean2"
             android:layout_marginLeft="24dp"
-            android:layout_width="1dp"
+            android:layout_width="4dp"
             android:layout_height="32dp"
             android:background="@color/color_transport_mean_selected_1"
             android:visibility="gone"
@@ -76,7 +76,7 @@
             android:layout_below="@id/image_instruction1"
             android:id="@+id/view_separation_transport_mean3"
             android:layout_marginLeft="24dp"
-            android:layout_width="1dp"
+            android:layout_width="4dp"
             android:layout_height="32dp"
             android:background="@color/color_transport_mean_selected_2"
             android:visibility="gone"
@@ -85,7 +85,7 @@
             android:layout_below="@id/image_instruction1"
             android:id="@+id/view_separation_transport_mean4"
             android:layout_marginLeft="24dp"
-            android:layout_width="1dp"
+            android:layout_width="4dp"
             android:layout_height="32dp"
             android:background="@color/color_transport_mean_selected_3"
             android:visibility="gone"
@@ -94,7 +94,7 @@
             android:layout_below="@id/image_instruction1"
             android:id="@+id/view_separation_transport_mean5"
             android:layout_marginLeft="24dp"
-            android:layout_width="1dp"
+            android:layout_width="4dp"
             android:layout_height="32dp"
             android:background="@color/color_transport_mean_selected_4"
             android:visibility="gone"

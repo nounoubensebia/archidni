@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:layout_marginBottom="8dp"
     android:id="@+id/container"
     android:layout_marginRight="8dp">
     <LinearLayout
@@ -37,6 +38,8 @@
             android:textColor="#000" />
 
         <TextView
+            android:id="@+id/text_perturbations"
+            android:visibility="gone"
             android:layout_marginTop="4dp"
             android:drawablePadding="4dp"
             android:layout_width="wrap_content"
@@ -63,11 +66,7 @@
             android:textSize="12sp" />
 
     </LinearLayout>
-    <View
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#EDEDED"/>
+
     </LinearLayout>
     <ImageView
         android:layout_marginLeft="8dp"

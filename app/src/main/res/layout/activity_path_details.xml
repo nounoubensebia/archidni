@@ -81,7 +81,7 @@
                         android:paddingTop="8dp"
                         android:paddingBottom="8dp"
                         android:text="Commencer la navigation"
-                        android:textAllCaps="false"
+                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.Button"
                         android:gravity="center"
                         android:background="@drawable/shape_green_rounded"
                         android:textColor="#FFF"
@@ -106,7 +106,6 @@
                     android:paddingRight="8dp"
                     android:paddingTop="8dp"
                     android:text="Signaler des perturbations ou des informations erronées"
-                    android:textAllCaps="false"
                     android:textAppearance="?android:attr/textAppearanceButton"
                     android:textColor="#FFF"
                     android:visibility="visible" />

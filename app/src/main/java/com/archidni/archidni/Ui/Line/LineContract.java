@@ -31,6 +31,7 @@ public interface LineContract {
         void hideMapLoadingLayout ();
         void moveCamera (Coordinate coordinate,int zoom);
         void startNewsAndNotificationsActivity(Line line);
+        void startTarifsActivity (Line line);
     }
 
     public interface Presenter {
@@ -44,5 +45,6 @@ public interface LineContract {
         void onInboundOutboundClicked(boolean outboundClicked);
         void onMapLoaded ();
         void onShowNewsAndNotificationsClick();
+        void onTarifsClicked ();
     }
 }

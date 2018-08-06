@@ -1,5 +1,6 @@
 package com.archidni.archidni.Ui.PathDetails;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -10,17 +11,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Path.PathInstruction;
+import com.archidni.archidni.Model.Path.WaitLine;
+import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.R;
+import com.archidni.archidni.Ui.Adapters.LineInsideWaitInstructionAdapter;
 import com.archidni.archidni.Ui.Adapters.PathInstructionAdapter;
 import com.archidni.archidni.Ui.Adapters.PathInstructionRecyclerAdapter;
+import com.archidni.archidni.Ui.Line.LineActivity;
 import com.archidni.archidni.Ui.PathNavigation.PathNavigationActivity;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.UiUtils.ArchidniMap;
+import com.archidni.archidni.UiUtils.DialogUtils;
 import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -42,6 +49,8 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     TextView durationText;
     @BindView(R.id.scrollView)
     View scrollView;
+
+    private Dialog lineSearchDialog;
 
     private ArchidniGoogleMap archidniMap;
 
@@ -138,7 +147,12 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
             }
         },250);*/
         PathInstructionRecyclerAdapter pathInstructionRecyclerAdapter =
-                new PathInstructionRecyclerAdapter(this,path.getPathInstructions());
+                new PathInstructionRecyclerAdapter(this, path.getPathInstructions(), new LineInsideWaitInstructionAdapter.OnItemClick() {
+                    @Override
+                    public void onItemClick(WaitLine waitLine) {
+                        presenter.onLineItemClick(PathDetailsActivity.this,waitLine.getLine());
+                    }
+                });
         instructionsList.setLayoutManager(new LinearLayoutManager(this){
             @Override
             public boolean canScrollVertically() {
@@ -171,6 +185,29 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
         Intent intent = new Intent(this, PathNavigationActivity.class);
         intent.putExtra(IntentUtils.PATH,path);
         startActivity(intent);
+    }
+
+    @Override
+    public void showLineSearchDialog() {
+        lineSearchDialog = DialogUtils.buildProgressDialog("Veuillez patientez",this);
+        lineSearchDialog.show();
+    }
+
+    @Override
+    public void hideLineSearchDialog() {
+        lineSearchDialog.hide();
+    }
+
+    @Override
+    public void startLineActivity(Line line) {
+        Intent intent = new Intent(this, LineActivity.class);
+        intent.putExtra(IntentUtils.LINE_LINE,line.toJson());
+        startActivity(intent);
+    }
+
+    @Override
+    public void showLineSearchError() {
+        Toast.makeText(this,"Une erreur s'est produite",Toast.LENGTH_LONG).show();
     }
 
     @Override

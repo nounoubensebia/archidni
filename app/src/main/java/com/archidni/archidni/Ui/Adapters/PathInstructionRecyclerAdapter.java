@@ -36,11 +36,13 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
     private static final int TYPE_WAIT = 1;
     private static final int TYPE_RIDE = 2;
 
+    private LineInsideWaitInstructionAdapter.OnItemClick onItemClick;
 
-    public PathInstructionRecyclerAdapter(Context context,
-                                          ArrayList<PathInstruction> pathInstructions) {
+
+    public PathInstructionRecyclerAdapter(Context context, ArrayList<PathInstruction> pathInstructions, LineInsideWaitInstructionAdapter.OnItemClick onItemClick) {
         this.context = context;
         this.pathInstructions = pathInstructions;
+        this.onItemClick = onItemClick;
     }
 
     @Override
@@ -125,7 +127,7 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
                 waitInstruction.getWaitLines(), new LineInsideWaitInstructionAdapter.OnItemClick() {
             @Override
             public void onItemClick(WaitLine waitLine) {
-
+                onItemClick.onItemClick(waitLine);
             }
         }
         );
