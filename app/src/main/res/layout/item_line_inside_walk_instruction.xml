@@ -28,19 +28,18 @@
 
 
         <TextView
+            android:drawableLeft="@drawable/ic_transport_mean_2_enabled"
             android:id="@+id/text_line_name"
             android:textStyle="bold"
             android:drawablePadding="4dp"
-            android:drawableLeft="@drawable/ic_transport_mean_2_enabled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Ligne 12 vers Alger"
             android:textColor="#000" />
-
         <TextView
             android:id="@+id/text_perturbations"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_marginTop="4dp"
             android:drawablePadding="4dp"
             android:layout_width="wrap_content"
@@ -50,10 +49,10 @@
             android:text="Des perturbations ont été signalées sur cette ligne"
             android:textColor="#000" />
 
-
         <TextView
             android:id="@+id/text_duration"
             android:layout_marginTop="8dp"
+            android:layout_marginLeft="26dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingTop="4dp"
@@ -65,6 +64,9 @@
             android:text="Temps d'attente moyen 12 minutes"
             android:textColor="@color/color_transport_mean_selected_3"
             android:textSize="12sp" />
+
+
+
 
     </LinearLayout>
 

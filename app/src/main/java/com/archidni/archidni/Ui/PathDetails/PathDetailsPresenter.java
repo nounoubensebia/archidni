@@ -7,6 +7,7 @@ import com.archidni.archidni.Model.LineStationSuggestion;
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.LineSkeleton;
+import com.archidni.archidni.Model.Transport.Station;
 
 
 /**
@@ -63,5 +64,10 @@ public class PathDetailsPresenter implements PathDetailsContract.Presenter {
                         view.showLineSearchError();
                     }
                 });
+    }
+
+    @Override
+    public void onStationItemClick(Context context, Station station) {
+        view.startStationActivity(station);
     }
 }

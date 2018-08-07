@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/container"
     android:animateLayoutChanges="true"
     android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical">
@@ -20,7 +21,6 @@
             android:id="@+id/icon_transport_mode"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_gravity="center"
             app:srcCompat="@drawable/ic_transport_mean_2_enabled" />
 
         <LinearLayout
@@ -38,15 +38,16 @@
                 android:text="Prendre le bus"
                 android:textColor="#000"
                 android:textSize="20sp" />
-            android:layout_height="1dp" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/layout_origin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -70,7 +71,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
@@ -82,7 +83,8 @@
                         android:background="@color/color_transport_mean_selected_2" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:id="@+id/layout_stations"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
@@ -109,6 +111,7 @@
                     android:visibility="visible" />
 
                 <LinearLayout
+                    android:id="@+id/layout_destination"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">

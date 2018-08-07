@@ -202,7 +202,7 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
         for (Station station:stations)
         {
             archidniMap.prepareMarker(station.getCoordinate(),station.getTransportMean()
-                    .getMarkerInsideLineDrawable(),0.5f,0.5f);
+                    .getMarkerInsideLineDrawable(),0.5f,0.5f,station.getName());
         }
         archidniMap.addPreparedAnnotations();
     }

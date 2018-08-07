@@ -22,10 +22,12 @@ public class StationInsideRideInstructionAdapter extends RecyclerView.Adapter<St
 
     private Context context;
     private ArrayList<Station> stations;
+    private OnStationClickListener onStationClickListener;
 
-    public StationInsideRideInstructionAdapter(Context context, ArrayList<Station> stations) {
+    public StationInsideRideInstructionAdapter(Context context, ArrayList<Station> stations, OnStationClickListener onStationClickListener) {
         this.context = context;
         this.stations = stations;
+        this.onStationClickListener = onStationClickListener;
     }
 
     @NonNull
@@ -38,11 +40,16 @@ public class StationInsideRideInstructionAdapter extends RecyclerView.Adapter<St
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Station station = stations.get(position);
+        final Station station = stations.get(position);
         holder.labelText.setText(station.getName());
         holder.instructionImage.setImageDrawable(ContextCompat.getDrawable(context,station.getTransportMean().getStationCirleDrawableId()));
         holder.separationView.setBackgroundColor(ContextCompat.getColor(context,station.getTransportMean().getColor()));
-
+        holder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onStationClickListener.onStationClick(station);
+            }
+        });
     }
 
     @Override
@@ -57,10 +64,17 @@ public class StationInsideRideInstructionAdapter extends RecyclerView.Adapter<St
         TextView labelText;
         @BindView(R.id.view_separation_transport_mean1)
         View separationView;
+        @BindView(R.id.root)
+        View container;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public interface OnStationClickListener
+    {
+        public void onStationClick (Station station);
     }
 }

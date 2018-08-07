@@ -5,6 +5,7 @@ import android.content.Context;
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.LineSkeleton;
+import com.archidni.archidni.Model.Transport.Station;
 
 /**
  * Created by noure on 12/02/2018.
@@ -19,6 +20,7 @@ public interface PathDetailsContract {
         void hideLineSearchDialog ();
         void startLineActivity (Line line);
         void showLineSearchError ();
+        void startStationActivity(Station station);
     }
 
     public interface Presenter {
@@ -26,5 +28,6 @@ public interface PathDetailsContract {
         void onMapReady();
         void onStartNavigationClick();
         void onLineItemClick (Context context, LineSkeleton lineSkeleton);
+        void onStationItemClick (Context context, Station station);
     }
 }

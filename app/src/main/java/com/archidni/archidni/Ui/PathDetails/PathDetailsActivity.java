@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Path.Path;
@@ -28,8 +29,10 @@ import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.LineInsideWaitInstructionAdapter;
 import com.archidni.archidni.Ui.Adapters.PathInstructionAdapter;
 import com.archidni.archidni.Ui.Adapters.PathInstructionRecyclerAdapter;
+import com.archidni.archidni.Ui.Adapters.StationInsideRideInstructionAdapter;
 import com.archidni.archidni.Ui.Line.LineActivity;
 import com.archidni.archidni.Ui.PathNavigation.PathNavigationActivity;
+import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.UiUtils.DialogUtils;
@@ -167,9 +170,31 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
                 new PathInstructionRecyclerAdapter(this, path.getPathInstructions(), new LineInsideWaitInstructionAdapter.OnItemClick() {
                     @Override
                     public void onItemClick(WaitLine waitLine) {
-                        presenter.onLineItemClick(PathDetailsActivity.this,waitLine.getLine());
+                        presenter.onLineItemClick(PathDetailsActivity.this, waitLine.getLine());
                     }
-                },instructionsList);
+                }, new StationInsideRideInstructionAdapter.OnStationClickListener() {
+                    @Override
+                    public void onStationClick(Station station) {
+                        presenter.onStationItemClick(PathDetailsActivity.this, station);
+                    }
+                }, new PathInstructionRecyclerAdapter.OnItemSelected() {
+                    @Override
+                    public void onRideInstructionSelected(RideInstruction rideInstruction) {
+                        //archidniMap.animateCameraToBounds(rideInstruction.getPolyline(),
+                        //        (int)ViewUtils.dpToPx(PathDetailsActivity.this,30),250);
+                    }
+
+                    @Override
+                    public void onWalkInstructionSelected(WalkInstruction walkInstruction) {
+                        //archidniMap.animateCameraToBounds(walkInstruction.getPolyline(),
+                        //        (int)ViewUtils.dpToPx(PathDetailsActivity.this,30),250);
+                    }
+
+                    @Override
+                    public void onWaitInstructionSelected(WaitInstruction waitInstruction) {
+                        //archidniMap.animateCamera(waitInstruction.getCoordinate(),15,250);
+                    }
+                });
         instructionsList.setAdapter(pathInstructionRecyclerAdapter);
 
 
@@ -243,6 +268,13 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     @Override
     public void showLineSearchError() {
         Toast.makeText(this,"Une erreur s'est produite",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void startStationActivity(Station station) {
+        Intent intent = new Intent(this, StationActivity.class);
+        intent.putExtra(IntentUtils.STATION_STATION,station.toJson());
+        startActivity(intent);
     }
 
     @Override

@@ -69,7 +69,12 @@ public class RideInstruction extends MoveInstruction implements Serializable {
 
     public ArrayList<Station> getStations ()
     {
-        return new ArrayList<>(TransportUtils.getStationsFromSections(sections));
+        ArrayList<Station> stations = TransportUtils.getStationsFromSections(sections);
+        for (Station station:stations)
+        {
+            station.setTransportMean((int)transportMeanId);
+        }
+        return new ArrayList<>(stations);
     }
 
     public TransportMean getTransportMean() {

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.archidni.archidni.Model.Path.WaitLine;
@@ -65,6 +66,7 @@ public class LineInsideWaitInstructionAdapter extends RecyclerView.Adapter<LineI
                 (int)ViewUtils.dpToPx(context,4f));
         ViewUtils.changeTextViewState(context,holder.lineNameText,
                 waitLine.getLine().getTransportMean().getIconEnabled(),ViewUtils.DIRECTION_LEFT);
+
         if (waitLine.hasPerturbations())
         {
             holder.perturbationsText.setVisibility(View.VISIBLE);
@@ -90,6 +92,8 @@ public class LineInsideWaitInstructionAdapter extends RecyclerView.Adapter<LineI
         View container;
         @BindView(R.id.text_perturbations)
         TextView perturbationsText;
+        //@BindView(R.id.image_transport_mean_icon)
+        //ImageView transportMeanIcon;
 
         public ViewHolder(View itemView) {
             super(itemView);
