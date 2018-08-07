@@ -241,16 +241,6 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
                 presenter.onTarifsClicked();
             }
         });
-        scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (!scrolled)
-                {
-                    scrollView.scrollTo(0, 0);
-                    scrolled = true;
-                }
-            }
-        });
     }
 
     @Override
@@ -342,13 +332,27 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
         //listView.setVisibility(View.VISIBLE);
         //ViewUtils.justifyListViewHeightBasedOnChildren(listView);
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        ViewUtils.justifyListViewHeightBasedOnChildren(listView);
+        listView.setVisibility(View.VISIBLE);
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.scrollTo(0,0);
+            }
+        });
+        /*handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 listView.setVisibility(View.VISIBLE);
                 ViewUtils.justifyListViewHeightBasedOnChildren(listView);
+                scrollView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        scrollView.scrollTo(0,0);
+                    }
+                });
             }
-        },300);
+        },250);*/
     }
 
     @SuppressLint("NewApi")

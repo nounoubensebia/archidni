@@ -210,7 +210,7 @@ public class TransportMean extends SelectorItem implements Serializable {
         }
     }
 
-    public int getSeparationView2Id() {
+    /*public int getSeparationView2Id() {
         switch (getId())
         {
             case 0 : return R.id.view_separation1_transport_mean1;
@@ -220,7 +220,7 @@ public class TransportMean extends SelectorItem implements Serializable {
             case 4 : return R.id.view_separation_transport_mean5;
             default:return -1;
         }
-    }
+    }*/
 
     public int getWaitTextBackground ()
     {

@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_marginBottom="8dp"
+    android:paddingBottom="8dp"
     android:id="@+id/container"
-    android:layout_marginRight="8dp">
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingRight="8dp">
     <LinearLayout
         android:layout_weight="1"
         android:orientation="vertical"
@@ -34,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Ligne 12 vers Hind"
+            android:text="Ligne 12 vers Alger"
             android:textColor="#000" />
 
         <TextView
