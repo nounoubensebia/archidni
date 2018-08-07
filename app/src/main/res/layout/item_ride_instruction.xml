@@ -1,103 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
     android:background="?android:attr/selectableItemBackground"
-    android:orientation="vertical"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
+
     <LinearLayout
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:animateLayoutChanges="true"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/icon_transport_mode"
-            android:layout_gravity="center"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/ic_transport_mean_2_enabled" />
+
         <LinearLayout
+            android:animateLayoutChanges="true"
             android:layout_width="match_parent"
-            android:layout_marginRight="16dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_marginRight="16dp"
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/text_take"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Prendre le bus"
                 android:textColor="#000"
-                android:textSize="20sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="20sp" />
             android:layout_height="1dp" />
+
             <LinearLayout
-                android:layout_marginTop="8dp"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/image_origin_circle"
-                    android:layout_gravity="bottom"
-                    android:layout_marginLeft="2dp"
-                    android:src="@drawable/shape_button_circle_empty_transport_mean2"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/image_origin_circle"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="2dp"
+                        android:src="@drawable/shape_button_circle_empty_transport_mean2" />
+
                     <TextView
                         android:id="@+id/text_origin"
-                        android:layout_gravity="center"
-                        android:text="Alger"
-                        android:textColor="#000"
-                        android:layout_marginLeft="8dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="16dp"
+                        android:text="Alger"
+                        android:textColor="#000" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
-                <View
-                    android:id="@+id/view_separation"
-                    android:layout_width="4dp"
-                    android:layout_height="62dp"
-                    android:layout_marginLeft="8dp"
-                    android:background="@color/color_transport_mean_selected_2"
-                    />
-                    <TextView
-                        android:id="@+id/text_stations_number"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/view_separation"
+                        android:layout_width="4dp"
+                        android:layout_height="62dp"
+                        android:layout_marginLeft="8dp"
+                        android:background="@color/color_transport_mean_selected_2" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
-                        android:textSize="12sp"
-                        android:textColor="#000"
-                        android:text="12 arrets"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/text_stations_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_keyboard_arrow_down_black_24dp"
+                            android:gravity="center"
+                            android:text="12 arrets"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                             />
+                    </LinearLayout>
                 </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_stations"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:visibility="visible" />
+
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
                     <ImageView
                         android:id="@+id/image_destination_circle"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:layout_gravity="top"
                         android:layout_marginLeft="2dp"
-                        android:src="@drawable/shape_button_circle_empty_transport_mean2"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp" />
+                        android:src="@drawable/shape_button_circle_empty_transport_mean2" />
+
                     <TextView
                         android:id="@+id/text_destination"
-                        android:layout_gravity="center"
-                        android:text="Agha"
-                        android:textColor="#000"
-                        android:layout_marginLeft="8dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="16dp"
+                        android:text="Agha"
+                        android:textColor="#000" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -105,11 +136,11 @@
     </LinearLayout>
 
     <View
-        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:background="#EDEDED"
-        android:layout_height="1dp" />
+        android:layout_marginTop="16dp"
+        android:background="#EDEDED" />
 
 </LinearLayout>

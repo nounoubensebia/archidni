@@ -28,7 +28,9 @@ public class Station extends PathPlace implements Serializable,MainActivityPlace
         this.id = id;
     }
 
-
+    public void setTransportMean(int transportMean) {
+        this.transportMean = transportMean;
+    }
 
     public TransportMean getTransportMean() {
         return TransportMean.allTransportMeans.get(transportMean);

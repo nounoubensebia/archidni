@@ -17,8 +17,13 @@ import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Path.PathInstruction;
+import com.archidni.archidni.Model.Path.RideInstruction;
+import com.archidni.archidni.Model.Path.WaitInstruction;
 import com.archidni.archidni.Model.Path.WaitLine;
+import com.archidni.archidni.Model.Path.WalkInstruction;
 import com.archidni.archidni.Model.Transport.Line;
+import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.LineInsideWaitInstructionAdapter;
 import com.archidni.archidni.Ui.Adapters.PathInstructionAdapter;
@@ -32,6 +37,10 @@ import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.Dash;
+import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
+import com.google.android.gms.maps.model.PatternItem;
 
 import java.util.ArrayList;
 
@@ -146,13 +155,7 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
                 ViewUtils.justifyListViewHeightBasedOnChildren(instructionsList);
             }
         },250);*/
-        PathInstructionRecyclerAdapter pathInstructionRecyclerAdapter =
-                new PathInstructionRecyclerAdapter(this, path.getPathInstructions(), new LineInsideWaitInstructionAdapter.OnItemClick() {
-                    @Override
-                    public void onItemClick(WaitLine waitLine) {
-                        presenter.onLineItemClick(PathDetailsActivity.this,waitLine.getLine());
-                    }
-                });
+
         instructionsList.setLayoutManager(new LinearLayoutManager(this){
             @Override
             public boolean canScrollVertically() {
@@ -160,14 +163,46 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
             }
         });
         instructionsList.setItemAnimator(new DefaultItemAnimator());
+        PathInstructionRecyclerAdapter pathInstructionRecyclerAdapter =
+                new PathInstructionRecyclerAdapter(this, path.getPathInstructions(), new LineInsideWaitInstructionAdapter.OnItemClick() {
+                    @Override
+                    public void onItemClick(WaitLine waitLine) {
+                        presenter.onLineItemClick(PathDetailsActivity.this,waitLine.getLine());
+                    }
+                },instructionsList);
         instructionsList.setAdapter(pathInstructionRecyclerAdapter);
+
 
     }
 
     private void showInstructionsAnnotations(Path path)
     {
         ArrayList<Coordinate> pathPolyline = path.getPolyline();
-        archidniMap.preparePolyline(this,pathPolyline,R.color.opaqGray,15);
+        for (PathInstruction pathInstruction:path.getPathInstructions())
+        {
+            if (pathInstruction instanceof WalkInstruction)
+            {
+                ArrayList<PatternItem> patternItems = new ArrayList<>();
+                patternItems.add(new Dot());
+                patternItems.add(new Gap(5));
+                archidniMap.preparePolyline(this,
+                        ((WalkInstruction) pathInstruction).getPolyline(),
+                        R.color.colorGreen,15,patternItems);
+            }
+            if (pathInstruction instanceof RideInstruction)
+            {
+                RideInstruction rideInstruction = (RideInstruction) pathInstruction;
+                TransportMean transportMean = rideInstruction.getTransportMean();
+                archidniMap.preparePolyline(this,
+                        rideInstruction.getPolyline(),
+                        transportMean.getColor(),15);
+                for (Station station: rideInstruction.getStations())
+                {
+                    archidniMap.prepareMarker(station.getCoordinate(),
+                            transportMean.getMarkerInsideLineDrawable(),0.5f,0.5f,station.getName());
+                }
+            }
+        }
         archidniMap.addMarker(pathPolyline.get(0),R.drawable.ic_marker_blue_24dp);
         archidniMap.addMarker(pathPolyline.get(pathPolyline.size()-1),R.drawable.ic_marker_red_24dp);
         archidniMap.addPreparedAnnotations();

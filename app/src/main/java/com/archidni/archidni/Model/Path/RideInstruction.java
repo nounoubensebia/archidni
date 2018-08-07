@@ -5,6 +5,7 @@ import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Transport.LineSection;
 import com.archidni.archidni.Model.Transport.Section;
 import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.Model.Transport.TransportUtils;
 import com.archidni.archidni.Model.TransportMean;
 
 import java.io.Serializable;
@@ -66,6 +67,10 @@ public class RideInstruction extends MoveInstruction implements Serializable {
         return ("Descendre à la station "+sections.get(sections.size()-1).getDestination().getName());
     }
 
+    public ArrayList<Station> getStations ()
+    {
+        return new ArrayList<>(TransportUtils.getStationsFromSections(sections));
+    }
 
     public TransportMean getTransportMean() {
         return TransportMean.allTransportMeans.get((int)transportMeanId);

@@ -26,15 +26,20 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Dash;
+import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ArchidniGoogleMap  {
     private GoogleMap map;
@@ -210,6 +215,14 @@ public class ArchidniGoogleMap  {
                 .position(coordinate.toGoogleMapLatLng()));
     }
 
+    public void prepareMarker (Coordinate coordinate,int markerDrawableResource,float anchorX,
+                               float anchorY,String title)
+    {
+        map.addMarker(new MarkerOptions().anchor(anchorX,anchorY)
+                .icon(getBitmapDescriptor(markerDrawableResource))
+                .position(coordinate.toGoogleMapLatLng()).title(title));
+    }
+
     public void preparePolyline (Context context, ArrayList<Coordinate> coordinates,int colorResourceId)
     {
         ArrayList<LatLng> points = new ArrayList<>();
@@ -220,6 +233,7 @@ public class ArchidniGoogleMap  {
         map.addPolyline(new PolylineOptions().addAll(points).color(ContextCompat.getColor(context,colorResourceId)).width(6));
     }
 
+
     public void preparePolyline (Context context, ArrayList<Coordinate> coordinates,int colorResourceId,int width)
     {
         ArrayList<LatLng> points = new ArrayList<>();
@@ -227,7 +241,19 @@ public class ArchidniGoogleMap  {
         {
             points.add(new LatLng(c.getLatitude(),c.getLongitude()));
         }
+
         map.addPolyline(new PolylineOptions().addAll(points).color(ContextCompat.getColor(context,colorResourceId)).width(width));
+    }
+
+
+    public void preparePolyline (Context context, ArrayList<Coordinate> coordinates, int colorResourceId, int width, List<PatternItem> patternItems)
+    {
+        ArrayList<LatLng> points = new ArrayList<>();
+        for (Coordinate c:coordinates)
+        {
+            points.add(new LatLng(c.getLatitude(),c.getLongitude()));
+        }
+        map.addPolyline(new PolylineOptions().addAll(points).color(ContextCompat.getColor(context,colorResourceId)).width(width).pattern(patternItems));
     }
 
     public void animateCameraToBounds (ArrayList<Coordinate> bounds, final int padding, final int duration)

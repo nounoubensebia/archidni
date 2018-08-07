@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.archidni.archidni.Model.Path.PathInstruction;
@@ -18,10 +19,12 @@ import com.archidni.archidni.Model.Path.RideInstruction;
 import com.archidni.archidni.Model.Path.WaitInstruction;
 import com.archidni.archidni.Model.Path.WaitLine;
 import com.archidni.archidni.Model.Path.WalkInstruction;
+import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.R;
 import com.archidni.archidni.UiUtils.ViewUtils;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +34,9 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
 
     private Context context;
     private ArrayList<PathInstruction> pathInstructions;
+    private RecyclerView recyclerView;
+
+    private ArrayList<Boolean> expandedStations;
 
     private static final int TYPE_WALK = 0;
     private static final int TYPE_WAIT = 1;
@@ -39,10 +45,16 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
     private LineInsideWaitInstructionAdapter.OnItemClick onItemClick;
 
 
-    public PathInstructionRecyclerAdapter(Context context, ArrayList<PathInstruction> pathInstructions, LineInsideWaitInstructionAdapter.OnItemClick onItemClick) {
+    public PathInstructionRecyclerAdapter(Context context, ArrayList<PathInstruction> pathInstructions, LineInsideWaitInstructionAdapter.OnItemClick onItemClick,RecyclerView recyclerView) {
         this.context = context;
         this.pathInstructions = pathInstructions;
         this.onItemClick = onItemClick;
+        this.recyclerView = recyclerView;
+        expandedStations = new ArrayList<>();
+        for (PathInstruction pathInstruction:pathInstructions)
+        {
+            expandedStations.add(false);
+        }
     }
 
     @Override
@@ -103,7 +115,7 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
             case TYPE_RIDE :
                 RideInstructionViewHolder rideInstructionViewHolder = (RideInstructionViewHolder)
                         holder;
-                populateRideInstruction((RideInstruction)pathInstruction,rideInstructionViewHolder);
+                populateRideInstruction((RideInstruction)pathInstruction,rideInstructionViewHolder,position);
         }
     }
 
@@ -146,7 +158,7 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
     }
 
     private void populateRideInstruction (RideInstruction rideInstruction,
-                                          RideInstructionViewHolder holder)
+                                          final RideInstructionViewHolder holder, final int position)
     {
         holder.transportModeIcon.setImageDrawable(ContextCompat.getDrawable(context,
                 rideInstruction.getTransportMean().getIconEnabled()));
@@ -160,6 +172,45 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
                 rideInstruction.getTransportMean().getStationCirleDrawableId()));
         holder.destinationCircle.setImageDrawable(ContextCompat.getDrawable(context,
                 rideInstruction.getTransportMean().getStationCirleDrawableId()));
+        final ArrayList<Station> stations = rideInstruction.getStations();
+        stations.remove(0);
+        stations.remove(stations.size()-1);
+        for (Station station:stations)
+        {
+            station.setTransportMean(rideInstruction.getTransportMean().getId());
+        }
+        final StationInsideLineAdapter stationInsideLineAdapter =
+                new StationInsideLineAdapter(context,
+                        stations,null,true);
+        holder.stationsList.setVisibility(View.GONE);
+        holder.stationsList.setAdapter(new StationInsideRideInstructionAdapter(context,stations));
+        holder.stationsList.setLayoutManager(new LinearLayoutManager(context, LinearLayout.VERTICAL,false){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        //holder.stationsList.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
+
+        if (expandedStations.get(position))
+        {
+            holder.stationsList.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            holder.stationsList.setVisibility(View.GONE);
+        }
+
+        holder.stationsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //holder.stationsList.setVisibility(View.VISIBLE);
+                boolean expanded = expandedStations.get(position);
+                expandedStations.set(position,!expanded);
+                notifyDataSetChanged();
+            }
+        });
+
     }
 
     @Override
@@ -201,6 +252,8 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
         ImageView originCircle;
         @BindView(R.id.image_destination_circle)
         ImageView destinationCircle;
+        @BindView(R.id.list_stations)
+        RecyclerView stationsList;
         public RideInstructionViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

@@ -331,6 +331,8 @@
                                 android:layout_height="match_parent">
 
                                 <ListView
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginTop="16dp"
                                     android:id="@+id/list_station"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"

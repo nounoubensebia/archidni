@@ -114,11 +114,11 @@ public class TransportUtils {
         return coordinates;
     }
 
-    public static ArrayList<Station> getStationsFromSections (ArrayList<LineSection> lineSections)
+    public static ArrayList<Station> getStationsFromSections (ArrayList<? extends Section> lineSections)
     {
         ArrayList<Station> stations = new ArrayList<>();
         stations.add(lineSections.get(0).getOrigin());
-        for (LineSection lineSection : lineSections)
+        for (Section lineSection : lineSections)
         {
             stations.add(lineSection.getDestination());
         }

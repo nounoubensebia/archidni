@@ -320,7 +320,7 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     @Override
     public void showStationsOnList(final ArrayList<Station> stations) {
         StationInsideLineAdapter stationInsideLineAdapter = new StationInsideLineAdapter(this,
-                stations,null);
+                stations,null,false);
         listView.setAdapter(stationInsideLineAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

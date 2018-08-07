@@ -34,12 +34,13 @@ import java.util.ArrayList;
 
 public class StationInsideLineAdapter extends ArrayAdapter<Station> {
     private Station selectedStation=null;
+    private boolean addSeparationViewToLastItem;
 
-
-    public StationInsideLineAdapter(Context context, ArrayList<Station> stations, Station selectedStation)
+    public StationInsideLineAdapter(Context context, ArrayList<Station> stations, Station selectedStation,boolean addSeparationViewToLastItem)
     {
         super(context,0,stations);
         this.selectedStation = selectedStation;
+        this.addSeparationViewToLastItem = addSeparationViewToLastItem;
     }
 
 
@@ -54,12 +55,12 @@ public class StationInsideLineAdapter extends ArrayAdapter<Station> {
             item = LayoutInflater.from(getContext()).inflate(R.layout.item_station_inside_line,parent, false);
 
         }
-        TextView StationLabelText = (TextView) item.findViewById(R.id.text_label);
+        TextView StationLabelText = item.findViewById(R.id.text_label);
 
         StationLabelText.setText(stationTripUi.getName());
 
 
-        ImageView button = (ImageView)item.findViewById(R.id.layout_instruction1);
+        ImageView button = item.findViewById(R.id.layout_instruction1);
         button.setImageDrawable(ContextCompat.getDrawable(getContext(),getItem(position).getTransportMean().getStationCirleDrawableId()));
         View separationView = item.findViewById(stationTripUi.getTransportMean().getSeparationViewId());
         separationView.setVisibility(View.VISIBLE);
@@ -78,18 +79,19 @@ public class StationInsideLineAdapter extends ArrayAdapter<Station> {
         }
         if (position==getCount()-1)
         {
-            Resources r = item.getResources();
+            /*Resources r = item.getResources();
             float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, r.getDisplayMetrics());
             separationView.setVisibility(View.GONE);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)root.getLayoutParams();
             layoutParams.setMargins(layoutParams.leftMargin,0,layoutParams.rightMargin,(int)px);
-            root.setLayoutParams(layoutParams);
-
+            root.setLayoutParams(layoutParams);*/
+            if (!addSeparationViewToLastItem)
+                separationView.setVisibility(View.GONE);
         }
         else
         {
             separationView.setVisibility(View.VISIBLE);
-            if (position == 0)
+            /*if (position == 0)
             {
                 Resources r = item.getResources();
                 float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, r.getDisplayMetrics());
@@ -104,7 +106,8 @@ public class StationInsideLineAdapter extends ArrayAdapter<Station> {
                 layoutParams.setMargins(0,0,0,0);
                 root.setLayoutParams(layoutParams);
 
-            }}
+            }*/
+        }
 
         return item;
     }
