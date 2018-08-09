@@ -1,6 +1,7 @@
 package com.archidni.archidni.Data.Paths;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -54,7 +55,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
 
 
     public void getPaths (Context context, final PathSettings pathSettings, final OnSearchCompleted onSearchCompleted) {
-        String url;
+        final String url;
         final PathPlace departure = pathSettings.getOrigin();
         final PathPlace arrival = pathSettings.getDestination();
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
@@ -96,7 +97,6 @@ public class PathOnlineDataStore extends OnlineDataStore {
                             {
                                 String polyline = jsonObject.getString("polyline");
                                 double distance = GeoUtils.distance(GeoUtils.getPolylineFromGoogleMapsString(polyline));
-                                int duration = (int) GeoUtils.getOnFootDuration(distance);
                                 String destination;
                                 if (jsonObject.getString("destination_type").equals("station"))
                                 {
@@ -107,6 +107,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
                                 {
                                     destination = "votre destination";
                                 }
+                                int duration = jsonObject.getInt("duration")*60;
                                 int type = 0;
                                 if (i>0&&i<jsonArray.length()-1)
                                     type = WalkInstruction.TYPE_TRANSFER;
@@ -115,7 +116,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
                                         type = WalkInstruction.TYPE_ARRIVAL;
                                 WalkInstruction walkInstruction = new WalkInstruction(polyline,
                                         (float)distance
-                                        ,destination,type);
+                                        ,destination,duration,type);
                                 if (!GeoUtils.polylineContainsOnlyEquals(walkInstruction.getPolyline()))
                                 pathInstructions.add(walkInstruction);
                             }
@@ -129,7 +130,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
                                     JSONObject lineObject = linesArray.getJSONObject(l);
                                     String lineName = lineObject.getString("line_name");
                                     int transportModeId = lineObject.getInt("transport_mode_id")-1;
-                                    long duration = lineObject.getInt("duration");
+                                    long duration = lineObject.getInt("duration")*60;
                                     String destination = lineObject.getString("destination");
                                     boolean exactWaitingTime = lineObject.getBoolean("exact_waiting_time");
                                     boolean hasPerturbations = lineObject.getBoolean("has_perturbations");
@@ -175,9 +176,6 @@ public class PathOnlineDataStore extends OnlineDataStore {
 
                                 String polylineString = jsonObject.getString("polyline");
                                 float errorMargin = (float)jsonObject.getDouble("error_margin");
-                                /*RideInstruction rideInstruction = new RideInstruction(duration,
-                                        transportModeId,sections,lineLabel,destination,polylineString
-                                        ,errorMargin);*/
                                 RideInstruction rideInstruction = new RideInstruction(duration,
                                         transportModeId
                                         ,sections
@@ -207,6 +205,7 @@ public class PathOnlineDataStore extends OnlineDataStore {
                     onSearchCompleted.onResultsFound(foundPaths);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.e("ERROR PATH URL",url);
                     onSearchCompleted.onError();
                 }
             }

@@ -47,9 +47,9 @@ public class LineInsideWaitInstructionAdapter extends RecyclerView.Adapter<LineI
         final WaitLine waitLine = waitLines.get(position);
         holder.lineNameText.setText(waitLine.getLine().getName()+" vers "+waitLine.getDestination());
         if (waitLine.isExactWaitingTime())
-            holder.durationText.setText("Temps d'attente "+waitLine.getTime()+" minutes");
+            holder.durationText.setText("Temps d'attente "+(int) (waitLine.getTime())+" minutes");
         else
-            holder.durationText.setText("Temps d'attente moyen "+waitLine.getTime()+ " minutes");
+            holder.durationText.setText("Temps d'attente moyen "+(int)(waitLine.getTime()/60)+ " minutes");
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

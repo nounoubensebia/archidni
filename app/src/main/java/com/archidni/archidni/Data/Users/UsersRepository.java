@@ -57,7 +57,7 @@ public class UsersRepository extends OnlineDataStore {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                   if (error.networkResponse!=null)
+                   if (error.networkResponse!=null&&error.networkResponse.statusCode==401)
                    {
                        signupRequestCallback.onUserAlreadyExists();
                    }

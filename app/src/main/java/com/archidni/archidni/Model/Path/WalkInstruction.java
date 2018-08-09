@@ -15,16 +15,18 @@ public class WalkInstruction extends MoveInstruction implements Serializable {
     private String polyline;
     private float distance;
     private String destination;
+    private long duration;
     private int type;
 
     public static final int TYPE_DEPARTURE = 0;
     public static final int TYPE_TRANSFER = 1;
     public static final int TYPE_ARRIVAL = 2;
 
-    public WalkInstruction(String polyline, float distance, String destination, int type) {
+    public WalkInstruction(String polyline, float distance, String destination, int duration, int type) {
         this.polyline = polyline;
         this.distance = distance;
         this.destination = destination;
+        this.duration = duration;
         this.type = type;
     }
 
@@ -61,9 +63,14 @@ public class WalkInstruction extends MoveInstruction implements Serializable {
         return null;
     }
 
-    @Override
+    /*@Override
     public long getDuration() {
         return GeoUtils.getOnFootDuration((double)distance);
+    }*/
+
+    @Override
+    public long getDuration() {
+        return duration;
     }
 
     public String getDistanceString ()

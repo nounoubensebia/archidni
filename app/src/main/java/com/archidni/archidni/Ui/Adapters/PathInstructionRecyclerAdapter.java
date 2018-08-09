@@ -204,7 +204,7 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
                         get(rideInstruction.getStations().size()-1));
             }
         });
-        holder.stationsText.setText(rideInstruction.getSections().size()+" arrêts");
+        holder.stationsText.setText(rideInstruction.getSections().size()+" arrêts "+"("+rideInstruction.getDuration()/60+" minutes )");
         holder.takeText.setText("Prendre le "+rideInstruction.getTransportMean().getName());
         holder.separationView.setBackgroundColor(ContextCompat.getColor(context
                 ,rideInstruction.getTransportMean().getColor()));
