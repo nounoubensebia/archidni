@@ -11,29 +11,29 @@ public class PathNavigationPresenter implements PathNavigationContract.Presenter
     private Path path;
     private int selectedStep;
 
-    public PathNavigationPresenter(PathNavigationContract.View view, Path path) {
+    public PathNavigationPresenter(PathNavigationContract.View view, Path path,int selectedStep) {
         this.view = view;
         this.path = path;
-        selectedStep = 0;
+        this.selectedStep = selectedStep;
     }
 
     @Override
-    public void goToNextStep() {
-        if (selectedStep+1<path.getPathSteps().size())
+    public void goToNextInstruction() {
+        if (selectedStep+1<path.getPathInstructions().size())
         {
             selectedStep++;
-            view.showStepOnActivity(path.getPathSteps().get(selectedStep),selectedStep+1);
-            view.showStepOnMap(path.getPathSteps().get(selectedStep),path);
+            view.showInstructionOnActivity(path.getPathInstructions().get(selectedStep),selectedStep+1);
+            view.showInstructionOnMap(path.getPathInstructions().get(selectedStep),path);
         }
     }
 
     @Override
-    public void goToPreviousStep() {
+    public void goToPreviousInstruction() {
         if (selectedStep-1>=0)
         {
             selectedStep--;
-            view.showStepOnActivity(path.getPathSteps().get(selectedStep),selectedStep+1);
-            view.showStepOnMap(path.getPathSteps().get(selectedStep),path);
+            view.showInstructionOnActivity(path.getPathInstructions().get(selectedStep),selectedStep+1);
+            view.showInstructionOnMap(path.getPathInstructions().get(selectedStep),path);
         }
 
     }
@@ -41,11 +41,11 @@ public class PathNavigationPresenter implements PathNavigationContract.Presenter
     @Override
     public void onMapReady() {
         view.showPathOnMap(path);
-        view.showStepOnMap(path.getPathSteps().get(selectedStep),path);
+        view.showInstructionOnMap(path.getPathInstructions().get(selectedStep),path);
     }
 
     @Override
     public void onCreate() {
-        view.showStepOnActivity(path.getPathSteps().get(selectedStep),selectedStep+1);
+        view.showInstructionOnActivity(path.getPathInstructions().get(selectedStep),selectedStep+1);
     }
 }

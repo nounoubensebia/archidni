@@ -48,7 +48,7 @@ import java.util.LinkedHashMap;
  * Created by noure on 12/02/2018.
  */
 
-public class PathOnlineDataStore extends OnlineDataStore {
+public class PathOnlineDataStore extends OnlineDataStore implements PathDataStore {
 
     private static final String URL_GET_PATH = "/api/findPath";
 
@@ -224,8 +224,5 @@ public class PathOnlineDataStore extends OnlineDataStore {
         return "PATH";
     }
 
-    public interface OnSearchCompleted {
-        void onResultsFound (ArrayList<Path> paths);
-        void onError();
-    }
+
 }

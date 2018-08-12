@@ -15,7 +15,7 @@ public interface PathDetailsContract {
     public interface View {
         void showPathOnActivity(Path path);
         void showPathOnMap(Path path);
-        void startPathNavigationActivity(Path path);
+        void startPathNavigationActivity(Path path,int instructionIndex);
         void showLineSearchDialog ();
         void hideLineSearchDialog ();
         void startLineActivity (Line line);

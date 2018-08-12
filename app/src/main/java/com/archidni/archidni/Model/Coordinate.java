@@ -24,6 +24,7 @@ public class Coordinate implements Serializable {
 
 
 
+
     public double getLatitude() {
         return latitude;
     }

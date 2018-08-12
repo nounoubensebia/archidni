@@ -179,20 +179,8 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
                     }
                 }, new PathInstructionRecyclerAdapter.OnItemSelected() {
                     @Override
-                    public void onRideInstructionSelected(RideInstruction rideInstruction) {
-                        //archidniMap.animateCameraToBounds(rideInstruction.getPolyline(),
-                        //        (int)ViewUtils.dpToPx(PathDetailsActivity.this,30),250);
-                    }
-
-                    @Override
-                    public void onWalkInstructionSelected(WalkInstruction walkInstruction) {
-                        //archidniMap.animateCameraToBounds(walkInstruction.getPolyline(),
-                        //        (int)ViewUtils.dpToPx(PathDetailsActivity.this,30),250);
-                    }
-
-                    @Override
-                    public void onWaitInstructionSelected(WaitInstruction waitInstruction) {
-                        //archidniMap.animateCamera(waitInstruction.getCoordinate(),15,250);
+                    public void onItemSelected(PathInstruction pathInstruction, int position) {
+                        startPathNavigationActivity(path,position);
                     }
                 });
         instructionsList.setAdapter(pathInstructionRecyclerAdapter);
@@ -241,9 +229,10 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     }
 
     @Override
-    public void startPathNavigationActivity(Path path) {
+    public void startPathNavigationActivity(Path path,int instructionIndex) {
         Intent intent = new Intent(this, PathNavigationActivity.class);
-        intent.putExtra(IntentUtils.PATH,path);
+        intent.putExtra(IntentUtils.PATH,path.toJson());
+        intent.putExtra(IntentUtils.INSTRUCTION_INDEX,instructionIndex);
         startActivity(intent);
     }
 

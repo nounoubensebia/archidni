@@ -10,6 +10,8 @@ import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -111,5 +113,22 @@ public class ViewUtils {
         return outMetrics.heightPixels / density;
     }
 
+    public static ViewStub deflate(View view) {
+        ViewParent viewParent = view.getParent();
+        if (viewParent != null && viewParent instanceof ViewGroup) {
+            int index = ((ViewGroup) viewParent).indexOfChild(view);
+            int inflatedId = view.getId();
+            ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+            ((ViewGroup) viewParent).removeView(view);
+            Context context = ((ViewGroup) viewParent).getContext();
+            ViewStub viewStub = new ViewStub(context);
+            viewStub.setInflatedId(inflatedId);
+            viewStub.setLayoutParams(layoutParams);
+            ((ViewGroup) viewParent).addView(viewStub, index);
+            return viewStub;
+        } else {
+            throw new IllegalStateException("Inflated View has not a parent");
+        }
+    }
 
 }

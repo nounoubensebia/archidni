@@ -114,12 +114,13 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
             case TYPE_WALK :
                 WalkInstructionViewHolder walkInstructionViewHolder = (WalkInstructionViewHolder)
                         holder;
-                populateWalkInstruction((WalkInstruction)pathInstruction,walkInstructionViewHolder);
+                populateWalkInstruction((WalkInstruction)pathInstruction,walkInstructionViewHolder,position);
                 break;
             case TYPE_WAIT :
                 WaitInstructionViewHolder waitInstructionViewHolder = (WaitInstructionViewHolder)
                         holder;
-                populateWaitInstruction((WaitInstruction)pathInstruction,waitInstructionViewHolder);
+                populateWaitInstruction((WaitInstruction)pathInstruction,waitInstructionViewHolder
+                        ,position);
                 break;
             case TYPE_RIDE :
                 RideInstructionViewHolder rideInstructionViewHolder = (RideInstructionViewHolder)
@@ -129,7 +130,7 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
     }
 
     private void populateWalkInstruction (final WalkInstruction walkInstruction
-            , WalkInstructionViewHolder walkInstructionViewHolder)
+            , WalkInstructionViewHolder walkInstructionViewHolder, final int position)
     {
         walkInstructionViewHolder.typeText.setText(walkInstruction.getTtile());
         walkInstructionViewHolder.instructionText.setText(walkInstruction.getMainText());
@@ -138,18 +139,18 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
         walkInstructionViewHolder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onItemSelected.onWalkInstructionSelected(walkInstruction);
+                onItemSelected.onItemSelected(walkInstruction,position);
             }
         });
     }
 
     private void populateWaitInstruction (final WaitInstruction waitInstruction,
-                                          WaitInstructionViewHolder holder)
+                                          WaitInstructionViewHolder holder, final int position)
     {
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onItemSelected.onWaitInstructionSelected(waitInstruction);
+                onItemSelected.onItemSelected(waitInstruction,position);
             }
         });
         holder.titleText.setText(waitInstruction.getTtile());
@@ -184,7 +185,7 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onItemSelected.onRideInstructionSelected(rideInstruction);
+                onItemSelected.onItemSelected(rideInstruction,position);
             }
         });
         holder.transportModeIcon.setImageDrawable(ContextCompat.getDrawable(context,
@@ -335,8 +336,6 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
 
     public interface OnItemSelected
     {
-        void onRideInstructionSelected (RideInstruction rideInstruction);
-        void onWalkInstructionSelected (WalkInstruction walkInstruction);
-        void onWaitInstructionSelected (WaitInstruction waitInstruction);
+        void onItemSelected (PathInstruction pathInstruction,int position);
     }
 }

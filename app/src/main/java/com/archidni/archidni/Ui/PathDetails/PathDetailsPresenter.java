@@ -44,7 +44,7 @@ public class PathDetailsPresenter implements PathDetailsContract.Presenter {
 
     @Override
     public void onStartNavigationClick() {
-        view.startPathNavigationActivity(path);
+        view.startPathNavigationActivity(path,0);
     }
 
     @Override
