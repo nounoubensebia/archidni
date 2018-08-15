@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -14,24 +14,10 @@
         android:orientation="vertical">
 
 
-        <LinearLayout
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/image_previous"
-                android:layout_width="32dp"
-                android:layout_gravity="center"
-                android:layout_height="32dp"
-                android:layout_marginRight="16dp"
-                android:scaleX="-1"
-                app:srcCompat="@drawable/ic_play_arrow_transport_mean_1_24dp" />
+
             <TextView
-                android:gravity="center"
+                android:layout_marginTop="16dp"
                 android:id="@+id/text_step_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -42,21 +28,9 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:background="#EDEDED" />
 
-            <ImageView
-                android:id="@+id/image_next"
-                android:layout_width="32dp"
-                android:layout_gravity="center"
-                android:layout_height="32dp"
-                android:layout_marginLeft="16dp"
-                app:srcCompat="@drawable/ic_play_arrow_transport_mean_1_24dp" />
-        </LinearLayout>
+
+
 
         <View
             android:layout_width="match_parent"
@@ -116,7 +90,37 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+
+            <ImageView
+                android:id="@+id/image_previous"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:scaleX="-1"
+                android:layout_marginRight="8dp"
+                app:srcCompat="@drawable/ic_play_arrow_transport_mean_1_24dp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="#EDEDED" />
+
+            <ImageView
+                android:layout_marginLeft="8dp"
+                android:id="@+id/image_next"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                app:srcCompat="@drawable/ic_play_arrow_transport_mean_1_24dp" />
+        </LinearLayout>
 
 
     </LinearLayout>

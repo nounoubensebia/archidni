@@ -163,7 +163,7 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
 
         timeImage.setImageDrawable(ContextCompat.getDrawable(this,
                 waitInstruction.getWaitLines().get(0).getLine().getTransportMean().getTimesSelectedDrawable()));
-        takeText.setText("prendre le "+waitInstruction.getWaitLines().get(0).getLine().getTransportMean().getName());
+        takeText.setText("Attendre le "+waitInstruction.getWaitLines().get(0).getLine().getTransportMean().getName());
         takeLinesText.setText(waitInstruction.getTakeLineText());
         ArrayList<WaitLine> waitLinesToShow = new ArrayList<>();
         if (waitInstruction.getWaitLines().size()>2)
