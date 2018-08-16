@@ -37,6 +37,9 @@
 
 
 
+
+
+    </android.support.design.widget.CoordinatorLayout>
     <FrameLayout
         android:id="@+id/layout_instruction"
         android:layout_width="match_parent"
@@ -49,6 +52,4 @@
 
 
     </FrameLayout>
-
-    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

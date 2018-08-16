@@ -33,7 +33,7 @@ public interface MainContract {
         void showLocationLayout(MainActivityPlace place,
                                 com.google.android.gms.maps.model.Marker oldSelectedMarker,
                                 MainActivityPlace oldSelectedLocation,
-                                com.google.android.gms.maps.model.Marker marker);
+                                com.google.android.gms.maps.model.Marker marker,Coordinate userLocation);
         void hideLocationLayout(com.google.android.gms.maps.model.Marker marker, ArchidniClusterItem archidniClusterItem);
         void startPathSearchActivity(PathPlace origin, PathPlace destination);
         void showLinesLoadingLayout();

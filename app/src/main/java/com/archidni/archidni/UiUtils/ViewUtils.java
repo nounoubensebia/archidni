@@ -3,6 +3,7 @@ package com.archidni.archidni.UiUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
@@ -103,7 +104,7 @@ public class ViewUtils {
         listView.requestLayout();
     }
 
-    public static float getScreenHeight (Activity activity)
+    public static float getScreenHeightInDp(Activity activity)
     {
         Display display = activity.getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics ();
@@ -111,6 +112,16 @@ public class ViewUtils {
 
         float density  = activity.getResources().getDisplayMetrics().density;
         return outMetrics.heightPixels / density;
+    }
+
+    public static float getScreenWidthInDp(Activity activity)
+    {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        float density  = activity.getResources().getDisplayMetrics().density;
+        return outMetrics.widthPixels / density;
     }
 
     public static ViewStub deflate(View view) {

@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.archidni.archidni.IntentUtils;
+import com.archidni.archidni.LocationListener;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.R;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
@@ -29,11 +30,22 @@ public class SetLocationActivity extends AppCompatActivity {
 
     ArchidniGoogleMap archidniMap;
 
+    LocationListener locationListener;
+
+    Coordinate userCoordinate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_location);
         initViews(savedInstanceState);
+        locationListener = new LocationListener(this);
+        locationListener.listenForLocationUpdates(new LocationListener.OnUserLocationUpdated() {
+            @Override
+            public void onUserLocationUpdated(Coordinate userLocation) {
+                userCoordinate = userLocation;
+            }
+        });
     }
 
     private void initViews(Bundle savedInstanceState)
@@ -44,9 +56,10 @@ public class SetLocationActivity extends AppCompatActivity {
 
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                if (archidniMap.getUserLocation()!=null)
+                archidniMap.setMyLocationEnabled(true);
+                if (userCoordinate!=null)
                 {
-                    archidniMap.moveCamera(archidniMap.getUserLocation(),15);
+                    archidniMap.moveCamera(userCoordinate,15);
                 }
                 else
                 {
@@ -66,9 +79,9 @@ public class SetLocationActivity extends AppCompatActivity {
         myPositionText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (archidniMap.getUserLocation()!=null)
+                if (userCoordinate!=null)
                 {
-                    archidniMap.moveCamera(archidniMap.getUserLocation(),15);
+                    archidniMap.moveCamera(userCoordinate,15);
                 }
                 else
                 {

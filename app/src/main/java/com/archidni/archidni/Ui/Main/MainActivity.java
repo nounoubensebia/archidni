@@ -576,18 +576,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @SuppressLint("SetTextI18n")
     @Override
     public void showLocationLayout(MainActivityPlace mapPlace, Marker oldSelectedMarker,
-                                   MainActivityPlace oldMapPlace,Marker marker) {
+                                   MainActivityPlace oldMapPlace,Marker marker,Coordinate userLocation) {
         container.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         mainText.setText(mapPlace.getName());
         secondaryText.setText(mapPlace.getDescription());
         slideOutSearchText();
-        if (archidniMap.getUserLocation()!=null)
+        if (userLocation!=null)
         {
             durationDistanceText.setText(StringUtils
-                    .getTextFromDistance(GeoUtils.distance(archidniMap.getUserLocation(),
+                    .getTextFromDistance(GeoUtils.distance(userLocation,
                             mapPlace.getCoordinate()))+", "+
-                    StringUtils.getTextFromDuration(GeoUtils.getOnFootDuration(archidniMap
-                                    .getUserLocation(),
+                    StringUtils.getTextFromDuration(GeoUtils.getOnFootDuration(userLocation,
                             mapPlace.getCoordinate()))+" de marche");
 
         }

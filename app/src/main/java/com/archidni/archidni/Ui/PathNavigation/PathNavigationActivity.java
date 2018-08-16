@@ -14,12 +14,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.archidni.archidni.IntentUtils;
+import com.archidni.archidni.LocationListener;
+import com.archidni.archidni.Model.Coordinate;
+import com.archidni.archidni.Model.Path.MoveInstruction;
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Path.PathInstruction;
 import com.archidni.archidni.Model.Path.RideInstruction;
 import com.archidni.archidni.Model.Path.WaitInstruction;
 import com.archidni.archidni.Model.Path.WaitLine;
 import com.archidni.archidni.Model.Path.WalkInstruction;
+import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.LineInsideWaitInstructionAdapter;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
@@ -27,6 +32,10 @@ import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.PatternItem;
 
 
 import java.util.ArrayList;
@@ -47,6 +56,8 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
     @BindView(R.id.layout_instruction)
     FrameLayout instructionLayout;
 
+    private LocationListener locationListener;
+
     View inflatedView;
 
     @Override
@@ -59,16 +70,38 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
         setContentView(R.layout.activity_path_navigation);
         initViews(savedInstanceState);
         presenter.onCreate();
+        locationListener = new LocationListener(this);
     }
 
     private void initViews (Bundle sis)
     {
         ButterKnife.bind(this);
-        MapFragment mapView = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
+        final MapFragment mapView = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
         map = new ArchidniGoogleMap(this, mapView, new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
+                map.setMyLocationEnabled(true);
+            }
+        }, new ArchidniGoogleMap.OnMapLoaded() {
+            @Override
+            public void onMapLoaded(Coordinate coordinate, LatLngBounds latLngBounds, double zoom) {
                 presenter.onMapReady();
+            }
+        });
+        myPositionText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                locationListener.getLastKnownUserLocation(new LocationListener.OnUserLocationUpdated() {
+                    @Override
+                    public void onUserLocationUpdated(Coordinate userLocation) {
+                        if (map.getMap().getCameraPosition().zoom<15)
+                            map.animateCamera(userLocation,15,250);
+                        else
+                            map.animateCamera(userLocation,250);
+                    }
+                });
+
             }
         });
     }
@@ -125,7 +158,16 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
 
     @Override
     public void showInstructionOnMap(PathInstruction pathStep, Path path) {
-
+        if (pathStep instanceof MoveInstruction)
+        {
+            MoveInstruction moveInstruction = (MoveInstruction) pathStep;
+            animateMapCameraToFitBounds(moveInstruction.getPolyline());
+        }
+        else
+        {
+            WaitInstruction waitInstruction = (WaitInstruction) pathStep;
+            map.animateCamera(waitInstruction.getCoordinate(),15,500);
+        }
     }
 
     private void showWalkInstructionOnActivity (WalkInstruction walkInstruction)
@@ -152,6 +194,7 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
                 +rideInstruction.getStations().get(rideInstruction.getStations().size()-1).getName());
         stopsText.setTextColor(ContextCompat.getColor(this,rideInstruction.getTransportMean().getColor()));
     }
+
 
     private void showWaitInstructionOnActivity (WaitInstruction waitInstruction)
     {
@@ -200,7 +243,52 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
 
     @Override
     public void showPathOnMap(Path path) {
+        showInstructionsAnnotations(path);
+        animateMapCameraToFitBounds(path.getPolyline());
+    }
 
+
+    private void animateMapCameraToFitBounds (ArrayList<Coordinate> polyline)
+    {
+        /*float mapWidth = ViewUtils.dpToPx(this,ViewUtils.getScreenWidthInDp(this));
+        float mapHeight = ViewUtils.dpToPx(this,ViewUtils.getScreenHeightInDp(this))-
+                instructionLayout.getHeight();
+        map.animateCameraToBounds(polyline,(int)ViewUtils.dpToPx(this,32),(int) mapWidth,
+                (int)mapHeight,250);*/
+        map.animateCameraToBounds(polyline,(int)ViewUtils.dpToPx(this,32),500);
+    }
+
+    private void showInstructionsAnnotations(Path path)
+    {
+        ArrayList<Coordinate> pathPolyline = path.getPolyline();
+        for (PathInstruction pathInstruction:path.getPathInstructions())
+        {
+            if (pathInstruction instanceof WalkInstruction)
+            {
+                ArrayList<PatternItem> patternItems = new ArrayList<>();
+                patternItems.add(new Dot());
+                patternItems.add(new Gap(5));
+                map.preparePolyline(this,
+                        ((WalkInstruction) pathInstruction).getPolyline(),
+                        R.color.colorGreen,15,patternItems);
+            }
+            if (pathInstruction instanceof RideInstruction)
+            {
+                RideInstruction rideInstruction = (RideInstruction) pathInstruction;
+                TransportMean transportMean = rideInstruction.getTransportMean();
+                map.preparePolyline(this,
+                        rideInstruction.getPolyline(),
+                        transportMean.getColor(),15);
+                for (Station station: rideInstruction.getStations())
+                {
+                    map.prepareMarker(station.getCoordinate(),
+                            transportMean.getMarkerInsideLineDrawable(),0.5f,0.5f,station.getName());
+                }
+            }
+        }
+        map.addMarker(pathPolyline.get(0),R.drawable.ic_marker_blue_24dp);
+        map.addMarker(pathPolyline.get(pathPolyline.size()-1),R.drawable.ic_marker_red_24dp);
+        map.addPreparedAnnotations();
     }
 
 

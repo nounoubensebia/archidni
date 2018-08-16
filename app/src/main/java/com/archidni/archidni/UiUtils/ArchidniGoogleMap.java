@@ -168,11 +168,7 @@ public class ArchidniGoogleMap  {
     {
         map.setMyLocationEnabled(enabled);
     }
-
-    public Coordinate getUserLocation ()
-    {
-        return userLocation;
-    }
+    
 
 
 
@@ -180,6 +176,7 @@ public class ArchidniGoogleMap  {
     {
        //TODO IMPLEMENT
     }
+
 
 
     public void setOnMapLongClickListener (final OnMapLongClickListener onMapLongClickListener)
@@ -256,6 +253,22 @@ public class ArchidniGoogleMap  {
         map.addPolyline(new PolylineOptions().addAll(points).color(ContextCompat.getColor(context,colorResourceId)).width(width).pattern(patternItems));
     }
 
+
+    public void animateCamera (Coordinate coordinate,int duration)
+    {
+        map.animateCamera(CameraUpdateFactory.newLatLng(coordinate.toGoogleMapLatLng()), duration, new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+    }
+
     public void animateCameraToBounds (ArrayList<Coordinate> bounds, final int padding, final int duration)
     {
         final LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -302,6 +315,16 @@ public class ArchidniGoogleMap  {
                 }
             });
         }
+    }
+
+    public void animateCameraToBounds (ArrayList<Coordinate> bounds,int padding,int height,int width,int duration)
+    {
+        final LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (Coordinate c:bounds)
+        {
+            builder.include(c.toGoogleMapLatLng());
+        }
+        map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),width,height,padding));
     }
 
 

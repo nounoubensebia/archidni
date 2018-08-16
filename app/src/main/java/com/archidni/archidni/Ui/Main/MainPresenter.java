@@ -290,7 +290,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onStationMarkerClick(Station station, Marker marker,ArchidniClusterItem archidniClusterItem) {
-            view.showLocationLayout(station,selectedMarker,(MainActivityPlace)selectedLocation,marker);
+            view.showLocationLayout(station,selectedMarker,(MainActivityPlace)selectedLocation,marker,userCoordinate);
             selectedMarker = marker;
             this.selectedClusterItem = archidniClusterItem;
             locationLayoutVisible = true;
@@ -300,7 +300,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onParkingMarkerClick(Parking parking, Marker marker,ArchidniClusterItem archidniClusterItem) {
-        view.showLocationLayout(parking,selectedMarker,(MainActivityPlace)selectedLocation,marker);
+        view.showLocationLayout(parking,selectedMarker,(MainActivityPlace)selectedLocation,marker,userCoordinate);
         selectedMarker = marker;
         locationLayoutVisible = true;
         this.selectedClusterItem = archidniClusterItem;
