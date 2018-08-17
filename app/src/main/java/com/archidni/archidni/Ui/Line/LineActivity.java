@@ -84,6 +84,12 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     ImageView arrow2Image;
     @BindView(R.id.scrollView)
     ScrollView scrollView;
+    @BindView(R.id.layout_schedule)
+    View scheduleLayout;
+    @BindView(R.id.text_schedule)
+    TextView scheduleText;
+    @BindView(R.id.image_arrow3)
+    ImageView arrow3Image;
 
     private Menu mMenu;
 
@@ -241,6 +247,8 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
                 presenter.onTarifsClicked();
             }
         });
+        scheduleText.setTextColor(ContextCompat.getColor(this,line.getTransportMean().getColor()));
+        arrow3Image.setImageDrawable(ContextCompat.getDrawable(this,line.getTransportMean().getArriwIconDrawableId()));
     }
 
     @Override

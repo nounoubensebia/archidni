@@ -44,6 +44,11 @@ public class WaitInstruction extends PathInstruction implements Serializable {
         else return (getDuration()/60+" minutes");
     }*/
 
+    public TransportMean getTransportMean ()
+    {
+        return waitLines.get(0).getLine().getTransportMean();
+    }
+
     public ArrayList<WaitLine> getWaitLines() {
         return waitLines;
     }

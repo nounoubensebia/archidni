@@ -14,6 +14,7 @@ import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Path.PathSettings;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.R;
+import com.archidni.archidni.TimeUtils;
 
 import java.util.ArrayList;
 
@@ -47,7 +48,8 @@ public class PathSuggestionAdapter extends RecyclerView.Adapter<PathSuggestionAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Path path = paths.get(position);
-        holder.etaText.setText(path.getEtaText(pathSettings.getDepartureTime()));
+        holder.arrivalText.setText("Arrivée à "+path.getEtaText(pathSettings.getDepartureTime()));
+        holder.departureText.setText("Départ à "+ StringUtils.getTimeString(path.getPathSettings().getDepartureTime()));
         holder.etaMinutesText.setText((int)path.getDurationInMinutes()+"");
         holder.transportMean2Image.setVisibility(View.GONE);
         holder.transportMean3Image.setVisibility(View.GONE);
@@ -90,7 +92,8 @@ public class PathSuggestionAdapter extends RecyclerView.Adapter<PathSuggestionAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView etaText;
+        TextView arrivalText;
+        TextView departureText;
         TextView etaMinutesText;
         ImageView transportMean1Image;
         ImageView transportMean2Image;
@@ -98,8 +101,9 @@ public class PathSuggestionAdapter extends RecyclerView.Adapter<PathSuggestionAd
         View root;
         public ViewHolder(View itemView) {
             super(itemView);
-            etaText = (TextView)itemView.findViewById(R.id.text_eta);
+            arrivalText = (TextView)itemView.findViewById(R.id.text_arrival);
             etaMinutesText =(TextView)itemView.findViewById(R.id.text_eta_minutes);
+            departureText = itemView.findViewById(R.id.text_departure);
             transportMean1Image = (ImageView)itemView.findViewById(R.id.image_transport_mean_1);
             transportMean2Image = (ImageView)itemView.findViewById(R.id.image_transport_mean_2);
             transportMean3Image = (ImageView)itemView.findViewById(R.id.image_transport_mean_3);

@@ -49,7 +49,7 @@
         </LinearLayout>
 
         <View
-            android:id="@+id/view_separation_transport_mean1"
+            android:id="@+id/view_separation_transport_mean"
             android:layout_width="4dp"
             android:layout_height="32dp"
             android:layout_below="@id/image_instruction1"
@@ -58,41 +58,6 @@
             android:visibility="visible"
             tools:visibility="visible" />
 
-        <View
-            android:id="@+id/view_separation_transport_mean2"
-            android:layout_width="4dp"
-            android:layout_height="32dp"
-            android:layout_below="@id/image_instruction1"
-            android:layout_marginLeft="6dp"
-            android:background="@color/color_transport_mean_selected_1"
-            android:visibility="gone" />
-
-        <View
-            android:id="@+id/view_separation_transport_mean3"
-            android:layout_width="4dp"
-            android:layout_height="32dp"
-            android:layout_below="@id/image_instruction1"
-            android:layout_marginLeft="6dp"
-            android:background="@color/color_transport_mean_selected_2"
-            android:visibility="gone" />
-
-        <View
-            android:id="@+id/view_separation_transport_mean4"
-            android:layout_width="4dp"
-            android:layout_height="32dp"
-            android:layout_below="@id/image_instruction1"
-            android:layout_marginLeft="6dp"
-            android:background="@color/color_transport_mean_selected_3"
-            android:visibility="gone" />
-
-        <View
-            android:id="@+id/view_separation_transport_mean5"
-            android:layout_width="4dp"
-            android:layout_height="32dp"
-            android:layout_below="@id/image_instruction1"
-            android:layout_marginLeft="6dp"
-            android:background="@color/color_transport_mean_selected_4"
-            android:visibility="gone" />
     </RelativeLayout>
 
 </LinearLayout>

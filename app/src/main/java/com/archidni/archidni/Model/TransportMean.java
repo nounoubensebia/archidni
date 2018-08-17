@@ -1,7 +1,5 @@
 package com.archidni.archidni.Model;
 
-import android.graphics.drawable.Drawable;
-
 import com.archidni.archidni.App;
 import com.archidni.archidni.R;
 import com.archidni.archidni.UiUtils.SelectorItem;
@@ -198,29 +196,7 @@ public class TransportMean extends SelectorItem implements Serializable {
         }
     }
 
-    public int getSeparationViewId() {
-        switch (getId())
-        {
-            case 0 : return R.id.view_separation_transport_mean1;
-            case 1 : return R.id.view_separation_transport_mean2;
-            case 2 : return R.id.view_separation_transport_mean3;
-            case 3 : return R.id.view_separation_transport_mean4;
-            case 4 : return R.id.view_separation_transport_mean5;
-            default:return -1;
-        }
-    }
 
-    /*public int getSeparationView2Id() {
-        switch (getId())
-        {
-            case 0 : return R.id.view_separation1_transport_mean1;
-            case 1 : return R.id.view_separation1_transport_mean2;
-            case 2 : return R.id.view_separation1_transport_mean3;
-            case 3 : return R.id.view_separation1_transport_mean4;
-            case 4 : return R.id.view_separation_transport_mean5;
-            default:return -1;
-        }
-    }*/
 
     public int getWaitTextBackground ()
     {

@@ -72,7 +72,7 @@ public class StationInsideRideInstructionAdapter extends RecyclerView.Adapter<St
         ImageView instructionImage;
         @BindView(R.id.text_label)
         TextView labelText;
-        @BindView(R.id.view_separation_transport_mean1)
+        @BindView(R.id.view_separation_transport_mean)
         View separationView;
         @BindView(R.id.root)
         View container;

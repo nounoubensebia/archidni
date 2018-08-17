@@ -85,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
-                    android:text="Plus"
+                    android:text="Plus de lignes"
                     android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>

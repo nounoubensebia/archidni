@@ -10,17 +10,14 @@ package com.archidni.archidni.Ui.Adapters;
 
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.archidni.archidni.Model.Transport.Station;
@@ -62,8 +59,9 @@ public class StationInsideLineAdapter extends ArrayAdapter<Station> {
 
         ImageView button = item.findViewById(R.id.layout_instruction1);
         button.setImageDrawable(ContextCompat.getDrawable(getContext(),getItem(position).getTransportMean().getStationCirleDrawableId()));
-        View separationView = item.findViewById(stationTripUi.getTransportMean().getSeparationViewId());
-        separationView.setVisibility(View.VISIBLE);
+        View separationView = item.findViewById(R.id.view_separation_transport_mean);
+        separationView.setBackgroundColor(ContextCompat.getColor(getContext(),stationTripUi.getTransportMean().getColor()));
+        //separationView.setVisibility(View.VISIBLE);
         View root = item.findViewById(R.id.root);
 
         if (isSelected(stationTripUi))
@@ -80,7 +78,9 @@ public class StationInsideLineAdapter extends ArrayAdapter<Station> {
         if (position==getCount()-1)
         {
             if (!addSeparationViewToLastItem)
+            {
                 separationView.setVisibility(View.GONE);
+            }
         }
         else
         {

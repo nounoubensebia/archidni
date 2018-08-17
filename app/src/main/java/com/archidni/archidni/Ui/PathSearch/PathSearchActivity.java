@@ -207,6 +207,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     @Override
     public void showPathSuggestions(ArrayList<Path> paths,PathSettings pathSettings) {
         progressBar.setVisibility(View.GONE);
+        recyclerView.setNestedScrollingEnabled(false);
         pathSuggestionsLayout.setVisibility(View.VISIBLE);
         PathSuggestionAdapter pathSuggestionAdapter = new PathSuggestionAdapter(this,paths,
                 pathSettings);

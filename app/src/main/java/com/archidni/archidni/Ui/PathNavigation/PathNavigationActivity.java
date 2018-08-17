@@ -2,6 +2,7 @@ package com.archidni.archidni.Ui.PathNavigation;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -191,6 +192,15 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
         descriptionText.setText(walkInstruction.getMainText());
         distanceText.setText(walkInstruction.getDistanceString());
         durationText.setText(walkInstruction.getDuration()+" minutes");
+        TextView stepCountText = findViewById(R.id.text_step_count);
+        stepCountText.setTextColor(ContextCompat.getColor(this,
+                TransportMean.allTransportMeans.get(TransportMean.ID_BUS).getColor()));
+        ImageView nextImage = findViewById(R.id.image_next);
+        ImageView previousImage = findViewById(R.id.image_previous);
+        Drawable drawable = ContextCompat.getDrawable(this
+                ,TransportMean.allTransportMeans.get(TransportMean.ID_BUS).getArriwIconDrawableId());
+        nextImage.setImageDrawable(drawable);
+        previousImage.setImageDrawable(drawable);
     }
 
     private void showRideInstructionOnActivity (final RideInstruction rideInstruction)
@@ -218,6 +228,14 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
             }
         });
         stopsText.setTextColor(ContextCompat.getColor(this,rideInstruction.getTransportMean().getColor()));
+        TextView stepCountText = findViewById(R.id.text_step_count);
+        stepCountText.setTextColor(ContextCompat.getColor(this,rideInstruction.getTransportMean().getColor()));
+        ImageView nextImage = findViewById(R.id.image_next);
+        ImageView previousImage = findViewById(R.id.image_previous);
+        Drawable drawable = ContextCompat.getDrawable(this
+                ,rideInstruction.getTransportMean().getArriwIconDrawableId());
+        nextImage.setImageDrawable(drawable);
+        previousImage.setImageDrawable(drawable);
     }
 
 
@@ -234,11 +252,19 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
         takeText.setText("Attendre le "+waitInstruction.getWaitLines().get(0).getLine().getTransportMean().getName());
         takeLinesText.setText(waitInstruction.getTakeLineText());
         ArrayList<WaitLine> waitLinesToShow = new ArrayList<>();
-        if (waitInstruction.getWaitLines().size()>2)
+        if (collapseWaitLinesList(waitInstruction.getWaitLines()))
         {
             moreLinesText.setVisibility(View.VISIBLE);
-            waitLinesToShow.add(waitInstruction.getWaitLines().get(0));
-            waitLinesToShow.add(waitInstruction.getWaitLines().get(1));
+            if (waitInstruction.getWaitLines().size()>2)
+            {
+                waitLinesToShow.add(waitInstruction.getWaitLines().get(0));
+                waitLinesToShow.add(waitInstruction.getWaitLines().get(1));
+            }
+            else
+            {
+                waitLinesToShow.add(waitInstruction.getWaitLines().get(0));
+            }
+
             moreLinesText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -277,6 +303,40 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
 
         );
         recyclerView.setAdapter(lineInsideWaitInstructionAdapter);
+        TextView stepCountText = findViewById(R.id.text_step_count);
+        stepCountText.setTextColor(ContextCompat.getColor(this,waitInstruction.getTransportMean().getColor()));
+
+
+        ImageView nextImage = findViewById(R.id.image_next);
+        ImageView previousImage = findViewById(R.id.image_previous);
+
+        Drawable drawable = ContextCompat.getDrawable(this
+                ,waitInstruction.getTransportMean().getArriwIconDrawableId());
+
+        nextImage.setImageDrawable(drawable);
+        previousImage.setImageDrawable(drawable);
+    }
+
+    private boolean collapseWaitLinesList (ArrayList<WaitLine> waitLines)
+    {
+        if (waitLines.size()>2)
+        {
+            return true;
+        }
+        else
+        {
+            if (waitLines.size()==2)
+            {
+                for (WaitLine waitLine:waitLines)
+                {
+                    if (waitLine.hasPerturbations())
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -306,7 +366,6 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
     @Override
     public void showPathOnMap(Path path) {
         showInstructionsAnnotations(path);
-        animateMapCameraToFitBounds(path.getPolyline());
     }
 
     @Override
