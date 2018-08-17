@@ -318,7 +318,7 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     }
 
     @Override
-    public void showStationsOnList(final ArrayList<Station> stations) {
+    public void showStationsOnList(final ArrayList<Station> stations,boolean justifyList) {
         StationInsideLineAdapter stationInsideLineAdapter = new StationInsideLineAdapter(this,
                 stations,null,false);
         listView.setAdapter(stationInsideLineAdapter);
@@ -329,10 +329,8 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
             }
         });
         listView.setDividerHeight(0);
-        //listView.setVisibility(View.VISIBLE);
-        //ViewUtils.justifyListViewHeightBasedOnChildren(listView);
-        Handler handler = new Handler();
-        ViewUtils.justifyListViewHeightBasedOnChildren(listView);
+        if (justifyList)
+            ViewUtils.justifyListViewHeightBasedOnChildren(listView);
         listView.setVisibility(View.VISIBLE);
         scrollView.post(new Runnable() {
             @Override
@@ -340,19 +338,6 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
                 scrollView.scrollTo(0,0);
             }
         });
-        /*handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                listView.setVisibility(View.VISIBLE);
-                ViewUtils.justifyListViewHeightBasedOnChildren(listView);
-                scrollView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        scrollView.scrollTo(0,0);
-                    }
-                });
-            }
-        },250);*/
     }
 
     @SuppressLint("NewApi")

@@ -21,11 +21,13 @@ import butterknife.ButterKnife;
 public class StationInsideRideInstructionAdapter extends RecyclerView.Adapter<StationInsideRideInstructionAdapter.ViewHolder> {
 
     private Context context;
+    private boolean showLastSeparationView;
     private ArrayList<Station> stations;
     private OnStationClickListener onStationClickListener;
 
-    public StationInsideRideInstructionAdapter(Context context, ArrayList<Station> stations, OnStationClickListener onStationClickListener) {
+    public StationInsideRideInstructionAdapter(Context context, boolean showLastSeparationView, ArrayList<Station> stations, OnStationClickListener onStationClickListener) {
         this.context = context;
+        this.showLastSeparationView = showLastSeparationView;
         this.stations = stations;
         this.onStationClickListener = onStationClickListener;
     }
@@ -50,6 +52,14 @@ public class StationInsideRideInstructionAdapter extends RecyclerView.Adapter<St
                 onStationClickListener.onStationClick(station);
             }
         });
+        if (position == getItemCount()-1 && !showLastSeparationView)
+        {
+            holder.separationView.setVisibility(View.GONE);
+        }
+        else
+        {
+            holder.separationView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

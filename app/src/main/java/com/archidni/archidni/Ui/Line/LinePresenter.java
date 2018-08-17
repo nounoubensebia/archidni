@@ -52,12 +52,12 @@ public class LinePresenter implements LineContract.Presenter {
         view.showLineOnActivity(line);
         if (line.isBusLine())
         {
-            view.showStationsOnList(getStations());
+            view.showStationsOnList(getStations(),true);
             view.showInboundOutboundLayout();
         }
         else
         {
-            view.showStationsOnList(line.getStations());
+            view.showStationsOnList(line.getStations(),true);
         }
         if (favoritesRepository.lineExists(App.getAppContext(),line))
         {
@@ -139,7 +139,7 @@ public class LinePresenter implements LineContract.Presenter {
     public void onInboundOutboundClicked(boolean outboundClicked) {
         outboundSelected = outboundClicked;
         view.updateInboundOutboundLayout(outboundSelected);
-        view.showStationsOnList(getStations());
+        view.showStationsOnList(getStations(),false);
         view.showLineOnMap(getPolyline(),getStations());
     }
 

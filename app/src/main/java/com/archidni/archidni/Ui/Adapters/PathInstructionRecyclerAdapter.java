@@ -220,7 +220,7 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
                 new StationInsideLineAdapter(context,
                         stations,null,true);
         holder.stationsList.setVisibility(View.GONE);
-        holder.stationsList.setAdapter(new StationInsideRideInstructionAdapter(context, stations, new StationInsideRideInstructionAdapter.OnStationClickListener() {
+        holder.stationsList.setAdapter(new StationInsideRideInstructionAdapter(context,true, stations, new StationInsideRideInstructionAdapter.OnStationClickListener() {
             @Override
             public void onStationClick(Station station) {
                 onStationClick.onStationClick(station);

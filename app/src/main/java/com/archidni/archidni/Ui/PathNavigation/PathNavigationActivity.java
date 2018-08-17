@@ -1,5 +1,7 @@
 package com.archidni.archidni.Ui.PathNavigation;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.ViewStub;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.LocationListener;
@@ -23,11 +26,18 @@ import com.archidni.archidni.Model.Path.RideInstruction;
 import com.archidni.archidni.Model.Path.WaitInstruction;
 import com.archidni.archidni.Model.Path.WaitLine;
 import com.archidni.archidni.Model.Path.WalkInstruction;
+import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.LineInsideWaitInstructionAdapter;
+import com.archidni.archidni.Ui.Adapters.StationInsideRideInstructionAdapter;
+import com.archidni.archidni.Ui.Dialogs.StopsDialog;
+import com.archidni.archidni.Ui.Dialogs.WaitLinesDialog;
+import com.archidni.archidni.Ui.Line.LineActivity;
+import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
+import com.archidni.archidni.UiUtils.DialogUtils;
 import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -57,6 +67,8 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
     FrameLayout instructionLayout;
 
     private LocationListener locationListener;
+
+    private Dialog progressDialog;
 
     View inflatedView;
 
@@ -181,7 +193,7 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
         durationText.setText(walkInstruction.getDuration()+" minutes");
     }
 
-    private void showRideInstructionOnActivity (RideInstruction rideInstruction)
+    private void showRideInstructionOnActivity (final RideInstruction rideInstruction)
     {
         ImageView transportMeanImage = findViewById(R.id.image_transport_mean_icon);
         TextView takeText = findViewById(R.id.text_take);
@@ -192,11 +204,24 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
         takeText.setText("Prendre le "+rideInstruction.getTransportMean().getName());
         stopsText.setText(rideInstruction.getSections().size()+" arrets jusqu'à "
                 +rideInstruction.getStations().get(rideInstruction.getStations().size()-1).getName());
+        stopsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StopsDialog stopsDialog = new StopsDialog(PathNavigationActivity.this, rideInstruction.getStations(),
+                        new StationInsideRideInstructionAdapter.OnStationClickListener() {
+                            @Override
+                            public void onStationClick(Station station) {
+                                presenter.onStationClick(station);
+                            }
+                        });
+                stopsDialog.show();
+            }
+        });
         stopsText.setTextColor(ContextCompat.getColor(this,rideInstruction.getTransportMean().getColor()));
     }
 
 
-    private void showWaitInstructionOnActivity (WaitInstruction waitInstruction)
+    private void showWaitInstructionOnActivity (final WaitInstruction waitInstruction)
     {
         ImageView timeImage = findViewById(R.id.image_time);
         TextView takeText = findViewById(R.id.text_take);
@@ -214,6 +239,19 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
             moreLinesText.setVisibility(View.VISIBLE);
             waitLinesToShow.add(waitInstruction.getWaitLines().get(0));
             waitLinesToShow.add(waitInstruction.getWaitLines().get(1));
+            moreLinesText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    WaitLinesDialog waitLinesDialog = new WaitLinesDialog(PathNavigationActivity.this,
+                            waitInstruction.getWaitLines(), new LineInsideWaitInstructionAdapter.OnItemClick() {
+                        @Override
+                        public void onItemClick(WaitLine waitLine) {
+                            presenter.onWaitLineClick(waitLine);
+                        }
+                    });
+                    waitLinesDialog.show();
+                }
+            });
         }
         else
         {
@@ -233,7 +271,7 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
                 new LineInsideWaitInstructionAdapter.OnItemClick() {
                     @Override
                     public void onItemClick(WaitLine waitLine) {
-
+                        presenter.onWaitLineClick(waitLine);
                     }
                 }
 
@@ -242,19 +280,45 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
     }
 
     @Override
+    public void startLineActivity (Line line)
+    {
+        Intent intent = new Intent(this, LineActivity.class);
+        intent.putExtra(IntentUtils.LINE_LINE,line.toJson());
+        startActivity(intent);
+    }
+
+    @Override
+    public void showLineSearchDialog() {
+        progressDialog = DialogUtils.buildProgressDialog("Veuillez patientez",this);
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideLineSearchDialog() {
+        progressDialog.hide();
+    }
+
+    @Override
+    public void showErrorMessage() {
+        Toast.makeText(this,"Une erreur s'est produite",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void showPathOnMap(Path path) {
         showInstructionsAnnotations(path);
         animateMapCameraToFitBounds(path.getPolyline());
     }
 
+    @Override
+    public void startStationActivity(Station station) {
+        Intent intent = new Intent(this, StationActivity.class);
+        intent.putExtra(IntentUtils.STATION_STATION,station.toJson());
+        startActivity(intent);
+    }
+
 
     private void animateMapCameraToFitBounds (ArrayList<Coordinate> polyline)
     {
-        /*float mapWidth = ViewUtils.dpToPx(this,ViewUtils.getScreenWidthInDp(this));
-        float mapHeight = ViewUtils.dpToPx(this,ViewUtils.getScreenHeightInDp(this))-
-                instructionLayout.getHeight();
-        map.animateCameraToBounds(polyline,(int)ViewUtils.dpToPx(this,32),(int) mapWidth,
-                (int)mapHeight,250);*/
         map.animateCameraToBounds(polyline,(int)ViewUtils.dpToPx(this,32),500);
     }
 

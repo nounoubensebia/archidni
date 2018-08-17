@@ -79,34 +79,12 @@ public class StationInsideLineAdapter extends ArrayAdapter<Station> {
         }
         if (position==getCount()-1)
         {
-            /*Resources r = item.getResources();
-            float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, r.getDisplayMetrics());
-            separationView.setVisibility(View.GONE);
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)root.getLayoutParams();
-            layoutParams.setMargins(layoutParams.leftMargin,0,layoutParams.rightMargin,(int)px);
-            root.setLayoutParams(layoutParams);*/
             if (!addSeparationViewToLastItem)
                 separationView.setVisibility(View.GONE);
         }
         else
         {
             separationView.setVisibility(View.VISIBLE);
-            /*if (position == 0)
-            {
-                Resources r = item.getResources();
-                float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, r.getDisplayMetrics());
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)root.getLayoutParams();
-                layoutParams.setMargins(layoutParams.leftMargin,(int)px,layoutParams.rightMargin,0);
-                root.setLayoutParams(layoutParams);
-
-            }
-            else
-            {
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)root.getLayoutParams();
-                layoutParams.setMargins(0,0,0,0);
-                root.setLayoutParams(layoutParams);
-
-            }*/
         }
 
         return item;

@@ -25,7 +25,7 @@ public interface LineContract {
         void showAddedToFavoritesMessage();
         void showDeletedFromFavoritesMessage();
         void showAddToFavoritesText();
-        void showStationsOnList (ArrayList<Station> stations);
+        void showStationsOnList (ArrayList<Station> stations,boolean justifyList);
         void updateInboundOutboundLayout (boolean outboundSelected);
         void showInboundOutboundLayout();
         void hideMapLoadingLayout ();
