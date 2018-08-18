@@ -123,7 +123,6 @@ public class PathDataStoreUtils {
                         RideInstruction rideInstruction = new RideInstruction(duration,
                                 transportModeId
                                 ,sections
-                                ,rideLines
                                 ,polylineString
                                 ,errorMargin);
 

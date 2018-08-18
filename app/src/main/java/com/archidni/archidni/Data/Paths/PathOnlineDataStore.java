@@ -62,7 +62,7 @@ public class PathOnlineDataStore extends OnlineDataStore implements PathDataStor
         map.put("origin",departure.getCoordinate().getLatitude()+","+departure.getCoordinate().getLongitude());
         map.put("destination",arrival.getCoordinate().getLatitude()+","+arrival.getCoordinate().getLongitude());
         map.put("time", StringUtils.getTimeString(pathSettings.getDepartureTime())+"");
-        map.put("day", TimeUtils.getDayFromTimeStamp(pathSettings.getDepartureDate())+"");
+        map.put("date", pathSettings.getDepartureDate()+"");
         ArrayList<TransportMean> bannedTransportMeans = new ArrayList<>();
         bannedTransportMeans.addAll(TransportMean.allTransportMeans);
         int s = 0;
@@ -146,25 +146,13 @@ public class PathOnlineDataStore extends OnlineDataStore implements PathDataStor
                             {
                                 int duration = jsonObject.getInt("duration")*60;
                                 int transportModeId = jsonObject.getInt("transport_mode_id")-1;
-                                TransportMean transportMean = TransportMean.allTransportMeans.get(transportModeId);
                                 Gson gson = new Gson();
                                 Type fooType = new TypeToken<ArrayList<Station>>() {
                                 }.getType();
                                 ArrayList<Station> stations = gson.fromJson(jsonObject.get("stations").toString(), fooType);
                                 ArrayList<Section> sections = new ArrayList<>();
 
-                                ArrayList<RideLine> rideLines = new ArrayList<>();
 
-                                JSONArray linesJson = jsonObject.getJSONArray("lines");
-
-                                for (int l=0;l<linesJson.length();l++)
-                                {
-                                    JSONObject lineObject = linesJson.getJSONObject(l);
-                                    int id = lineObject.getInt("id");
-                                    String lineName = lineObject.getString("line_name");
-                                    String destination = lineObject.getString("destination");
-                                    rideLines.add(new RideLine(new LineSkeleton(id,lineName,transportMean),destination));
-                                }
 
 
                                 int k=0;
@@ -179,7 +167,6 @@ public class PathOnlineDataStore extends OnlineDataStore implements PathDataStor
                                 RideInstruction rideInstruction = new RideInstruction(duration,
                                         transportModeId
                                         ,sections
-                                        ,rideLines
                                         ,polylineString
                                         ,errorMargin);
 
@@ -200,8 +187,6 @@ public class PathOnlineDataStore extends OnlineDataStore implements PathDataStor
                             }
                         }
                     }
-                    if (foundPaths.size()==1&&foundPaths.get(0).getDurationInMinutes()>10&&foundPaths.get(0).getTransportMeans().size()==0)
-                        foundPaths = new ArrayList<>();
                     onSearchCompleted.onResultsFound(foundPaths);
                 } catch (JSONException e) {
                     e.printStackTrace();

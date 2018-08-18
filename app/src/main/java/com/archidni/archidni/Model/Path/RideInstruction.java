@@ -19,17 +19,15 @@ public class RideInstruction extends MoveInstruction implements Serializable {
 
     private long duration;
     private long transportMeanId; //id berk
-    private ArrayList<Section> sections; //tronçons
-    private ArrayList<RideLine> rideLines; //name//for example dergana centre
+    private ArrayList<Section> sections; //tronçons//name//for example dergana centre
     private String polyline;
     private float errorMargin;
 
 
-    public RideInstruction(long duration, long transportMeanId, ArrayList<Section> sections, ArrayList<RideLine> rideLines, String polyline, float errorMargin) {
+    public RideInstruction(long duration, long transportMeanId, ArrayList<Section> sections, String polyline, float errorMargin) {
         this.duration = duration;
         this.transportMeanId = transportMeanId;
         this.sections = sections;
-        this.rideLines = rideLines;
         this.polyline = polyline;
         this.errorMargin = errorMargin;
     }
@@ -38,9 +36,6 @@ public class RideInstruction extends MoveInstruction implements Serializable {
         return sections;
     }
 
-    public ArrayList<RideLine> getRideLines() {
-        return rideLines;
-    }
 
     @Override
     public long getDuration() {
