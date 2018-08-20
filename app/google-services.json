@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "368593290860",
+    "firebase_url": "https://archidni-2d421.firebaseio.com",
+    "project_id": "archidni-2d421",
+    "storage_bucket": "archidni-2d421.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368593290860:android:f5177e8495359fad",
+        "android_client_info": {
+          "package_name": "com.archidni.archidni"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "368593290860-o6oc8dv86e0bemoj8tdurcvsld01qfa7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.archidni.archidni",
+            "certificate_hash": "62a5ad8bc581813e8b64d82a29e981664ad4ab28"
+          }
+        },
+        {
+          "client_id": "368593290860-k14lif9sobko3mt365vvqs3bi4ulrl5r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBupf0xDwOwyi76ytQ1M0rwsbyMCfAqSUo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "368593290860-k14lif9sobko3mt365vvqs3bi4ulrl5r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
