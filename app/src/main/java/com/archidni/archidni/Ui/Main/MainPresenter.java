@@ -146,7 +146,7 @@ public class MainPresenter implements MainContract.Presenter {
     public void onSearchClicked() {
         if (userCoordinate!=null)
         {
-            PathPlace place = new PathPlace("Ma positoin",userCoordinate);
+            PathPlace place = new PathPlace("Ma position",userCoordinate);
             view.startSearchActivity(place);
         }
         else
