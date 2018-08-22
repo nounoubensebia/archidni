@@ -76,7 +76,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         {
             MetroSchedule metroSchedule = (MetroSchedule) schedules.get(position);
             MetroScheduleViewHolder viewHolder = (MetroScheduleViewHolder) holder;
-            String timePeriodString = String.format("%s - %s",
+            String timePeriodString = String.format("De %s à %s",
                     StringUtils.getTimeString(metroSchedule.getStartTime()),
                     StringUtils.getTimeString(metroSchedule.getEndTime()));
             viewHolder.timePeriodText.setText(timePeriodString);

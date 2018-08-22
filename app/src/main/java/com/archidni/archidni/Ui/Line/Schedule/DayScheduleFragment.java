@@ -76,15 +76,21 @@ public class DayScheduleFragment extends Fragment {
 
     public void showListLayout ()
     {
-        progressBar.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
+        if (isReady)
+        {
+            progressBar.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
 
     }
 
     public void hideListLayout ()
     {
-        progressBar.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
+        if (isReady)
+        {
+            progressBar.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     public interface OnFragmentReady {
