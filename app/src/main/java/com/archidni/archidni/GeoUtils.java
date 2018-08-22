@@ -61,11 +61,6 @@ public class GeoUtils {
         return distance;
     }
 
-    public static long getOnFootDuration (Double distance)
-    {
-
-        return (long)(((distance/1000)/HUMAN_SPEED)*3600);
-    }
 
     public static long getOnFootDuration (Coordinate coordinate1, Coordinate coordinate2)
     {

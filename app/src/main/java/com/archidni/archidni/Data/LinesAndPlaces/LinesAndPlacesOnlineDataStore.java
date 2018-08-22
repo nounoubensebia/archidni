@@ -20,6 +20,7 @@ import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.LineSection;
+import com.archidni.archidni.Model.Transport.Schedule;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.TimePeriod;
 import com.archidni.archidni.Model.Transport.TrainLine;
@@ -35,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by noure on 07/02/2018.
@@ -259,9 +261,6 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
             TransportMean transportMean = TransportMean.allTransportMeans.get(
                     jsonObject.getInt("transport_mode_id") - 1
             );
-            //Line.Builder builder = new Line.Builder(id, name);
-            //builder.setLineSections(lineSections);
-            //builder.setTransportMean(transportMean);
             return new Line(id,name,transportMean,lineSections);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -313,6 +312,33 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
         stringRequest.performRequest(getTag());
     }
 
+    public void getSchedules (Line line, final LinesAndPlacesRepository.OnSchedulesSearchCompleted onSchedulesSearchCompleted)
+    {
+        String url = SharedPrefsUtils.getServerUrl(App.getAppContext())+ GET_LINES_URL+"/"+line.getId()+
+                "/schedules";
+        OauthStringRequest stringRequest = new OauthStringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        ScheduleParser scheduleParser = new ScheduleParser(response);
+                        try {
+                            onSchedulesSearchCompleted.onSchedulesFound(scheduleParser.parseSchedules());
+                        }
+                        catch (JSONException e)
+                        {
+                            onSchedulesSearchCompleted.onError();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        onSchedulesSearchCompleted.onError();
+                    }
+                });
+        stringRequest.performRequest(getTag());
+    }
+
     @Override
     public String getTag() {
         return "LINE";
@@ -336,4 +362,6 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
 
         void onError();
     }
+
+
 }

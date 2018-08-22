@@ -48,8 +48,8 @@ public class PathSuggestionAdapter extends RecyclerView.Adapter<PathSuggestionAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Path path = paths.get(position);
-        holder.arrivalText.setText("Arrivée à "+path.getEtaText(pathSettings.getDepartureTime()));
-        holder.departureText.setText("Départ à "+ StringUtils.getTimeString(path.getPathSettings().getDepartureTime()));
+        holder.arrivalText.setText("Arrivée à "+ TimeUtils.getTimeString(path.getArrivalTime()));
+        holder.departureText.setText("Départ à "+ TimeUtils.getTimeString(path.getDepartureTime()));
         holder.etaMinutesText.setText((int)path.getDurationInMinutes()+"");
         holder.transportMean2Image.setVisibility(View.GONE);
         holder.transportMean3Image.setVisibility(View.GONE);

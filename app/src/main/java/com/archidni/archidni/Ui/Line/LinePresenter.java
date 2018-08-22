@@ -157,4 +157,9 @@ public class LinePresenter implements LineContract.Presenter {
     public void onTarifsClicked() {
         view.startTarifsActivity(line);
     }
+
+    @Override
+    public void onScheduleClicked() {
+        view.startSchedulesActivity(line);
+    }
 }

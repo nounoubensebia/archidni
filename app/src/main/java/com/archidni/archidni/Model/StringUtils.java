@@ -48,10 +48,9 @@ public class StringUtils {
     {
         int hours = (int) timestamp / 3600;
         int minutes = (int) timestamp / 60 - hours * 60;
-        if (minutes >= 10)
-            return (hours + ":" + minutes);
-        else
-            return (hours + ":" + 0 + minutes);
+        String minutesString = (minutes >= 10)? minutes+"" : "0"+minutes;
+        String hoursString = (hours >= 10)? hours+"" : "0"+hours;
+        return hoursString+":"+minutesString;
     }
 
     public static String getLocationString(Coordinate coordinate)

@@ -12,6 +12,7 @@ import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.TimeUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -28,8 +29,11 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
 
     public PathSearchPresenter(PathSearchContract.View view, PathPlace origin, PathPlace destination) {
         this.view = view;
+        Calendar dateCalendar = Calendar.getInstance();
+        dateCalendar.setTimeInMillis(TimeUtils.getCurrentTimeInSeconds()*1000);
         pathSettings = new PathSettings(origin,destination,
-                TimeUtils.getSecondsFromMidnight(),TimeUtils.getCurrentTimeInSeconds(), PathPreferences.DEFAULT);
+                dateCalendar,false,
+                PathPreferences.DEFAULT);
         String originString = (origin!=null) ? origin.getTitle():"";
         String destinationString = (destination!=null) ? destination.getTitle():"";
         view.showOriginAndDestinationLabels(originString,destinationString);
@@ -57,8 +61,9 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
     }
 
     @Override
-    public void onSearchPathsClick(Context context) {
+    public void onSearchPathsClick(Context context,boolean arrival) {
         if (pathSettings.getOrigin()!=null&&pathSettings.getDestination()!=null) {
+            pathSettings.setArriveBy(arrival);
             view.showLoadingBar();
             pathRepository.getPaths(context, pathSettings, new PathRepository.OnSearchCompleted() {
                 @Override
@@ -150,32 +155,32 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
 
     @Override
     public void onDepartureTimeClick() {
-        view.showSetTimeDialog(pathSettings.getDepartureTime());
+        view.showSetTimeDialog(pathSettings.getDepartureArrivalTime());
     }
 
     @Override
     public void onDepartureDateClick() {
-        view.showSetDateDialog(pathSettings.getDepartureDate());
+        view.showSetDateDialog(pathSettings.getDepartureArrivalTime());
     }
 
     @Override
-    public void updateTime(long departureTime) {
+    public void updateTime(Calendar departureTime) {
         view.updateTime(departureTime);
-        if (departureTime!=pathSettings.getDepartureTime())
+        if (!departureTime.equals(pathSettings.getDepartureArrivalTime()))
         {
             view.hidePathsLayout();
         }
-        pathSettings.setDepartureTime(departureTime);
+        pathSettings.setDepartureArrivalTime(departureTime);
     }
 
     @Override
-    public void updateDate(long departureDate) {
-        view.updateDate(departureDate);
-        if (departureDate!=pathSettings.getDepartureDate())
+    public void updateDate(Calendar departureTime) {
+        view.updateDate(departureTime);
+        if (!departureTime.equals(pathSettings.getDepartureArrivalTime()))
         {
             view.hidePathsLayout();
         }
-        pathSettings.setDepartureDate(departureDate);
+        pathSettings.setDepartureArrivalTime(departureTime);
     }
 
     @Override

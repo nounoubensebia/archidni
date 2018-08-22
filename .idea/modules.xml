@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Archidni.iml" filepath="$PROJECT_DIR$/.idea/modules/Archidni.iml" />
       <module fileurl="file://$PROJECT_DIR$/PathSearchLibrary/PathSearchLibrary.iml" filepath="$PROJECT_DIR$/PathSearchLibrary/PathSearchLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/archidni_android.iml" filepath="$PROJECT_DIR$/archidni_android.iml" />
       <module fileurl="file://$PROJECT_DIR$/clusteringlibrary/clusteringlibrary.iml" filepath="$PROJECT_DIR$/clusteringlibrary/clusteringlibrary.iml" />
     </modules>
   </component>

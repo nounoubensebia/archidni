@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by noure on 03/02/2018.
@@ -26,6 +27,30 @@ public class Path implements Serializable {
     public Path(PathSettings pathSettings, ArrayList<PathInstruction> pathInstructions) {
         this.pathSettings = pathSettings;
         this.pathInstructions = pathInstructions;
+    }
+
+    public Calendar getDepartureTime ()
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,pathSettings.getDepartureArrivalTime().get(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE,pathSettings.getDepartureArrivalTime().get(Calendar.MINUTE));
+        if (pathSettings.isArriveBy())
+        {
+            calendar.setTimeInMillis(calendar.getTimeInMillis()-getDuration()*1000);
+        }
+        return calendar;
+    }
+
+    public Calendar getArrivalTime ()
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,pathSettings.getDepartureArrivalTime().get(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE,pathSettings.getDepartureArrivalTime().get(Calendar.MINUTE));
+        if (!pathSettings.isArriveBy())
+        {
+            calendar.setTimeInMillis(calendar.getTimeInMillis()+getDuration()*1000);
+        }
+        return calendar;
     }
 
     public PathPlace getOrigin() {
@@ -48,13 +73,6 @@ public class Path implements Serializable {
         return pathSettings;
     }
 
-    public void setPathSettings(PathSettings pathSettings) {
-        this.pathSettings = pathSettings;
-    }
-
-    public void setPathInstructions(ArrayList<PathInstruction> pathInstructions) {
-        this.pathInstructions = pathInstructions;
-    }
 
     public ArrayList<PathInstruction> getPathInstructions() {
         return pathInstructions;

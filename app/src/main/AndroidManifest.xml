@@ -115,10 +115,9 @@
         <activity android:name=".Ui.Report.ReportInformationExplainProblemActivity" />
         <activity android:name=".Ui.Report.ReportAlertChooseTransportMeanActivity" />
         <activity android:name=".Ui.Report.ReportAlertChooseLineActivity" />
-        <activity android:name=".Ui.Report.ReportAlertExplainActivity"></activity>
-        <activity android:name=".Ui.TestActivity">
-
-        </activity>
+        <activity android:name=".Ui.Report.ReportAlertExplainActivity" />
+        <activity android:name=".Ui.TestActivity"></activity>
+        <activity android:name=".Ui.Line.Schedule.ScheduleActivity" android:label="Horaires"></activity>
     </application>
 
 </manifest>

@@ -4,6 +4,7 @@ import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 /**
  * Created by noure on 03/02/2018.
@@ -12,15 +13,15 @@ import java.io.Serializable;
 public class PathSettings implements Serializable {
     private PathPlace origin;
     private PathPlace destination;
-    private long departureTime;
-    private long departureDate;
+    private Calendar departureArrivalTime;
+    private boolean arriveBy;
     private PathPreferences pathPreferences;
 
-    public PathSettings(PathPlace origin, PathPlace destination, long departureTime, long departureDate, PathPreferences pathPreferences) {
+    public PathSettings(PathPlace origin, PathPlace destination, Calendar departureArrivalTime, boolean arriveBy, PathPreferences pathPreferences) {
         this.origin = origin;
         this.destination = destination;
-        this.departureTime = departureTime;
-        this.departureDate = departureDate;
+        this.departureArrivalTime = departureArrivalTime;
+        this.arriveBy = arriveBy;
         this.pathPreferences = pathPreferences;
     }
 
@@ -40,25 +41,19 @@ public class PathSettings implements Serializable {
         return destination;
     }
 
-    public long getDepartureTime() {
-        return departureTime;
+    public Calendar getDepartureArrivalTime() {
+        return departureArrivalTime;
     }
 
-    public long getDepartureDate() {
-        return departureDate;
-    }
 
     public TransportMeansSelector getTransportMeansSelector() {
         return null;
     }
 
-    public void setDepartureTime(long departureTime) {
-        this.departureTime = departureTime;
+    public void setDepartureArrivalTime(Calendar departureArrivalTime) {
+        this.departureArrivalTime = departureArrivalTime;
     }
 
-    public void setDepartureDate(long departureDate) {
-        this.departureDate = departureDate;
-    }
 
     public PathPreferences getPathPreferences() {
         return pathPreferences;
@@ -66,5 +61,13 @@ public class PathSettings implements Serializable {
 
     public void setPathPreferences(PathPreferences pathPreferences) {
         this.pathPreferences = pathPreferences;
+    }
+
+    public boolean isArriveBy() {
+        return arriveBy;
+    }
+
+    public void setArriveBy(boolean arriveBy) {
+        this.arriveBy = arriveBy;
     }
 }

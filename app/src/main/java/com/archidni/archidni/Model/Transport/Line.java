@@ -18,12 +18,17 @@ import java.util.List;
  */
 
 public class Line extends LineSkeleton implements Serializable {
+
+    //TODO use builder pattern and eliminate LineSkeleton
+
     private ArrayList<LineSection> lineSections;
 
     public Line(int id, String name, TransportMean transportMean, ArrayList<LineSection> lineSections) {
         super(id, name, transportMean);
         this.lineSections = lineSections;
     }
+
+
 
     public ArrayList<Station> getStations() {
         Station first = lineSections.get(0).getOrigin();

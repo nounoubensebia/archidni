@@ -28,6 +28,7 @@ import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.StationInsideLineAdapter;
 import com.archidni.archidni.Ui.BusTarifsActivity;
+import com.archidni.archidni.Ui.Line.Schedule.ScheduleActivity;
 import com.archidni.archidni.Ui.LineNotifications.LineNotificationsActivity;
 import com.archidni.archidni.Ui.MetroTarifsActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
@@ -155,49 +156,15 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
                 presenter.onInboundOutboundClicked(false);
             }
         });
+        scheduleLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onScheduleClicked();
+            }
+        });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        //mapView.onStart();
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        //mapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        //mapView.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        //mapView.onStop();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        //mapView.onLowMemory();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //mapView.onDestroy();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //mapView.onSaveInstanceState(outState);
-    }
 
     @Override
     public void showLineOnMap(ArrayList<Coordinate> polyline,ArrayList<Station> stations) {
@@ -426,6 +393,13 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
         }
         if (intent!=null)
             startActivity(intent);
+    }
+
+    @Override
+    public void startSchedulesActivity(Line line) {
+        Intent intent = new Intent(this, ScheduleActivity.class);
+        intent.putExtra(IntentUtils.LINE_LINE,line.toJson());
+        startActivity(intent);
     }
 
 

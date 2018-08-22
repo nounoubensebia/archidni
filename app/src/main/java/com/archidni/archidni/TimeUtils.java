@@ -11,11 +11,27 @@ public class TimeUtils {
 
     private static final long DAY_SUNDAY = 1;
     private static final long DAY_MONDAY = 2;
-    private static final long DAY_THURSDAY =3;
-    private static final long DAY_WEDNESDAY = 4;
-    private static final long DAY_TUESDAY = 5;
-    private static final long DAY_FRIDAY = 6;
-    private static final long DAY_SATURDAY = 7;
+    private static final long DAY_THURSDAY =4;
+    private static final long DAY_WEDNESDAY = 8;
+    private static final long DAY_TUESDAY = 16;
+    private static final long DAY_FRIDAY = 32;
+    private static final long DAY_SATURDAY = 64;
+
+
+    public static long getDayFromStandardOrder (int order)
+    {
+        switch (order)
+        {
+            case 0: return DAY_SUNDAY;
+            case 1: return DAY_MONDAY;
+            case 2: return DAY_THURSDAY;
+            case 3: return DAY_WEDNESDAY;
+            case 4: return DAY_TUESDAY;
+            case 5: return DAY_FRIDAY;
+            case 6: return DAY_SATURDAY;
+        }
+        return -1;
+    }
 
     public static long getDayFromTimeStamp (long timeStamp)
     {
@@ -63,5 +79,19 @@ public class TimeUtils {
         int minutes = Integer.parseInt(units[1]); //first element
         int seconds = Integer.parseInt(units[2]); //second element
         return (long) (3600 * hours + 60 * minutes + seconds);
+    }
+
+    public static String getDateString (Calendar calendar)
+    {
+        return calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(
+                Calendar.DAY_OF_MONTH
+        );
+    }
+
+    public static String getTimeString (Calendar calendar)
+    {
+        int mins = calendar.get(Calendar.MINUTE);
+        String minutes = (mins<10)? "0"+mins:mins+"";
+        return calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
     }
 }

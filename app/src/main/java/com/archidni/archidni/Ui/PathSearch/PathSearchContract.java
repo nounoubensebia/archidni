@@ -9,6 +9,7 @@ import com.archidni.archidni.Model.Path.PathSettings;
 import com.archidni.archidni.Model.Places.PathPlace;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by noure on 03/02/2018.
@@ -21,10 +22,10 @@ public interface PathSearchContract {
         void showLoadingBar();
         void showPathSuggestions (ArrayList<Path> paths, PathSettings pathSettings);
         void startSearchActivity (int requestType);
-        void showSetTimeDialog(long departureTime);
-        void showSetDateDialog(long departureDate);
-        void updateTime(long departureTime);
-        void updateDate(long departureDate);
+        void showSetTimeDialog(Calendar departureTime);
+        void showSetDateDialog(Calendar departureTime);
+        void updateTime(Calendar departureTime);
+        void updateDate(Calendar departureTime);
         void hidePathsLayout();
         void showErrorMessage();
         void showOriginNotSet();
@@ -37,13 +38,13 @@ public interface PathSearchContract {
     interface Presenter {
         void onMapReady();
         void onMapLoaded();
-        void onSearchPathsClick(Context context);
+        void onSearchPathsClick(Context context,boolean isArrival);
         void lookForLocation (int requestType);
         void onActivityResult (int requestType,PathPlace newPlace);
         void onDepartureTimeClick();
         void onDepartureDateClick();
-        void updateTime(long departureTime);
-        void updateDate(long departureDate);
+        void updateTime(Calendar departureTime);
+        void updateDate(Calendar departureTime);
         void onPathItemClick (Path path);
         void onStop(Context context);
         void onOptionsLayoutClicked();

@@ -33,6 +33,7 @@ import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
+import com.archidni.archidni.TimeUtils;
 import com.archidni.archidni.Ui.Adapters.PathSuggestionAdapter;
 import com.archidni.archidni.Ui.PathDetails.PathDetailsActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
@@ -88,6 +89,8 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     TextView optionsText;
     @BindView(R.id.text_suggested_paths_no_paths_found)
     TextView suggestedPathsNoPathsText;
+    @BindView(R.id.radio_group_departure_arrival)
+    RadioGroup arrivalDeparturerRadioGroup;
 
     ArchidniGoogleMap archidniMap;
     PathSearchContract.Presenter pathSearchPresenter;
@@ -128,7 +131,10 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
         getPathLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pathSearchPresenter.onSearchPathsClick(PathSearchActivity.this);
+                boolean arrival = false;
+                if (arrivalDeparturerRadioGroup.getCheckedRadioButtonId()==R.id.radio_button_arrival)
+                    arrival = true;
+                    pathSearchPresenter.onSearchPathsClick(PathSearchActivity.this,arrival);
             }
         });
         destinationLayout.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +165,12 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
             @Override
             public void onClick(View view) {
                 pathSearchPresenter.onOptionsLayoutClicked();
+            }
+        });
+        arrivalDeparturerRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                hidePathsLayout();
             }
         });
     }
@@ -239,43 +251,45 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     }
 
     @Override
-    public void showSetTimeDialog(long departureTime) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(departureTime*1000);
+    public void showSetTimeDialog(final Calendar departureTime) {
+
         TimePickerDialog dialogFragment = new TimePickerDialog(this,
                 new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                pathSearchPresenter.updateTime(hourOfDay * 3600 + minute * 60);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(departureTime.getTimeInMillis());
+                calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                calendar.set(Calendar.MINUTE,minute);
+                pathSearchPresenter.updateTime(calendar);
             }
-        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+        }, departureTime.get(Calendar.HOUR_OF_DAY), departureTime.get(Calendar.MINUTE), true);
         dialogFragment.show();
     }
 
     @Override
-    public void showSetDateDialog(long departureDate) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(departureDate*1000);
+    public void showSetDateDialog(final Calendar departureTime) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 Calendar c = Calendar.getInstance();
-                c.set(year, month, dayOfMonth, 0, 0);
-                pathSearchPresenter.updateDate(c.getTimeInMillis() / 1000);
+                c.setTimeInMillis(departureTime.getTimeInMillis());
+                c.set(year, month, dayOfMonth);
+                pathSearchPresenter.updateDate(c);
             }
-        }, calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+        }, departureTime.get(Calendar.YEAR), departureTime.get(Calendar.MONTH), departureTime.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
     }
 
     @Override
-    public void updateTime(long departureTime) {
-        departureTimeText.setText(StringUtils.getTimeString(departureTime));
+    public void updateTime(Calendar departureTime) {
+        departureTimeText.setText(TimeUtils.getTimeString(departureTime));
     }
 
     @Override
-    public void updateDate(long departureDate) {
-        departureDateText.setText(StringUtils.getDateString(departureDate));
+    public void updateDate(Calendar departureTime) {
+        departureDateText.setText(StringUtils.getDateString(departureTime.getTimeInMillis()/1000));
     }
 
     @Override

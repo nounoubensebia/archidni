@@ -7,8 +7,6 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.archidni.archidni.App;
 import com.archidni.archidni.AppSingleton;
 import com.archidni.archidni.Data.OnlineDataStore;
 import com.archidni.archidni.Data.SharedPrefsUtils;
@@ -19,13 +17,10 @@ import com.archidni.archidni.Model.Path.PathInstruction;
 
 import com.archidni.archidni.Model.Path.PathSettings;
 import com.archidni.archidni.Model.Path.RideInstruction;
-import com.archidni.archidni.Model.Path.RideLine;
 import com.archidni.archidni.Model.Path.WaitInstruction;
 import com.archidni.archidni.Model.Path.WaitLine;
 import com.archidni.archidni.Model.Path.WalkInstruction;
 import com.archidni.archidni.Model.Places.PathPlace;
-import com.archidni.archidni.Model.StringUtils;
-import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.LineSkeleton;
 import com.archidni.archidni.Model.Transport.Section;
 import com.archidni.archidni.Model.Transport.Station;
@@ -33,7 +28,6 @@ import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.OauthStringRequest;
 import com.archidni.archidni.TimeUtils;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -42,6 +36,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 
 /**
@@ -61,25 +56,9 @@ public class PathOnlineDataStore extends OnlineDataStore implements PathDataStor
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("origin",departure.getCoordinate().getLatitude()+","+departure.getCoordinate().getLongitude());
         map.put("destination",arrival.getCoordinate().getLatitude()+","+arrival.getCoordinate().getLongitude());
-        map.put("time", StringUtils.getTimeString(pathSettings.getDepartureTime())+"");
-        map.put("date", pathSettings.getDepartureDate()+"");
-        ArrayList<TransportMean> bannedTransportMeans = new ArrayList<>();
-        bannedTransportMeans.addAll(TransportMean.allTransportMeans);
-        int s = 0;
-        if (pathSettings.getTransportMeansSelector()!=null)
-        {
-            for (TransportMean transportMean : TransportMean.allTransportMeans)
-            {
-                for (TransportMean transportMean1 : pathSettings.getTransportMeansSelector().getSelectedTransportMeans())
-                {
-                    if (transportMean.getId()==transportMean1.getId())
-                    {
-                        bannedTransportMeans.remove(transportMean1.getId()-s);
-                        s++;
-                    }
-                }
-            }
-        }
+        map.put("date", TimeUtils.getDateString(pathSettings.getDepartureArrivalTime()));
+        map.put("time",TimeUtils.getTimeString(pathSettings.getDepartureArrivalTime()));
+        map.put("arriveBy", Boolean.toString(pathSettings.isArriveBy()));
         cancelRequests(context);
         url = SharedPrefsUtils.getServerUrl(context)+AppSingleton.buildGetUrl(URL_GET_PATH,map);
         final OauthStringRequest stringRequest = new OauthStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
