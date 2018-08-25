@@ -1,7 +1,7 @@
 package com.archidni.archidni.Ui.Line.Schedule;
 
 import com.archidni.archidni.Model.Transport.Line;
-import com.archidni.archidni.Model.Transport.Schedule;
+import com.archidni.archidni.Model.Transport.Schedule.Schedule;
 
 import java.util.List;
 

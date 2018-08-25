@@ -1,4 +1,7 @@
-package com.archidni.archidni.Model.Transport;
+package com.archidni.archidni.Model.Transport.Schedule;
+
+import com.archidni.archidni.Model.Transport.Schedule.MetroSchedule;
+import com.archidni.archidni.Model.Transport.Schedule.Schedule;
 
 import java.util.ArrayList;
 import java.util.Collections;

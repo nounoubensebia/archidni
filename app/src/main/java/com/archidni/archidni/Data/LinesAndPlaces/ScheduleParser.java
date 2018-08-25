@@ -1,11 +1,11 @@
 package com.archidni.archidni.Data.LinesAndPlaces;
 
 import com.archidni.archidni.Data.Station.StationParser;
-import com.archidni.archidni.Model.Transport.MetroSchedule;
-import com.archidni.archidni.Model.Transport.Schedule;
+import com.archidni.archidni.Model.Transport.Schedule.MetroSchedule;
+import com.archidni.archidni.Model.Transport.Schedule.Schedule;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.StationTime;
-import com.archidni.archidni.Model.Transport.TrainSchedule;
+import com.archidni.archidni.Model.Transport.Schedule.TrainSchedule;
 import com.archidni.archidni.TimeUtils;
 
 import org.json.JSONArray;
@@ -13,6 +13,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ScheduleParser {
@@ -30,22 +32,21 @@ public class ScheduleParser {
         for (int i=0;i<root.length();i++)
         {
             JSONObject jsonObject = root.getJSONObject(i);
-            Schedule schedule = parseSchedule(jsonObject);
-            schedules.add(schedule);
+            schedules.addAll(parseSchedules(jsonObject));
         }
         return schedules;
     }
 
-    private Schedule parseSchedule (JSONObject jsonObject) throws JSONException
+    private ArrayList<Schedule> parseSchedules (JSONObject jsonObject) throws JSONException
     {
-        Schedule schedule = null;
+        ArrayList<Schedule> schedules = new ArrayList<>();
         if (jsonObject.has("waiting_time"))
         {
             int days = jsonObject.getInt("days");
             long startTime = TimeUtils.getTimeFromString(jsonObject.getString("start_time"));
             long endTime = TimeUtils.getTimeFromString(jsonObject.getString("end_time"));
             int waitingTime = jsonObject.getInt("waiting_time");
-            schedule = new MetroSchedule(days,startTime,endTime,waitingTime);
+            schedules.add(new MetroSchedule(days,startTime,endTime,waitingTime));
         }
         else
         {
@@ -66,8 +67,19 @@ public class ScheduleParser {
                 StationTime stationTime = new StationTime(station,timeAtStation);
                 stationTimes.add(stationTime);
             }
-            schedule = new TrainSchedule(days,departures,stationTimes);
+            ArrayList<TrainSchedule> trainSchedules = new ArrayList<>();
+            for (Long departure:departures)
+            {
+                trainSchedules.add(new TrainSchedule(days,departure,stationTimes));
+            }
+            Collections.sort(trainSchedules, new Comparator<TrainSchedule>() {
+                @Override
+                public int compare(TrainSchedule trainSchedule, TrainSchedule t1) {
+                    return (int)(trainSchedule.getDepartureTime()-t1.getDepartureTime());
+                }
+            });
+            schedules.addAll(trainSchedules);
         }
-        return schedule;
+        return schedules;
     }
 }

@@ -1,6 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="16dp"
+    android:background="@drawable/shape_rect_white_rounded__8dp"
+    android:layout_height="wrap_content">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/text_trip"
+        tools:text="Voyage à 12:40"
+        android:textColor="#000"
+        android:layout_marginTop="4dp"
+        android:textSize="20sp"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@drawable/ic_time_transport_mean_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_origin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/image_origin_circle"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="2dp"
+                android:src="@drawable/shape_button_circle_empty_transport_mean3" />
+
+            <TextView
+                android:id="@+id/text_origin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="8dp"
+                android:text="Alger"
+                android:textColor="#000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/view_separation"
+                android:layout_width="4dp"
+                android:layout_height="16dp"
+                android:layout_marginLeft="8dp"
+                android:background="@color/color_transport_mean_selected_3" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout_destination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/image_destination_circle"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="top"
+                android:layout_marginLeft="2dp"
+                android:src="@drawable/shape_button_circle_empty_transport_mean3" />
+
+            <TextView
+                android:id="@+id/text_destination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="8dp"
+                android:text="Agha"
+                android:textColor="#000" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_station_arrivals"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:text="Horaires d'arrivée aux stations"
+        android:textColor="#000" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginRight="4dp"
+        app:srcCompat="@drawable/ic_arrow_black_24dp" />
+    </LinearLayout>
+
+
+</LinearLayout>

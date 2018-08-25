@@ -14,13 +14,10 @@ import android.widget.Toast;
 
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Transport.Line;
-import com.archidni.archidni.Model.Transport.Schedule;
-import com.archidni.archidni.Model.Transport.ScheduleRetriever;
+import com.archidni.archidni.Model.Transport.Schedule.Schedule;
+import com.archidni.archidni.Model.Transport.Schedule.ScheduleRetriever;
 import com.archidni.archidni.R;
 import com.archidni.archidni.TimeUtils;
-import com.archidni.archidni.Ui.SearchLineStation.LineFragment;
-import com.archidni.archidni.Ui.SearchLineStation.SearchLineStationActivity;
-import com.archidni.archidni.Ui.SearchLineStation.StationFragment;
 
 import java.util.ArrayList;
 import java.util.List;

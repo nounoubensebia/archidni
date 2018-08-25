@@ -1,4 +1,6 @@
-package com.archidni.archidni.Model.Transport;
+package com.archidni.archidni.Model.Transport.Schedule;
+
+import com.archidni.archidni.Model.Transport.Schedule.Schedule;
 
 public class MetroSchedule extends Schedule {
 

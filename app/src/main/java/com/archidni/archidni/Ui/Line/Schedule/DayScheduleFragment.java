@@ -12,9 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.archidni.archidni.Model.Transport.Line;
-import com.archidni.archidni.Model.Transport.Schedule;
+import com.archidni.archidni.Model.Transport.Schedule.Schedule;
+import com.archidni.archidni.Model.Transport.Schedule.TrainSchedule;
+import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.ScheduleAdapter;
 
@@ -33,6 +37,11 @@ public class DayScheduleFragment extends Fragment {
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
+
+    @BindView(R.id.text_schedule_list)
+    TextView schedulesListText;
 
     private int day;
     private boolean isReady = false;
@@ -66,11 +75,34 @@ public class DayScheduleFragment extends Fragment {
     {
         if (isReady)
         {
-            ScheduleAdapter scheduleAdapter = new ScheduleAdapter(getContext(),schedules,line);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL
-                    ,false));
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(scheduleAdapter);
+            if (schedules.size()>0)
+            {
+                schedulesListText.setVisibility(View.VISIBLE);
+                ScheduleAdapter scheduleAdapter = new ScheduleAdapter(getContext(), schedules, line, new ScheduleAdapter.OnTrainScheduleClick() {
+                    @Override
+                    public void onItemClick(TrainSchedule trainSchedule) {
+
+                    }
+                });
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL
+                        ,false));
+                recyclerView.setNestedScrollingEnabled(false);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(scheduleAdapter);
+                if (schedules.size()>0)
+                if (schedules.get(0) instanceof TrainSchedule)
+                {
+                    schedulesListText.setText("Liste des voyages : ");
+                }
+                else
+                {
+                    schedulesListText.setText("Horraires : ");
+                }
+            }
+            else
+            {
+                schedulesListText.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -79,7 +111,7 @@ public class DayScheduleFragment extends Fragment {
         if (isReady)
         {
             progressBar.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
+            scrollView.setVisibility(View.VISIBLE);
         }
 
     }
@@ -88,8 +120,8 @@ public class DayScheduleFragment extends Fragment {
     {
         if (isReady)
         {
-            progressBar.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+            scrollView.setVisibility(View.GONE);
         }
     }
 

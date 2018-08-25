@@ -1,4 +1,4 @@
-package com.archidni.archidni.Model.Transport;
+package com.archidni.archidni.Model.Transport.Schedule;
 
 public abstract class Schedule {
     private int days;

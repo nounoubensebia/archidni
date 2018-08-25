@@ -6,7 +6,7 @@ import com.archidni.archidni.Model.LineStationSuggestion;
 import com.archidni.archidni.Model.Notifications.Notification;
 import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Transport.Line;
-import com.archidni.archidni.Model.Transport.Schedule;
+import com.archidni.archidni.Model.Transport.Schedule.Schedule;
 import com.archidni.archidni.Model.Transport.Station;
 
 import java.util.ArrayList;
