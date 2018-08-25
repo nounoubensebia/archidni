@@ -304,7 +304,7 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
             }
         });
         listView.setDividerHeight(0);
-        if (justifyList)
+        //if (justifyList)
             ViewUtils.justifyListViewHeightBasedOnChildren(listView);
         listView.setVisibility(View.VISIBLE);
         scrollView.post(new Runnable() {
