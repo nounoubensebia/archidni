@@ -120,7 +120,8 @@
         <activity
             android:name=".Ui.Line.Schedule.ScheduleActivity"
             android:label="Horaires" />
-        <activity android:name=".Ui.Line.Schedule.TrainTrip.TrainTripActivity"></activity>
+        <activity android:name=".Ui.Line.Schedule.TrainTrip.TrainTripActivity"
+            android:label="Horaires"></activity>
     </application>
 
 </manifest>

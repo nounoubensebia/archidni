@@ -1,5 +1,6 @@
 package com.archidni.archidni.Ui.Line.Schedule;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -16,8 +17,12 @@ import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Schedule.Schedule;
 import com.archidni.archidni.Model.Transport.Schedule.ScheduleRetriever;
+import com.archidni.archidni.Model.Transport.Schedule.TrainSchedule;
 import com.archidni.archidni.R;
 import com.archidni.archidni.TimeUtils;
+import com.archidni.archidni.Ui.Line.Schedule.TrainTrip.TrainTripActivity;
+import com.archidni.archidni.Ui.TrainTarifsActivity;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +110,13 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         Toast.makeText(this,R.string.error_happened,Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void startTrainTripActivity(TrainSchedule trainSchedule) {
+        Intent intent = new Intent(this, TrainTripActivity.class);
+        intent.putExtra(IntentUtils.SCHEDULE,new Gson().toJson(trainSchedule));
+        startActivity(intent);
+    }
+
 
     public class PageAdapter extends FragmentPagerAdapter {
 
@@ -120,7 +132,12 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
                         public void onReady() {
                             presenter.onFragmentCreated();
                         }
-                    });
+                    }, new DayScheduleFragment.OnScheduleClick() {
+                @Override
+                public void onScheduleClick(Schedule schedule) {
+                    presenter.onScheduleClick(schedule);
+                }
+            });
             dayScheduleFragments.add(dayScheduleFragment);
             return dayScheduleFragment;
         }

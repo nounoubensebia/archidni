@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="16dp"
-    android:layout_marginTop="16dp"
     android:orientation="horizontal">
 
     <RelativeLayout
@@ -19,7 +18,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/image_circle"
+                android:id="@+id/layout_instruction1"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_gravity="center"
@@ -59,7 +58,7 @@
         <View
             android:id="@+id/view_separation_transport_mean"
             android:layout_width="4dp"
-            android:layout_height="32dp"
+            android:layout_height="48sp"
             android:layout_below="@id/image_instruction1"
             android:layout_marginLeft="6dp"
             android:background="@color/color_transport_mean_selected_0"

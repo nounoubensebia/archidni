@@ -97,7 +97,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         else
         {
             TrainScheduleViewHolder trainScheduleViewHolder = (TrainScheduleViewHolder) holder;
-            TrainSchedule trainSchedule = (TrainSchedule) schedules.get(position);
+            final TrainSchedule trainSchedule = (TrainSchedule) schedules.get(position);
 
             trainScheduleViewHolder.tripText.setText(String.format("Voyage à %s",
                     StringUtils.getTimeString(trainSchedule.getDepartureTime())));
@@ -117,7 +117,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             trainScheduleViewHolder.arrivalsLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    onTrainScheduleClick.onItemClick(trainSchedule);
                 }
             });
             trainScheduleViewHolder.separationView.setBackgroundColor(ContextCompat.getColor(

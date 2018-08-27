@@ -3,6 +3,7 @@ package com.archidni.archidni.Ui.Line.Schedule;
 import com.archidni.archidni.Data.LinesAndPlaces.LinesAndPlacesRepository;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Schedule.Schedule;
+import com.archidni.archidni.Model.Transport.Schedule.TrainSchedule;
 
 import java.util.List;
 
@@ -46,5 +47,10 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             view.showSchedulesLayout();
             view.showSchedules(line,schedules);
         }
+    }
+
+    @Override
+    public void onScheduleClick(Schedule schedule) {
+        view.startTrainTripActivity((TrainSchedule) schedule);
     }
 }

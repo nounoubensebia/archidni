@@ -46,10 +46,13 @@ public class DayScheduleFragment extends Fragment {
     private int day;
     private boolean isReady = false;
     private OnFragmentReady onFragmentReady;
+    private OnScheduleClick onScheduleClick;
 
-    public DayScheduleFragment(int day, OnFragmentReady onFragmentReady) {
+    public DayScheduleFragment(int day, OnFragmentReady onFragmentReady, OnScheduleClick onScheduleClick) {
+        super();
         this.day = day;
         this.onFragmentReady = onFragmentReady;
+        this.onScheduleClick = onScheduleClick;
     }
 
     public boolean isReady() {
@@ -81,7 +84,7 @@ public class DayScheduleFragment extends Fragment {
                 ScheduleAdapter scheduleAdapter = new ScheduleAdapter(getContext(), schedules, line, new ScheduleAdapter.OnTrainScheduleClick() {
                     @Override
                     public void onItemClick(TrainSchedule trainSchedule) {
-
+                        onScheduleClick.onScheduleClick(trainSchedule);
                     }
                 });
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL
@@ -127,6 +130,10 @@ public class DayScheduleFragment extends Fragment {
 
     public interface OnFragmentReady {
         public void onReady();
+    }
+
+    public interface OnScheduleClick {
+        public void onScheduleClick(Schedule schedule);
     }
 
 }
