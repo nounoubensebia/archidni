@@ -91,7 +91,9 @@ public class TimeUtils {
     public static String getTimeString (Calendar calendar)
     {
         int mins = calendar.get(Calendar.MINUTE);
-        String minutes = (mins<10)? "0"+mins:mins+"";
-        return calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+        int hrs = calendar.get(Calendar.HOUR_OF_DAY);
+        String minutes = (mins<=10)? "0"+mins : mins+"";
+        String hours = (hrs<=10) ? "0"+hrs : hrs+"";
+        return hours+":"+minutes;
     }
 }

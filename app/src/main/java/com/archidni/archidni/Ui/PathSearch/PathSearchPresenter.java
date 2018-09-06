@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by noure on 03/02/2018.
@@ -25,7 +26,7 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
     private PathSearchContract.View view;
     private PathSettings pathSettings;
     private PathRepository pathRepository;
-    private ArrayList<Path> paths;
+    private List<Path> paths;
 
     public PathSearchPresenter(PathSearchContract.View view, PathPlace origin, PathPlace destination) {
         this.view = view;
@@ -67,7 +68,7 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
             view.showLoadingBar();
             pathRepository.getPaths(context, pathSettings, new PathRepository.OnSearchCompleted() {
                 @Override
-                public void onResultsFound(ArrayList<Path> foundPaths) {
+                public void onResultsFound(List<Path> foundPaths) {
                     paths = foundPaths;
                     ArrayList<Path> pathsToShow = getSortedAndFilteredPaths();
                     view.showPathSuggestions(pathsToShow,pathSettings);
@@ -75,7 +76,6 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
 
                 @Override
                 public void onError() {
-                    view.hidePathsLayout();
                     view.showErrorMessage();
                 }
             });

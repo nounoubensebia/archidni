@@ -43,6 +43,7 @@ public class NotificationsOnlineDataSource implements NotificationsDataSource {
                         String title = jsonObject.getString("title");
                         int transportModeId = jsonObject.getInt("transport_mode_id")-1;
                         String description = jsonObject.getString("description");
+                        int type = jsonObject.getInt("type");
                         JSONArray linesJsonArray = jsonObject.getJSONArray("lines");
                         ArrayList<LineSkeleton> lines = new ArrayList<>();
                         for (int j=0;j<linesJsonArray.length();j++)
@@ -55,7 +56,7 @@ public class NotificationsOnlineDataSource implements NotificationsDataSource {
                             lines.add(line);
                         }
                         Notification notification = new Notification(title,
-                                TransportMean.allTransportMeans.get(transportModeId),lines,description);
+                                TransportMean.allTransportMeans.get(transportModeId),lines,description,type);
                         notifications.add(notification);
                     }
                     onNotificationsFound.onNotificationsFound(notifications);

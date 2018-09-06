@@ -43,4 +43,7 @@
     <string name="log_out">Se déconnecter</string>
     <string name="station">Station</string>
     <string name="station_of">Station de</string>
+    <string name="stops">Arrêts</string>
+    <string name="alert_information">Alerte information</string>
+    <string name="alert_perturbation">Alerte perturbations</string>
 </resources>

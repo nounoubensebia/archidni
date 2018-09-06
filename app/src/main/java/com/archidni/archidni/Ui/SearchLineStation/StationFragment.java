@@ -27,20 +27,26 @@ import java.util.ArrayList;
 
 public class StationFragment extends LineStationFragment {
     StationDataRepository stationDataRepository;
+    boolean emptyString = true;
+
     @Override
-    void updateQueryText(String text) {
+    void updateQueryText(final String text) {
         if (text.length()>1)
         {
+            emptyString = false;
             noResultsText.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
             lineStationSuggestionsRepository.getStationSuggestions(getActivity(), text, new LineStationSuggestionsRepository.OnSearchComplete() {
                 @Override
                 public void onSearchComplete(ArrayList<LineStationSuggestion> lineStationSuggestions) {
-                    populateList(lineStationSuggestions);
-                    progressBar.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                    if (lineStationSuggestions.size()==0)
-                        noResultsText.setVisibility(View.VISIBLE);
+                    if (!emptyString)
+                    {
+                        populateList(lineStationSuggestions);
+                        progressBar.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        if (lineStationSuggestions.size()==0)
+                            noResultsText.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 @Override
@@ -53,7 +59,12 @@ public class StationFragment extends LineStationFragment {
         }
         else
         {
+            if (stationDataRepository!=null)
+                stationDataRepository.cancelAllRequests(getActivity());
             populateList(new ArrayList<LineStationSuggestion>());
+            progressBar.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyString = true;
         }
     }
 

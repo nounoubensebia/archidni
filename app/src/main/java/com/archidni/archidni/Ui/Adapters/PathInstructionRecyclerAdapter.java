@@ -206,7 +206,7 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
             }
         });
         holder.stationsText.setText(rideInstruction.getSections().size()+" arrêts "+"("+rideInstruction.getDuration()/60+" minutes )");
-        holder.takeText.setText("Prendre le "+rideInstruction.getTransportMean().getName());
+        holder.takeText.setText("Trajet en "+rideInstruction.getTransportMean().getName());
         holder.separationView.setBackgroundColor(ContextCompat.getColor(context
                 ,rideInstruction.getTransportMean().getColor()));
         holder.originCircle.setImageDrawable(ContextCompat.getDrawable(context,
@@ -232,7 +232,6 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
                 return false;
             }
         });
-
         if (expandedStations.get(position))
         {
             holder.stationsList.setVisibility(View.VISIBLE);
@@ -254,7 +253,6 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
                 notifyDataSetChanged();
             }
         });
-
     }
 
     @Override

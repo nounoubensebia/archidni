@@ -2,6 +2,7 @@ package com.archidni.archidni.Ui.PathNavigation;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -211,8 +212,8 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
 
         transportMeanImage.setImageDrawable(ContextCompat.getDrawable(this,
                 rideInstruction.getTransportMean().getIconEnabled()));
-        takeText.setText("Prendre le "+rideInstruction.getTransportMean().getName());
-        stopsText.setText(rideInstruction.getSections().size()+" arrets jusqu'à "
+        takeText.setText("Trajet en "+rideInstruction.getTransportMean().getName());
+        stopsText.setText(rideInstruction.getSections().size()+ " "+getResources().getString(R.string.stops)+" jusqu'à "
                 +rideInstruction.getStations().get(rideInstruction.getStations().size()-1).getName());
         stopsText.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -3,6 +3,7 @@ package com.archidni.archidni;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -15,6 +16,7 @@ import com.archidni.archidni.Ui.Login.LoginActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -51,11 +53,25 @@ public class OauthStringRequest extends NetworkRequest {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse.data!=null) {
+                        try {
+                            String body = new String(error.networkResponse.data,"UTF-8");
+                            JSONObject jsonObject = new JSONObject(body);
+                            String message = jsonObject.getString("message");
+                            if (message.equals("The refresh token is invalid."))
+                            {
+                                disconnectUser();
+                            }
+                            Log.e("REFRESH TOKEN ERROR",body);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        catch (JSONException e)
+                        {
+
+                        }
+                    }
                     OauthStringRequest.this.getErrorListener().onErrorResponse(error);
-                    if (error.networkResponse !=null&&error.networkResponse.statusCode==401)
-                        disconnectUser();
-                    else
-                        getErrorListener();
                 }
             }){
                 @Override
@@ -83,11 +99,11 @@ public class OauthStringRequest extends NetworkRequest {
         StringRequest request = new StringRequest(getMethod(), getUrl(), listener, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                OauthStringRequest.this.getErrorListener().onErrorResponse(error);
+                //OauthStringRequest.this.getErrorListener().onErrorResponse(error);
                 if (error.networkResponse !=null&&error.networkResponse.statusCode==401)
                     disconnectUser();
                 else
-                    getErrorListener();
+                    OauthStringRequest.this.getErrorListener().onErrorResponse(error);
             }
         })
         {

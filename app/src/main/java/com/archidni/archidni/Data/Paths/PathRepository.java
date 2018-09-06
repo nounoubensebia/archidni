@@ -6,6 +6,7 @@ import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Path.PathSettings;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by noure on 12/02/2018.
@@ -16,7 +17,7 @@ public class PathRepository {
     {
         new PathOnlineDataStore().getPaths(context,pathSettings, new PathOnlineDataStore.OnSearchCompleted() {
             @Override
-            public void onResultsFound(ArrayList<Path> paths) {
+            public void onResultsFound(List<Path> paths) {
                 onSearchCompleted.onResultsFound(paths);
             }
 
@@ -33,7 +34,7 @@ public class PathRepository {
     }
 
     public interface OnSearchCompleted {
-        void onResultsFound (ArrayList<Path> paths);
+        void onResultsFound (List<Path> paths);
         void onError();
     }
 }

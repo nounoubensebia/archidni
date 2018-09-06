@@ -17,12 +17,17 @@ public class Notification {
     private TransportMean transportMean;
     private ArrayList<LineSkeleton> lines;
     private String description;
+    private int type;
 
-    public Notification(String title, TransportMean transportMean, ArrayList<LineSkeleton> lines, String description) {
+    public static final int TYPE_PERTURBATION = 1;
+    public static final int TYPE_NORMAL_ALERT = 2;
+
+    public Notification(String title, TransportMean transportMean, ArrayList<LineSkeleton> lines, String description, int type) {
         this.title = title;
         this.transportMean = transportMean;
         this.lines = lines;
         this.description = description;
+        this.type = type;
     }
 
     public ArrayList<LineSkeleton> getLines() {
@@ -64,6 +69,7 @@ public class Notification {
         try {
             JSONObject jsonObject = new JSONObject(json);
             String title = jsonObject.getString("title");
+            int type = jsonObject.getInt("type");
             int transportModeId = jsonObject.getInt("transport_mode_id")-1;
             String description = jsonObject.getString("description");
             JSONArray linesJsonArray = jsonObject.getJSONArray("lines");
@@ -78,12 +84,16 @@ public class Notification {
                 lines.add(line);
             }
             Notification notification = new Notification(title,
-                    TransportMean.allTransportMeans.get(transportModeId),lines,description);
+                    TransportMean.allTransportMeans.get(transportModeId),lines,description,type);
             return notification;
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public int getType() {
+        return type;
     }
 
     public String getTitle() {

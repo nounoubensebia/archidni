@@ -44,6 +44,20 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 notification.getTransportMean().getIconEnabled()));
         holder.titleText.setText(notification.getTitle());
         holder.descriptionText.setText(notification.getDescription());
+        if (notification.getType()==Notification.TYPE_PERTURBATION)
+        {
+            //ViewUtils.changeTextViewState(context,holder.notificationType,R.drawable.ic_notifications_none_red_24dp,
+            //        R.color.colorRed,ViewUtils.DIRECTION_LEFT);
+            holder.notificationType.setText(R.string.alert_perturbation);
+            holder.notificationType.setTextColor(ContextCompat.getColor(context,R.color.colorRed));
+        }
+        else
+        {
+            //ViewUtils.changeTextViewState(context,holder.notificationType,R.drawable.ic_info_green_24dp,
+            //        R.color.colorGreen,ViewUtils.DIRECTION_LEFT);
+            holder.notificationType.setTextColor(ContextCompat.getColor(context,R.color.colorGreen));
+            holder.notificationType.setText(R.string.alert_information);
+        }
     }
 
     @Override
@@ -59,6 +73,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         TextView titleText;
         @BindView(R.id.text_description)
         TextView descriptionText;
+        @BindView(R.id.text_type)
+        TextView notificationType;
 
         public ViewHolder(View itemView) {
             super(itemView);
