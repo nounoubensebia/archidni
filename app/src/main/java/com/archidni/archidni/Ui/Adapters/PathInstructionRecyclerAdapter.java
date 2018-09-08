@@ -206,6 +206,9 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
             }
         });
         holder.stationsText.setText(rideInstruction.getSections().size()+" arrêts "+"("+rideInstruction.getDuration()/60+" minutes )");
+
+
+
         holder.takeText.setText("Trajet en "+rideInstruction.getTransportMean().getName());
         holder.separationView.setBackgroundColor(ContextCompat.getColor(context
                 ,rideInstruction.getTransportMean().getColor()));
@@ -253,6 +256,11 @@ public class PathInstructionRecyclerAdapter extends RecyclerView.Adapter<Recycle
                 notifyDataSetChanged();
             }
         });
+
+        if (rideInstruction.getStations().size()==2)
+        {
+            holder.stationsText.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0);
+        }
     }
 
     @Override
