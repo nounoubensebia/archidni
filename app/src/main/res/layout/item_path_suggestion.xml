@@ -48,12 +48,15 @@
                     app:srcCompat="@drawable/ic_transport_mean_0_enabled" />
             </LinearLayout>
 
+
+
+
             <TextView
+                android:layout_marginTop="8dp"
                 android:id="@+id/text_departure"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
                 android:text="Départ à 18:49"
                 android:textColor="#000" />
 

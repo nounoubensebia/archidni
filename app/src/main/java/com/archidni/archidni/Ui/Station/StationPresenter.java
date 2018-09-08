@@ -3,7 +3,9 @@ package com.archidni.archidni.Ui.Station;
 import android.content.Context;
 
 import com.archidni.archidni.Data.LinesAndPlaces.LinesAndPlacesRepository;
+import com.archidni.archidni.Data.Station.StationDataRepository;
 import com.archidni.archidni.Model.Coordinate;
+import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
@@ -19,17 +21,24 @@ public class StationPresenter implements StationContract.Presenter {
     private Station station;
     private StationContract.View view;
     private PathPlace userPlace;
-    private boolean linesSelected = true;
+    private int selectedItem;
     private ArrayList<Line> lines;
+    private ArrayList<MainActivityPlace> nearbyPlaces;
     private LinesAndPlacesRepository linesAndPlacesRepository;
+    private StationDataRepository stationDataRepository;
     private long departureTime;
     private long departureDate;
+
+    public static final int LINES = 0;
+    public static final int TRIPS = 1;
+    public static final int NEARBY_PLACES = 2;
 
     public StationPresenter(Station station, StationContract.View view) {
         this.station = station;
         this.view = view;
         view.setTheme(station);
         linesAndPlacesRepository = new LinesAndPlacesRepository();
+        stationDataRepository = new StationDataRepository();
     }
 
     @Override
@@ -39,9 +48,10 @@ public class StationPresenter implements StationContract.Presenter {
 
     @Override
     public void onCreate(Context context) {
+        selectedItem = 0;
         view.showStationOnActivity(station);
         view.showLinesLoadingBar();
-        view.updateLinesTripsLayout(linesSelected,station);
+        view.updateLinesTripsLayout(selectedItem,station);
         getLines(context);
         departureTime = TimeUtils.getSecondsFromMidnight();
         departureDate = TimeUtils.getCurrentTimeInSeconds();
@@ -66,23 +76,21 @@ public class StationPresenter implements StationContract.Presenter {
     }
 
     @Override
-    public void toggleLinesTrips(boolean linesSelected) {
+    public void toggleSelectedItem(int selectedItem) {
+        this.selectedItem = selectedItem;
         if (this.lines!=null)
         {
-            if (linesSelected!=this.linesSelected)
+
+            switch (selectedItem)
             {
-                this.linesSelected = linesSelected;
-                if (this.linesSelected)
-                {
-                    view.showLinesOnList(lines);
-                }
-                else
-                {
-                    view.showTripsOnList(station,lines,departureTime,departureDate);
-                }
+                case LINES : view.showLinesOnList(lines);
+                break;
+                case TRIPS : view.showTripsOnList(station,lines,departureTime,departureDate);
+                break;
+                case NEARBY_PLACES : view.showNearbyPlacesOnList(station, nearbyPlaces);
             }
-            view.updateLinesTripsLayout(this.linesSelected,station);
         }
+        view.updateLinesTripsLayout(selectedItem,station);
     }
 
     @Override
@@ -119,12 +127,50 @@ public class StationPresenter implements StationContract.Presenter {
         linesAndPlacesRepository.cancelAllRequests(context);
     }
 
-    private void getLines(Context context) {
+    @Override
+    public void onPlaceClick(MainActivityPlace place) {
+        if (place instanceof Station)
+        {
+            view.startStationActivity((Station) place);
+        }
+    }
+
+    private void getLines(final Context context) {
         linesAndPlacesRepository.getLinesPassingByStation(context, station, new LinesAndPlacesRepository.OnSearchCompleted() {
             @Override
-            public void onLinesFound(ArrayList<Line> lines) {
-                StationPresenter.this.lines = lines;
-                view.showLinesOnList(lines);
+            public void onLinesFound(final ArrayList<Line> lines) {
+                /*StationPresenter.this.lines = lines;
+                switch (selectedItem)
+                {
+                    case LINES : view.showLinesOnList(lines);
+                        break;
+                    case TRIPS : view.showTripsOnList(station,lines,departureTime,departureDate);
+                        break;
+                    case NEARBY_PLACES : view.showNearbyPlacesOnList(station,nearbyPlaces);
+                }*/
+                stationDataRepository.getNearbyPlaces(context, station, new StationDataRepository.OnNearbyPlacesSearchComplete() {
+                    @Override
+                    public void onSearchComplete(ArrayList<MainActivityPlace> mainActivityPlaces) {
+                        StationPresenter.this.nearbyPlaces = mainActivityPlaces;
+                        StationPresenter.this.lines = lines;
+                        switch (selectedItem)
+                        {
+                            case LINES : view.showLinesOnList(lines);
+                                break;
+                            case TRIPS : view.showTripsOnList(station,lines,departureTime,departureDate);
+                                break;
+                            case NEARBY_PLACES : view.showNearbyPlacesOnList(station,nearbyPlaces);
+                              view.showNearbyPlacesOnList(station,nearbyPlaces);
+                              break;
+                        }
+
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
             }
 
             @Override

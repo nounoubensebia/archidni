@@ -73,10 +73,10 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         {
             holder.mainText.setVisibility(View.VISIBLE);
             int distance = GeoUtils.distance(userCoordinate,place.getCoordinate());
-            holder.mainText.setText("à "+StringUtils.getTextFromDistance(distance)+" de votre position");
+            holder.mainText.setText("à "+StringUtils.getTextFromDistance(distance)+"");
         }
 
-        if (userCoordinate!=null)
+        /*if (userCoordinate!=null)
         {
             holder.secondaryText.setVisibility(View.VISIBLE);
             holder.secondaryText.setText(StringUtils.getTextFromDistance(GeoUtils.distance(userCoordinate,place.getCoordinate())));
@@ -84,7 +84,9 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         else
         {
             holder.secondaryText.setVisibility(View.GONE);
-        }
+        }*/
+
+        holder.secondaryText.setVisibility(View.GONE);
 
         holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,
                 place.getIcon()));

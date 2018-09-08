@@ -46,4 +46,9 @@
     <string name="stops">Arrêts</string>
     <string name="alert_information">Alerte information</string>
     <string name="alert_perturbation">Alerte perturbations</string>
+    <string name="check_params_and_internet">Une erreur s\'est produite veuillez vérifier vos paramètres de recherche ainsi que votre connexion internet</string>
+    <string name="retry">Réessayer</string>
+    <string name="no_paths_found">Aucun itinéraries trouvé pour les paramètres de recherche choisis</string>
+    <string name="view_schedules_for">Consulter les horaires pour :</string>
+    <string name="nearby">A proximité</string>
 </resources>

@@ -3,6 +3,7 @@ package com.archidni.archidni.Data.Station;
 import android.content.Context;
 
 import com.archidni.archidni.Model.LineStationSuggestion;
+import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Transfer;
 import com.archidni.archidni.Model.Transport.Station;
 
@@ -30,6 +31,12 @@ public class StationDataRepository {
         });
     }
 
+    public void getNearbyPlaces (Context context,Station station,OnNearbyPlacesSearchComplete onNearbyPlacesSearchComplete)
+    {
+        StationDataStore stationDataStore = new StationDataStore();
+        stationDataStore.getNearbyPlaces(context,station,onNearbyPlacesSearchComplete);
+    }
+
     public void getTransfers (Context context,Station station)
     {
 
@@ -43,6 +50,11 @@ public class StationDataRepository {
     public interface OnSearchComplete {
         public void onSearchComplete (Station station);
         public void onError ();
+    }
+
+    public interface OnNearbyPlacesSearchComplete {
+        public void onSearchComplete (ArrayList<MainActivityPlace> mainActivityPlaces);
+        public void onError();
     }
 
     public interface OnTransferSearchCompleted {

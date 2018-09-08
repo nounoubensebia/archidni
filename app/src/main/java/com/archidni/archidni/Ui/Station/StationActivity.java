@@ -23,6 +23,7 @@ import android.widget.TimePicker;
 
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
+import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
@@ -30,6 +31,7 @@ import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.LineAdapter;
+import com.archidni.archidni.Ui.Adapters.PlaceAdapter;
 import com.archidni.archidni.Ui.Adapters.TrainTripAdapter;
 import com.archidni.archidni.Ui.Adapters.TramwayMetroTripAdapter;
 import com.archidni.archidni.Ui.Line.LineActivity;
@@ -77,6 +79,10 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     TextView timeText;
     @BindView(R.id.text_date)
     TextView dateText;
+    @BindView(R.id.layout_nearby)
+    View nearbyLayout;
+    @BindView(R.id.text_nearby)
+    TextView nearbyText;
     ArchidniGoogleMap archidniMap;
     StationContract.Presenter presenter;
     private FusedLocationProviderClient fusedLocationClient;
@@ -131,13 +137,19 @@ public class StationActivity extends AppCompatActivity implements StationContrac
         linesLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.toggleLinesTrips(true);
+                presenter.toggleSelectedItem(StationPresenter.LINES);
             }
         });
         timesLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.toggleLinesTrips(false);
+                presenter.toggleSelectedItem(StationPresenter.TRIPS);
+            }
+        });
+        nearbyLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.toggleSelectedItem(StationPresenter.NEARBY_PLACES);
             }
         });
 
@@ -232,6 +244,21 @@ public class StationActivity extends AppCompatActivity implements StationContrac
             recyclerView.setAdapter(tramwayMetroAdapter);
             tripOptionsLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void showNearbyPlacesOnList(Station station, ArrayList<MainActivityPlace> mainActivityPlaces) {
+        PlaceAdapter placeAdapter = new PlaceAdapter(this, mainActivityPlaces, station.getCoordinate()
+                , new PlaceAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(MainActivityPlace mainListPlace) {
+                presenter.onPlaceClick(mainListPlace);
+            }
+        });
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(placeAdapter);
     }
 
     @Override
@@ -330,24 +357,40 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     }
 
     @Override
-    public void updateLinesTripsLayout(boolean linesSelected,Station station) {
-        if (linesSelected)
+    public void updateLinesTripsLayout(int selectedItem,Station station) {
+
+        switch (selectedItem)
         {
-            ViewUtils.changeTextViewState(this,linesText,
+            case StationPresenter.LINES : ViewUtils.changeTextViewState(this,linesText,
                     station.getTransportMean().getLinesSelectedDrawable()
                     ,station.getTransportMean().getColor(),ViewUtils.DIRECTION_RIGHT);
-            ViewUtils.changeTextViewState(this,timesText,
-                    R.drawable.ic_time_disabled,R.color.black
-                    ,ViewUtils.DIRECTION_RIGHT);
-        }
-        else
-        {
-            ViewUtils.changeTextViewState(this,linesText,
-                    R.drawable.ic_line_disabled
-                    ,R.color.black,ViewUtils.DIRECTION_RIGHT);
-            ViewUtils.changeTextViewState(this,timesText,station.getTransportMean()
-                            .getTimesSelectedDrawable(),station.getTransportMean().getColor(),
-                    ViewUtils.DIRECTION_RIGHT);
+                ViewUtils.changeTextViewState(this,timesText,
+                        R.drawable.ic_time_disabled,R.color.black
+                        ,ViewUtils.DIRECTION_RIGHT);
+                ViewUtils.changeTextViewState(this,nearbyText,R.drawable.ic_near_me_black_24dp,
+                        R.color.black,ViewUtils.DIRECTION_RIGHT);
+                break;
+            case StationPresenter.TRIPS:
+
+                    ViewUtils.changeTextViewState(this,linesText,
+                            R.drawable.ic_line_disabled
+                            ,R.color.black,ViewUtils.DIRECTION_RIGHT);
+                    ViewUtils.changeTextViewState(this,timesText,station.getTransportMean()
+                                    .getTimesSelectedDrawable(),station.getTransportMean().getColor(),
+                            ViewUtils.DIRECTION_RIGHT);
+                    ViewUtils.changeTextViewState(this,nearbyText,R.drawable.ic_near_me_black_24dp,
+                            R.color.black,ViewUtils.DIRECTION_RIGHT);
+                    break;
+                    case StationPresenter.NEARBY_PLACES:
+                        ViewUtils.changeTextViewState(this,linesText,
+                                R.drawable.ic_line_disabled
+                                ,R.color.black,ViewUtils.DIRECTION_RIGHT);
+                        ViewUtils.changeTextViewState(this,timesText,
+                                R.drawable.ic_time_disabled,R.color.black
+                                ,ViewUtils.DIRECTION_RIGHT);
+                        ViewUtils.changeTextViewState(this,nearbyText,station.getTransportMean().getNearbyDrawable(),
+                                station.getTransportMean().getColor(),ViewUtils.DIRECTION_RIGHT);
+
         }
     }
 
@@ -361,6 +404,13 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     @Override
     public void hideTimeText() {
         timeText.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void startStationActivity(Station station) {
+        Intent intent = new Intent(this,StationActivity.class);
+        intent.putExtra(IntentUtils.STATION_STATION,station.toJson());
+        startActivity(intent);
     }
 
 }

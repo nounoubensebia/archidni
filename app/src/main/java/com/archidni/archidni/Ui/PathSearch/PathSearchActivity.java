@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
@@ -44,7 +45,6 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLngBounds;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -87,10 +87,14 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
     View mapLoadingLayout;
     @BindView(R.id.text_options)
     TextView optionsText;
-    @BindView(R.id.text_suggested_paths_no_paths_found)
-    TextView suggestedPathsNoPathsText;
+    @BindView(R.id.text_no_paths_found)
+    TextView noPathsFoundText;
     @BindView(R.id.radio_group_departure_arrival)
     RadioGroup arrivalDeparturerRadioGroup;
+    @BindView(R.id.layout_search_error)
+    LinearLayout searchErrorLayout;
+    @BindView(R.id.button_retry)
+    Button retryButton;
 
     ArchidniGoogleMap archidniMap;
     PathSearchContract.Presenter pathSearchPresenter;
@@ -173,6 +177,15 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
                 hidePathsLayout();
             }
         });
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean arrival = false;
+                if (arrivalDeparturerRadioGroup.getCheckedRadioButtonId()==R.id.radio_button_arrival)
+                    arrival = true;
+                pathSearchPresenter.onSearchPathsClick(PathSearchActivity.this,arrival);
+            }
+        });
     }
 
 
@@ -207,12 +220,14 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
 
     @Override
     public void showLoadingBar() {
+
         CoordinatorLayout.LayoutParams layoutParams =
                 (CoordinatorLayout.LayoutParams) bottomLayout.getLayoutParams();
         layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
         bottomLayout.setLayoutParams(layoutParams);
         progressBar.setVisibility(View.VISIBLE);
         getPathLayout.setVisibility(View.GONE);
+        searchErrorLayout.setVisibility(View.GONE);
         pathsListLayout.setVisibility(View.VISIBLE);
     }
 
@@ -235,11 +250,11 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
         recyclerView.setAdapter(pathSuggestionAdapter);
         if (paths.size()==0)
         {
-            suggestedPathsNoPathsText.setText("Aucun itinéraire en transport en commun n'a été trouvé");
+            noPathsFoundText.setVisibility(View.VISIBLE);
         }
         else
         {
-            suggestedPathsNoPathsText.setText("Itinéraires suggérés");
+            noPathsFoundText.setVisibility(View.GONE);
         }
     }
 
@@ -294,6 +309,32 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
 
     @Override
     public void hidePathsLayout() {
+
+        if (searchErrorLayout.getVisibility()==View.GONE)
+        {
+            pathsListLayout.setVisibility(View.GONE);
+            searchErrorLayout.setVisibility(View.GONE);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    CoordinatorLayout.LayoutParams layoutParams =
+                            (CoordinatorLayout.LayoutParams) bottomLayout.getLayoutParams();
+                    layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                    getPathLayout.setVisibility(View.VISIBLE);
+                    bottomLayout.setLayoutParams(layoutParams);
+                    getPathText.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    pathSuggestionsLayout.setVisibility(View.GONE);
+                }
+            },100);
+        }
+    }
+
+    @Override
+    public void showErrorMessage() {
+
+        getPathText.setVisibility(View.GONE);
         pathsListLayout.setVisibility(View.GONE);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -304,17 +345,13 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
                 layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 getPathLayout.setVisibility(View.VISIBLE);
                 bottomLayout.setLayoutParams(layoutParams);
-                getPathText.setVisibility(View.VISIBLE);
+                searchErrorLayout.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.VISIBLE);
                 pathSuggestionsLayout.setVisibility(View.GONE);
             }
         },100);
-    }
 
-    @Override
-    public void showErrorMessage() {
-        Toast.makeText(this,"Une erreur s'est produite veuillez réessayez"
-                ,Toast.LENGTH_LONG).show();
+
     }
 
     @Override
