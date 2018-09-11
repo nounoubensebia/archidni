@@ -48,11 +48,19 @@
                     app:srcCompat="@drawable/ic_transport_mean_0_enabled" />
             </LinearLayout>
 
-
-
-
-            <TextView
+            <LinearLayout
                 android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/text_transfer_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="Nombre de correspondances : 2"
+                    android:textColor="#000" />
+            <TextView
                 android:id="@+id/text_departure"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,6 +74,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:text="Arrivée à 18:49" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -73,6 +83,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="8dp"
             android:paddingTop="16dp">

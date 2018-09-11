@@ -447,6 +447,8 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
                         break;
                     case R.id.radio_button_minimum_walking_time : sortMethod = PathPreferences.SORT_BY_MINIMUM_WALKING_TIME;
                         break;
+                    case R.id.radio_button_algorithm : sortMethod = PathPreferences.SORT_BY_ALGORITHM;
+                    break;
                 }
                 ArrayList<TransportMean> blackListedTransportModes = new ArrayList<>();
                 if (!transportMode0.isChecked())

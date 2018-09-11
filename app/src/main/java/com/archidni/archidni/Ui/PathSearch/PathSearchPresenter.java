@@ -1,6 +1,7 @@
 package com.archidni.archidni.Ui.PathSearch;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.archidni.archidni.Data.Paths.PathRepository;
 import com.archidni.archidni.IntentUtils;
@@ -126,7 +127,11 @@ public class PathSearchPresenter implements PathSearchContract.Presenter {
                     case PathPreferences.SORT_BY_MINIMUM_WALKING_TIME :
                         return (int) (path.getWalkingTime()-t1.getWalkingTime());
                     case PathPreferences.SORT_BY_MINIMUM_TRANSFERS :
-                        return (path.getTransferNumber()-t1.getTransferNumber());
+                        return (path.getBoardingNumber()-t1.getBoardingNumber());
+                        case PathPreferences.SORT_BY_ALGORITHM:
+                            Log.i("What","score 1 : "+path.getScore());
+                            Log.i("What","score 2 : "+t1.getScore());
+                            return (int) (path.getScore()-t1.getScore());
                 }
                 return -1;
             }

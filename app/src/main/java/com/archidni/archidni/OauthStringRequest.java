@@ -53,7 +53,7 @@ public class OauthStringRequest extends NetworkRequest {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    if(error.networkResponse.data!=null) {
+                    if(error.networkResponse!=null&&error.networkResponse.data!=null) {
                         try {
                             String body = new String(error.networkResponse.data,"UTF-8");
                             JSONObject jsonObject = new JSONObject(body);

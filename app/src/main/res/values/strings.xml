@@ -51,4 +51,6 @@
     <string name="no_paths_found">Aucun itinéraries trouvé pour les paramètres de recherche choisis</string>
     <string name="view_schedules_for">Consulter les horaires pour :</string>
     <string name="nearby">A proximité</string>
+    <string name="transfer_number">Nombre de correspondances</string>
+    <string name="default_algorithm">Tri par défaut</string>
 </resources>

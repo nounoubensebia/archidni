@@ -92,8 +92,8 @@ public class TimeUtils {
     {
         int mins = calendar.get(Calendar.MINUTE);
         int hrs = calendar.get(Calendar.HOUR_OF_DAY);
-        String minutes = (mins<=10)? "0"+mins : mins+"";
-        String hours = (hrs<=10) ? "0"+hrs : hrs+"";
+        String minutes = (mins<10)? "0"+mins : mins+"";
+        String hours = (hrs<10) ? "0"+hrs : hrs+"";
         return hours+":"+minutes;
     }
 }

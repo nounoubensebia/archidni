@@ -136,7 +136,7 @@ public class Path implements Serializable {
         return walkingTime;
     }
 
-    public int getTransferNumber ()
+    public int getBoardingNumber()
     {
         int transferNumber = 0;
         for (PathInstruction pathInstruction:pathInstructions)
@@ -147,6 +147,14 @@ public class Path implements Serializable {
             }
         }
         return transferNumber;
+    }
+
+    public float getScore ()
+    {
+        long duration = getDuration();
+        float percentage = (float)(getBoardingNumber()-1)*(float)8/100;
+        long score = (long) (duration + percentage*duration);
+        return score;
     }
 
     public String toJson() {

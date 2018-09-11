@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Path.PathSettings;
-import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.R;
 import com.archidni.archidni.TimeUtils;
 
@@ -84,6 +83,15 @@ public class PathSuggestionAdapter extends RecyclerView.Adapter<PathSuggestionAd
                 }
             });
         }
+        if (path.getBoardingNumber()>1)
+        {
+            holder.transferNumberText.setVisibility(View.VISIBLE);
+            holder.transferNumberText.setText(String.format("%s : %d",context.getString(R.string.transfer_number),path.getBoardingNumber()-1));
+        }
+        else
+        {
+            holder.transferNumberText.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -95,6 +103,7 @@ public class PathSuggestionAdapter extends RecyclerView.Adapter<PathSuggestionAd
         TextView arrivalText;
         TextView departureText;
         TextView etaMinutesText;
+        TextView transferNumberText;
         ImageView transportMean1Image;
         ImageView transportMean2Image;
         ImageView transportMean3Image;
@@ -107,6 +116,7 @@ public class PathSuggestionAdapter extends RecyclerView.Adapter<PathSuggestionAd
             transportMean1Image = (ImageView)itemView.findViewById(R.id.image_transport_mean_1);
             transportMean2Image = (ImageView)itemView.findViewById(R.id.image_transport_mean_2);
             transportMean3Image = (ImageView)itemView.findViewById(R.id.image_transport_mean_3);
+            transferNumberText = (TextView)itemView.findViewById(R.id.text_transfer_number);
             root = itemView.findViewById(R.id.root);
         }
     }
