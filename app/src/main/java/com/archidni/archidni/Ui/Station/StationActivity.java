@@ -222,7 +222,7 @@ public class StationActivity extends AppCompatActivity implements StationContrac
         {
             lines = new ArrayList<>();
         }
-        if (station.getTransportMean().getId()==1)
+        if (station.getTransportMean().getId()==TransportMean.ID_TRAIN)
         {
             TrainTripAdapter trainTripAdapter = new TrainTripAdapter(this,departureTime,
                     departureDate,station,lines);

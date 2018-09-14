@@ -246,6 +246,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
             }
         });
         recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(pathSuggestionAdapter);
         if (paths.size()==0)

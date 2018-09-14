@@ -27,7 +27,7 @@ public class SharedPrefsUtils {
         }
         else
         {
-            saveString(context,SHARED_PREFS_ENTRY_SERVER_URL,"http://000sitehostapp.xyz");
+            saveString(context,SHARED_PREFS_ENTRY_SERVER_URL,"http://localhost");
             return loadString(context,SHARED_PREFS_ENTRY_SERVER_URL);
         }
     }

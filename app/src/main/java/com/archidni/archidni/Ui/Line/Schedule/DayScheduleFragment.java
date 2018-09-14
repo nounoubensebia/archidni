@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,7 +39,7 @@ public class DayScheduleFragment extends Fragment {
     ProgressBar progressBar;
 
     @BindView(R.id.scrollView)
-    ScrollView scrollView;
+    NestedScrollView scrollView;
 
     @BindView(R.id.text_schedule_list)
     TextView schedulesListText;
