@@ -9,6 +9,7 @@ public class WaitLine implements Serializable {
     private LineSkeleton line;
     private String destination;
     private long time;
+    private long arrivalTime;
     private boolean isExactWaitingTime;
     private boolean hasPerturbations;
 
@@ -18,6 +19,14 @@ public class WaitLine implements Serializable {
         this.time = time;
         this.isExactWaitingTime = isExactWaitingTime;
         this.hasPerturbations = hasPerturbations;
+    }
+
+    public long getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(long arrivalTime) {
+        this.arrivalTime = arrivalTime;
     }
 
     public boolean hasPerturbations() {

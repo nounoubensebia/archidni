@@ -171,10 +171,13 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                                     departures.add(departureTime);
                                 }
                                 JSONArray stationsJsonArray = tripObject.getJSONArray("stations");
-                                ArrayList<Pair<Integer, Integer>> pairs = new ArrayList<>();
+                                ArrayList<Pair<Station, Integer>> pairs = new ArrayList<>();
                                 for (int k = 0; k < stationsJsonArray.length(); k++) {
                                     JSONObject stationObject = stationsJsonArray.getJSONObject(k);
-                                    pairs.add(new Pair<Integer, Integer>(stationObject.getInt("id"),
+                                    pairs.add(new Pair<Station, Integer>(new Station( stationObject.getInt("id"),
+                                            stationObject.getString("name"),line.getTransportMean().getId(),
+                                            new Coordinate(stationObject.getJSONObject("coordinate").getDouble("latitude"),
+                                                    stationObject.getJSONObject("coordinate").getDouble("longitude"))),
                                             stationObject.getInt("minutes")));
                                 }
                                 trainTrips.add(new TrainTrip(days, pairs, departures));
@@ -199,10 +202,13 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                                     timePeriods.add(new TimePeriod(start, end, waitingTime));
                                 }
                                 JSONArray stationsJsonArray = tripObject.getJSONArray("stations");
-                                ArrayList<Pair<Integer, Integer>> pairs = new ArrayList<>();
+                                ArrayList<Pair<Station, Integer>> pairs = new ArrayList<>();
                                 for (int k = 0; k < stationsJsonArray.length(); k++) {
                                     JSONObject stationObject = stationsJsonArray.getJSONObject(k);
-                                    pairs.add(new Pair<Integer, Integer>(stationObject.getInt("id"),
+                                    pairs.add(new Pair<Station, Integer>(new Station( stationObject.getInt("id"),
+                                            stationObject.getString("name"),line.getTransportMean().getId(),
+                                            new Coordinate(stationObject.getJSONObject("coordinate").getDouble("latitude"),
+                                                    stationObject.getJSONObject("coordinate").getDouble("longitude"))),
                                             stationObject.getInt("minutes")));
                                 }
                                 tramwayMetroTrips.add(new TramwayMetroTrip(days, pairs, timePeriods));

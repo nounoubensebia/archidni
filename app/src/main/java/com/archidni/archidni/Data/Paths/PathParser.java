@@ -86,10 +86,16 @@ public class PathParser {
                         boolean exactWaitingTime = lineObject.getBoolean("exact_waiting_time");
                         boolean hasPerturbations = lineObject.getBoolean("has_perturbations");
                         int id = lineObject.getInt("id");
-                        waitLines.add(new WaitLine(new LineSkeleton(id,
+                        WaitLine waitLine = new WaitLine(new LineSkeleton(id,
                                 lineName,
                                 TransportMean.allTransportMeans.get(transportModeId)),
-                                destination,duration,exactWaitingTime,hasPerturbations));
+                                destination,duration,exactWaitingTime,hasPerturbations);
+
+                        if (exactWaitingTime)
+                        {
+                            waitLine.setArrivalTime(lineObject.getLong("arrival_time"));
+                        }
+                        waitLines.add(waitLine);
                     }
                     pathInstructions.add(new WaitInstruction(coordinate,waitLines));
                 }

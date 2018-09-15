@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
+import com.archidni.archidni.Model.Transport.Schedule.TrainSchedule;
 import com.archidni.archidni.Model.Transport.Station;
+import com.archidni.archidni.Model.Transport.StationTime;
 import com.archidni.archidni.Model.Transport.TrainLine;
 import com.archidni.archidni.Model.Transport.TrainTrip;
 import com.archidni.archidni.Model.Transport.TransportUtils;
@@ -34,15 +36,17 @@ public class TrainTripAdapter extends RecyclerView.Adapter<TrainTripAdapter.View
     private long departureDate;
     private Station station;
     private ArrayList<Line> trainLines;
+    private OnTrainScheduleClick onTrainScheduleClick;
     private static final int MAX_TO_GET = 5;
 
     public TrainTripAdapter(Context context, long departureTime, long departureDate, Station station,
-                            ArrayList<Line> trainLines) {
+                            ArrayList<Line> trainLines,OnTrainScheduleClick onTrainScheduleClick) {
         this.context = context;
         this.departureTime = departureTime;
         this.departureDate = departureDate;
         this.station = station;
         this.trainLines = trainLines;
+        this.onTrainScheduleClick = onTrainScheduleClick;
     }
 
     @Override
@@ -72,6 +76,18 @@ public class TrainTripAdapter extends RecyclerView.Adapter<TrainTripAdapter.View
                 line.getTransportMean().getCircleDrawable(),ViewUtils.DIRECTION_LEFT);
         ViewUtils.changeTextViewState(context,holder.destinationText,
                 line.getTransportMean().getCircleDrawable(),ViewUtils.DIRECTION_LEFT);
+        ArrayList<StationTime> stationTimes = new ArrayList<>();
+        for (Pair<Station, Integer> pair1 :
+                trainTrip.getStationTimes()) {
+            stationTimes.add(new StationTime(pair1.first,pair1.second));
+        }
+        final TrainSchedule trainSchedule = new TrainSchedule((int)trainTrip.getDays(),trainTrip.getDepartures().get(0),stationTimes);
+        holder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onTrainScheduleClick.onTrainScheduleClick(trainSchedule);
+            }
+        });
     }
 
     @Override
@@ -82,6 +98,8 @@ public class TrainTripAdapter extends RecyclerView.Adapter<TrainTripAdapter.View
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.container)
+        View container;
         @BindView(R.id.text_name)
         TextView nameText;
         @BindView(R.id.text_origin)
@@ -96,5 +114,9 @@ public class TrainTripAdapter extends RecyclerView.Adapter<TrainTripAdapter.View
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public interface OnTrainScheduleClick {
+        public void onTrainScheduleClick (TrainSchedule trainSchedule);
     }
 }

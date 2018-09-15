@@ -60,7 +60,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_green_empty_rect_transport_mean_3"
-            android:gravity="center"
             android:text="Temps d'attente moyen 12 minutes"
             android:textColor="@color/color_transport_mean_selected_3"
             android:textSize="12sp" />

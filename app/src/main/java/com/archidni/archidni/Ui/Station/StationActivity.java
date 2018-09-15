@@ -27,6 +27,7 @@ import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
+import com.archidni.archidni.Model.Transport.Schedule.TrainSchedule;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
@@ -35,6 +36,7 @@ import com.archidni.archidni.Ui.Adapters.PlaceAdapter;
 import com.archidni.archidni.Ui.Adapters.TrainTripAdapter;
 import com.archidni.archidni.Ui.Adapters.TramwayMetroTripAdapter;
 import com.archidni.archidni.Ui.Line.LineActivity;
+import com.archidni.archidni.Ui.Line.Schedule.TrainTrip.TrainTripActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.UiUtils.ViewUtils;
@@ -224,13 +226,19 @@ public class StationActivity extends AppCompatActivity implements StationContrac
         }
         if (station.getTransportMean().getId()==TransportMean.ID_TRAIN)
         {
-            TrainTripAdapter trainTripAdapter = new TrainTripAdapter(this,departureTime,
-                    departureDate,station,lines);
+            TrainTripAdapter trainTripAdapter = new TrainTripAdapter(this, departureTime,
+                    departureDate, station, lines, new TrainTripAdapter.OnTrainScheduleClick() {
+                @Override
+                public void onTrainScheduleClick(TrainSchedule trainSchedule) {
+                    presenter.onTrainScheduleClick(trainSchedule);
+                }
+            });
 
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(trainTripAdapter);
+            recyclerView.setNestedScrollingEnabled(false);
             tripOptionsLayout.setVisibility(View.VISIBLE);
         }
         else
@@ -241,9 +249,17 @@ public class StationActivity extends AppCompatActivity implements StationContrac
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setNestedScrollingEnabled(false);
             recyclerView.setAdapter(tramwayMetroAdapter);
             tripOptionsLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void startTrainTripActivity(TrainSchedule trainSchedule) {
+        Intent intent = new Intent(this, TrainTripActivity.class);
+        intent.putExtra(IntentUtils.SCHEDULE,new Gson().toJson(trainSchedule));
+        startActivity(intent);
     }
 
     @Override

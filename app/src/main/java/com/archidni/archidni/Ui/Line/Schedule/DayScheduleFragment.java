@@ -17,12 +17,15 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.archidni.archidni.Model.Transport.Line;
+import com.archidni.archidni.Model.Transport.Schedule.MetroSchedule;
 import com.archidni.archidni.Model.Transport.Schedule.Schedule;
 import com.archidni.archidni.Model.Transport.Schedule.TrainSchedule;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.ScheduleAdapter;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -77,6 +80,24 @@ public class DayScheduleFragment extends Fragment {
 
     public void populateRecyclerView (Line line, List<Schedule> schedules)
     {
+
+        Collections.sort(schedules, new Comparator<Schedule>() {
+            @Override
+            public int compare(Schedule schedule, Schedule t1) {
+                if (schedule instanceof TrainSchedule)
+                {
+                    TrainSchedule trainSchedule1 = (TrainSchedule) schedule;
+                    TrainSchedule trainSchedule2 = (TrainSchedule) t1;
+                    return (int)(trainSchedule1.getDepartureTime()-trainSchedule2.getDepartureTime());
+                }
+                else
+                {
+                    MetroSchedule metroSchedule1 = (MetroSchedule) schedule;
+                    MetroSchedule metroSchedule2 = (MetroSchedule) t1;
+                    return (int) (metroSchedule1.getStartTime()-metroSchedule2.getStartTime());
+                }
+            }
+        });
         if (isReady)
         {
             if (schedules.size()>0)

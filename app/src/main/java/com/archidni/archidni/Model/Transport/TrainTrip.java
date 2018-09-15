@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class TrainTrip extends Trip {
     private ArrayList<Long> departures;
 
-    public TrainTrip(long days, ArrayList<Pair<Integer, Integer>> stationTimes, ArrayList<Long> departures) {
+    public TrainTrip(long days, ArrayList<Pair<Station, Integer>> stationTimes, ArrayList<Long> departures) {
         super(days, stationTimes);
         this.departures = departures;
     }
@@ -34,9 +34,9 @@ public class TrainTrip extends Trip {
             ArrayList<Long> nextDepartures = new ArrayList<>();
             for (Long departure : departures)
             {
-                for (Pair<Integer,Integer> stationPair:getStationTimes())
+                for (Pair<Station,Integer> stationPair:getStationTimes())
                 {
-                    if (stationPair.first==station.getId()&&(stationPair.second+departure)>departureTime)
+                    if (stationPair.first.getId()==station.getId()&&(stationPair.second+departure)>departureTime)
                     {
                         nextDepartures.add((long)stationPair.second*60+departure);
                     }

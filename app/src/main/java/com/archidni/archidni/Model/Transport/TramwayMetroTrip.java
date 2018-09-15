@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class TramwayMetroTrip extends Trip {
     private ArrayList<TimePeriod> timePeriods;
 
-    public TramwayMetroTrip(long days, ArrayList<Pair<Integer, Integer>> stationTimes, ArrayList<TimePeriod> timePeriods) {
+    public TramwayMetroTrip(long days, ArrayList<Pair<Station, Integer>> stationTimes, ArrayList<TimePeriod> timePeriods) {
         super(days, stationTimes);
         this.timePeriods = timePeriods;
     }

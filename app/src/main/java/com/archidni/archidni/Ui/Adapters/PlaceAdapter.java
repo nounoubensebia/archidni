@@ -73,7 +73,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         {
             holder.mainText.setVisibility(View.VISIBLE);
             int distance = GeoUtils.distance(userCoordinate,place.getCoordinate());
-            holder.mainText.setText("à "+StringUtils.getTextFromDistance(distance)+"");
+            holder.mainText.setText(StringUtils.getTextFromDistance(distance)+"");
         }
 
         /*if (userCoordinate!=null)

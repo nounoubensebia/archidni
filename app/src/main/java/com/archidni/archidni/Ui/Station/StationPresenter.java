@@ -8,6 +8,7 @@ import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.Transport.Line;
+import com.archidni.archidni.Model.Transport.Schedule.TrainSchedule;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.TimeUtils;
 
@@ -133,6 +134,11 @@ public class StationPresenter implements StationContract.Presenter {
         {
             view.startStationActivity((Station) place);
         }
+    }
+
+    @Override
+    public void onTrainScheduleClick(TrainSchedule trainSchedule) {
+        view.startTrainTripActivity(trainSchedule);
     }
 
     private void getLines(final Context context) {

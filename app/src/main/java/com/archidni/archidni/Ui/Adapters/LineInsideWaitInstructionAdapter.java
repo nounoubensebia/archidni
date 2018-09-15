@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.archidni.archidni.Model.Path.WaitLine;
+import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.R;
 import com.archidni.archidni.UiUtils.ViewUtils;
 
@@ -47,7 +48,10 @@ public class LineInsideWaitInstructionAdapter extends RecyclerView.Adapter<LineI
         final WaitLine waitLine = waitLines.get(position);
         holder.lineNameText.setText(waitLine.getLine().getName()+" vers "+waitLine.getDestination());
         if (waitLine.isExactWaitingTime())
-            holder.durationText.setText("Temps d'attente "+(int) (waitLine.getTime())+" minutes");
+        {
+            holder.durationText.setText("Temps d'attente "+(int) (waitLine.getTime()/60)+" minutes\n"+
+                    "Arrive à "+StringUtils.getTimeString(waitLine.getArrivalTime()));
+        }
         else
             holder.durationText.setText("Temps d'attente moyen "+(int)(waitLine.getTime()/60)+ " minutes");
         holder.container.setOnClickListener(new View.OnClickListener() {

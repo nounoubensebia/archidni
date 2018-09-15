@@ -6,6 +6,7 @@ import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.Transport.Line;
+import com.archidni.archidni.Model.Transport.Schedule.TrainSchedule;
 import com.archidni.archidni.Model.Transport.Station;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public interface StationContract {
         void startLineActivity(Line line);
         void hideTimeText();
         void startStationActivity (Station station);
+        void startTrainTripActivity(TrainSchedule trainSchedule);
     }
 
     public interface Presenter {
@@ -47,5 +49,6 @@ public interface StationContract {
         void onDateUpdateClick();
         void onStop(Context context);
         void onPlaceClick (MainActivityPlace place);
+        void onTrainScheduleClick(TrainSchedule trainSchedule);
     }
 }
