@@ -16,6 +16,8 @@ public class IntentUtils {
     public static final String PARKING = "PARKING";
     public static final String INSTRUCTION_INDEX = "INSTRUCTION_INDEX";
     public static final String SCHEDULE = "SCHEDULE";
+    public static final String DISRUPTION_SUBJECT = "DISRUPTION_SUBJECT";
+    public static final String IS_PATH_GOOD = "IS_GOOD";
 
     public static class PathSearchIntents {
 

@@ -4,10 +4,9 @@ import com.archidni.archidni.App;
 import com.archidni.archidni.Data.Favorites.FavoritesRepository;
 import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.Model.Coordinate;
+import com.archidni.archidni.Model.Reports.DisruptionSubject;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
-import com.archidni.archidni.Model.Transport.TransportUtils;
-import com.google.android.gms.maps.model.Polyline;
 
 import java.util.ArrayList;
 
@@ -132,7 +131,7 @@ public class LinePresenter implements LineContract.Presenter {
 
     @Override
     public void onSignalDisturbanceClicked() {
-        view.showFeatureNotYetAvailableMessage();
+        view.startDisruptionsActivity(new DisruptionSubject(line));
     }
 
     @Override

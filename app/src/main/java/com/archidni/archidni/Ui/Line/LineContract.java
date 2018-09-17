@@ -1,6 +1,7 @@
 package com.archidni.archidni.Ui.Line;
 
 import com.archidni.archidni.Model.Coordinate;
+import com.archidni.archidni.Model.Reports.DisruptionSubject;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 
@@ -20,7 +21,7 @@ public interface LineContract {
         void startStationActivity(Station station);
         void inflateTripMenu();
         void inflateStationMenu();
-        void showFeatureNotYetAvailableMessage();
+        void startDisruptionsActivity(DisruptionSubject disruptionSubject);
         void showDeleteLineFromFavoritesText();
         void showAddedToFavoritesMessage();
         void showDeletedFromFavoritesMessage();

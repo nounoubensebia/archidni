@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.archidni.archidni.AccessToken;
+import com.archidni.archidni.Model.User;
 import com.google.gson.Gson;
 
 /**
@@ -74,6 +75,11 @@ public class SharedPrefsUtils {
         {
             return null;
         }
+    }
+
+    public static User getConnectedUser (Context context)
+    {
+        return new Gson().fromJson(loadString(context,SHARED_PREFS_ENTRY_USER_OBJECT),User.class);
     }
 
     public static boolean verifyKey (Context context,String key)

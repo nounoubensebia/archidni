@@ -31,7 +31,6 @@ import com.archidni.archidni.Model.Interests.ParkingType;
 import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Places.PathPlace;
-import com.archidni.archidni.Model.Places.PathPlaceAbstract;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
@@ -42,12 +41,11 @@ import com.archidni.archidni.Ui.Adapters.PlaceAdapter;
 import com.archidni.archidni.Ui.ExchangePolesActivity;
 import com.archidni.archidni.Ui.Favorites.FavoritesActivity;
 import com.archidni.archidni.Ui.Line.LineActivity;
-import com.archidni.archidni.Ui.LineNotifications.LineNotificationsActivity;
 import com.archidni.archidni.Ui.Notifications.NotificationsActivity;
 import com.archidni.archidni.Ui.Parking.ParkingActivity;
 import com.archidni.archidni.Ui.ParkingsActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
-import com.archidni.archidni.Ui.Report.ChooseReportTypeActivity;
+import com.archidni.archidni.Ui.Report.ReportChooseTypeActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.Ui.SearchLineStation.SearchLineStationActivity;
 import com.archidni.archidni.Ui.Settings.SettingsActivity;
@@ -978,7 +976,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 startActivity(intent4);
                 break;
             case R.id.item_report:
-                Intent intent5 = new Intent(this, ChooseReportTypeActivity.class);
+                Intent intent5 = new Intent(this, ReportChooseTypeActivity.class);
                 startActivity(intent5);
                 break;
             case R.id.item_disconnect:

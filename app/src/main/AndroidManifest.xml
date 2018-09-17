@@ -110,12 +110,10 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Ui.Report.ChooseReportTypeActivity" />
-        <activity android:name=".Ui.Report.ChooseReportInformationTypeActivity" />
+        <activity android:name=".Ui.Report.ReportChooseTypeActivity" />
         <activity android:name=".Ui.Report.ReportInformationExplainProblemActivity" />
         <activity android:name=".Ui.Report.ReportAlertChooseTransportMeanActivity" />
         <activity android:name=".Ui.Report.ReportAlertChooseLineActivity" />
-        <activity android:name=".Ui.Report.ReportAlertExplainActivity" />
         <activity android:name=".Ui.TestActivity" />
         <activity
             android:name=".Ui.Line.Schedule.ScheduleActivity"

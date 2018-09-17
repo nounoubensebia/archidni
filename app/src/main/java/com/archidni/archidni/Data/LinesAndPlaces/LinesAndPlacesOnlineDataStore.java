@@ -18,6 +18,7 @@ import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.LineSection;
+import com.archidni.archidni.Model.Transport.LineSkeleton;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.TimePeriod;
 import com.archidni.archidni.Model.Transport.TrainLine;
@@ -33,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by noure on 07/02/2018.
@@ -43,6 +45,7 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
 
     private static final String GET_LINES_URL = "/api/v1/line";
     private static final String GET_STATIONS_URL = "/api/v1/station";
+    private static final String GET_LINE_SKELETONS_URL = "/api/v1/lines";
     private static final String GET_LINES_AND_PLACES_URL = "/api/v1/linesAndPlaces";
 
 
@@ -338,6 +341,35 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                         onSchedulesSearchCompleted.onError();
                     }
                 });
+        stringRequest.performRequest(getTag());
+    }
+
+    public void getLines(final OnLinesSearchCompleted onLinesSearchCompleted)
+    {
+        String url = SharedPrefsUtils.getServerUrl(App.getAppContext())+ GET_LINE_SKELETONS_URL+"";
+        OauthStringRequest stringRequest = new OauthStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                    ArrayList<Line> lines = new ArrayList<>();
+                    for (int i=0;i<jsonArray.length();i++)
+                    {
+                        Line line = parseLine(jsonArray.getJSONObject(i));
+                        lines.add(line);
+                    }
+                    onLinesSearchCompleted.onLinesFound(lines);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onLinesSearchCompleted.onError();
+            }
+        });
         stringRequest.performRequest(getTag());
     }
 

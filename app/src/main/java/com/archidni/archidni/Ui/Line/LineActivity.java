@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
+import com.archidni.archidni.Model.Reports.DisruptionSubject;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.TransportUtils;
@@ -31,6 +32,7 @@ import com.archidni.archidni.Ui.BusTarifsActivity;
 import com.archidni.archidni.Ui.Line.Schedule.ScheduleActivity;
 import com.archidni.archidni.Ui.LineNotifications.LineNotificationsActivity;
 import com.archidni.archidni.Ui.MetroTarifsActivity;
+import com.archidni.archidni.Ui.Report.ReportInformationExplainProblemActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.Ui.TelephericTarifsActivity;
 import com.archidni.archidni.Ui.TrainTarifsActivity;
@@ -42,6 +44,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -267,9 +270,10 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     }
 
     @Override
-    public void showFeatureNotYetAvailableMessage() {
-        Toast.makeText(this,"Cette fonctionnalité n'est pas encore disponible",
-                Toast.LENGTH_LONG).show();
+    public void startDisruptionsActivity(DisruptionSubject disruptionSubject) {
+        Intent intent = new Intent(this, ReportInformationExplainProblemActivity.class);
+        intent.putExtra(IntentUtils.DISRUPTION_SUBJECT,new Gson().toJson(disruptionSubject));
+        startActivity(intent);
     }
 
     @Override

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Ui.Report.ChooseReportTypeActivity">
+    tools:context=".Ui.Report.ReportChooseTypeActivity">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -17,7 +17,6 @@
             android:layout_marginTop="16dp"
             app:srcCompat="@drawable/ic_close_black_24dp" />
         <TextView
-            android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -27,19 +26,15 @@
             android:textColor="@android:color/holo_red_light"
             android:textSize="24sp"/>
         <RadioGroup
+            android:id="@+id/radio_group_report_type"
             android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RadioButton
-                android:layout_marginRight="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="Des informations érronées" />
 
             <RadioButton
+                android:id="@+id/radio_button_disruptions"
                 android:layout_marginRight="16dp"
                 android:textSize="16sp"
                 android:layout_width="wrap_content"
@@ -47,11 +42,12 @@
                 android:text="Des perturbations de trafic" />
 
             <RadioButton
+                android:id="@+id/radio_button_other"
                 android:layout_marginRight="16dp"
                 android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Autre" />
+                android:text="Autre (problème, bug dans l'application, information éronnée)" />
         </RadioGroup>
     </LinearLayout>
 
@@ -63,7 +59,7 @@
         <TextView
             android:layout_marginBottom="16dp"
             android:layout_marginTop="8dp"
-            android:id="@+id/text_report"
+            android:id="@+id/text_next"
             android:paddingRight="8dp"
             android:textAppearance="?android:attr/textAppearanceButton"
             android:paddingLeft="8dp"

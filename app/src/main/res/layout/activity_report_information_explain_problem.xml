@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Ui.Report.ChooseReportTypeActivity">
+    tools:context=".Ui.Report.ReportChooseTypeActivity">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -24,19 +24,18 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
-            android:hint="Pouvez vous nous \nexpliquer le problème ?"
+            android:hint="Pouvez vous nous \nexpliquer le problème rencontré ?"
             android:textColorHint="@android:color/holo_red_light"
             android:inputType="text"
             android:textColor="#000"
             android:textSize="24sp"
             android:transitionName="search_bar" />
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/text_leave_empty"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Exemple : dénomination station mouhous incorrecte"/>
+            android:text="Remarque : vous pouvez laisser ce champs vide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -48,7 +47,7 @@
         <TextView
             android:layout_marginBottom="16dp"
             android:layout_marginTop="8dp"
-            android:id="@+id/text_report"
+            android:id="@+id/text_send"
             android:paddingRight="8dp"
             android:textAppearance="?android:attr/textAppearanceButton"
             android:paddingLeft="8dp"

@@ -130,8 +130,61 @@
                 <android.support.v7.widget.RecyclerView
                     android:layout_marginBottom="16dp"
                     android:id="@+id/list_instructions"
+                    tools:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:textColor="@color/colorGreen"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:text="@string/does_this_path_seem_correct"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <LinearLayout
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_marginLeft="16dp"
+                            android:id="@+id/text_path_is_correct"
+                            android:paddingRight="8dp"
+                            android:paddingLeft="8dp"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            android:text="Oui"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.Button"
+                            android:gravity="center"
+                            android:background="@drawable/shape_green_rounded"
+                            android:textColor="#FFF"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:id="@+id/text_path_is_incorrect"
+                            android:paddingRight="8dp"
+                            android:paddingLeft="8dp"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            android:text="Non"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.Button"
+                            android:gravity="center"
+                            android:background="@drawable/shape_red_rounded"
+                            android:textColor="#FFF"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </android.support.design.widget.CoordinatorLayout>
