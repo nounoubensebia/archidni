@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -50,9 +52,9 @@ public class ReportInformationExplainProblemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_information_explain_problem);
         ButterKnife.bind(this);
-        Bundle extras = getIntent().getExtras();
+        final Bundle extras = getIntent().getExtras();
         reportsRepository = new ReportsRepositoryImpl();
-        if (extras.containsKey(IntentUtils.DISRUPTION_SUBJECT))
+        if (extras!=null&&extras.containsKey(IntentUtils.DISRUPTION_SUBJECT))
         {
             disruptionSubject = new Gson().fromJson(extras.getString(IntentUtils.DISRUPTION_SUBJECT),DisruptionSubject.class);
             leaveEmptyText.setVisibility(View.GONE);
@@ -65,25 +67,67 @@ public class ReportInformationExplainProblemActivity extends AppCompatActivity {
         }
         else
         {
-            if (extras.containsKey(IntentUtils.PATH))
+            if (extras!=null&&extras.containsKey(IntentUtils.PATH))
             {
-                Path path = Path.fromJson(extras.getString(IntentUtils.PATH));
-                boolean isGood = extras.containsKey(IntentUtils.IS_PATH_GOOD);
-                sendPathReport(path,isGood);
+                leaveEmptyText.setVisibility(View.VISIBLE);
+                sendText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Path path = Path.fromJson(extras.getString(IntentUtils.PATH));
+                        boolean isGood = extras.getBoolean(IntentUtils.IS_PATH_GOOD);
+                        sendPathReport(path,isGood);
+                    }
+                });
+
             }
             else
             {
-                String description = problemText.getText().toString();
-                if (description.equals(""))
-                {
-                    Toast.makeText(this,"Vous ne pouvez pas laisser le champs problème rencontré vide !",
-                            Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    sendOtherReport();
-                }
+                leaveEmptyText.setVisibility(View.GONE);
+                sendText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String description = problemText.getText().toString();
+                        if (description.equals(""))
+                        {
+                            Toast.makeText(ReportInformationExplainProblemActivity.this,
+                                    "Veuillez donner une description du problème rencontré!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            sendOtherReport();
+                        }
+                    }
+                });
+
             }
+
+            problemText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    if (editable.toString().length()>0)
+                    {
+                        leaveEmptyText.setVisibility(View.GONE);
+                    }
+                    else
+                    {
+                        if (extras!=null&&extras.containsKey(IntentUtils.PATH))
+                        {
+                            leaveEmptyText.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            });
         }
 
     }
@@ -102,15 +146,15 @@ public class ReportInformationExplainProblemActivity extends AppCompatActivity {
             public void onComplete() {
                 progressDialog.hide();
                 Toast.makeText(ReportInformationExplainProblemActivity.this,
-                        "Votre feedback a été envoyée merci de votre coopération !",Toast.LENGTH_LONG).show();
+                        R.string.report_sent,Toast.LENGTH_LONG).show();
                 finish();
             }
 
             @Override
             public void onError() {
+                progressDialog.hide();
                 Toast.makeText(ReportInformationExplainProblemActivity.this,
                         R.string.error_happened,Toast.LENGTH_LONG).show();
-                finish();
             }
         });
     }
@@ -128,15 +172,15 @@ public class ReportInformationExplainProblemActivity extends AppCompatActivity {
             public void onComplete() {
                 progressDialog.hide();
                 Toast.makeText(ReportInformationExplainProblemActivity.this,
-                        "Votre feedback a été envoyée merci de votre coopération !",Toast.LENGTH_LONG).show();
+                        R.string.report_sent,Toast.LENGTH_LONG).show();
                 finish();
             }
 
             @Override
             public void onError() {
+                progressDialog.hide();
                 Toast.makeText(ReportInformationExplainProblemActivity.this,
                         R.string.error_happened,Toast.LENGTH_LONG).show();
-                finish();
             }
         });
     }
@@ -152,15 +196,15 @@ public class ReportInformationExplainProblemActivity extends AppCompatActivity {
             public void onComplete() {
                 progressDialog.hide();
                 Toast.makeText(ReportInformationExplainProblemActivity.this,
-                        "Votre feedback a été envoyée merci de votre coopération !",Toast.LENGTH_LONG).show();
+                        R.string.report_sent,Toast.LENGTH_LONG).show();
                 finish();
             }
 
             @Override
             public void onError() {
+                progressDialog.hide();
                 Toast.makeText(ReportInformationExplainProblemActivity.this,
                         R.string.error_happened,Toast.LENGTH_LONG).show();
-                finish();
             }
         });
     }

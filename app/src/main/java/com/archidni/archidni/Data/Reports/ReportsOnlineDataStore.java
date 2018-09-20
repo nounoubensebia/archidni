@@ -19,8 +19,9 @@ import java.util.Map;
 
 public class ReportsOnlineDataStore implements ReportsDataStore {
 
-    private static final String URL_DISRUPTION = "/user-reports/disruption/create";
-    private static final String URL_OTHER = "/user-reports/other/create";
+    private static final String URL_DISRUPTION = "/api/v1/user-reports/disruption/create";
+    private static final String URL_OTHER = "/api/v1/user-reports/other/create";
+    private static final String URL_PATH = "/api/v1/user-reports/path/create";
 
     @Override
     public void sendDisruptionReport(final DisruptionReport disruptionReport, final ReportsRepository.OnCompleteListener onComplete) {
@@ -45,10 +46,11 @@ public class ReportsOnlineDataStore implements ReportsDataStore {
                 if (disruptionReport.getDisruptionSubject().getLine()!=null)
                 {
                     map.put("line_id",disruptionReport.getDisruptionSubject().getLine().getId()+"");
-                    map.put("transport_mode_id",disruptionReport.getDisruptionSubject().getLine()
-                            .getTransportMean().getId()+"");
+                    map.put("transport_mode_id",(disruptionReport.getDisruptionSubject().getLine()
+                            .getTransportMean().getId()+1)+"");
                 }
-                map.put("transport_mode_id",disruptionReport.getDisruptionSubject().getTransportMean().getId()+"");
+                else
+                    map.put("transport_mode_id",(disruptionReport.getDisruptionSubject().getTransportMean().getId()+1)+"");
                 map.put("description",disruptionReport.getDescription());
                 return map;
             }
@@ -86,7 +88,7 @@ public class ReportsOnlineDataStore implements ReportsDataStore {
     @Override
     public void sendPathReport(final PathReport report, final ReportsRepository.OnCompleteListener onComplete) {
         Context context = App.getAppContext();
-        String url = String.format("%s%s", SharedPrefsUtils.getServerUrl(context),URL_OTHER);
+        String url = String.format("%s%s", SharedPrefsUtils.getServerUrl(context),URL_PATH);
         OauthStringRequest oauthStringRequest = new OauthStringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override

@@ -113,6 +113,11 @@ public class OauthStringRequest extends NetworkRequest {
                 map.put("authorization","Bearer "+accessToken.getToken());
                 return map;
             }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return OauthStringRequest.this.getParams();
+            }
         };
         AppSingleton.getInstance(context).addToRequestQueue(request,tag);
     }

@@ -77,6 +77,7 @@ public class ReportAlertChooseLineActivity extends AppCompatActivity {
                         Intent intent = new Intent(ReportAlertChooseLineActivity.this,ReportInformationExplainProblemActivity.class);
                         intent.putExtra(IntentUtils.DISRUPTION_SUBJECT,new Gson().toJson(disruptionSubject));
                         startActivity(intent);
+                        finish();
                     }
                 });
                 recyclerView.setLayoutManager(new LinearLayoutManager(ReportAlertChooseLineActivity.this,

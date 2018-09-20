@@ -35,6 +35,7 @@ public class ReportChooseTypeActivity extends AppCompatActivity {
                 else
                     intent = new Intent(ReportChooseTypeActivity.this,ReportInformationExplainProblemActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         cancelText.setOnClickListener(new View.OnClickListener() {

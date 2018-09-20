@@ -2,24 +2,20 @@ package com.archidni.archidni.Ui.PathDetails;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Path.Path;
 import com.archidni.archidni.Model.Path.PathInstruction;
 import com.archidni.archidni.Model.Path.RideInstruction;
-import com.archidni.archidni.Model.Path.WaitInstruction;
 import com.archidni.archidni.Model.Path.WaitLine;
 import com.archidni.archidni.Model.Path.WalkInstruction;
 import com.archidni.archidni.Model.Transport.Line;
@@ -32,18 +28,18 @@ import com.archidni.archidni.Ui.Adapters.PathInstructionRecyclerAdapter;
 import com.archidni.archidni.Ui.Adapters.StationInsideRideInstructionAdapter;
 import com.archidni.archidni.Ui.Line.LineActivity;
 import com.archidni.archidni.Ui.PathNavigation.PathNavigationActivity;
+import com.archidni.archidni.Ui.Report.ReportInformationExplainProblemActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
-import com.archidni.archidni.UiUtils.ArchidniMap;
 import com.archidni.archidni.UiUtils.DialogUtils;
 import com.archidni.archidni.UiUtils.ViewUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.PatternItem;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -61,8 +57,12 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     TextView durationText;
     @BindView(R.id.scrollView)
     View scrollView;
+    @BindView(R.id.text_path_is_correct)
+    TextView pathIsCorrectText;
+    @BindView(R.id.text_path_is_incorrect)
+    TextView pathIsIncorrectText;
 
-    private Dialog lineSearchDialog;
+    private Dialog waitDialog;
 
     private ArchidniGoogleMap archidniMap;
 
@@ -96,6 +96,18 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
             @Override
             public void onClick(View view) {
                 presenter.onStartNavigationClick();
+            }
+        });
+        pathIsCorrectText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onPathIsCorrectClick();
+            }
+        });
+        pathIsIncorrectText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onPathIsIncorrectClick();
             }
         });
         scrollView.post(new Runnable() {
@@ -237,14 +249,14 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     }
 
     @Override
-    public void showLineSearchDialog() {
-        lineSearchDialog = DialogUtils.buildProgressDialog("Veuillez patientez",this);
-        lineSearchDialog.show();
+    public void showWaitDialog() {
+        waitDialog = DialogUtils.buildProgressDialog("Veuillez patientez",this);
+        waitDialog.show();
     }
 
     @Override
-    public void hideLineSearchDialog() {
-        lineSearchDialog.hide();
+    public void hideWaitDialog() {
+        waitDialog.hide();
     }
 
     @Override
@@ -255,7 +267,7 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     }
 
     @Override
-    public void showLineSearchError() {
+    public void showErrorMessage() {
         Toast.makeText(this,"Une erreur s'est produite",Toast.LENGTH_LONG).show();
     }
 
@@ -264,6 +276,19 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
         Intent intent = new Intent(this, StationActivity.class);
         intent.putExtra(IntentUtils.STATION_STATION,station.toJson());
         startActivity(intent);
+    }
+
+    @Override
+    public void startReportActivity(Path path) {
+        Intent intent = new Intent(this, ReportInformationExplainProblemActivity.class);
+        intent.putExtra(IntentUtils.PATH,new Gson().toJson(path));
+        intent.putExtra(IntentUtils.IS_PATH_GOOD,false);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showReportSentMessage() {
+        Toast.makeText(this,R.string.report_sent,Toast.LENGTH_LONG).show();
     }
 
     @Override
