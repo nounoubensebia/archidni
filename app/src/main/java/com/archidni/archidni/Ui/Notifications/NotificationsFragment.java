@@ -14,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.Notifications.Notification;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Adapters.NotificationAdapter;
@@ -33,14 +35,19 @@ public class NotificationsFragment extends Fragment {
     @BindView(R.id.progressBar)
     View progressBar;
 
+    @BindView(R.id.text_no_favorites)
+    TextView noFavoritesText;
+
     OnReadyListener onReadyListener;
+
+    boolean isFavoritesFragment;
 
 
     @SuppressLint("ValidFragment")
-    public NotificationsFragment(OnReadyListener onReadyListener) {
+    public NotificationsFragment(boolean isFavoritesFragment,OnReadyListener onReadyListener) {
         super();
         this.onReadyListener = onReadyListener;
-
+        this.isFavoritesFragment = isFavoritesFragment;
     }
 
     public void setOnReadyListener(OnReadyListener onReadyListener) {
@@ -70,7 +77,14 @@ public class NotificationsFragment extends Fragment {
         notificationsList.setLayoutManager(mLayoutManager);
         notificationsList.setItemAnimator(new DefaultItemAnimator());
         notificationsList.setAdapter(notificationAdapter);
-
+        if (!SharedPrefsUtils.favoritesAdded(getContext())&&isFavoritesFragment)
+        {
+            noFavoritesText.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            noFavoritesText.setVisibility(View.GONE);
+        }
     }
 
     public void hideLoadingLayout() {

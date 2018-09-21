@@ -1,5 +1,7 @@
 package com.archidni.archidni.Model.Transport;
 
+import com.archidni.archidni.Model.Transport.Schedule.MetroSchedule;
+import com.archidni.archidni.Model.Transport.Schedule.Schedule;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.TimeUtils;
 
@@ -10,22 +12,21 @@ import java.util.ArrayList;
  */
 
 public class TramwayMetroLine extends Line {
-    private ArrayList<TramwayMetroTrip> tramwayMetroTrips;
+    private ArrayList<MetroSchedule> schedules;
 
-    public TramwayMetroLine(int id, String name, TransportMean transportMean,
-                            ArrayList<LineSection> lineSections, ArrayList<TramwayMetroTrip> tramwayMetroTrips) {
+    public TramwayMetroLine(int id, String name, TransportMean transportMean, ArrayList<LineSection> lineSections, ArrayList<MetroSchedule> schedules) {
         super(id, name, transportMean, lineSections);
-        this.tramwayMetroTrips = tramwayMetroTrips;
+        this.schedules = schedules;
     }
 
-    public ArrayList<TramwayMetroTrip> getTramwayMetroTrips() {
-        return tramwayMetroTrips;
+    public ArrayList<MetroSchedule> getSchedules() {
+        return schedules;
     }
 
-    public ArrayList<TramwayMetroTrip> getDayDepartures (long departureDate)
+    public ArrayList<MetroSchedule> getDayDepartures (long departureDate)
     {
-        ArrayList<TramwayMetroTrip> tramwayMetroTrips1 = new ArrayList<>();
-        for (TramwayMetroTrip tramwayMetroTrip:tramwayMetroTrips)
+        ArrayList<MetroSchedule> tramwayMetroTrips1 = new ArrayList<>();
+        for (MetroSchedule tramwayMetroTrip:schedules)
         {
             if (tramwayMetroTrip.getDays()% TimeUtils.getDayFromTimeStamp(departureDate)==0)
             {

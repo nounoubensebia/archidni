@@ -55,4 +55,6 @@
     <string name="default_algorithm">Tri par défaut</string>
     <string name="does_this_path_seem_correct">Cet itinéraire vous semble t\'il correct ?</string>
     <string name="report_sent">Votre feedback a été envoyée merci de votre coopération !</string>
+    <string name="no_line_added_to_favorites_add_new_lines_to_be_notified">Aucune ligne ajoutée aux favoris. Veuillez ajouter des lignes à vos favoris pour être notifié des perturbations de trafic</string>
+    <string name="an_error_has_happened_please_verify_your_internet_connection">Une erreur s\'est produite veuillez vérifier votre connexion internet</string>
 </resources>

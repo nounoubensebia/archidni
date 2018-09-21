@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -85,6 +86,11 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     View nearbyLayout;
     @BindView(R.id.text_nearby)
     TextView nearbyText;
+    @BindView(R.id.text_search_error)
+    TextView errorText;
+    @BindView(R.id.button_retry)
+    Button retryButton;
+
     ArchidniGoogleMap archidniMap;
     StationContract.Presenter presenter;
     private FusedLocationProviderClient fusedLocationClient;
@@ -165,6 +171,13 @@ public class StationActivity extends AppCompatActivity implements StationContrac
             }
         });
 
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onRetryClick(StationActivity.this);
+            }
+        });
+
         timeText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -220,10 +233,10 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     @Override
     public void showTripsOnList(Station station,ArrayList<Line>lines,long departureTime,
                                 long departureDate) {
-        if (lines.get(0).getTransportMean().getId()== TransportMean.ID_BUS||lines.get(0).getTransportMean().getId()==4)
+        /*if (lines.get(0).getTransportMean().getId()== TransportMean.ID_BUS||lines.get(0).getTransportMean().getId()==4)
         {
             lines = new ArrayList<>();
-        }
+        }*/
         if (station.getTransportMean().getId()==TransportMean.ID_TRAIN)
         {
             TrainTripAdapter trainTripAdapter = new TrainTripAdapter(this, departureTime,
@@ -260,6 +273,28 @@ public class StationActivity extends AppCompatActivity implements StationContrac
         Intent intent = new Intent(this, TrainTripActivity.class);
         intent.putExtra(IntentUtils.SCHEDULE,new Gson().toJson(trainSchedule));
         startActivity(intent);
+    }
+
+    @Override
+    public void showErrorLayout() {
+        errorText.setVisibility(View.VISIBLE);
+        retryButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideErrorLayout() {
+        errorText.setVisibility(View.GONE);
+        retryButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showProgressLayout() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressLayout() {
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

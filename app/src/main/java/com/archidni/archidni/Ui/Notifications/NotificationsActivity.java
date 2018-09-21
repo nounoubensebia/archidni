@@ -96,7 +96,7 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
         public Fragment getItem(final int position) {
             if (position == 0) {
                 if (allLinesFragment==null)
-                    allLinesFragment = new NotificationsFragment(new NotificationsFragment.OnReadyListener() {
+                    allLinesFragment = new NotificationsFragment(false,new NotificationsFragment.OnReadyListener() {
                         @Override
                         public void onReady() {
                             fragmentsReady++;
@@ -107,7 +107,7 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
                 return allLinesFragment;
             } else {
                 if (favoritesFragment==null)
-                    favoritesFragment = new NotificationsFragment(new NotificationsFragment.OnReadyListener() {
+                    favoritesFragment = new NotificationsFragment(true,new NotificationsFragment.OnReadyListener() {
                         @Override
                         public void onReady() {
                             fragmentsReady++;

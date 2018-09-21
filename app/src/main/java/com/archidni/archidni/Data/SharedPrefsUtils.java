@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.archidni.archidni.AccessToken;
+import com.archidni.archidni.Model.Favorites;
 import com.archidni.archidni.Model.User;
 import com.google.gson.Gson;
 
@@ -75,6 +76,20 @@ public class SharedPrefsUtils {
         {
             return null;
         }
+    }
+
+    public static boolean favoritesAdded (Context context)
+    {
+        if (SharedPrefsUtils.verifyKey(context,SHARED_PREFS_ENTRY_FAVORITES))
+        {
+            Favorites favorites = new Gson().fromJson(SharedPrefsUtils.loadString(context
+                    ,SHARED_PREFS_ENTRY_FAVORITES),Favorites.class);
+            if (favorites!=null&&favorites.getLines()!=null&&favorites.getLines().size()>0)
+            {
+                return  true;
+            }
+        }
+        return false;
     }
 
     public static User getConnectedUser (Context context)

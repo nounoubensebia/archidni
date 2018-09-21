@@ -49,6 +49,7 @@ public class MainPresenter implements MainContract.Presenter {
     private Coordinate userCoordinate;
     private TimeMonitor timeMonitor;
     private User user;
+    private static final int MAX_DISTANCE = 2000;
     private ArrayList<StationLines> stationLinesArrayList;
     private LatLngBounds currentLatLngBounds;
 
@@ -113,21 +114,25 @@ public class MainPresenter implements MainContract.Presenter {
 
     public void populateList ()
     {
-        if (selectedItem == STATIONS_SELECTED)
-            view.showPlacesOnList(getMapAreaStations(mapCenterCoordinate),userCoordinate);
-        if (selectedItem == LINES_SELECTED)
-            view.showLinesOnList(getNearbyFilteredLines(mapCenterCoordinate));
-        if (selectedItem == INTERESTS_SELECTED)
+        if (lines!=null&&stationLinesArrayList!=null)
         {
-            ArrayList<Parking> parkings = new ArrayList<>();
-            for (MainActivityPlace place:interestPlaces)
+            if (selectedItem == STATIONS_SELECTED)
+                view.showPlacesOnList(getMapAreaStations(mapCenterCoordinate,MAX_DISTANCE),userCoordinate);
+            if (selectedItem == LINES_SELECTED)
+                view.showLinesOnList(getNearbyFilteredLines(mapCenterCoordinate));
+            if (selectedItem == INTERESTS_SELECTED)
             {
-                if (place instanceof Parking && transportMeansSelector.isItemSelected(SelectorItem.PARKING_ID))
+                ArrayList<Parking> parkings = new ArrayList<>();
+                for (MainActivityPlace place:interestPlaces)
                 {
-                    parkings.add((Parking)place);
+                    if (place instanceof Parking && transportMeansSelector.isItemSelected(SelectorItem.PARKING_ID)
+                            &&GeoUtils.distance(place.getCoordinate(),mapCenterCoordinate)<MAX_DISTANCE)
+                    {
+                        parkings.add((Parking)place);
+                    }
                 }
+                view.showPlacesOnList(parkings,userCoordinate);
             }
-            view.showPlacesOnList(parkings,userCoordinate);
         }
     }
 
@@ -391,11 +396,11 @@ public class MainPresenter implements MainContract.Presenter {
         return stations;
     }
 
-    private ArrayList<Station> getMapAreaStations(Coordinate coordinate)
+    private ArrayList<Station> getMapAreaStations(Coordinate coordinate,int maxDistance)
     {
         ArrayList<Station> filteredStations = getFilteredStations();
         ArrayList<Station> nearbyStations = TransportUtils.getNearbyStations(coordinate,
-                filteredStations,2000);
+                filteredStations,maxDistance);
         ArrayList<Station> areaStations = new ArrayList<>();
         for (Station station : nearbyStations)
         {
@@ -411,7 +416,7 @@ public class MainPresenter implements MainContract.Presenter {
     private ArrayList<Line> getNearbyFilteredLines (Coordinate coordinate)
     {
         ArrayList<Line> nearbyLines = new ArrayList<>();
-        ArrayList<Station> stations = getMapAreaStations(coordinate);
+        ArrayList<Station> stations = getMapAreaStations(coordinate,MAX_DISTANCE);
         for (StationLines stationLines:stationLinesArrayList)
         {
             for (Station station : stations)

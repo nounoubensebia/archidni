@@ -5,6 +5,8 @@ import android.util.Pair;
 import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.Model.BoundingBox;
 import com.archidni.archidni.Model.Coordinate;
+import com.archidni.archidni.Model.Transport.Schedule.MetroSchedule;
+import com.archidni.archidni.Model.Transport.Schedule.Schedule;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -301,12 +303,10 @@ public class TransportUtils {
             if (line instanceof TramwayMetroLine)
             {
                 TramwayMetroLine tramwayMetroLine = (TramwayMetroLine) line;
-                for (TramwayMetroTrip tramwayMetroTrip:tramwayMetroLine.getTramwayMetroTrips())
+                for (MetroSchedule tramwayMetroTrip:tramwayMetroLine.getSchedules())
                 {
-                    for (TimePeriod timePeriod:tramwayMetroTrip.getTimePeriods())
-                    {
-                        arrayList.add(new Pair<Line, TimePeriod>(line,timePeriod));
-                    }
+                    arrayList.add(new Pair<>(line,new TimePeriod(tramwayMetroTrip.getStartTime()
+                    ,tramwayMetroTrip.getEndTime(),tramwayMetroTrip.getWaitingTime())));
                 }
             }
         }

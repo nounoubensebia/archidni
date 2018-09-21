@@ -34,6 +34,10 @@ public interface StationContract {
         void hideTimeText();
         void startStationActivity (Station station);
         void startTrainTripActivity(TrainSchedule trainSchedule);
+        void showErrorLayout ();
+        void hideErrorLayout();
+        void showProgressLayout();
+        void hideProgressLayout();
     }
 
     public interface Presenter {
@@ -50,5 +54,6 @@ public interface StationContract {
         void onStop(Context context);
         void onPlaceClick (MainActivityPlace place);
         void onTrainScheduleClick(TrainSchedule trainSchedule);
+        void onRetryClick(Context context);
     }
 }

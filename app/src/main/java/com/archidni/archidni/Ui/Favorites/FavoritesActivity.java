@@ -55,6 +55,10 @@ public class FavoritesActivity extends AppCompatActivity {
                 recyclerView.setAdapter(lineAdapter);
             }
         }
+        else
+        {
+            noFavoritesText.setVisibility(View.VISIBLE);
+        }
     }
 
     private void startLineActivity(Line line)

@@ -141,6 +141,13 @@ public class StationPresenter implements StationContract.Presenter {
         view.startTrainTripActivity(trainSchedule);
     }
 
+    @Override
+    public void onRetryClick(Context context) {
+        view.hideErrorLayout();
+        view.showProgressLayout();
+        getLines(context);
+    }
+
     private void getLines(final Context context) {
         linesAndPlacesRepository.getLinesPassingByStation(context, station, new LinesAndPlacesRepository.OnSearchCompleted() {
             @Override
@@ -174,14 +181,16 @@ public class StationPresenter implements StationContract.Presenter {
 
                     @Override
                     public void onError() {
-
+                        view.hideProgressLayout();
+                        view.showErrorLayout();
                     }
                 });
             }
 
             @Override
             public void onError() {
-
+                view.hideProgressLayout();
+                view.showErrorLayout();
             }
         });
     }

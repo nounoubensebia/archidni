@@ -262,6 +262,25 @@
                         android:text="Aucun départ prévu pour les deux prochaines heures."
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/text_search_error"
+                        android:visibility="gone"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:textColor="#000"
+                        android:gravity="center"
+                        android:text="@string/an_error_has_happened_please_verify_your_internet_connection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <Button
+                        android:id="@+id/button_retry"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:text="@string/retry"
+                        android:layout_marginTop="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

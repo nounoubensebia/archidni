@@ -152,9 +152,10 @@ public class Path implements Serializable {
     public float getScore ()
     {
         long duration = getDuration();
+        duration -=getWalkingTime();
         float percentage = (float)(getBoardingNumber()-1)*(float)8/100;
-        long score = (long) (duration + percentage*duration);
-        return score;
+        duration += getWalkingTime()*1.2;
+        return (long) (duration + percentage*duration);
     }
 
     public String toJson() {

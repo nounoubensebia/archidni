@@ -19,6 +19,8 @@ import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.LineSection;
 import com.archidni.archidni.Model.Transport.LineSkeleton;
+import com.archidni.archidni.Model.Transport.Schedule.MetroSchedule;
+import com.archidni.archidni.Model.Transport.Schedule.Schedule;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.TimePeriod;
 import com.archidni.archidni.Model.Transport.TrainLine;
@@ -188,7 +190,8 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                                         line.getTransportMean(), line.getLineSections(), trainTrips);
                             }
                         } else {
-                            JSONArray trips = lineObject.getJSONArray("trips");
+
+                            /*JSONArray trips = lineObject.getJSONArray("trips");
                             ArrayList<TramwayMetroTrip> tramwayMetroTrips = new ArrayList<>();
                             for (int j = 0; j < trips.length(); j++) {
                                 JSONObject tripObject = trips.getJSONObject(j);
@@ -215,10 +218,25 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                                             stationObject.getInt("minutes")));
                                 }
                                 tramwayMetroTrips.add(new TramwayMetroTrip(days, pairs, timePeriods));
+
+
+                            }*/
+
+                            JSONArray schedulesArray = lineObject.getJSONArray("schedules");
+                            ArrayList<MetroSchedule> schedules = new ArrayList<>();
+                            for (int j=0;j<schedulesArray.length();j++)
+                            {
+                                JSONObject scheduleObject = schedulesArray.getJSONObject(j);
+                                int id = scheduleObject.getInt("id");
+                                long startTime = TimeUtils.getTimeFromString(scheduleObject.getString("start_time"));
+                                long endTime = TimeUtils.getTimeFromString(scheduleObject.getString("end_time"));
+                                int days = scheduleObject.getInt("days");
+                                int waitingTIme = scheduleObject.getInt("waiting_time");
+                                schedules.add(new MetroSchedule(days,startTime,endTime,waitingTIme));
                             }
 
                             line = new TramwayMetroLine(line.getId(), line.getName(),
-                                    line.getTransportMean(), line.getLineSections(), tramwayMetroTrips);
+                                    line.getTransportMean(), line.getLineSections(), schedules);
                         }
                         lines.add(line);
                     }
