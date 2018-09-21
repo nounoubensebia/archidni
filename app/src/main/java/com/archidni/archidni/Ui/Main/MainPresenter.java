@@ -235,12 +235,10 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onCameraMove(Context context,Coordinate coordinate,float zoom,LatLngBounds latLngBounds) {
         currentLatLngBounds = latLngBounds;
+        mapCenterCoordinate = coordinate;
         populateList();
         //view.updatePlacesOnMap(getFilteredPlaces(),transportMeansSelector);
         //view.showPlacesOnMap(getFilteredPlaces(),transportMeansSelector);
-
-        mapCenterCoordinate = coordinate;
-
     }
 
     private void searchLines (Context context,Coordinate coordinate)
