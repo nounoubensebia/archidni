@@ -27,6 +27,18 @@ public class Path implements Serializable {
     public Path(PathSettings pathSettings, ArrayList<PathInstruction> pathInstructions) {
         this.pathSettings = pathSettings;
         this.pathInstructions = pathInstructions;
+        int i = 0;
+        for (PathInstruction pathInstruction:this.pathInstructions)
+        {
+            if (pathInstruction instanceof WaitInstruction)
+            {
+                if (this.pathInstructions.get(i-1) instanceof RideInstruction)
+                {
+                    ((WaitInstruction)pathInstruction).setTransferWithoutWalking(true);
+                }
+            }
+            i++;
+        }
     }
 
     public Calendar getDepartureTime ()

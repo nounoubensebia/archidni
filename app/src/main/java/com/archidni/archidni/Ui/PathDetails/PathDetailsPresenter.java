@@ -101,6 +101,11 @@ public class PathDetailsPresenter implements PathDetailsContract.Presenter {
 
     @Override
     public void onPathIsIncorrectClick() {
-        view.startReportActivity(path);
+        view.startPathReportActivity(path);
+    }
+
+    @Override
+    public void onReportClick() {
+        view.startDisruptionReportActivity();
     }
 }

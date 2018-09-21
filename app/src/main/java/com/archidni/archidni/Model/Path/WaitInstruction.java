@@ -15,10 +15,19 @@ public class WaitInstruction extends PathInstruction implements Serializable {
 
     private Coordinate coordinate;
     private ArrayList<WaitLine> waitLines;
+    private boolean isTransferWithoutWalking = false;
 
     public WaitInstruction(Coordinate coordinate, ArrayList<WaitLine> waitLines) {
         this.coordinate = coordinate;
         this.waitLines = waitLines;
+    }
+
+    public void setTransferWithoutWalking(boolean transferWithoutWalking) {
+        isTransferWithoutWalking = transferWithoutWalking;
+    }
+
+    public boolean isTransferWithoutWalking() {
+        return isTransferWithoutWalking;
     }
 
     /*@Override
@@ -73,7 +82,15 @@ public class WaitInstruction extends PathInstruction implements Serializable {
 
     @Override
     public String getTtile() {
-        return "Attendre le "+waitLines.get(0).getLine().getTransportMean().getName();
+        if (!isTransferWithoutWalking)
+        {
+            return "Attendre le "+waitLines.get(0).getLine().getTransportMean().getName();
+        }
+        else
+        {
+            return "Correspondance : descendre et attendre le "+waitLines.get(0).getLine().getTransportMean().getName().toLowerCase();
+        }
+
     }
 
     @Override

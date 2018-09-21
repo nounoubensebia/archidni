@@ -48,8 +48,8 @@ public class StringUtils {
     {
         int hours = (int) timestamp / 3600;
         int minutes = (int) timestamp / 60 - hours * 60;
-        String minutesString = (minutes > 10)? minutes+"" : "0"+minutes;
-        String hoursString = (hours > 10)? hours+"" : "0"+hours;
+        String minutesString = (minutes >= 10)? minutes+"" : "0"+minutes;
+        String hoursString = (hours >= 10)? hours+"" : "0"+hours;
         return hoursString+":"+minutesString;
     }
 

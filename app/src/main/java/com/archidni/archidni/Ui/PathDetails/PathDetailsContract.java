@@ -22,7 +22,8 @@ public interface PathDetailsContract {
         void startLineActivity (Line line);
         void showErrorMessage();
         void startStationActivity(Station station);
-        void startReportActivity(Path path);
+        void startPathReportActivity(Path path);
+        void startDisruptionReportActivity();
         void showReportSentMessage ();
     }
 
@@ -34,5 +35,6 @@ public interface PathDetailsContract {
         void onStationItemClick (Context context, Station station);
         void onPathIsCorrectClick();
         void onPathIsIncorrectClick();
+        void onReportClick();
     }
 }

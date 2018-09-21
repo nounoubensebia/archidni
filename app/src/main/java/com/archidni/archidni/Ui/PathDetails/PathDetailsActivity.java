@@ -28,6 +28,7 @@ import com.archidni.archidni.Ui.Adapters.PathInstructionRecyclerAdapter;
 import com.archidni.archidni.Ui.Adapters.StationInsideRideInstructionAdapter;
 import com.archidni.archidni.Ui.Line.LineActivity;
 import com.archidni.archidni.Ui.PathNavigation.PathNavigationActivity;
+import com.archidni.archidni.Ui.Report.ReportAlertChooseLineActivity;
 import com.archidni.archidni.Ui.Report.ReportInformationExplainProblemActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
@@ -61,6 +62,8 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     TextView pathIsCorrectText;
     @BindView(R.id.text_path_is_incorrect)
     TextView pathIsIncorrectText;
+    @BindView(R.id.text_report)
+    TextView reportText;
 
     private Dialog waitDialog;
 
@@ -108,6 +111,12 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
             @Override
             public void onClick(View view) {
                 presenter.onPathIsIncorrectClick();
+            }
+        });
+        reportText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onReportClick();
             }
         });
         scrollView.post(new Runnable() {
@@ -279,10 +288,16 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     }
 
     @Override
-    public void startReportActivity(Path path) {
+    public void startPathReportActivity(Path path) {
         Intent intent = new Intent(this, ReportInformationExplainProblemActivity.class);
         intent.putExtra(IntentUtils.PATH,new Gson().toJson(path));
         intent.putExtra(IntentUtils.IS_PATH_GOOD,false);
+        startActivity(intent);
+    }
+
+    @Override
+    public void startDisruptionReportActivity() {
+        Intent intent = new Intent(this, ReportAlertChooseLineActivity.class);
         startActivity(intent);
     }
 
