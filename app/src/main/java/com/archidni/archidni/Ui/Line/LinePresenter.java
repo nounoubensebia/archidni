@@ -161,4 +161,9 @@ public class LinePresenter implements LineContract.Presenter {
     public void onScheduleClicked() {
         view.startSchedulesActivity(line);
     }
+
+    @Override
+    public void onStationMarkerInfoWindowClick(Station station) {
+        view.startStationActivity(station);
+    }
 }

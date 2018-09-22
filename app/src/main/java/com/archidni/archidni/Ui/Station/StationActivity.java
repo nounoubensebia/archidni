@@ -46,6 +46,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 
@@ -124,6 +125,13 @@ public class StationActivity extends AppCompatActivity implements StationContrac
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 presenter.onMapReady();
+                archidniMap.getMap().getUiSettings().setAllGesturesEnabled(false);
+                archidniMap.getMap().setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        return true;
+                    }
+                });
             }
         });
         pathLayout.setOnClickListener(new View.OnClickListener() {
@@ -233,10 +241,6 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     @Override
     public void showTripsOnList(Station station,ArrayList<Line>lines,long departureTime,
                                 long departureDate) {
-        /*if (lines.get(0).getTransportMean().getId()== TransportMean.ID_BUS||lines.get(0).getTransportMean().getId()==4)
-        {
-            lines = new ArrayList<>();
-        }*/
         if (station.getTransportMean().getId()==TransportMean.ID_TRAIN)
         {
             TrainTripAdapter trainTripAdapter = new TrainTripAdapter(this, departureTime,
@@ -299,6 +303,7 @@ public class StationActivity extends AppCompatActivity implements StationContrac
 
     @Override
     public void showNearbyPlacesOnList(Station station, ArrayList<MainActivityPlace> mainActivityPlaces) {
+        tripOptionsLayout.setVisibility(View.GONE);
         PlaceAdapter placeAdapter = new PlaceAdapter(this, mainActivityPlaces, station.getCoordinate()
                 , new PlaceAdapter.OnItemClickListener() {
             @Override

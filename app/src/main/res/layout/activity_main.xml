@@ -124,7 +124,7 @@
                                 android:background="#FFF"
                                 android:backgroundTint="#FFF"
                                 app:borderWidth="0dp"
-                                app:srcCompat="@drawable/ic_arrow_upward_black_24dp" />
+                                app:srcCompat="@drawable/ic_view_list_black_24dp" />
                         </FrameLayout>
 
                         <LinearLayout

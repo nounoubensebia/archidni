@@ -220,6 +220,14 @@ public class ArchidniGoogleMap  {
                 .position(coordinate.toGoogleMapLatLng()).title(title));
     }
 
+    public void prepareMarker (Coordinate coordinate,int markerDrawableResource,float anchorX,
+                               float anchorY,String title,Object tag)
+    {
+        map.addMarker(new MarkerOptions().anchor(anchorX,anchorY)
+                .icon(getBitmapDescriptor(markerDrawableResource))
+                .position(coordinate.toGoogleMapLatLng()).title(title)).setTag(tag);
+    }
+
     public void preparePolyline (Context context, ArrayList<Coordinate> coordinates,int colorResourceId)
     {
         ArrayList<LatLng> points = new ArrayList<>();

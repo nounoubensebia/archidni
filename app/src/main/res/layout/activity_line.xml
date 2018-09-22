@@ -288,7 +288,7 @@
                                     android:paddingLeft="8dp"
                                     android:paddingRight="8dp"
                                     android:paddingTop="8dp"
-                                    android:text="Signaler des perturbations ou des informations erronées"
+                                    android:text="Signaler des perturbations"
                                     android:textAllCaps="false"
                                     android:textAppearance="?android:attr/textAppearanceButton"
                                     android:textColor="#FFF"

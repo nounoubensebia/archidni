@@ -44,6 +44,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -128,6 +129,19 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
             public void onMapReady(GoogleMap googleMap) {
                 presenter.onMapReady();
                 //archidniMap.moveCamera(new Coordinate(36.773479, 3.052176), 10);
+                archidniMap.getMap().setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        marker.showInfoWindow();
+                        return true;
+                    }
+                });
+                archidniMap.getMap().setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        presenter.onStationMarkerInfoWindowClick((Station)marker.getTag());
+                    }
+                });
             }
         }, new ArchidniGoogleMap.OnMapLoaded() {
             @Override
@@ -172,13 +186,14 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     @Override
     public void showLineOnMap(ArrayList<Coordinate> polyline,ArrayList<Station> stations) {
         archidniMap.clearMap();
+
         animateCameraToFitLine(polyline);
         archidniMap.preparePolyline(this, polyline
                 ,stations.get(0).getTransportMean().getColor(),15);
         for (Station station:stations)
         {
             archidniMap.prepareMarker(station.getCoordinate(),station.getTransportMean()
-                    .getMarkerInsideLineDrawable(),0.5f,0.5f,station.getName());
+                    .getMarkerInsideLineDrawable(),0.5f,0.5f,station.getName(),station);
         }
         archidniMap.addPreparedAnnotations();
     }

@@ -39,6 +39,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.Gap;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.gson.Gson;
 
@@ -92,6 +93,20 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 presenter.onMapReady();
+                archidniMap.getMap().setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        marker.showInfoWindow();
+                        return true;
+                    }
+                });
+                archidniMap.getMap().setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        if (marker.getTag()!=null&&marker.getTag() instanceof  Station)
+                            presenter.onStationItemClick(PathDetailsActivity.this,(Station)marker.getTag());
+                    }
+                });
             }
         });
         
@@ -233,7 +248,8 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
                 for (Station station: rideInstruction.getStations())
                 {
                     archidniMap.prepareMarker(station.getCoordinate(),
-                            transportMean.getMarkerInsideLineDrawable(),0.5f,0.5f,station.getName());
+                            transportMean.getMarkerInsideLineDrawable(),0.5f,0.5f,station.getName()
+                    ,station);
                 }
             }
         }

@@ -33,27 +33,11 @@ public class StationFragment extends LineStationFragment {
     void updateQueryText(final String text) {
         if (text.length()>1)
         {
-            emptyString = false;
-            noResultsText.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-            lineStationSuggestionsRepository.getStationSuggestions(getActivity(), text, new LineStationSuggestionsRepository.OnSearchComplete() {
+            searchStations(text);
+            retryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onSearchComplete(ArrayList<LineStationSuggestion> lineStationSuggestions) {
-                    if (!emptyString)
-                    {
-                        populateList(lineStationSuggestions);
-                        progressBar.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                        if (lineStationSuggestions.size()==0)
-                            noResultsText.setVisibility(View.VISIBLE);
-                    }
-                }
-
-                @Override
-                public void onError() {
-                    Toast.makeText(getActivity(), R.string.error_happened,Toast.LENGTH_LONG).show();
-                    progressBar.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
+                public void onClick(View view) {
+                    searchStations(text);
                 }
             });
         }
@@ -64,8 +48,48 @@ public class StationFragment extends LineStationFragment {
             populateList(new ArrayList<LineStationSuggestion>());
             progressBar.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
+            errorLayout.setVisibility(View.GONE);
             emptyString = true;
         }
+    }
+
+    private void searchStations (final String text)
+    {
+        emptyString = false;
+        noResultsText.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        errorLayout.setVisibility(View.GONE);
+        lineStationSuggestionsRepository.getStationSuggestions(getActivity(), text, new LineStationSuggestionsRepository.OnSearchComplete() {
+            @Override
+            public void onSearchComplete(ArrayList<LineStationSuggestion> lineStationSuggestions) {
+                if (!emptyString)
+                {
+                    errorLayout.setVisibility(View.GONE);
+                    populateList(lineStationSuggestions);
+                    progressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    if (lineStationSuggestions.size()==0)
+                        noResultsText.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onError() {
+                if (!emptyString)
+                {
+                    errorLayout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    populateList(new ArrayList<LineStationSuggestion>());
+                }
+            }
+        });
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchStations(text);
+            }
+        });
     }
 
     private void populateList (ArrayList<LineStationSuggestion> lineStationSuggestions)

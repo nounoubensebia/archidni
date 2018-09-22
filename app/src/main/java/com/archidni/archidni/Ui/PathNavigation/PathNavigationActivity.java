@@ -47,6 +47,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.PatternItem;
 
 
@@ -95,6 +96,20 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map.setMyLocationEnabled(true);
+                map.getMap().setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        marker.showInfoWindow();
+                        return true;
+                    }
+                });
+                map.getMap().setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        if (marker.getTag()!=null&&marker.getTag() instanceof Station)
+                            presenter.onStationClick(((Station)marker.getTag()));
+                    }
+                });
             }
         }, new ArchidniGoogleMap.OnMapLoaded() {
             @Override
@@ -192,7 +207,7 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
 
         descriptionText.setText(walkInstruction.getMainText());
         distanceText.setText(walkInstruction.getDistanceString());
-        durationText.setText(walkInstruction.getDuration()+" minutes");
+        durationText.setText((int)walkInstruction.getDuration()/60+" minutes");
         TextView stepCountText = findViewById(R.id.text_step_count);
         stepCountText.setTextColor(ContextCompat.getColor(this,
                 TransportMean.allTransportMeans.get(TransportMean.ID_BUS).getColor()));
@@ -406,7 +421,10 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
                 for (Station station: rideInstruction.getStations())
                 {
                     map.prepareMarker(station.getCoordinate(),
-                            transportMean.getMarkerInsideLineDrawable(),0.5f,0.5f,station.getName());
+                            transportMean.getMarkerInsideLineDrawable(),
+                            0.5f,0.5f,
+                            station.getName(),
+                            station);
                 }
             }
         }

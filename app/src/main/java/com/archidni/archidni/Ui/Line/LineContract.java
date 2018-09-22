@@ -49,5 +49,6 @@ public interface LineContract {
         void onShowNewsAndNotificationsClick();
         void onTarifsClicked ();
         void onScheduleClicked();
+        void onStationMarkerInfoWindowClick(Station station);
     }
 }

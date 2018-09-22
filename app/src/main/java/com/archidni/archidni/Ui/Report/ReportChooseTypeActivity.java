@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -20,6 +21,8 @@ public class ReportChooseTypeActivity extends AppCompatActivity {
     TextView nextText;
     @BindView(R.id.text_cancel)
     TextView cancelText;
+    @BindView(R.id.image_clear)
+    ImageView clearImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,12 @@ public class ReportChooseTypeActivity extends AppCompatActivity {
             }
         });
         cancelText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        clearImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -30,6 +31,10 @@ public abstract class LineStationFragment extends Fragment {
     ProgressBar progressBar;
     @BindView(R.id.text_no_results)
     TextView noResultsText;
+    @BindView(R.id.layout_error)
+    View errorLayout;
+    @BindView(R.id.button_retry)
+    Button retryButton;
     LineStationSuggestionsRepository lineStationSuggestionsRepository;
     @Override
     public View onCreateView(LayoutInflater inflater,

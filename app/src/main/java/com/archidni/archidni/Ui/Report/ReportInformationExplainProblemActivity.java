@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,8 @@ public class ReportInformationExplainProblemActivity extends AppCompatActivity {
     TextView cancelText;
     @BindView(R.id.text_leave_empty)
     TextView leaveEmptyText;
+    @BindView(R.id.image_clear)
+    ImageView clearImage;
 
     private Dialog progressDialog;
 
@@ -54,6 +57,12 @@ public class ReportInformationExplainProblemActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         final Bundle extras = getIntent().getExtras();
         reportsRepository = new ReportsRepositoryImpl();
+        clearImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         if (extras!=null&&extras.containsKey(IntentUtils.DISRUPTION_SUBJECT))
         {
             disruptionSubject = new Gson().fromJson(extras.getString(IntentUtils.DISRUPTION_SUBJECT),DisruptionSubject.class);
