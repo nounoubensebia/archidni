@@ -78,7 +78,6 @@
         <activity
             android:name=".Ui.Favorites.FavoritesActivity"
             android:label="Mes favoris"
-            android:parentActivityName=".Ui.Main.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeWithActionBar" />
         <activity
