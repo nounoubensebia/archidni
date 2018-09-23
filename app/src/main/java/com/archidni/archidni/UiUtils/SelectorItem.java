@@ -1,7 +1,8 @@
 package com.archidni.archidni.UiUtils;
 
 import com.archidni.archidni.App;
-import com.archidni.archidni.Model.Interests.ParkingType;
+import com.archidni.archidni.Model.Interests.HospitalItem;
+import com.archidni.archidni.Model.Interests.ParkingItem;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 
@@ -18,7 +19,8 @@ public abstract class SelectorItem {
     public static ArrayList<SelectorItem> allItems =
             new ArrayList<SelectorItem>(){{
                 addAll(TransportMean.allTransportMeans);
-                add(new ParkingType(5,"Parkings"));
+                add(new ParkingItem(5,"Parkings"));
+                add(new HospitalItem(6, App.getAppContext().getString(R.string.hospitals)));
                 /*add(new TransportMean(0, App.getAppContext().getString(R.string.metro)));
                 add(new TransportMean(1, App.getAppContext().getString(R.string.train)));
                 add(new TransportMean(2, App.getAppContext().getString(R.string.bus)));

@@ -4,10 +4,10 @@ import com.archidni.archidni.R;
 import com.archidni.archidni.UiUtils.SelectorItem;
 
 
-public class ParkingType extends SelectorItem {
+public class ParkingItem extends SelectorItem {
 
 
-    public ParkingType(int id, String name) {
+    public ParkingItem(int id, String name) {
         super(id, name);
     }
 

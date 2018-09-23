@@ -27,7 +27,7 @@ import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.LocationListener;
 import com.archidni.archidni.Model.Coordinate;
-import com.archidni.archidni.Model.Interests.ParkingType;
+import com.archidni.archidni.Model.Interests.ParkingItem;
 import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Places.PathPlace;
@@ -144,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     View interestsLayout;
     @BindView(R.id.text_interests)
     TextView interestsText;
+    @BindView(R.id.text_hospital)
+    TextView hospitalText;
 
     TextView usernameText;
 
@@ -269,6 +271,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             @Override
             public void onClick(View view) {
                 presenter.toggleTransportMean(5);
+            }
+        });
+        hospitalText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.toggleTransportMean(6);
             }
         });
         stationsLayout.setOnClickListener(new View.OnClickListener() {
@@ -499,6 +507,21 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     R.color.color_transport_mean_not_selected
                     ,ViewUtils.DIRECTION_UP);
         }
+        if (transportMeansSelector.isItemSelected(6))
+        {
+            ViewUtils.changeTextViewState(this,hospitalText,
+                    SelectorItem.allItems.get(6).getIconEnabled(),
+                    SelectorItem.allItems.get(6).getColor()
+                    ,ViewUtils.DIRECTION_UP);
+        }
+        else
+        {
+            ViewUtils.changeTextViewState(this,hospitalText,
+                    SelectorItem.allItems.get(6).getIconDisabled(),
+                    R.color.color_transport_mean_not_selected
+                    ,ViewUtils.DIRECTION_UP);
+        }
+
 
     }
 
@@ -719,7 +742,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             else
             {
                 Parking parking = (Parking) place;
-                if (!oldTransportMeanSelector.isItemSelected(ParkingType.PARKING_ID))
+                if (!oldTransportMeanSelector.isItemSelected(ParkingItem.PARKING_ID))
                 archidniMap.prepareClusterItem(parking.getCoordinate(),
                         R.drawable.marker_parking,5,parking);
                 //archidniMap.addMarker(parking.getCoordinate(),R.drawable.marker_parking);
