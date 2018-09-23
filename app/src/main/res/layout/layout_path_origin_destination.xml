@@ -70,44 +70,18 @@
                 android:textColor="#000" />
         </LinearLayout>
 
-        <android.support.design.widget.CoordinatorLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|left"
+                android:layout_gravity="center"
+                android:layout_weight="1"
                 android:orientation="vertical">
-
-                <RadioGroup
-                    android:id="@+id/radio_group_departure_arrival"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:checkedButton="@+id/radio_button_departure"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/radio_button_departure"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="#FFF"
-                        android:text="Départ"
-                        android:textColor="#FFF"
-                        android:textSize="14sp" />
-
-                    <RadioButton
-                        android:id="@+id/radio_button_arrival"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:buttonTint="#FFF"
-                        android:text="Arrivée"
-                        android:textColor="#FFF"
-                        android:textSize="14sp" />
-                </RadioGroup>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -121,8 +95,7 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="8dp"
                         android:drawableLeft="@drawable/ic_time_white_24dp"
-                        android:drawablePadding="8dp"
-                        android:gravity="center"
+                        android:drawablePadding="4dp"
                         android:text="Maintenant"
                         android:textColor="#FFF"
                         android:textSize="14sp" />
@@ -134,11 +107,50 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="8dp"
                         android:drawableLeft="@drawable/ic_date_white_24dp"
-                        android:drawablePadding="8dp"
-                        android:gravity="center"
+                        android:drawablePadding="4dp"
                         android:text="Aujourd'hui"
                         android:textColor="#FFF"
                         android:textSize="14sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginLeft="16dp"
+                    android:text="Définir comme heure et date de : "
+                    android:textColor="#fff"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                    <RadioGroup
+                        android:layout_marginTop="4dp"
+                        android:id="@+id/radio_group_departure_arrival"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:checkedButton="@+id/radio_button_departure"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/radio_button_departure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="#FFF"
+                            android:text="Départ"
+                            android:textColor="#FFF"
+                            android:textSize="14sp" />
+
+                        <RadioButton
+                            android:id="@+id/radio_button_arrival"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="#FFF"
+                            android:text="Arrivée"
+                            android:textColor="#FFF"
+                            android:textSize="14sp" />
+                    </RadioGroup>
                 </LinearLayout>
             </LinearLayout>
 
@@ -146,14 +158,14 @@
                 android:id="@+id/text_options"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center"
                 android:layout_marginRight="16dp"
+                android:layout_gravity="center"
                 android:background="@drawable/shape_button_empty_white_rect"
                 android:gravity="center"
                 android:text="@string/options"
                 android:textColor="#FFF"
                 android:visibility="visible" />
-        </android.support.design.widget.CoordinatorLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

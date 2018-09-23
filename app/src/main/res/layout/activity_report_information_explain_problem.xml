@@ -24,7 +24,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
-            android:hint="Pouvez vous nous \nexpliquer le problème rencontré ?"
+            android:hint="Décrivez le problème"
             android:textColorHint="@android:color/holo_red_light"
             android:inputType="text"
             android:textColor="#000"
