@@ -253,8 +253,8 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
                 }
             }
         }
-        archidniMap.addMarker(pathPolyline.get(0),R.drawable.ic_marker_blue_24dp);
-        archidniMap.addMarker(pathPolyline.get(pathPolyline.size()-1),R.drawable.ic_marker_red_24dp);
+        archidniMap.addMarker(pathPolyline.get(0),R.drawable.marker_departure);
+        archidniMap.addMarker(pathPolyline.get(pathPolyline.size()-1),R.drawable.marker_arrival);
         archidniMap.addPreparedAnnotations();
     }
 

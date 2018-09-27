@@ -42,8 +42,6 @@ public class SignupActivity extends AppCompatActivity {
     EditText lastNameEditText;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    @BindView(R.id.toolbar)
-    android.support.v7.widget.Toolbar toolbar;
     @BindView(R.id.text_settings)
     TextView settingsText;
     UsersRepository usersRepository;
@@ -65,7 +63,6 @@ public class SignupActivity extends AppCompatActivity {
     private void initViews ()
     {
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
         signupText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

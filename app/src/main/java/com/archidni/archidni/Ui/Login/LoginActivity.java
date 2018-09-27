@@ -33,11 +33,9 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.text_login)
     TextView loginText;
     @BindView(R.id.button_signup)
-    Button signUpText;
+    TextView signUpText;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.text_settings)
     TextView settingsText;
 
