@@ -428,8 +428,8 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
                 }
             }
         }
-        map.addMarker(pathPolyline.get(0),R.drawable.ic_marker_blue_24dp);
-        map.addMarker(pathPolyline.get(pathPolyline.size()-1),R.drawable.ic_marker_red_24dp);
+        map.addMarker(pathPolyline.get(0),R.drawable.marker_departure);
+        map.addMarker(pathPolyline.get(pathPolyline.size()-1),R.drawable.marker_arrival);
         map.addPreparedAnnotations();
     }
 
