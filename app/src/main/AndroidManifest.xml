@@ -83,38 +83,48 @@
         <activity
             android:name=".Ui.Settings.SettingsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Ui.TarifsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Ui.BusTarifsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Ui.MetroTarifsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Ui.TramwayTarifsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Ui.TrainTarifsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Ui.TermsOfUseActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Ui.AboutActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Ui.TelephericTarifsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Ui.ExchangePolesActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Ui.ParkingsActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Ui.TarifsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ui.BusTarifsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ui.MetroTarifsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ui.TramwayTarifsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ui.TrainTarifsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ui.TermsOfUseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ui.AboutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ui.TelephericTarifsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ui.ExchangePolesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ui.ParkingsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Ui.Parking.ParkingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/TransportMeanTheme1" />
         <activity
             android:name=".Ui.Notifications.NotificationsActivity"
-            android:screenOrientation="portrait"
-            android:label="Notifications et alertes" />
+            android:label="Notifications et alertes"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Ui.LineNotifications.LineNotificationsActivity"
-            android:screenOrientation="portrait"
-            android:label="Notifications et alertes" />
+            android:label="Notifications et alertes"
+            android:screenOrientation="portrait" />
 
         <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
@@ -122,24 +132,30 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Ui.Report.ReportChooseTypeActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Ui.Report.ReportInformationExplainProblemActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Ui.Report.ReportAlertChooseLineActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Ui.TestActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Ui.Report.ReportChooseTypeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ui.Report.ReportInformationExplainProblemActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ui.Report.ReportAlertChooseLineActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ui.TestActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Ui.Line.Schedule.ScheduleActivity"
-            android:screenOrientation="portrait"
-            android:label="Horaires" />
+            android:label="Horaires"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Ui.Line.Schedule.TrainTrip.TrainTripActivity"
-            android:screenOrientation="portrait"
-            android:label="Horaires" />
-        <activity android:name=".Ui.Place.HospitalActivity"
-            android:screenOrientation="portrait"></activity>
+            android:label="Horaires"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ui.Place.HospitalActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Ui.RealtimeBus.RealTimeBusActivity"></activity>
     </application>
 
 </manifest>

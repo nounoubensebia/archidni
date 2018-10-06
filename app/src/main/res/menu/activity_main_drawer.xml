@@ -34,6 +34,13 @@
         android:visible="true">
     </item>
 
+    <item android:title="Bus temps réel"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_transport_mean_2_green"
+        android:id="@+id/item_realtime_bus"
+        android:visible="true">
+    </item>
+
     <item android:title="Les Pôles D'Echanges "
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_info_black_24dp"

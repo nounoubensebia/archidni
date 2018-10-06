@@ -45,6 +45,7 @@ import com.archidni.archidni.Ui.Notifications.NotificationsActivity;
 import com.archidni.archidni.Ui.Parking.ParkingActivity;
 import com.archidni.archidni.Ui.ParkingsActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
+import com.archidni.archidni.Ui.RealtimeBus.RealTimeBusActivity;
 import com.archidni.archidni.Ui.Report.ReportChooseTypeActivity;
 import com.archidni.archidni.Ui.Search.SearchActivity;
 import com.archidni.archidni.Ui.SearchLineStation.SearchLineStationActivity;
@@ -1006,6 +1007,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 Intent intent6 = new Intent(this, SignupActivity.class);
                 SharedPrefsUtils.disconnectUser(this);
                 startActivity(intent6);
+                break;
+            case R.id.item_realtime_bus:
+                Intent intent7 = new Intent(this, RealTimeBusActivity.class);
+                startActivity(intent7);
                 break;
         }
         return true;
