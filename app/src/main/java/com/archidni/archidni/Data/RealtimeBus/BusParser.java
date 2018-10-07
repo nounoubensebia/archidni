@@ -36,7 +36,7 @@ public class BusParser {
             int course = jsonObject.isNull("course") ? -1:jsonObject.getInt("course");
             String time = jsonObject.getString("time");
             DateFormat formatter;
-            formatter = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             try {
                 Date date = formatter.parse(time);
                 buses.add(new Bus(id,new Coordinate(latitude,longitude),date.getTime(),speed,

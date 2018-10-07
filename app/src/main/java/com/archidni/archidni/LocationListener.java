@@ -45,6 +45,9 @@ public class LocationListener {
         });
     }
 
+    public Coordinate getUserLocation() {
+        return userLocation;
+    }
 
     @SuppressLint("MissingPermission")
     public void listenForLocationUpdates (final OnUserLocationUpdated onUserLocationUpdated)

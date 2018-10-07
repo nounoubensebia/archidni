@@ -10,7 +10,9 @@ public class RealTimeBusFilter {
 
 
     private List<Bus> buses;
-    //timeOut in seconds
+    /**
+     * timeout in seconds
+     */
     private long timeOut;
 
     public RealTimeBusFilter(List<Bus> buses, long timeOut) {
@@ -23,7 +25,7 @@ public class RealTimeBusFilter {
         ArrayList<Bus> filteredBuses = new ArrayList<>();
         for (Bus bus:buses)
         {
-            if (TimeUtils.getCurrentTimeInSeconds() - bus.getTimeStamp()<timeOut)
+            if (TimeUtils.getCurrentTimeInSeconds() - bus.getTimeStamp()/1000<timeOut)
             {
                 filteredBuses.add(bus);
             }
