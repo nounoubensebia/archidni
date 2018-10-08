@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.archidni.archidni.Data.LinesAndPlaces.LinesAndPlacesRepository;
 import com.archidni.archidni.Data.Station.StationDataRepository;
+import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.PathPlace;
@@ -13,6 +14,9 @@ import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.TimeUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by nouno on 09/02/2018.
@@ -164,6 +168,7 @@ public class StationPresenter implements StationContract.Presenter {
                 stationDataRepository.getNearbyPlaces(context, station, new StationDataRepository.OnNearbyPlacesSearchComplete() {
                     @Override
                     public void onSearchComplete(ArrayList<MainActivityPlace> mainActivityPlaces) {
+                        sortNearbyPlaces(mainActivityPlaces);
                         StationPresenter.this.nearbyPlaces = mainActivityPlaces;
                         StationPresenter.this.lines = lines;
                         switch (selectedItem)
@@ -191,6 +196,18 @@ public class StationPresenter implements StationContract.Presenter {
             public void onError() {
                 view.hideProgressLayout();
                 view.showErrorLayout();
+            }
+        });
+    }
+
+    private void sortNearbyPlaces (List<MainActivityPlace> places)
+    {
+        Collections.sort(places, new Comparator<MainActivityPlace>() {
+            @Override
+            public int compare(MainActivityPlace place, MainActivityPlace t1) {
+                return (GeoUtils.distance(station.getCoordinate(),place.getCoordinate())-(GeoUtils.distance(
+                        station.getCoordinate(),t1.getCoordinate()
+                )));
             }
         });
     }

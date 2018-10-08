@@ -262,7 +262,7 @@ public class PathDetailsActivity extends AppCompatActivity implements PathDetail
     public void showPathOnMap(Path path) {
         ArrayList<Coordinate> pathPolyline = path.getPolyline();
         showInstructionsAnnotations(path);
-        archidniMap.animateCameraToBounds(pathPolyline,(int)ViewUtils.dpToPx(this,32),500);
+        archidniMap.animateCameraToBounds(pathPolyline,(int)ViewUtils.dpToPx(this,64),500);
     }
 
     @Override

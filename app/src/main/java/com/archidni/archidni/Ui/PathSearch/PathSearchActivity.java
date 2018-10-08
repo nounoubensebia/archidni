@@ -208,7 +208,7 @@ public class PathSearchActivity extends AppCompatActivity implements PathSearchC
             ArrayList<Coordinate> coordinates = new ArrayList<>();
             coordinates.add(origin.getCoordinate());
             coordinates.add(destination.getCoordinate());
-            archidniMap.animateCameraToBounds(coordinates, (int) ViewUtils.dpToPx(this,32),
+            archidniMap.animateCameraToBounds(coordinates, (int) ViewUtils.dpToPx(this,64),
                     1000
                     );
         }
