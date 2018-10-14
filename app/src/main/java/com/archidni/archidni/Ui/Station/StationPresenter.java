@@ -140,7 +140,8 @@ public class StationPresenter implements StationContract.Presenter {
         }
         else
         {
-            view.startPlaceActivity(place);
+            view.startPlaceActivity(place
+            );
         }
     }
 

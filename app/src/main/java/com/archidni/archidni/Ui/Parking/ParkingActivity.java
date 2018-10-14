@@ -5,7 +5,12 @@ import android.content.Intent;
 import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.archidni.archidni.IntentUtils;
@@ -13,8 +18,12 @@ import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Places.PathPlace;
+import com.archidni.archidni.Model.Places.Place;
+import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.R;
+import com.archidni.archidni.Ui.Adapters.PlaceAdapter;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
+import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -24,6 +33,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,6 +50,18 @@ public class ParkingActivity extends AppCompatActivity implements ParkingContrac
     TextView nameText;
     @BindView(R.id.layout_path)
     View pathLayout;
+    @BindView(R.id.layout_nearby)
+    View nearbyLayout;
+    @BindView(R.id.recyclerView)
+    RecyclerView nearbyPlacesList;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.layout_error)
+    View errorLayout;
+    @BindView(R.id.button_retry)
+    Button retryButton;
+    @BindView(R.id.layout_details)
+    View detailsLayout;
 
     MapFragment mapView;
 
@@ -81,6 +103,12 @@ public class ParkingActivity extends AppCompatActivity implements ParkingContrac
                 presenter.onMapReady();
             }
         });
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onRetryClick();
+            }
+        });
         presenter.onCreate();
     }
 
@@ -89,7 +117,10 @@ public class ParkingActivity extends AppCompatActivity implements ParkingContrac
     @Override
     public void showParkingOnActivity(Parking parking) {
         coordinateText.setText(parking.getCoordinate().getLatitude()+","+parking.getCoordinate().getLongitude());
-        capacityText.setText("Capacité : "+parking.getCapacity()+" places");
+        if (parking.getCapacity()!=-1)
+            capacityText.setText("Capacité : "+parking.getCapacity()+" places");
+        else
+            detailsLayout.setVisibility(View.GONE);
         nameText.setText(parking.getName());
     }
 
@@ -111,12 +142,68 @@ public class ParkingActivity extends AppCompatActivity implements ParkingContrac
     }
 
     @Override
-    public void showNearbyPlacesOnList(List<MainActivityPlace> places) {
-        //TODO implement
+    public void showNearbyPlacesOnList(ArrayList<MainActivityPlace> places, Parking parking) {
+        PlaceAdapter placeAdapter = new PlaceAdapter(this, places, parking.getCoordinate()
+                , new PlaceAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(MainActivityPlace mainListPlace) {
+                presenter.onPlaceClicked(mainListPlace);
+            }
+        });
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        nearbyPlacesList.setLayoutManager(mLayoutManager);
+        nearbyPlacesList.setItemAnimator(new DefaultItemAnimator());
+        nearbyPlacesList.setAdapter(placeAdapter);
     }
 
     @Override
     public void startPlaceActivity(MainActivityPlace mainActivityPlace) {
-        //TODO implement
+        if (mainActivityPlace instanceof Station)
+        {
+            Station station = (Station) mainActivityPlace;
+            Intent intent = new Intent(this, StationActivity.class);
+            intent.putExtra(IntentUtils.STATION_STATION,station.toJson());
+            startActivity(intent);
+        }
+        else
+        {
+            if (mainActivityPlace instanceof Parking)
+            {
+                Parking parking = (Parking) mainActivityPlace;
+                Intent intent = new Intent(this,ParkingActivity.class);
+                intent.putExtra(IntentUtils.PARKING,parking.toJson());
+                startActivity(intent);
+            }
+        }
+    }
+
+    @Override
+    public void showNearbyPlacesLayout() {
+        nearbyLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideNearbyPlacesLayout() {
+        nearbyLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showErrorLayout() {
+        errorLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideErrorLayout() {
+        errorLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showProgressLayout() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressLayout() {
+        progressBar.setVisibility(View.GONE);
     }
 }

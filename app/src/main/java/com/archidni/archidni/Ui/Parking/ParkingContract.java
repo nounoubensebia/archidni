@@ -5,6 +5,7 @@ import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Places.PathPlace;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ParkingContract {
@@ -12,8 +13,14 @@ public interface ParkingContract {
         void showParkingOnActivity (Parking parking);
         void startPathSearchActivity (PathPlace origin, PathPlace destination);
         void showParkingOnMap (Parking parking);
-        void showNearbyPlacesOnList(List<MainActivityPlace> places);
+        void showNearbyPlacesOnList(ArrayList<MainActivityPlace> places,Parking parking);
         void startPlaceActivity(MainActivityPlace mainActivityPlace);
+        void showNearbyPlacesLayout();
+        void hideNearbyPlacesLayout();
+        void showErrorLayout();
+        void hideErrorLayout();
+        void showProgressLayout();
+        void hideProgressLayout();
     }
 
     interface Presenter {
@@ -22,5 +29,6 @@ public interface ParkingContract {
         void onGetPathClicked();
         void onUserLocationCaptured(Coordinate coordinate);
         void onPlaceClicked(MainActivityPlace mainActivityPlace);
+        void onRetryClick();
     }
 }

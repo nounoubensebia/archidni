@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:orientation="vertical"
-    android:background="#EDEDED"
+    android:background="#EFEFEf"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <TextView
         android:id="@+id/text_coordinate"
         android:layout_width="wrap_content"
@@ -16,6 +20,11 @@
         android:drawablePadding="8dp"
         android:gravity="center"
         android:text="31.565,3.5659" />
+        <LinearLayout
+            android:id="@+id/layout_details"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,17 +32,17 @@
         android:paddingLeft="16dp"
         android:layout_marginTop="16dp"
         android:text="Détails : "
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/shape_rect_white_rounded"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
 
     <TextView
         android:id="@+id/text_capacity"
@@ -42,24 +51,66 @@
         android:paddingLeft="16dp"
         android:textColor="#000"
         android:paddingTop="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Capacité : 1000 Places"
-        android:textSize="16sp" />
-    <TextView
-        android:id="@+id/text_nearby"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#000"
-        android:paddingLeft="16dp"
-        android:paddingTop="8dp"
-        android:text="@string/a_proximit"
-        android:textSize="16sp" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:textSize="14sp" />
     </LinearLayout>
 
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_nearby"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/text_nearby"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:text="@string/a_proximit_points"
+            android:textSize="14sp" />
 
-</LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/layout_error"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/text_search_error"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textColor="#000"
+                android:gravity="center"
+                android:text="@string/an_error_has_happened_please_verify_your_internet_connection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/button_retry"
+                android:layout_gravity="center"
+                android:text="@string/retry"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:visibility="gone"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
