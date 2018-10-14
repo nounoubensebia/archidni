@@ -62,4 +62,5 @@
     <string name="password">Mot de passe</string>
     <string name="email">Email</string>
     <string name="update">Actualiser</string>
+    <string name="a_proximit">A proximité</string>
 </resources>

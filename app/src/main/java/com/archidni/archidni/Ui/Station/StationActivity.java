@@ -25,6 +25,7 @@ import android.widget.TimePicker;
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Places.MainActivityPlace;
+import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Line;
@@ -38,6 +39,7 @@ import com.archidni.archidni.Ui.Adapters.TrainTripAdapter;
 import com.archidni.archidni.Ui.Adapters.TramwayMetroTripAdapter;
 import com.archidni.archidni.Ui.Line.LineActivity;
 import com.archidni.archidni.Ui.Line.Schedule.TrainTrip.TrainTripActivity;
+import com.archidni.archidni.Ui.Parking.ParkingActivity;
 import com.archidni.archidni.Ui.PathSearch.PathSearchActivity;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.UiUtils.ViewUtils;
@@ -299,6 +301,14 @@ public class StationActivity extends AppCompatActivity implements StationContrac
     @Override
     public void hideProgressLayout() {
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void startPlaceActivity(MainActivityPlace place) {
+        Parking parking = (Parking) place;
+        Intent intent = new Intent(this, ParkingActivity.class);
+        intent.putExtra(IntentUtils.PARKING,parking.toJson());
+        startActivity(intent);
     }
 
     @Override

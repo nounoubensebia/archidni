@@ -38,6 +38,7 @@ public interface StationContract {
         void hideErrorLayout();
         void showProgressLayout();
         void hideProgressLayout();
+        void startPlaceActivity(MainActivityPlace place);
     }
 
     public interface Presenter {

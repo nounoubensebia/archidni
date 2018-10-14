@@ -1,6 +1,7 @@
 package com.archidni.archidni.Ui.Parking;
 
 import com.archidni.archidni.Model.Coordinate;
+import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Places.PathPlace;
 
@@ -36,5 +37,10 @@ public class ParkingPresenter  implements ParkingContract.Presenter{
         {
             userPlace = new PathPlace("Ma Positon",coordinate);
         }
+    }
+
+    @Override
+    public void onPlaceClicked(MainActivityPlace mainActivityPlace) {
+        //TODO implement
     }
 }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.Coordinate;
+import com.archidni.archidni.Model.Places.MainActivityPlace;
 import com.archidni.archidni.Model.Places.Parking;
 import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.R;
@@ -22,6 +23,8 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -105,5 +108,15 @@ public class ParkingActivity extends AppCompatActivity implements ParkingContrac
     public void showParkingOnMap(Parking parking) {
         archidniMap.moveCamera(parking.getCoordinate(),14);
         archidniMap.addMarker(parking.getCoordinate(),R.drawable.marker_parking);
+    }
+
+    @Override
+    public void showNearbyPlacesOnList(List<MainActivityPlace> places) {
+        //TODO implement
+    }
+
+    @Override
+    public void startPlaceActivity(MainActivityPlace mainActivityPlace) {
+        //TODO implement
     }
 }

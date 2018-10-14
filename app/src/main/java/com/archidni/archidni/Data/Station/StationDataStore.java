@@ -7,6 +7,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.AppSingleton;
+import com.archidni.archidni.Data.LinesAndPlaces.PlaceParser;
 import com.archidni.archidni.Data.OnlineDataStore;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.Coordinate;
@@ -72,14 +73,17 @@ public class StationDataStore extends OnlineDataStore {
             @Override
             public void onResponse(String response) {
                 try {
-                    ArrayList<MainActivityPlace> stations = new ArrayList<>();
-                    JSONArray jsonArray = new JSONArray(response);
-                    for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject root = new JSONObject(response);
+                    ArrayList<MainActivityPlace> places = new ArrayList<>();
+                    JSONArray stationsArray = root.getJSONArray("stations");
+                    for (int i = 0; i < stationsArray.length(); i++) {
                         StationParser stationParser = new StationParser();
-                        Station station1 = stationParser.parseStation(jsonArray.getJSONObject(i));
-                        stations.add(station1);
+                        Station station1 = stationParser.parseStation(stationsArray.getJSONObject(i));
+                        places.add(station1);
                     }
-                    onNearbyPlacesSearchComplete.onSearchComplete(stations);
+                    JSONArray placesArray = root.getJSONArray("places");
+                    places.addAll(new PlaceParser(placesArray.toString()).getPlaces());
+                    onNearbyPlacesSearchComplete.onSearchComplete(places);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     onNearbyPlacesSearchComplete.onError();

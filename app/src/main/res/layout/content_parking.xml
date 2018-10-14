@@ -19,19 +19,47 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#EDEDED"
+        android:textColor="#000"
         android:paddingLeft="16dp"
-        android:paddingTop="16dp"
-        android:text="Détails"
+        android:layout_marginTop="16dp"
+        android:text="Détails : "
         android:textSize="16sp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/shape_rect_white_rounded"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <TextView
         android:id="@+id/text_capacity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#EDEDED"
         android:paddingLeft="16dp"
-        android:paddingTop="16dp"
+        android:textColor="#000"
+        android:paddingTop="8dp"
         android:text="Capacité : 1000 Places"
         android:textSize="16sp" />
+    <TextView
+        android:id="@+id/text_nearby"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:text="@string/a_proximit"
+        android:textSize="16sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+
 
 </LinearLayout>

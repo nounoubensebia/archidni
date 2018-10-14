@@ -138,6 +138,10 @@ public class StationPresenter implements StationContract.Presenter {
         {
             view.startStationActivity((Station) place);
         }
+        else
+        {
+            view.startPlaceActivity(place);
+        }
     }
 
     @Override

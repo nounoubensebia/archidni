@@ -67,9 +67,9 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
                             JSONObject root = new JSONObject(strings[0]);
                             JSONArray data = root.getJSONArray("lines");
                             ArrayList<Line> lines = parseLines(data);
-                            ArrayList<MainActivityPlace> places = new ArrayList<>();
-                            ArrayList<Parking> parkings = parseParkings(root.getJSONArray("parkings"));
-                            places.addAll(parkings);
+                            ArrayList<MainActivityPlace> places =
+                                    new PlaceParser(root.getJSONArray("places").toString())
+                                            .getPlaces();
                             return new Pair<>(lines, places);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -98,23 +98,6 @@ public class LinesAndPlacesOnlineDataStore extends OnlineDataStore {
         oauthStringRequest.performRequest(getTag());
     }
 
-    public ArrayList<Parking> parseParkings(JSONArray parkingsJson) {
-        ArrayList<Parking> parkings = new ArrayList<>();
-        for (int i = 0; i < parkingsJson.length(); i++) {
-            try {
-                JSONObject parkingObject = parkingsJson.getJSONObject(i);
-                String name = parkingObject.getString("name");
-                double latitude = parkingObject.getDouble("latitude");
-                double longitude = parkingObject.getDouble("longitude");
-                int capacity = parkingObject.getInt("capacity");
-                int id = parkingObject.getInt("id");
-                parkings.add(new Parking(name, new Coordinate(latitude, longitude), id, capacity));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return parkings;
-    }
 
 
     public void getLine(Context context, LineStationSuggestion lineStationSuggestion,
