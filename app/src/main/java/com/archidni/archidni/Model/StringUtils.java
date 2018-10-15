@@ -44,7 +44,7 @@ public class StringUtils {
         }
     }
 
-    public static String getTimeString (long timestamp)
+    public static String getTimeString (float timestamp)
     {
         int hours = (int) timestamp / 3600;
         int minutes = (int) timestamp / 60 - hours * 60;

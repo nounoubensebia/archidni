@@ -36,6 +36,7 @@ public class SearchPresenter implements SearchContract.Presenter {
     private int requestType;
     private PathPlace bundledPlace;
     private Coordinate userLocation;
+    private String query;
     private LineStationSuggestionsRepository lineStationSuggestionsRepository;
 
     public SearchPresenter(SearchContract.View view,int requestType,PathPlace place) {
@@ -73,6 +74,7 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void loadSearchResults(final Context context, final String text) {
+        query = text;
         if (lineStationSuggestionsRepository==null)
             lineStationSuggestionsRepository = new LineStationSuggestionsRepository();
         final ArrayList<PlaceSuggestion> placeSuggestions = new ArrayList<>();
@@ -82,24 +84,28 @@ public class SearchPresenter implements SearchContract.Presenter {
             geoRepository.getTextAutoCompleteSuggestions(context,text,
                     new GeoRepository.OnPlaceSuggestionsSearchComplete() {
                         @Override
-                        public void onResultsFound(ArrayList<TextQuerySuggestion> textQuerySuggestions) {
-                            placeSuggestions.addAll(textQuerySuggestions);
+                        public void onResultsFound(ArrayList<TextQuerySuggestion> textQuerySuggestions,String queryC) {
+                            if (queryC.equals(query))
+                            {
+                                placeSuggestions.addAll(textQuerySuggestions);
 
-                            lineStationSuggestionsRepository.getStationSuggestions(context, text, new LineStationSuggestionsRepository.OnSearchComplete() {
-                                @Override
-                                public void onSearchComplete(ArrayList<LineStationSuggestion> lineStationSuggestions) {
-                                    ArrayList<PlaceSuggestion> stationSuggestions = new ArrayList<>();
-                                    stationSuggestions.addAll(getPlaceSuggestionsFromStations(lineStationSuggestions));
-                                    sortSearchSuggestions(text,stationSuggestions);
-                                    placeSuggestions.addAll(stationSuggestions);
-                                    view.showSearchResults(placeSuggestions);
-                                }
+                                lineStationSuggestionsRepository.getStationSuggestions(context, text, new LineStationSuggestionsRepository.OnSearchComplete() {
+                                    @Override
+                                    public void onSearchComplete(ArrayList<LineStationSuggestion> lineStationSuggestions) {
+                                            ArrayList<PlaceSuggestion> stationSuggestions = new ArrayList<>();
+                                            stationSuggestions.addAll(getPlaceSuggestionsFromStations(lineStationSuggestions));
+                                            sortSearchSuggestions(text,stationSuggestions);
+                                            placeSuggestions.addAll(stationSuggestions);
+                                            view.showSearchResults(placeSuggestions);
 
-                                @Override
-                                public void onError() {
-                                    view.showSearchResults(placeSuggestions);
-                                }
-                            });
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        view.showSearchResults(placeSuggestions);
+                                    }
+                                });
+                            }
                         }
 
                         @Override

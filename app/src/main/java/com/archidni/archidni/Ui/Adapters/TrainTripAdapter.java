@@ -15,7 +15,6 @@ import com.archidni.archidni.Model.Transport.Line;
 import com.archidni.archidni.Model.Transport.Schedule.TrainSchedule;
 import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.StationTime;
-import com.archidni.archidni.Model.Transport.TrainLine;
 import com.archidni.archidni.Model.Transport.TrainTrip;
 import com.archidni.archidni.Model.Transport.TransportUtils;
 import com.archidni.archidni.R;

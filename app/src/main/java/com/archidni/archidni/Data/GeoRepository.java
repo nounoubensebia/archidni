@@ -1,6 +1,7 @@
 package com.archidni.archidni.Data;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -11,6 +12,19 @@ import com.archidni.archidni.AppSingleton;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.PlaceSuggestion.TextQuerySuggestion;
 import com.archidni.archidni.Model.Places.PathPlace;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.AutocompletePredictionBufferResponse;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceTypes;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.tasks.CancellationToken;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +46,7 @@ public class GeoRepository extends OnlineDataStore {
                                                String text,
                                                final OnPlaceSuggestionsSearchComplete onPlaceSuggestionsSearchComplete)
     {
-        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        /*LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("input",text);
         map.put("key",GOOGLE_API_KEY);
         map.put("components","country:dz");
@@ -87,8 +101,59 @@ public class GeoRepository extends OnlineDataStore {
                 onPlaceSuggestionsSearchComplete.onError();
             }
         });
-        AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,getTag());
+        AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,getTag());*/
+        getQuery(context,text,onPlaceSuggestionsSearchComplete);
     };
+
+    private void getQuery(Context context, final String text, final OnPlaceSuggestionsSearchComplete onPlaceSuggestionsSearchComplete)
+    {
+        GeoDataClient geoDataClient = Places.getGeoDataClient(context, null);
+        LatLngBounds latLngBounds = new LatLngBounds(
+                new LatLng(18.76921389474957,-5.2066028499999675),
+                new LatLng(34.99235879854858,13.997498712500033));
+        AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder().setCountry("DZ").setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES|
+        AutocompleteFilter.TYPE_FILTER_ESTABLISHMENT).build();
+        Task<AutocompletePredictionBufferResponse> results = geoDataClient.getAutocompletePredictions(
+                text,
+                latLngBounds,
+                autocompleteFilter
+        );
+        results.addOnSuccessListener(new OnSuccessListener<AutocompletePredictionBufferResponse>() {
+            @Override
+            public void onSuccess(AutocompletePredictionBufferResponse autocompletePredictions) {
+                ArrayList<TextQuerySuggestion> textQuerySuggestions = new ArrayList<>();
+                for (AutocompletePrediction autocompletePrediction:autocompletePredictions)
+                {
+                    String mainText = autocompletePrediction.getPrimaryText(null).toString();
+                    String secondaryText = autocompletePrediction.getSecondaryText(null).toString();
+                    if (secondaryText!=null && !secondaryText.equals(""))
+                        {
+                        int type;
+                        if (autocompletePrediction.getPlaceTypes().get(0)== Place.TYPE_ESTABLISHMENT)
+                        {
+                            type = TextQuerySuggestion.TYPE_BUILDING;
+                        }
+                        else
+                        {
+                            type = TextQuerySuggestion.TYPE_LOCATION;
+                        }
+                        String placeId = autocompletePrediction.getPlaceId();
+                        TextQuerySuggestion textQuerySuggestion = new TextQuerySuggestion(mainText,
+                                secondaryText,type,placeId);
+                        textQuerySuggestions.add(textQuerySuggestion);
+                    }
+                }
+                onPlaceSuggestionsSearchComplete.onResultsFound(textQuerySuggestions,text);
+            }
+        });
+        results.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                onPlaceSuggestionsSearchComplete.onError();
+            }
+        });
+
+    }
 
     public void getPlaceDetails (Context context, final TextQuerySuggestion textQuerySuggestion,
                                  final OnPlaceDetailsSearchComplete onPlaceDetailsSearchComplete)
@@ -134,7 +199,7 @@ public class GeoRepository extends OnlineDataStore {
     }
 
     public interface OnPlaceSuggestionsSearchComplete {
-        public void onResultsFound (ArrayList<TextQuerySuggestion> textQuerySuggestions);
+        public void onResultsFound (ArrayList<TextQuerySuggestion> textQuerySuggestions,String query);
         public void onError ();
     }
 

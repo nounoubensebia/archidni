@@ -16,8 +16,6 @@ import com.archidni.archidni.Model.Transport.Station;
 import com.archidni.archidni.Model.Transport.StationTime;
 import com.archidni.archidni.R;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

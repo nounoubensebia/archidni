@@ -3,7 +3,7 @@ package com.archidni.archidni.Model.Transport;
 public class StationTime {
 
     private Station station;
-    private int timeAtStation;
+    private float timeAtStation;
 
     public StationTime(Station station, int timeAtStation) {
         this.station = station;
@@ -14,7 +14,7 @@ public class StationTime {
         return station;
     }
 
-    public int getTimeAtStation() {
+    public float getTimeAtStation() {
         return timeAtStation;
     }
 }
