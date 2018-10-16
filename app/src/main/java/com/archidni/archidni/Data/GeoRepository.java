@@ -17,11 +17,11 @@ import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBufferResponse;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceTypes;
+import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.tasks.CancellationToken;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -42,11 +42,24 @@ public class GeoRepository extends OnlineDataStore {
     private static final String URL_PLACES_AUTOCOMPLETE = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
     private static final String URL_PLACE_TYPE = "https://maps.googleapis.com/maps/api/place/details/json?";
 
+    private GeoDataClient geoDataClient;
+
+    public GeoRepository() {
+        geoDataClient = Places.getGeoDataClient(App.getAppContext(), null);
+    }
+
     public void getTextAutoCompleteSuggestions(Context context,
                                                String text,
                                                final OnPlaceSuggestionsSearchComplete onPlaceSuggestionsSearchComplete)
     {
-        /*LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        getTextAutocompleteSuggestionsFromAndroidSdk(context,text,onPlaceSuggestionsSearchComplete);
+    }
+
+    private void getTextAutocompleteSuggestionsFromWebApi (Context context,
+                                                           final String text,
+                                                           final OnPlaceSuggestionsSearchComplete onPlaceSuggestionsSearchComplete)
+    {
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("input",text);
         map.put("key",GOOGLE_API_KEY);
         map.put("components","country:dz");
@@ -55,59 +68,58 @@ public class GeoRepository extends OnlineDataStore {
         cancelRequests(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, requestUrl,
                 new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                ArrayList<TextQuerySuggestion> textQuerySuggestions = new ArrayList<>();
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONArray jsonArray = jsonObject.getJSONArray("predictions");
-                    for (int i=0;i<jsonArray.length();i++)
-                    {
-                        JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                        String placeId = jsonObject1.getString("place_id");
-                        String mainText = jsonObject1.getJSONObject("structured_formatting")
-                                .getString("main_text");
-                        String secondaryText = "";
-                        if (jsonObject1.getJSONObject("structured_formatting").has("secondary_text"))
-                        {
-                            secondaryText = jsonObject1.getJSONObject("structured_formatting")
-                                    .getString("secondary_text");
-                            int type;
-                            if (jsonObject1.getJSONArray("types").getString(0).equals("establishment"))
+                    @Override
+                    public void onResponse(String response) {
+                        ArrayList<TextQuerySuggestion> textQuerySuggestions = new ArrayList<>();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("predictions");
+                            for (int i=0;i<jsonArray.length();i++)
                             {
-                                type = TextQuerySuggestion.TYPE_BUILDING;
+                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                String placeId = jsonObject1.getString("place_id");
+                                String mainText = jsonObject1.getJSONObject("structured_formatting")
+                                        .getString("main_text");
+                                String secondaryText = "";
+                                if (jsonObject1.getJSONObject("structured_formatting").has("secondary_text"))
+                                {
+                                    secondaryText = jsonObject1.getJSONObject("structured_formatting")
+                                            .getString("secondary_text");
+                                    int type;
+                                    if (jsonObject1.getJSONArray("types").getString(0).equals("establishment"))
+                                    {
+                                        type = TextQuerySuggestion.TYPE_BUILDING;
+                                    }
+                                    else
+                                    {
+                                        type = TextQuerySuggestion.TYPE_LOCATION;
+                                    }
+                                    TextQuerySuggestion textQuerySuggestion =
+                                            new TextQuerySuggestion(mainText,secondaryText,type,
+                                                    placeId);
+                                    textQuerySuggestions.add(textQuerySuggestion);
+                                }
+
                             }
-                            else
-                            {
-                                type = TextQuerySuggestion.TYPE_LOCATION;
-                            }
-                            TextQuerySuggestion textQuerySuggestion =
-                                    new TextQuerySuggestion(mainText,secondaryText,type,
-                                    placeId);
-                            textQuerySuggestions.add(textQuerySuggestion);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
+                        onPlaceSuggestionsSearchComplete.onResultsFound(textQuerySuggestions,text);
 
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                onPlaceSuggestionsSearchComplete.onResultsFound(textQuerySuggestions);
-
-            }
-        }, new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
                 onPlaceSuggestionsSearchComplete.onError();
             }
         });
-        AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,getTag());*/
-        getQuery(context,text,onPlaceSuggestionsSearchComplete);
-    };
+        AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,getTag());
+    }
 
-    private void getQuery(Context context, final String text, final OnPlaceSuggestionsSearchComplete onPlaceSuggestionsSearchComplete)
+    private void getTextAutocompleteSuggestionsFromAndroidSdk(Context context, final String text,
+                                                              final OnPlaceSuggestionsSearchComplete onPlaceSuggestionsSearchComplete)
     {
-        GeoDataClient geoDataClient = Places.getGeoDataClient(context, null);
         LatLngBounds latLngBounds = new LatLngBounds(
                 new LatLng(18.76921389474957,-5.2066028499999675),
                 new LatLng(34.99235879854858,13.997498712500033));
@@ -158,6 +170,12 @@ public class GeoRepository extends OnlineDataStore {
     public void getPlaceDetails (Context context, final TextQuerySuggestion textQuerySuggestion,
                                  final OnPlaceDetailsSearchComplete onPlaceDetailsSearchComplete)
     {
+        getPlaceDetailsFromAndroidSdk(context,textQuerySuggestion,onPlaceDetailsSearchComplete);
+    }
+
+    private void getPlacesDetailsFromWebApi (Context context, final TextQuerySuggestion textQuerySuggestion,
+                                             final OnPlaceDetailsSearchComplete onPlaceDetailsSearchComplete)
+    {
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("placeid", textQuerySuggestion.getPlaceId());
         map.put("key",GOOGLE_API_KEY);
@@ -191,6 +209,28 @@ public class GeoRepository extends OnlineDataStore {
             }
         });
         AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(stringRequest,getTag());
+    }
+
+    private void getPlaceDetailsFromAndroidSdk (Context context, final TextQuerySuggestion textQuerySuggestion,
+                                                final OnPlaceDetailsSearchComplete onPlaceDetailsSearchComplete)
+    {
+        geoDataClient.getPlaceById(textQuerySuggestion.getPlaceId()).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
+                if (task.isSuccessful())
+                {
+                    PlaceBufferResponse places = task.getResult();
+                    Place place = places.get(0);
+                    Coordinate coordinate = new Coordinate(place.getLatLng().latitude,place.getLatLng().longitude);
+                    onPlaceDetailsSearchComplete.onResultFound(new PathPlace(textQuerySuggestion.getMainText(),
+                            coordinate));
+                }
+                else
+                {
+                    onPlaceDetailsSearchComplete.onError();
+                }
+            }
+        });
     }
 
     @Override
