@@ -156,6 +156,7 @@ public class GeoRepository extends OnlineDataStore {
                     }
                 }
                 onPlaceSuggestionsSearchComplete.onResultsFound(textQuerySuggestions,text);
+                autocompletePredictions.release();
             }
         });
         results.addOnFailureListener(new OnFailureListener() {
@@ -224,6 +225,7 @@ public class GeoRepository extends OnlineDataStore {
                     Coordinate coordinate = new Coordinate(place.getLatLng().latitude,place.getLatLng().longitude);
                     onPlaceDetailsSearchComplete.onResultFound(new PathPlace(textQuerySuggestion.getMainText(),
                             coordinate));
+                    places.release();
                 }
                 else
                 {

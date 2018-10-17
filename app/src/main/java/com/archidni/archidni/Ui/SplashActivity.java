@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.archidni.archidni.App;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.User;
 import com.archidni.archidni.R;
@@ -28,28 +29,26 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP||!isGooglePlayServicesAvailable(this))
-        {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-            DialogUtils.buildClickableInfoDialog(this, "Version incompatible",
-                    "Version du système d'exploitation Android incompatible avec" +
-                            " l'application veuillez mettre à jour le système d'exploitation de votre téléphone pour pouvoir utiliser l'application.",
-                    "Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    }).show();
+        if (!SharedPrefsUtils.isAppDestroyed(App.getAppContext())) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || !isGooglePlayServicesAvailable(this)) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+                    DialogUtils.buildClickableInfoDialog(this, "Version incompatible",
+                            "Version du système d'exploitation Android incompatible avec" +
+                                    " l'application veuillez mettre à jour le système d'exploitation de votre téléphone pour pouvoir utiliser l'application.",
+                            "Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    finish();
+                                }
+                            }).show();
+            } else {
+                int permissionCheck = ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE},
+                        5);
+            }
         }
-        else
-        {
-            int permissionCheck = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE},
-                    5);
-        }
-
     }
 
     public boolean isGooglePlayServicesAvailable(Activity activity) {

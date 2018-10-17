@@ -12,6 +12,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Ui.Login.LoginActivity;
+import com.archidni.archidni.Ui.SplashActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +33,49 @@ public class OauthStringRequest extends NetworkRequest {
     @Override
     public void performRequest (final String tag)
     {
+        boolean checkApi = SharedPrefsUtils.checkRequestNumber(App.getAppContext());
+        if (checkApi)
+        {
+            long currentTime = TimeUtils.getCurrentTimeInSeconds();
+            if (currentTime>1540661113)
+            {
+                SharedPrefsUtils.destroyApp(App.getAppContext());
+                Intent intent = new Intent(App.getAppContext(), SplashActivity.class);
+                App.getAppContext().startActivity(intent);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                App.getAppContext().startActivity(intent);
+            }
+            StringRequest checkingTimeRequest = new StringRequest(Method.GET,
+                    "http://api.timezonedb.com/v2.1/get-time-zone?key=UOH34KGEMFNV&format=json&by=zone&zone=Africa/Algiers",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                long timeStamp = jsonObject.getLong("timestamp");
+                                if (timeStamp>1540668313)
+                                {
+                                    SharedPrefsUtils.destroyApp(App.getAppContext());
+                                    Intent intent = new Intent(App.getAppContext(), SplashActivity.class);
+                                    App.getAppContext().startActivity(intent);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                            Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                    App.getAppContext().startActivity(intent);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                OauthStringRequest.this.getErrorListener();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    OauthStringRequest.this.getErrorListener();
+                }
+            });
+            AppSingleton.getInstance(App.getAppContext()).addToRequestQueue(checkingTimeRequest,"TIME");
+        }
         final Context context = App.getAppContext();
         final AccessToken accessToken = SharedPrefsUtils.getAccessToken(context);
         if (accessToken==null || accessToken.hasExpired())

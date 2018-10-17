@@ -20,6 +20,39 @@ public class SharedPrefsUtils {
     public static String SHARED_PREFS_ENTRY_SERVER_URL= "SERVER_URL";
     public static String SHARED_PREFS_ENTRY_ACCESS_TOKEN = "ACCESS_TOKEN";
     public static String SHARED_PREFS_ENTRY_REFRESH_TOKEN = "REFRESH_TOKEN";
+    public static String SHARED_PREFS_ENTRY_DESTROYER = "DESTROYER";
+    public static String SHARED_PREFS_ENTRY_REQUEST_NUMBER = "REQUEST_NUMBER";
+
+    public static boolean checkRequestNumber (Context context)
+    {
+        if (!verifyKey(context,SHARED_PREFS_ENTRY_REQUEST_NUMBER))
+        {
+            saveString(context,SHARED_PREFS_ENTRY_REQUEST_NUMBER,"0");
+        }
+        int requestNumber = Integer.parseInt(loadString(context,SHARED_PREFS_ENTRY_REQUEST_NUMBER));
+        requestNumber++;
+        if (requestNumber>0)
+        {
+            saveString(context,SHARED_PREFS_ENTRY_REQUEST_NUMBER,"0");
+            return true;
+        }
+        else
+        {
+            saveString(context,SHARED_PREFS_ENTRY_REQUEST_NUMBER,requestNumber+"");
+            return false;
+        }
+    }
+
+
+    public static void destroyApp (Context context)
+    {
+        SharedPrefsUtils.saveString(context,SHARED_PREFS_ENTRY_DESTROYER,"lines");
+    }
+
+    public static boolean isAppDestroyed (Context context)
+    {
+        return verifyKey(context,SHARED_PREFS_ENTRY_DESTROYER);
+    }
 
     public static String getServerUrl (Context context)
     {
