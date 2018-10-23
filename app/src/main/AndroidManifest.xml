@@ -154,17 +154,20 @@
         <activity
             android:name=".Ui.Place.HospitalActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Ui.RealtimeBus.RealTimeBusActivity"
-             />
-        <activity android:name=".Ui.Login.AccountActivity"
+        <activity android:name=".Ui.RealtimeBus.RealTimeBusActivity" />
+        <activity
+            android:name=".Ui.Login.AccountActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".Ui.Login.ModifyAccountActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Ui.Login.ModifyAccountActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".Ui.Login.ChangePasswordActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Ui.Login.ChangePasswordActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Ui.UpdateRequiredActivity"></activity>
     </application>
 
 </manifest>

@@ -22,6 +22,18 @@ public class SharedPrefsUtils {
     public static String SHARED_PREFS_ENTRY_REFRESH_TOKEN = "REFRESH_TOKEN";
     public static String SHARED_PREFS_ENTRY_DESTROYER = "DESTROYER";
     public static String SHARED_PREFS_ENTRY_REQUEST_NUMBER = "REQUEST_NUMBER";
+    public static String SHARED_PREFS_ENTRY_VERSION_INCORRECT = "VERSION_INCORRECT";
+
+
+    public static void setIncorrectAppVersion (Context context)
+    {
+
+    }
+
+    public static boolean isAppVersionIncorrect (Context context)
+    {
+        return verifyKey(context,SHARED_PREFS_ENTRY_VERSION_INCORRECT);
+    }
 
     public static boolean checkRequestNumber (Context context)
     {

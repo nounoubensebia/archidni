@@ -13,6 +13,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Ui.Login.LoginActivity;
 import com.archidni.archidni.Ui.SplashActivity;
+import com.archidni.archidni.Ui.UpdateRequiredActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -144,10 +145,22 @@ public class OauthStringRequest extends NetworkRequest {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //OauthStringRequest.this.getErrorListener().onErrorResponse(error);
-                if (error.networkResponse !=null&&error.networkResponse.statusCode==401)
-                    disconnectUser();
+                if (error.networkResponse!=null)
+                {
+                    if (error.networkResponse.statusCode==401)
+                    {
+                        disconnectUser();
+                        return;
+                    }
+                    if (error.networkResponse.statusCode==410)
+                    {
+                        displayVersionIncorrect();
+                    }
+                }
                 else
+                {
                     OauthStringRequest.this.getErrorListener().onErrorResponse(error);
+                }
             }
         })
         {
@@ -155,6 +168,7 @@ public class OauthStringRequest extends NetworkRequest {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map map = new LinkedHashMap();
                 map.put("authorization","Bearer "+accessToken.getToken());
+                map.put("app-version",App.VERSION+"");
                 return map;
             }
 
@@ -164,6 +178,16 @@ public class OauthStringRequest extends NetworkRequest {
             }
         };
         AppSingleton.getInstance(context).addToRequestQueue(request,tag);
+    }
+
+
+    private void displayVersionIncorrect()
+    {
+        Context context = App.getAppContext();
+        Intent intent = new Intent(context, UpdateRequiredActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        context.startActivity(intent);
     }
 
     private void disconnectUser()

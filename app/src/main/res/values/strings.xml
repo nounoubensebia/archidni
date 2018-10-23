@@ -64,4 +64,6 @@
     <string name="update">Actualiser</string>
     <string name="a_proximit_points">Â proximité :</string>
     <string name="my_compte">Mon compte</string>
+    <string name="install_new_update">Nous avons préparer une nouvelle version de Archidni. Mettez à jour votre application pour profiter de la meilleure expérience qui soit.</string>
+    <string name="an_update_is_required">Une mise à jour est nécessaire</string>
 </resources>
