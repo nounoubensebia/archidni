@@ -247,6 +247,10 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
         });
         scheduleText.setTextColor(ContextCompat.getColor(this,line.getTransportMean().getColor()));
         arrow3Image.setImageDrawable(ContextCompat.getDrawable(this,line.getTransportMean().getArriwIconDrawableId()));
+        if (line.getTransportMean().getId() != TransportMean.ID_BUS)
+        {
+            realTimeBusLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
