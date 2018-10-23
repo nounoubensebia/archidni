@@ -3,7 +3,8 @@ package com.archidni.archidni.Ui.Search;
 import android.content.Context;
 
 import com.archidni.archidni.App;
-import com.archidni.archidni.Data.GeoRepository;
+import com.archidni.archidni.Data.GeoData.GeoRepository;
+import com.archidni.archidni.Data.GeoData.GeoRepositoryImpl;
 import com.archidni.archidni.Data.LineStationSuggestions.LineStationSuggestionsRepository;
 import com.archidni.archidni.Data.Station.StationDataRepository;
 import com.archidni.archidni.IntentUtils;
@@ -17,14 +18,12 @@ import com.archidni.archidni.Model.PlaceSuggestion.TextQuerySuggestion;
 import com.archidni.archidni.Model.Places.PathPlace;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.Transport.Station;
-import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.R;
 import com.archidni.archidni.StringSimilarity;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.function.Predicate;
 
 /**
  * Created by noure on 02/02/2018.
@@ -51,7 +50,7 @@ public class SearchPresenter implements SearchContract.Presenter {
         {
             view.showHintMessage(App.getAppContext().getString(R.string.where_do_you_come_from));
         }
-        geoRepository = new GeoRepository();
+        geoRepository = new GeoRepositoryImpl();
         lineStationSuggestionsRepository = new LineStationSuggestionsRepository();
         loadSearchResults(null,"");
     }
@@ -68,7 +67,7 @@ public class SearchPresenter implements SearchContract.Presenter {
         {
             view.showHintMessage(App.getAppContext().getString(R.string.where_do_you_come_from));
         }
-        geoRepository = new GeoRepository();
+        geoRepository = new GeoRepositoryImpl();
         loadSearchResults(null,"");
     }
 
