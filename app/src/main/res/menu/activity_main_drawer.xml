@@ -5,6 +5,12 @@
 
 
 
+    <item android:title="@string/my_compte"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_account_circle_white_24dp"
+        android:id="@+id/item_my_account"
+        android:visible="true">
+    </item>
 
     <item android:title="@string/favorites"
         app:showAsAction="ifRoom"

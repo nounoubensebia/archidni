@@ -32,6 +32,7 @@ import com.archidni.archidni.Ui.BusTarifsActivity;
 import com.archidni.archidni.Ui.Line.Schedule.ScheduleActivity;
 import com.archidni.archidni.Ui.LineNotifications.LineNotificationsActivity;
 import com.archidni.archidni.Ui.MetroTarifsActivity;
+import com.archidni.archidni.Ui.RealtimeBus.RealTimeBusActivity;
 import com.archidni.archidni.Ui.Report.ReportInformationExplainProblemActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.Ui.TelephericTarifsActivity;
@@ -95,6 +96,10 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
     TextView scheduleText;
     @BindView(R.id.image_arrow3)
     ImageView arrow3Image;
+    @BindView(R.id.image_arrow5)
+    ImageView arrow5Image;
+    @BindView(R.id.layout_realtime_bus)
+    View realTimeBusLayout;
 
     private Menu mMenu;
 
@@ -179,6 +184,13 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
                 presenter.onScheduleClicked();
             }
         });
+        realTimeBusLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LineActivity.this, RealTimeBusActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -219,6 +231,7 @@ public class LineActivity extends AppCompatActivity implements LineContract.View
             }
         });
         arrow2Image.setImageDrawable(ContextCompat.getDrawable(this,line.getTransportMean().getArriwIconDrawableId()));
+        arrow5Image.setImageDrawable(ContextCompat.getDrawable(this,line.getTransportMean().getArriwIconDrawableId()));
         newsAndNotificationsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

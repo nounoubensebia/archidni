@@ -32,7 +32,7 @@ public class Path implements Serializable {
         {
             if (pathInstruction instanceof WaitInstruction)
             {
-                if (this.pathInstructions.get(i-1) instanceof RideInstruction)
+                if (i-1>0&&this.pathInstructions.get(i-1) instanceof RideInstruction)
                 {
                     ((WaitInstruction)pathInstruction).setTransferWithoutWalking(true);
                 }

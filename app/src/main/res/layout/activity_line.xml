@@ -211,6 +211,38 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:background="#EDEDED" />
+
+                            <LinearLayout
+                                android:id="@+id/layout_realtime_bus"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clipToPadding="false"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/text_real_time_bus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="16dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_weight="1"
+                                    android:text="Suivi bus en temps réel"
+                                    android:textColor="@color/color_transport_mean_selected_2"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/image_arrow5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginRight="16dp"
+                                    app:srcCompat="@drawable/ic_arrow_right_transport_mean_1_24dp" />
+                            </LinearLayout>
+
+                            
                             <LinearLayout
                                 android:layout_marginTop="8dp"
                                 android:layout_width="match_parent"

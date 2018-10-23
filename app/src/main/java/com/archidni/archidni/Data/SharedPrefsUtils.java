@@ -31,7 +31,7 @@ public class SharedPrefsUtils {
         }
         int requestNumber = Integer.parseInt(loadString(context,SHARED_PREFS_ENTRY_REQUEST_NUMBER));
         requestNumber++;
-        if (requestNumber>0)
+        if (requestNumber>10)
         {
             saveString(context,SHARED_PREFS_ENTRY_REQUEST_NUMBER,"0");
             return true;
@@ -62,7 +62,7 @@ public class SharedPrefsUtils {
         }
         else
         {
-            saveString(context,SHARED_PREFS_ENTRY_SERVER_URL,"http://localhost");
+            saveString(context,SHARED_PREFS_ENTRY_SERVER_URL,"http://archidni.smartsolutions.network/public/");
             return loadString(context,SHARED_PREFS_ENTRY_SERVER_URL);
         }
     }

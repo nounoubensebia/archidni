@@ -88,6 +88,7 @@
 
 
         <TextView
+
             android:id="@+id/text_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -111,6 +112,7 @@
             android:visibility="gone" />
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -139,6 +141,7 @@
         </LinearLayout>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/text_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

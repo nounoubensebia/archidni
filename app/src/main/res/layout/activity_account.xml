@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Ui.Login.AccountActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_marginTop="32dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/ic_account_circle_green_24dp"
+        android:layout_width="112dp"
+        android:layout_height="112dp" />
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:textColor="#000"
+        android:layout_gravity="center"
+        android:text="Noureddine Bensebia"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="32dp"
+        android:textColor="#000"
+        android:drawableLeft="@drawable/ic_email_black_24dp"
+        android:drawablePadding="16dp"
+        android:layout_marginLeft="16dp"
+        android:text="nounoubensebia@gmail.com"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_marginTop="8dp"
+        android:background="#EDEDED"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <TextView
+        android:textSize="16sp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="#000"
+        android:drawableLeft="@drawable/ic_local_phone_green_24dp"
+        android:drawablePadding="16dp"
+        android:text="0549958428"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="8dp"
+            android:id="@+id/text_change_password"
+            android:paddingRight="8dp"
+            android:textAppearance="?android:attr/textAppearanceButton"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Changer de mot de passe"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/shape_green_empty_rect"
+            android:textColor="@color/color_transport_mean_selected_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceButton"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/text_update_info"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Mettre à jour mes informations"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/shape_green_rounded"
+            android:textColor="#FFF"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</FrameLayout>

@@ -41,6 +41,8 @@ import com.archidni.archidni.Ui.Adapters.PlaceAdapter;
 import com.archidni.archidni.Ui.ExchangePolesActivity;
 import com.archidni.archidni.Ui.Favorites.FavoritesActivity;
 import com.archidni.archidni.Ui.Line.LineActivity;
+import com.archidni.archidni.Ui.Login.AccountActivity;
+import com.archidni.archidni.Ui.Login.LoginActivity;
 import com.archidni.archidni.Ui.Notifications.NotificationsActivity;
 import com.archidni.archidni.Ui.Parking.ParkingActivity;
 import com.archidni.archidni.Ui.ParkingsActivity;
@@ -979,11 +981,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         switch (id)
         {
+            case R.id.item_my_account:
+                Intent intent10 = new Intent(this, AccountActivity.class);
+                startActivity(intent10);
+                break;
             case R.id.item_my_favorites_lines :presenter.onFavoritesClick();
             break;
             case R.id.item_my_settings : Intent intent = new Intent(this,
                     SettingsActivity.class);
-                    startActivity(intent);
+                    //startActivity(intent);
                 break;
             case R.id.item_tarifs : Intent intent1 = new Intent(this, TarifsActivity.class);
                 startActivity(intent1);
@@ -1004,7 +1010,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 startActivity(intent5);
                 break;
             case R.id.item_disconnect:
-                Intent intent6 = new Intent(this, SignupActivity.class);
+                Intent intent6 = new Intent(this, LoginActivity.class);
                 SharedPrefsUtils.disconnectUser(this);
                 startActivity(intent6);
                 break;

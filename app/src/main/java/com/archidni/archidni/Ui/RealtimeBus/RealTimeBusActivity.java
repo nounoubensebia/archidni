@@ -1,10 +1,14 @@
 package com.archidni.archidni.Ui.RealtimeBus;
 
 import android.annotation.SuppressLint;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.archidni.archidni.Data.RealtimeBus.BusRepository;
@@ -13,6 +17,7 @@ import com.archidni.archidni.LocationListener;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.RealtimeBus.Bus;
 import com.archidni.archidni.Model.RealtimeBus.RealTimeBusFilter;
+import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.R;
 import com.archidni.archidni.TimeUtils;
 import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
@@ -23,6 +28,8 @@ import com.google.android.gms.maps.model.Marker;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,11 +41,21 @@ public class RealTimeBusActivity extends AppCompatActivity {
     View progressBar;
 
     @BindView(R.id.text_update)
-    View updateText;
+    TextView updateText;
 
     ArchidniGoogleMap archidniMap;
 
     LocationListener locationListener;
+
+    private Runnable updateTimerTask;
+
+    private int timerValue;
+
+    private Timer timer;
+
+    private boolean runTimer = false;
+
+    private Handler timerHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +66,7 @@ public class RealTimeBusActivity extends AppCompatActivity {
         getBuses();
     }
 
+    @SuppressLint("HandlerLeak")
     private void initViews()
     {
         ButterKnife.bind(this);
@@ -85,10 +103,60 @@ public class RealTimeBusActivity extends AppCompatActivity {
                 getBuses();
             }
         });
+        timer = new Timer();
+        timerHandler = new Handler()
+            {
+                @Override
+                public void handleMessage(Message msg) {
+                    if (runTimer)
+                    {
+                        if (timerValue>0)
+                        {
+                            updateText.setText(""+timerValue);
+                            updateText.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Toast.makeText(RealTimeBusActivity.this,"Veuillez attendre au moins 60 secondes avant de pouvoir re-actualiser les positions des bus"
+                                    ,Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                        else
+                        {
+                            runTimer = false;
+                            timerValue = 60;
+                            updateText.setText("Actualiser");
+                            updateText.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    getBuses();
+                                }
+                            });
+                        }
+                    }
+                }
+            };
+        startTimeUpdater();
+    }
+
+    private void startTimeUpdater ()
+    {
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                if (runTimer)
+                {
+                    timerValue-=1;
+                    timerHandler.obtainMessage(1).sendToTarget();
+                }
+            }
+        }, 0, 1000);
     }
 
     private void showBusesOnMap (List<Bus> buses)
     {
+        timerValue = 60;
+        runTimer = true;
         archidniMap.clearMap();
         for (Bus bus:buses)
         {
@@ -103,8 +171,8 @@ public class RealTimeBusActivity extends AppCompatActivity {
                     TimeUtils.getDateString(calendar1),TimeUtils.getTimeString(calendar),TimeUtils.getDateString(calendar),
                     TimeUtils.getCurrentTimeInSeconds()-bus.getTimeStamp()/1000));
             archidniMap.prepareMarker(bus.getCoordinate(),R.drawable.marker_bus,0,0
-            ,String.format("Position prise il y'a %d minutes",
-                            (TimeUtils.getCurrentTimeInSeconds()-bus.getTimeStamp()/1000)/60));
+            ,String.format("Position prise à %s",
+                            (TimeUtils.getTimeString(calendar))));
         }
     }
 
@@ -154,6 +222,15 @@ public class RealTimeBusActivity extends AppCompatActivity {
     private void showErrorMessage()
     {
         Toast.makeText(this,R.string.error_happened,Toast.LENGTH_SHORT).show();
+    }
+
+    static class UpdateTimerTask extends TimerTask
+    {
+
+        @Override
+        public void run() {
+
+        }
     }
 
 }

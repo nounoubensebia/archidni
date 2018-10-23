@@ -17,6 +17,7 @@ import com.archidni.archidni.App;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.User;
 import com.archidni.archidni.R;
+import com.archidni.archidni.Ui.Login.LoginActivity;
 import com.archidni.archidni.Ui.Main.MainActivity;
 import com.archidni.archidni.Ui.Signup.SignupActivity;
 import com.archidni.archidni.UiUtils.DialogUtils;
@@ -77,11 +78,18 @@ public class SplashActivity extends AppCompatActivity {
                     // contacts-related task you need to do.
                     if (!SharedPrefsUtils.verifyKey(this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT))
                     {
-                        Intent intent = new Intent(SplashActivity.this,SignupActivity.class);
-                        //startActivity(intent);
-                        //finish();
-                        //Intent intent = new Intent(SplashActivity.this,TermsOfUseActivity.class);
-                        startNextActivity(intent);
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(SplashActivity.this,LoginActivity.class);
+                                //startActivity(intent);
+                                //finish();
+                                //Intent intent = new Intent(SplashActivity.this,TermsOfUseActivity.class);
+                                startNextActivity(intent);
+                            }
+                        },3000);
+
                     }
                     else
                     {
