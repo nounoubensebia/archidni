@@ -8,11 +8,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.AccessToken;
+import com.archidni.archidni.App;
 import com.archidni.archidni.AppSingleton;
 import com.archidni.archidni.Data.LineStationSuggestions.LineStationDataStore;
 import com.archidni.archidni.Data.OnlineDataStore;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.User;
+import com.archidni.archidni.OauthStringRequest;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -28,6 +30,7 @@ import java.util.Map;
 public class UsersRepository extends OnlineDataStore {
     private static  String SIGNUP_URL = "/api/v1/user/signup";
     private static  String LOGIN_URL = "/api/v1/user/login";
+    private static String USER_URL = "api/v1/user";
 
     public void signup (final Context context, final String email, final String password,
                         final String firstName, final String lastName,
@@ -149,6 +152,90 @@ public class UsersRepository extends OnlineDataStore {
     }
 
 
+    public void updatePassword (final Context context, final String oldPassword, final String newPassword
+            , final PasswordUpdateRequestCallback passwordUpdateRequestCallback)
+    {
+        User user = SharedPrefsUtils.getConnectedUser(context);
+        OauthStringRequest oauthStringRequest = new OauthStringRequest(Request.Method.PUT,
+                String.format("%s/%s/%s/%s", SharedPrefsUtils.getServerUrl(App.getAppContext()),
+                        USER_URL, user.getId() + "", "update-password"),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject responseObject = new JSONObject(response);
+                            OauthStringRequest.updateTokens(context,
+                                    responseObject.getJSONObject("tokens").toString());
+                            passwordUpdateRequestCallback.onSuccess();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            passwordUpdateRequestCallback.onNetworkError();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error.networkResponse!=null)
+                        {
+                            if (error.networkResponse.statusCode==408)
+                            {
+                                passwordUpdateRequestCallback.onOldPasswordIncorrect();
+                            }
+                            else
+                            {
+                                passwordUpdateRequestCallback.onNetworkError();
+                            }
+                        }
+                        else
+                        {
+                            passwordUpdateRequestCallback.onNetworkError();
+                        }
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                LinkedHashMap<String,String> map = new LinkedHashMap<>();
+                map.put("old_password",oldPassword);
+                map.put("new_password",newPassword);
+                return map;
+            }
+        };
+        oauthStringRequest.performRequest("USER");
+    }
+
+    public void updateUserInfo (final Context context, final User newUser, final InfoUpdateRequestCallback infoUpdateRequestCallback)
+    {
+        OauthStringRequest oauthStringRequest = new OauthStringRequest(Request.Method.PUT,
+                String.format("%s/%s/%s/%s",SharedPrefsUtils.getServerUrl(context),USER_URL, newUser.getId() + "", "update"),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        SharedPrefsUtils.saveString(context,
+                                SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT,
+                                newUser.toJson());
+                        infoUpdateRequestCallback.onSuccess();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                infoUpdateRequestCallback.onNetworkError();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                LinkedHashMap<String,String> map = new LinkedHashMap<>();
+                map.put("first_name",newUser.getFirstName());
+                map.put("last_name",newUser.getLastName());
+                return map;
+            }
+        };
+        oauthStringRequest.performRequest("USER");
+    }
+
+
+
     public interface SignupRequestCallback {
         public void onSuccess (User user);
         public void onUserAlreadyExists();
@@ -158,6 +245,17 @@ public class UsersRepository extends OnlineDataStore {
     public interface LoginRequestCallback {
         public void onSuccess (User user);
         public void onEmailOrPasswordIncorrect();
+        public void onNetworkError();
+    }
+
+    public interface InfoUpdateRequestCallback {
+        public void onSuccess();
+        public void onNetworkError();
+    }
+
+    public interface PasswordUpdateRequestCallback {
+        public void onSuccess ();
+        public void onOldPasswordIncorrect();
         public void onNetworkError();
     }
 }

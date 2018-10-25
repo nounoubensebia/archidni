@@ -155,7 +155,9 @@ public class OauthStringRequest extends NetworkRequest {
                     if (error.networkResponse.statusCode==410)
                     {
                         displayVersionIncorrect();
+                        return;
                     }
+                    OauthStringRequest.this.getErrorListener().onErrorResponse(error);
                 }
                 else
                 {
@@ -202,7 +204,7 @@ public class OauthStringRequest extends NetworkRequest {
 
     }
 
-    private void updateTokens (Context context,String response) throws JSONException
+    public static void updateTokens (Context context,String response) throws JSONException
     {
         JSONObject jsonObject = new JSONObject(response);
         String accessTokenString = jsonObject.getString("access_token");
