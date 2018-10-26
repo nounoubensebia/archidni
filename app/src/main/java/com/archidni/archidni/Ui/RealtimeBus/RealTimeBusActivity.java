@@ -173,10 +173,13 @@ public class RealTimeBusActivity extends AppCompatActivity {
             archidniMap.prepareMarker(bus.getCoordinate(),R.drawable.marker_bus,0,0
             ,String.format("Position prise à %s",
                             (TimeUtils.getTimeString(calendar))));
-            if (bus.getSpeed()!=0)
+            int rot = bus.getCourse();
+            /*if (rot>180)
+                rot-=360;*/
+            if (bus.getSpeed()>10)
             archidniMap.prepareMarker(bus.getCoordinate(),R.drawable.ic_arrow_forward_black_24dp,0f,0f
                     ,String.format("Position prise à %s",
-                            (TimeUtils.getTimeString(calendar))),bus.getCourse());
+                            (TimeUtils.getTimeString(calendar))),rot-90);
         }
     }
 
