@@ -19,7 +19,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-condensed"
             android:text="Etape 1"
-            android:textColor="@color/color_transport_mean_selected_2"
+            android:textColor="@color/colorGreen"
             android:textSize="20sp"
             android:textStyle="bold" />
     <View
@@ -90,7 +90,7 @@
             android:layout_height="54dp"
             android:scaleX="-1"
             android:layout_marginRight="8dp"
-            app:srcCompat="@drawable/ic_arrow_right_transport_mean_2_24dp" />
+            app:srcCompat="@drawable/ic_arrow_right_transport_mean_1_24dp" />
 
         <View
             android:layout_width="1dp"
@@ -104,7 +104,7 @@
             android:id="@+id/image_next"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            app:srcCompat="@drawable/ic_arrow_right_transport_mean_2_24dp" />
+            app:srcCompat="@drawable/ic_arrow_right_transport_mean_1_24dp" />
 
 
 

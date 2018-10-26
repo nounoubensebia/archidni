@@ -28,7 +28,7 @@ public class ParkingItem extends SelectorItem {
 
     @Override
     public int getColor() {
-        return R.color.color_transport_mean_selected_1;
+        return R.color.colorBlue;
     }
 
     @Override

@@ -148,7 +148,7 @@
                 android:layout_marginTop="8dp"
                 android:text="OK"
                 android:textAppearance="?android:attr/textAppearanceButton"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorGreen" />
 
             <TextView
                 android:id="@+id/text_cancel"
@@ -159,7 +159,7 @@
                 android:layout_marginTop="8dp"
                 android:text="Annuler"
                 android:textAppearance="?android:attr/textAppearanceButton"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorGreen" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

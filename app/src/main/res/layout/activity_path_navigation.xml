@@ -26,7 +26,7 @@
             android:drawablePadding="8dp"
             android:layout_gravity="center|top"
             android:layout_marginTop="16dp"
-            android:textColor="@color/color_transport_mean_selected_2"
+            android:textColor="@color/colorGreen"
             android:background="@drawable/shape_rect_white_rounded"
             android:layout_width="wrap_content"
             android:padding="8dp"

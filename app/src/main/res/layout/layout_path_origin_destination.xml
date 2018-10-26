@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:text="@string/path_origin"
-                android:textColor="@color/color_transport_mean_selected_1"
+                android:textColor="@color/colorBlue"
                 android:textStyle="bold" />
 
             <TextView
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:text="@string/path_destination"
-                android:textColor="@color/color_transport_mean_selected_0"
+                android:textColor="@color/colorRed"
                 android:textStyle="bold" />
 
             <TextView

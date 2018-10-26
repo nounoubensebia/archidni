@@ -43,7 +43,7 @@
                         android:text="Itinéraire trouvé"
                         android:layout_marginLeft="16dp"
                         android:textSize="18sp"
-                        android:textColor="@color/color_transport_mean_selected_2"
+                        android:textColor="@color/colorGreen"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-condensed"
                         android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                         android:text="Environ 55 minutes"
                         android:layout_marginLeft="16dp"
                         android:textSize="16sp"
-                        android:textColor="@color/color_transport_mean_selected_2"
+                        android:textColor="@color/colorGreen"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>

@@ -24,7 +24,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:orientation="vertical"
-        android:background="@drawable/shape_green_empty_rect"
+        android:background="@drawable/shape_green_empty_rect_transport_mean_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -99,7 +99,7 @@
 
     </LinearLayout>
     <LinearLayout
-        android:background="@drawable/shape_green_empty_rect"
+        android:background="@drawable/shape_green_empty_rect_transport_mean_2"
         android:layout_margin="16dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -180,7 +180,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:background="@drawable/shape_green_empty_rect"
+        android:background="@drawable/shape_green_empty_rect_transport_mean_2"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:orientation="vertical"
@@ -262,7 +262,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:background="@drawable/shape_green_empty_rect"
+        android:background="@drawable/shape_green_empty_rect_transport_mean_2"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"

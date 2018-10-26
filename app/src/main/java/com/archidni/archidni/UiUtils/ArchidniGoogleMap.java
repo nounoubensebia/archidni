@@ -221,6 +221,14 @@ public class ArchidniGoogleMap  {
     }
 
     public void prepareMarker (Coordinate coordinate,int markerDrawableResource,float anchorX,
+                               float anchorY,String title,float direction)
+    {
+        map.addMarker(new MarkerOptions().anchor(anchorX,anchorY).flat(true)
+                .icon(getBitmapDescriptor(markerDrawableResource))
+                .position(coordinate.toGoogleMapLatLng()).title(title)).setRotation(direction);
+    }
+
+    public void prepareMarker (Coordinate coordinate,int markerDrawableResource,float anchorX,
                                float anchorY,String title,Object tag)
     {
         map.addMarker(new MarkerOptions().anchor(anchorX,anchorY)

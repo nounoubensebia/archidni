@@ -10,7 +10,7 @@
 
     <style name="AppThemeWithActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorGreen</item>
         <item name="colorPrimaryDark">#388E33</item>
         <item name="colorAccent">#D0D0D0</item>
 
@@ -74,7 +74,7 @@
 
     </style>
     <style name="progressBarGreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorAccent">@color/colorPrimary </item>
+        <item name="colorAccent">@color/colorGreen </item>
     </style>
 
     <style name="progressBarBlackTheme" parent="Theme.AppCompat.Light.NoActionBar">

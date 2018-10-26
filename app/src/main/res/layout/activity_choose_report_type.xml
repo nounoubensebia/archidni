@@ -70,7 +70,7 @@
             android:gravity="center"
             android:layout_marginLeft="16dp"
             android:background="@drawable/shape_green_empty_rect"
-            android:textColor="@color/color_transport_mean_selected_2"
+            android:textColor="@color/colorGreen"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content" />

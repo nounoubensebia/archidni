@@ -264,7 +264,7 @@
                                     android:text="Ajouter cette ligne aux favoris"
                                     android:textAllCaps="false"
                                     android:textAppearance="?android:attr/textAppearanceButton"
-                                    android:textColor="@color/color_transport_mean_selected_2" />
+                                    android:textColor="@color/colorGreen" />
 
                                 <View
                                     android:layout_width="match_parent"

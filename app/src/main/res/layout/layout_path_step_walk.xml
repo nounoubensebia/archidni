@@ -20,7 +20,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:text="Etape 1"
-            android:textColor="@color/color_transport_mean_selected_2"
+            android:textColor="@color/colorGreen"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -73,7 +73,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:text="10 minutes"
-                android:textColor="@color/color_transport_mean_selected_2" />
+                android:textColor="@color/colorGreen" />
 
             <TextView
                 android:id="@+id/text_distance"
@@ -86,7 +86,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:text="500 mètres"
-                android:textColor="@color/color_transport_mean_selected_2" />
+                android:textColor="@color/colorGreen" />
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="8dp"

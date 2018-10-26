@@ -115,7 +115,7 @@
         <activity
             android:name=".Ui.Parking.ParkingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/TransportMeanTheme1" />
+            android:theme="@style/TransportMeanTheme2" />
         <activity
             android:name=".Ui.Notifications.NotificationsActivity"
             android:label="Notifications et alertes"

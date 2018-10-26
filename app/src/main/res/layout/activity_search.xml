@@ -46,7 +46,7 @@
             android:hint="Où ?"
             android:inputType="text"
             android:textColor="#000"
-            android:textColorHint="@color/color_transport_mean_selected_2"
+            android:textColorHint="@color/colorGreen"
             android:textSize="28sp"
             android:transitionName="search_bar" />
         <View

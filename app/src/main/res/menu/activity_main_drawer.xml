@@ -40,7 +40,7 @@
         android:visible="true">
     </item>
 
-    <item android:title="Bus temps réel"
+    <item android:title="Bus Etusa temps réel"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_transport_mean_2_green"
         android:id="@+id/item_realtime_bus"

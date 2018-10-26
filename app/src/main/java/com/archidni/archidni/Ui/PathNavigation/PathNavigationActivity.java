@@ -210,11 +210,11 @@ public class PathNavigationActivity extends AppCompatActivity implements PathNav
         durationText.setText((int)walkInstruction.getDuration()/60+" minutes");
         TextView stepCountText = findViewById(R.id.text_step_count);
         stepCountText.setTextColor(ContextCompat.getColor(this,
-                TransportMean.allTransportMeans.get(TransportMean.ID_BUS).getColor()));
+               R.color.colorGreen));
         ImageView nextImage = findViewById(R.id.image_next);
         ImageView previousImage = findViewById(R.id.image_previous);
         Drawable drawable = ContextCompat.getDrawable(this
-                ,TransportMean.allTransportMeans.get(TransportMean.ID_BUS).getArriwIconDrawableId());
+                ,R.drawable.ic_arrow_right_transport_mean_0_24dp);
         nextImage.setImageDrawable(drawable);
         previousImage.setImageDrawable(drawable);
     }
