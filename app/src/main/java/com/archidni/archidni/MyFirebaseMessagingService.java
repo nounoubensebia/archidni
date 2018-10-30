@@ -17,7 +17,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    public static String CHANNEL_ID = "archidnichannel";
+    public static final String CHANNEL_ID = "archidnichannel";
     private static int id = 0;
 
     @Override

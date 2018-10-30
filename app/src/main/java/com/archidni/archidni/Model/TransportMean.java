@@ -22,7 +22,7 @@ public class TransportMean extends SelectorItem implements Serializable {
     public static final int ID_TRAIN = 1;
 
 
-    public static ArrayList<TransportMean> allTransportMeans =
+    public static final ArrayList<TransportMean> allTransportMeans =
             new ArrayList<TransportMean>(){{
                 add(new TransportMean(0, App.getAppContext().getString(R.string.metro)));
                 add(new TransportMean(1, App.getAppContext().getString(R.string.train)));

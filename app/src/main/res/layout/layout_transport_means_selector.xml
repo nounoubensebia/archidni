@@ -70,7 +70,7 @@
             android:gravity="center"
             android:paddingBottom="2dp"
             android:paddingTop="2dp"
-            android:text="Bus"
+            android:text="Bus Etusa"
             android:textColor="@color/color_transport_mean_not_selected" />
 
         <View

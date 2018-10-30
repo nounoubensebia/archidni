@@ -16,7 +16,7 @@ public abstract class SelectorItem {
 
     public static final int PARKING_ID = 5;
 
-    public static ArrayList<SelectorItem> allItems =
+    public static final ArrayList<SelectorItem> allItems =
             new ArrayList<SelectorItem>(){{
                 addAll(TransportMean.allTransportMeans);
                 add(new ParkingItem(5,"Parkings"));
