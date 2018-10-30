@@ -180,7 +180,7 @@ public class RealTimeBusActivity extends AppCompatActivity {
             if (bus.getSpeed()>10) {
                 archidniMap.prepareMarker(bus.getCoordinate(), R.drawable.ic_arrow_forward_black_24dp, 0.5f, 0.5f
                         , String.format("Position prise à %s",
-                                (TimeUtils.getTimeString(calendar))), 0);
+                                (TimeUtils.getTimeString(calendar))), rot-90);
 
             }
             else
