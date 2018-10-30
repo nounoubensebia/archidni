@@ -81,7 +81,7 @@
         android:layout_height="match_parent">
         <LinearLayout
             android:id="@+id/layout_path"
-            android:background="@color/color_transport_mean_selected_1"
+            android:background="@color/colorBlue"
             android:layout_gravity="bottom"
             android:orientation="vertical"
             android:layout_width="match_parent"

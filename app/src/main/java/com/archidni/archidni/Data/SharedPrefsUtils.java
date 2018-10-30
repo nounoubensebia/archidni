@@ -43,7 +43,7 @@ public class SharedPrefsUtils {
         }
         int requestNumber = Integer.parseInt(loadString(context,SHARED_PREFS_ENTRY_REQUEST_NUMBER));
         requestNumber++;
-        if (requestNumber>10)
+        if (requestNumber>0)
         {
             saveString(context,SHARED_PREFS_ENTRY_REQUEST_NUMBER,"0");
             return true;

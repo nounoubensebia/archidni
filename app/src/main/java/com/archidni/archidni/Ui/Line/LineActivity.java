@@ -33,6 +33,7 @@ import com.archidni.archidni.Ui.Line.Schedule.ScheduleActivity;
 import com.archidni.archidni.Ui.LineNotifications.LineNotificationsActivity;
 import com.archidni.archidni.Ui.MetroTarifsActivity;
 import com.archidni.archidni.Ui.RealtimeBus.RealTimeBusActivity;
+import com.archidni.archidni.Ui.Report.ReportAlertChooseLineActivity;
 import com.archidni.archidni.Ui.Report.ReportInformationExplainProblemActivity;
 import com.archidni.archidni.Ui.Station.StationActivity;
 import com.archidni.archidni.Ui.TelephericTarifsActivity;

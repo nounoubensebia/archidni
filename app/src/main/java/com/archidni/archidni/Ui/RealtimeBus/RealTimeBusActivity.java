@@ -170,16 +170,23 @@ public class RealTimeBusActivity extends AppCompatActivity {
             Log.i("DIFF",String.format("%s %s %s %s %s",TimeUtils.getTimeString(calendar1),
                     TimeUtils.getDateString(calendar1),TimeUtils.getTimeString(calendar),TimeUtils.getDateString(calendar),
                     TimeUtils.getCurrentTimeInSeconds()-bus.getTimeStamp()/1000));
-            archidniMap.prepareMarker(bus.getCoordinate(),R.drawable.marker_bus,0,0
-            ,String.format("Position prise à %s",
-                            (TimeUtils.getTimeString(calendar))));
             int rot = bus.getCourse();
+            archidniMap.prepareMarker(bus.getCoordinate(),R.drawable.shape_blue_circle,0.5f,0.5f
+            ,String.format("Position prise à %s",
+                            (TimeUtils.getTimeString(calendar))),rot-90);
+
             /*if (rot>180)
                 rot-=360;*/
-            if (bus.getSpeed()>10)
-            archidniMap.prepareMarker(bus.getCoordinate(),R.drawable.ic_arrow_forward_black_24dp,0f,0f
-                    ,String.format("Position prise à %s",
-                            (TimeUtils.getTimeString(calendar))),rot-90);
+            if (bus.getSpeed()>10) {
+                archidniMap.prepareMarker(bus.getCoordinate(), R.drawable.ic_arrow_forward_black_24dp, 0.5f, 0.5f
+                        , String.format("Position prise à %s",
+                                (TimeUtils.getTimeString(calendar))), 0);
+
+            }
+            else
+                archidniMap.prepareMarker(bus.getCoordinate(), R.drawable.ic_format_color_text_black_24dp, 0.5f, 0.5f
+                        , String.format("Position prise à %s",
+                                (TimeUtils.getTimeString(calendar))), 0);
         }
     }
 

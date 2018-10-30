@@ -989,7 +989,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             break;
             case R.id.item_my_settings : Intent intent = new Intent(this,
                     SettingsActivity.class);
-                    //startActivity(intent);
+                    startActivity(intent);
                 break;
             case R.id.item_tarifs : Intent intent1 = new Intent(this, TarifsActivity.class);
                 startActivity(intent1);
