@@ -1,6 +1,7 @@
 package com.archidni.archidni.Ui.Login;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,9 @@ import com.archidni.archidni.Ui.Main.MainActivity;
 import com.archidni.archidni.Ui.Settings.SettingsActivity;
 import com.archidni.archidni.Ui.Signup.SignupActivity;
 import com.archidni.archidni.UiUtils.ActivityUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,10 +78,17 @@ public class LoginActivity extends AppCompatActivity {
                                     loginText.setVisibility(View.VISIBLE);
                                     SharedPrefsUtils.saveString(LoginActivity.this,
                                             SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT,user.toJson());
-                                    Intent intent = new Intent(LoginActivity.this,
-                                            MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
+
+                                    FirebaseMessaging.getInstance().subscribeToTopic("all-devices-v2")
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    Intent intent = new Intent(LoginActivity.this,
+                                                            MainActivity.class);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+                                            });
                                 }
 
                                 @Override
