@@ -25,8 +25,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         String s = remoteMessage.getData().get("data");
         Notification notification = Notification.fromJson(s);
-        Intent intent = new Intent(this, NotificationsActivity.class);
-        showNotification(notification.getTitle(),notification.getDescription(),0,intent,notification.getTransportMean().getIconEnabled());
+        //Intent intent = new Intent(this, NotificationsActivity.class);
+        //String body = remoteMessage.getNotification().getBody();
+        //showNotification(notification.getTitle(),notification.getDescription(),0,intent,notification.getTransportMean().getIconEnabled());
     }
 
     private void showNotification(String title, String message, int id, Intent intent,int icon) {
