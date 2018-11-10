@@ -23,6 +23,7 @@ public class SharedPrefsUtils {
     public static String SHARED_PREFS_ENTRY_DESTROYER = "DESTROYER";
     public static String SHARED_PREFS_ENTRY_REQUEST_NUMBER = "REQUEST_NUMBER";
     public static String SHARED_PREFS_ENTRY_VERSION_INCORRECT = "VERSION_INCORRECT";
+    public static String SHARED_PREFS_ENTRY_USER_SUBSCRIBED = "SUBSCRIBED_TO_TOPIC";
 
 
     public static void setIncorrectAppVersion (Context context)

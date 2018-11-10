@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,9 @@ import com.archidni.archidni.Ui.Signup.SignupActivity;
 import com.archidni.archidni.UiUtils.DialogUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -117,13 +121,46 @@ public class SplashActivity extends AppCompatActivity {
 
     private void startNextActivity (final Intent intent)
     {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(intent);
-                finish();
-            }
-        },250);
+        if (!SharedPrefsUtils.verifyKey(this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_SUBSCRIBED))
+        {
+            FirebaseMessaging.getInstance().subscribeToTopic("all-devices-v2").addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(intent);
+                            finish();
+                        }
+                    },250);
+                    SharedPrefsUtils.saveString(SplashActivity.this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_SUBSCRIBED,
+                            "subscribed");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(intent);
+                            finish();
+                        }
+                    },250);
+                }
+            });
+        }
+        else
+        {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(intent);
+                    finish();
+                }
+            },250);
+        }
     }
 }
