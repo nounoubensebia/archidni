@@ -86,7 +86,7 @@ public class SplashActivity extends AppCompatActivity {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Intent intent = new Intent(SplashActivity.this,LoginActivity.class);
+                                Intent intent = new Intent(SplashActivity.this,SignupActivity.class);
                                 //startActivity(intent);
                                 //finish();
                                 //Intent intent = new Intent(SplashActivity.this,TermsOfUseActivity.class);
@@ -97,8 +97,28 @@ public class SplashActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        Intent intent = new Intent(SplashActivity.this,MainActivity.class);
+                        final Intent intent = new Intent(SplashActivity.this,MainActivity.class);
                         startNextActivity(intent);
+                        if (!SharedPrefsUtils.verifyKey(this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_SUBSCRIBED))
+                        {
+                            FirebaseMessaging.getInstance().subscribeToTopic("all-devices-v2").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    SharedPrefsUtils.saveString(SplashActivity.this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_SUBSCRIBED,
+                                            "subscribed");
+                                    startNextActivity(intent);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                   startNextActivity(intent);
+                                }
+                            });
+                        }
+                        else
+                        {
+                            startNextActivity(intent);
+                        }
                     }
 
                 } else {
@@ -121,46 +141,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void startNextActivity (final Intent intent)
     {
-        if (!SharedPrefsUtils.verifyKey(this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_SUBSCRIBED))
-        {
-            FirebaseMessaging.getInstance().subscribeToTopic("all-devices-v2").addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            startActivity(intent);
-                            finish();
-                        }
-                    },250);
-                    SharedPrefsUtils.saveString(SplashActivity.this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_SUBSCRIBED,
-                            "subscribed");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            startActivity(intent);
-                            finish();
-                        }
-                    },250);
-                }
-            });
-        }
-        else
-        {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(intent);
-                    finish();
-                }
-            },250);
-        }
+        startActivity(intent);
+        finish();
     }
 }

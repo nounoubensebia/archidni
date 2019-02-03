@@ -81,8 +81,6 @@ public class SignupActivity extends AppCompatActivity {
                             new UsersRepository.SignupRequestCallback() {
                                 @Override
                                 public void onSuccess(User user) {
-                                    signupText.setVisibility(View.VISIBLE);
-                                    progressBar.setVisibility(View.GONE);
                                     SharedPrefsUtils.saveString(SignupActivity.this,
                                             SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT,user.toJson());
                                     Intent intent = new Intent(SignupActivity.this,

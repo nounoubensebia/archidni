@@ -20,8 +20,11 @@ import com.archidni.archidni.R;
 import com.archidni.archidni.Ui.Main.MainActivity;
 import com.archidni.archidni.Ui.Settings.SettingsActivity;
 import com.archidni.archidni.Ui.Signup.SignupActivity;
+import com.archidni.archidni.Ui.SplashActivity;
 import com.archidni.archidni.UiUtils.ActivityUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -74,21 +77,32 @@ public class LoginActivity extends AppCompatActivity {
                             new UsersRepository.LoginRequestCallback() {
                                 @Override
                                 public void onSuccess(User user) {
-                                    progressBar.setVisibility(View.GONE);
-                                    loginText.setVisibility(View.VISIBLE);
                                     SharedPrefsUtils.saveString(LoginActivity.this,
                                             SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT,user.toJson());
 
-                                    FirebaseMessaging.getInstance().subscribeToTopic("all-devices-v2")
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    Intent intent = new Intent(LoginActivity.this,
-                                                            MainActivity.class);
-                                                    startActivity(intent);
-                                                    finish();
-                                                }
-                                            });
+                                    final Intent intent = new Intent(LoginActivity.this,
+                                            MainActivity.class);
+                                    if (!SharedPrefsUtils.verifyKey(LoginActivity.this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_SUBSCRIBED))
+                                    {
+                                        FirebaseMessaging.getInstance().subscribeToTopic("all-devices-v2").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                SharedPrefsUtils.saveString(LoginActivity.this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_SUBSCRIBED,
+                                                        "subscribed");
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                startActivity(intent);
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        startActivity(intent);
+                                    }
                                 }
 
                                 @Override

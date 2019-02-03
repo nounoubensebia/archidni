@@ -50,7 +50,7 @@ public class UsersRepository extends OnlineDataStore {
                     JSONObject tokensObject = root.getJSONObject("tokens");
                     User user = getUser(userObject);
                     parseAndSaveTokens(context,tokensObject);
-                signupRequestCallback.onSuccess(user);
+                    signupRequestCallback.onSuccess(user);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     signupRequestCallback.onNetworkError();
