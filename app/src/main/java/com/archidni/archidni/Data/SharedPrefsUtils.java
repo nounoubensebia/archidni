@@ -25,7 +25,6 @@ public class SharedPrefsUtils {
     public static String SHARED_PREFS_ENTRY_VERSION_INCORRECT = "VERSION_INCORRECT";
     public static String SHARED_PREFS_ENTRY_USER_SUBSCRIBED = "SUBSCRIBED_TO_TOPIC";
 
-
     public static void setIncorrectAppVersion (Context context)
     {
 
@@ -75,7 +74,7 @@ public class SharedPrefsUtils {
         }
         else
         {
-            saveString(context,SHARED_PREFS_ENTRY_SERVER_URL,"http://192.168.1.5:8000");
+            saveString(context,SHARED_PREFS_ENTRY_SERVER_URL,"http://archidni.smartsolutions.network/public");
             return loadString(context,SHARED_PREFS_ENTRY_SERVER_URL);
         }
     }

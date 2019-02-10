@@ -34,6 +34,7 @@
     </LinearLayout>
 
     <Button
+        android:visibility="gone"
         android:id="@+id/button_update_app"
         android:backgroundTint="@color/colorGreen"
         android:textColor="#FFF"

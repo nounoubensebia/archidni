@@ -66,7 +66,7 @@ public class ModifyAccountActivity extends AppCompatActivity {
                     User user = SharedPrefsUtils.getConnectedUser(ModifyAccountActivity.this);
                     user = new User(user.getId(),user.getEmail(),firstName,lastName);
                     usersRepository.updateUserInfo(ModifyAccountActivity.this,
-                            user, new UsersRepository.InfoUpdateRequestCallback() {
+                            user, new UsersRepository.InfoUpdateDisconnectRequestCallback() {
                                 @Override
                                 public void onSuccess() {
                                     progressDialog.hide();

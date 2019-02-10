@@ -27,6 +27,17 @@
             android:layout_height="48dp" />
 
         <TextView
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center"
+            android:text="@string/beta_version"
+            android:textColor="#000"
+            android:textSize="28sp" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -37,6 +48,7 @@
             android:text="Connectez-vous"
             android:textColor="@color/colorGreen"
             android:textSize="28sp" />
+
 
         <TextView
             android:layout_width="wrap_content"

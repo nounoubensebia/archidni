@@ -6,24 +6,59 @@
     android:layout_height="match_parent"
     android:background="#FFF"
     tools:context="com.archidni.archidni.Ui.SplashActivity">
-
+    <LinearLayout
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_gravity="center"
         app:srcCompat="@drawable/ic_logo_simple" />
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center"
+            android:text="@string/beta_version"
+            android:textColor="#000"
+            android:textSize="28sp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <ImageView
+            android:visibility="gone"
             android:layout_width="128dp"
             android:layout_height="128dp"
+            android:layout_gravity="center"
             android:layout_marginBottom="16dp"
-            android:src="@mipmap/ic_aotua_launcher" />
+            app:srcCompat="@drawable/ic_logo_byna_solutions" />
+        <TextView
+            android:id="@+id/text"
+            android:textColor="#000"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Cette version de l'application est une variante en cours de test et ne peut être  utilisée que pour cet effet, à l’exclusion de tout autre fin.
+Cette version de test instable ne peut de ce fait, être utilisée pour des situations réelles.
+
+"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

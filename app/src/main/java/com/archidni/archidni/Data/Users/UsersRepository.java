@@ -1,6 +1,7 @@
 package com.archidni.archidni.Data.Users;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -10,12 +11,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.archidni.archidni.AccessToken;
 import com.archidni.archidni.App;
 import com.archidni.archidni.AppSingleton;
-import com.archidni.archidni.Data.LineStationSuggestions.LineStationDataStore;
 import com.archidni.archidni.Data.OnlineDataStore;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.User;
 import com.archidni.archidni.OauthStringRequest;
-import com.google.gson.JsonObject;
+import com.archidni.archidni.Ui.UpdateRequiredActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,17 +44,14 @@ public class UsersRepository extends OnlineDataStore {
             public void onResponse(String response) {
 
                 JSONObject root = null;
-                try {
-                    root = new JSONObject(response);
-                    JSONObject userObject = root.getJSONObject("user");
-                    JSONObject tokensObject = root.getJSONObject("tokens");
-                    User user = getUser(userObject);
-                    parseAndSaveTokens(context,tokensObject);
-                    signupRequestCallback.onSuccess(user);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    signupRequestCallback.onNetworkError();
-                }
+
+                    //root = new JSONObject(response);
+                    //JSONObject userObject = root.getJSONObject("user");
+                    //JSONObject tokensObject = root.getJSONObject("tokens");
+                    //User user = getUser(userObject);
+                    //parseAndSaveTokens(context,tokensObject);
+                    signupRequestCallback.onSuccess();
+
 
             }
         }, new Response.ErrorListener() {
@@ -66,7 +63,14 @@ public class UsersRepository extends OnlineDataStore {
                    }
                    else
                    {
-                       signupRequestCallback.onNetworkError();
+                       if (error.networkResponse!=null&&error.networkResponse.statusCode==410)
+                       {
+                           displayVersionIncorrect();
+                       }
+                       else
+                       {
+                           signupRequestCallback.onNetworkError();
+                       }
                    }
             }
         }){
@@ -81,6 +85,15 @@ public class UsersRepository extends OnlineDataStore {
             }
         };
         AppSingleton.getInstance(context).addToRequestQueue(stringRequest,getTag());
+    }
+
+    private void displayVersionIncorrect()
+    {
+        Context context = App.getAppContext();
+        Intent intent = new Intent(context, UpdateRequiredActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        context.startActivity(intent);
     }
 
     public void login (final Context context, final String email, final String password,
@@ -108,13 +121,30 @@ public class UsersRepository extends OnlineDataStore {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error.networkResponse!=null)
+                if (error.networkResponse!=null&&error.networkResponse.statusCode==401)
                 {
                     loginRequestCallback.onEmailOrPasswordIncorrect();
                 }
                 else
                 {
-                    loginRequestCallback.onNetworkError();
+                    if (error.networkResponse!=null&&error.networkResponse.statusCode==410)
+                    {
+                        displayVersionIncorrect();
+                    }
+                    else
+                    {
+                        if (error.networkResponse!=null&&error.networkResponse.statusCode==403)
+                        {
+                            loginRequestCallback.onUserAlreadyConnected();
+                        }
+                        else
+                            if (error.networkResponse!=null&&error.networkResponse.statusCode==402)
+                            {
+                                loginRequestCallback.onEmailNotVerified();
+                            }
+                            else
+                                loginRequestCallback.onNetworkError();
+                    }
                 }
             }
         }){
@@ -128,6 +158,53 @@ public class UsersRepository extends OnlineDataStore {
         };
         AppSingleton.getInstance(context).addToRequestQueue(stringRequest,getTag());
     }
+
+    public void verifyEmailCode (final Context context, final String userEmail, final String password, final String verifCode,
+                                 final EmailVerificationRequestCallback emailVerificationRequestCallback)
+    {
+        cancelRequests(context);
+        String url = SharedPrefsUtils.getServerUrl(context)+"/"+USER_URL+"/verify-code";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONObject userObject = jsonObject.getJSONObject("user");
+                    User user = getUser(userObject);
+                    parseAndSaveTokens(context,jsonObject.getJSONObject("tokens"));
+                    emailVerificationRequestCallback.onSuccess(user);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.networkResponse!=null)
+                {
+                    if (error.networkResponse.statusCode == 400)
+                    {
+                        emailVerificationRequestCallback.onCodeIncorrect();
+                    }
+                }
+                else
+                {
+                    emailVerificationRequestCallback.onNetworkError();
+                }
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+            LinkedHashMap<String,String> map = new LinkedHashMap<>();
+            map.put("email",userEmail);
+            map.put("password",password);
+            map.put("verif_code",verifCode);
+            return map;
+        }};
+        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,getTag());
+    }
+
+
 
     private User getUser (JSONObject userObject) throws JSONException {
         int id = userObject.getInt("id");
@@ -151,6 +228,38 @@ public class UsersRepository extends OnlineDataStore {
         return "USERS";
     }
 
+
+    public void resendVerificationEmail (Context context, final String email, final EmailVerificationCodeResendCallback emailVerificationCodeResendCallback)
+    {
+        cancelRequests(context);
+        String url = SharedPrefsUtils.getServerUrl(context) +"/"+ USER_URL+"/resend-code";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                emailVerificationCodeResendCallback.onSuccess();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.networkResponse!=null)
+                {
+                    emailVerificationCodeResendCallback.onEmailAlreadyVerified();
+                }
+                else
+                {
+                    emailVerificationCodeResendCallback.onNetworkError();
+                }
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                LinkedHashMap<String,String> map = new LinkedHashMap<>();
+                map.put("email",email);
+                return map;
+            }
+        };
+        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,getTag());
+    }
 
     public void updatePassword (final Context context, final String oldPassword, final String newPassword
             , final PasswordUpdateRequestCallback passwordUpdateRequestCallback)
@@ -205,7 +314,25 @@ public class UsersRepository extends OnlineDataStore {
         oauthStringRequest.performRequest("USER");
     }
 
-    public void updateUserInfo (final Context context, final User newUser, final InfoUpdateRequestCallback infoUpdateRequestCallback)
+    public void disconnectUser (Context context, final InfoUpdateDisconnectRequestCallback infoUpdateDisconnectRequestCallback)
+    {
+        OauthStringRequest oauthStringRequest = new OauthStringRequest(Request.Method.GET,
+                String.format("%s/%s/%s", SharedPrefsUtils.getServerUrl(context), USER_URL, "disconnect"),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        infoUpdateDisconnectRequestCallback.onSuccess();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                infoUpdateDisconnectRequestCallback.onNetworkError();
+            }
+        });
+        oauthStringRequest.performRequest("USER");
+    }
+
+    public void updateUserInfo (final Context context, final User newUser, final InfoUpdateDisconnectRequestCallback infoUpdateDisconnectRequestCallback)
     {
         OauthStringRequest oauthStringRequest = new OauthStringRequest(Request.Method.PUT,
                 String.format("%s/%s/%s/%s",SharedPrefsUtils.getServerUrl(context),USER_URL, newUser.getId() + "", "update"),
@@ -215,12 +342,12 @@ public class UsersRepository extends OnlineDataStore {
                         SharedPrefsUtils.saveString(context,
                                 SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT,
                                 newUser.toJson());
-                        infoUpdateRequestCallback.onSuccess();
+                        infoUpdateDisconnectRequestCallback.onSuccess();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                infoUpdateRequestCallback.onNetworkError();
+                infoUpdateDisconnectRequestCallback.onNetworkError();
             }
         }){
             @Override
@@ -237,18 +364,32 @@ public class UsersRepository extends OnlineDataStore {
 
 
     public interface SignupRequestCallback {
-        public void onSuccess (User user);
+        public void onSuccess ();
         public void onUserAlreadyExists();
+        public void onNetworkError();
+    }
+
+    public interface EmailVerificationCodeResendCallback {
+        public void onSuccess();
+        public void onEmailAlreadyVerified();
         public void onNetworkError();
     }
 
     public interface LoginRequestCallback {
         public void onSuccess (User user);
         public void onEmailOrPasswordIncorrect();
+        public void onUserAlreadyConnected();
+        public void onEmailNotVerified();
         public void onNetworkError();
     }
 
-    public interface InfoUpdateRequestCallback {
+    public interface EmailVerificationRequestCallback {
+        public void onSuccess(User user);
+        public void onCodeIncorrect();
+        public void onNetworkError();
+    }
+
+    public interface InfoUpdateDisconnectRequestCallback {
         public void onSuccess();
         public void onNetworkError();
     }

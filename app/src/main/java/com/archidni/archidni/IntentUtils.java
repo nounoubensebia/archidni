@@ -18,6 +18,8 @@ public class IntentUtils {
     public static final String SCHEDULE = "SCHEDULE";
     public static final String DISRUPTION_SUBJECT = "DISRUPTION_SUBJECT";
     public static final String IS_PATH_GOOD = "IS_GOOD";
+    public static final String USER_EMAIL = "USER_EMAIL";
+    public static final String USER_PASSWORD = "USER_PASSWORD";
 
     public static class PathSearchIntents {
 

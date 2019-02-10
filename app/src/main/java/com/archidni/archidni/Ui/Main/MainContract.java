@@ -56,6 +56,11 @@ public interface MainContract {
         void showOverlayLayout();
         void startFavoritesActivity();
         void showPlacesOnList(ArrayList<? extends MainActivityPlace> places, Coordinate userCoordinate);
+        void showDisconnectDialog();
+        void showDisconnectProgressDialog();
+        void hideDisconnectProgressDialog();
+        void disconnectUser();
+        void showDisconnectionError();
         Coordinate getMapCenter ();
     }
 
@@ -79,6 +84,7 @@ public interface MainContract {
         void onStationItemClick(Station station);
         void onLineItemClicked(Line line);
         void onLinesStationsFindClick();
+        void onLogoutDialogClick();
         void onLogoutClick();
         void onPlaceClick();
         void onFavoritesClick();
@@ -86,6 +92,7 @@ public interface MainContract {
         void onParkingClick (Parking parking);
         void onFirstLocationCaptured (Coordinate coordinate);
         void onMapLoaded (Coordinate coordinate,LatLngBounds latLngBounds,double zoom);
+        void onDisconnectClick();
     }
 
     interface OnUserLocationObtainedCallback {

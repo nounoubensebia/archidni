@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.archidni.archidni.App;
 import com.archidni.archidni.Data.LinesAndPlaces.LinesAndPlacesRepository;
+import com.archidni.archidni.Data.Users.UsersRepository;
 import com.archidni.archidni.GeoUtils;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.Places.MainActivityPlace;
@@ -52,6 +54,7 @@ public class MainPresenter implements MainContract.Presenter {
     private static final int MAX_DISTANCE = 2000;
     private ArrayList<StationLines> stationLinesArrayList;
     private LatLngBounds currentLatLngBounds;
+    private UsersRepository usersRepository;
 
     public static final int STATIONS_SELECTED = 0;
     public static final int LINES_SELECTED = 1;
@@ -68,6 +71,7 @@ public class MainPresenter implements MainContract.Presenter {
         view.showDrawerLayout(user);
         interestPlaces = new ArrayList<>();
         timeMonitor = TimeMonitor.initTimeMonitor();
+        this.usersRepository = new UsersRepository();
     }
 
     @Override
@@ -386,6 +390,27 @@ public class MainPresenter implements MainContract.Presenter {
         mapCenterCoordinate = coordinate;
         this.currentLatLngBounds = latLngBounds;
         populateList();
+    }
+
+    @Override
+    public void onLogoutDialogClick() {
+        view.showDisconnectProgressDialog();
+        usersRepository.disconnectUser(App.getAppContext(), new UsersRepository.InfoUpdateDisconnectRequestCallback() {
+            @Override
+            public void onSuccess() {
+                view.disconnectUser();
+            }
+
+            @Override
+            public void onNetworkError() {
+                view.showDisconnectionError();
+            }
+        });
+    }
+
+    @Override
+    public void onDisconnectClick() {
+        view.showDisconnectDialog();
     }
 
     private ArrayList<Station> getFilteredStations()

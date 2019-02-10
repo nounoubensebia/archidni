@@ -1,6 +1,8 @@
 package com.archidni.archidni.Ui.Main;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -60,6 +62,7 @@ import com.archidni.archidni.UiUtils.ArchidniGoogleMap;
 import com.archidni.archidni.R;
 import com.archidni.archidni.Model.TransportMean;
 import com.archidni.archidni.UiUtils.ClusterHandler;
+import com.archidni.archidni.UiUtils.DialogUtils;
 import com.archidni.archidni.UiUtils.NestedScrollableHelper;
 import com.archidni.archidni.UiUtils.SelectorItem;
 import com.archidni.archidni.UiUtils.TransportMeansSelector;
@@ -158,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     ArchidniGoogleMap archidniMap;
     private boolean drawerOpened;
     private LocationListener locationListener;
+    private Dialog disconnectProgressDialog;
 
 
     @Override
@@ -880,7 +884,42 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
     }
 
+    @Override
+    public void showDisconnectDialog() {
+        Dialog dialog = DialogUtils.buildDialog(this, "Deconnexion", "\n" +
+                "Êtes-vous sûr(e) de vouloir vous déconnecter ? ", "Oui", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                presenter.onLogoutDialogClick();
+            }
+        });
+        dialog.show();
+    }
 
+    @Override
+    public void showDisconnectProgressDialog()
+    {
+        disconnectProgressDialog = DialogUtils.buildProgressDialog("Veuillez patientez",this);
+        disconnectProgressDialog.show();
+    }
+
+    @Override
+    public void hideDisconnectProgressDialog() {
+        disconnectProgressDialog.hide();
+    }
+
+    @Override
+    public void disconnectUser() {
+        SharedPrefsUtils.disconnectUser(this);
+        Intent intent = new Intent(this,SignupActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void showDisconnectionError() {
+        DialogUtils.buildInfoDialog(this,"Erreur",getString(R.string.error_happened)).show();
+    }
 
     @Override
     public void animateCameraToLocation(Coordinate coordinate) {
@@ -1010,9 +1049,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 startActivity(intent5);
                 break;
             case R.id.item_disconnect:
-                Intent intent6 = new Intent(this, LoginActivity.class);
-                SharedPrefsUtils.disconnectUser(this);
-                startActivity(intent6);
+                //Intent intent6 = new Intent(this, LoginActivity.class);
+                //SharedPrefsUtils.disconnectUser(this);
+                //startActivity(intent6);
+                presenter.onDisconnectClick();
                 break;
             case R.id.item_realtime_bus:
                 Intent intent7 = new Intent(this, RealTimeBusActivity.class);

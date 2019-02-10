@@ -14,9 +14,11 @@ import android.widget.Toast;
 
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Data.Users.UsersRepository;
+import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.User;
 import com.archidni.archidni.R;
+import com.archidni.archidni.Ui.EmailVerifActivity;
 import com.archidni.archidni.Ui.Main.MainActivity;
 import com.archidni.archidni.Ui.Settings.SettingsActivity;
 import com.archidni.archidni.Ui.Signup.SignupActivity;
@@ -67,8 +69,8 @@ public class LoginActivity extends AppCompatActivity {
         loginText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = emailEditText.getEditableText().toString();
-                String password = passwordEditText.getText().toString();
+                final String email = emailEditText.getEditableText().toString();
+                final String password = passwordEditText.getText().toString();
                 if (StringUtils.isValidEmailAddress(email)&&StringUtils.isValidPassword(password))
                 {
                     progressBar.setVisibility(View.VISIBLE);
@@ -119,6 +121,22 @@ public class LoginActivity extends AppCompatActivity {
                                     loginText.setVisibility(View.VISIBLE);
                                     Toast.makeText(LoginActivity.this,R.string.error_happened,
                                             Toast.LENGTH_LONG).show();
+                                }
+
+                                @Override
+                                public void onUserAlreadyConnected() {
+                                    progressBar.setVisibility(View.GONE);
+                                    loginText.setVisibility(View.VISIBLE);
+                                    Toast.makeText(LoginActivity.this,"Vous êtes déjà connecté avec un autre appareil",
+                                            Toast.LENGTH_LONG).show();
+                                }
+
+                                @Override
+                                public void onEmailNotVerified() {
+                                    Intent intent = new Intent(LoginActivity.this, EmailVerifActivity.class);
+                                    intent.putExtra(IntentUtils.USER_EMAIL,email);
+                                    intent.putExtra(IntentUtils.USER_PASSWORD,password);
+                                    startActivity(intent);
                                 }
                             });
                 }

@@ -15,9 +15,11 @@ import android.widget.Toolbar;
 
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Data.Users.UsersRepository;
+import com.archidni.archidni.IntentUtils;
 import com.archidni.archidni.Model.StringUtils;
 import com.archidni.archidni.Model.User;
 import com.archidni.archidni.R;
+import com.archidni.archidni.Ui.EmailVerifActivity;
 import com.archidni.archidni.Ui.Login.LoginActivity;
 import com.archidni.archidni.Ui.Main.MainActivity;
 import com.archidni.archidni.Ui.Settings.SettingsActivity;
@@ -66,8 +68,8 @@ public class SignupActivity extends AppCompatActivity {
         signupText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = emailEditText.getEditableText().toString();
-                String password = passwordEditText.getEditableText().toString();
+                final String email = emailEditText.getEditableText().toString();
+                final String password = passwordEditText.getEditableText().toString();
                 String firstName = firstNameEditText.getEditableText().toString();
                 String lastName = lastNameEditText.getEditableText().toString();
 
@@ -80,11 +82,16 @@ public class SignupActivity extends AppCompatActivity {
                             lastName,
                             new UsersRepository.SignupRequestCallback() {
                                 @Override
-                                public void onSuccess(User user) {
-                                    SharedPrefsUtils.saveString(SignupActivity.this,
+                                public void onSuccess() {
+                                    /*SharedPrefsUtils.saveString(SignupActivity.this,
                                             SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT,user.toJson());
                                     Intent intent = new Intent(SignupActivity.this,
                                             MainActivity.class);
+                                    startActivity(intent);
+                                    finish();*/
+                                    Intent intent = new Intent(SignupActivity.this, EmailVerifActivity.class);
+                                    intent.putExtra(IntentUtils.USER_EMAIL,email);
+                                    intent.putExtra(IntentUtils.USER_PASSWORD,password);
                                     startActivity(intent);
                                     finish();
                                 }

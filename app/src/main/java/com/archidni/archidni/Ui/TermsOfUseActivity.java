@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.archidni.archidni.Data.SharedPrefsUtils;
 import com.archidni.archidni.Model.User;
 import com.archidni.archidni.R;
+import com.archidni.archidni.Ui.Login.LoginActivity;
 import com.archidni.archidni.Ui.Main.MainActivity;
 
 import butterknife.BindView;
@@ -20,8 +21,8 @@ public class TermsOfUseActivity extends AppCompatActivity {
     @BindView(R.id.button_accept)
     Button acceptButton;
 
-    @BindView(R.id.button_refuse)
-    Button refuseButton;
+    /*@BindView(R.id.button_refuse)
+    Button refuseButton;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,20 +32,20 @@ public class TermsOfUseActivity extends AppCompatActivity {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                User user = new User(1,"test@test.com","Utilisateur de test","Utilisateur de test");
-                SharedPrefsUtils.saveString(TermsOfUseActivity.this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT,user.toJson());
-                Intent intent = new Intent(TermsOfUseActivity.this,MainActivity.class);
+                //User user = new User(1,"test@test.com","Utilisateur de test","Utilisateur de test");
+                //SharedPrefsUtils.saveString(TermsOfUseActivity.this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT,user.toJson());
+                Intent intent = new Intent(TermsOfUseActivity.this,LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
-        refuseButton.setOnClickListener(new View.OnClickListener() {
+        /*refuseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(TermsOfUseActivity.this,
                         "Vous devez accepter les termes et les conditions d'utilisation de l'application pour pouvoir utiliser l'application",
                         Toast.LENGTH_LONG).show();
             }
-        });
+        });*/
     }
 }

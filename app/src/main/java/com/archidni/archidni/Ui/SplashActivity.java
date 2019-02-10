@@ -92,13 +92,22 @@ public class SplashActivity extends AppCompatActivity {
                                 //Intent intent = new Intent(SplashActivity.this,TermsOfUseActivity.class);
                                 startNextActivity(intent);
                             }
-                        },3000);
+                        },5000);
 
                     }
                     else
                     {
                         final Intent intent = new Intent(SplashActivity.this,MainActivity.class);
-                        startNextActivity(intent);
+                        //startNextActivity(intent);
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startNextActivity(intent);
+                            }
+                        },5000);
+
+
                         if (!SharedPrefsUtils.verifyKey(this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_SUBSCRIBED))
                         {
                             FirebaseMessaging.getInstance().subscribeToTopic("all-devices-v2").addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -106,18 +115,37 @@ public class SplashActivity extends AppCompatActivity {
                                 public void onSuccess(Void aVoid) {
                                     SharedPrefsUtils.saveString(SplashActivity.this,SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_SUBSCRIBED,
                                             "subscribed");
-                                    startNextActivity(intent);
+                                    Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            startNextActivity(intent);
+                                        }
+                                    },5000);
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                   startNextActivity(intent);
+                                    Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            startNextActivity(intent);
+                                        }
+                                    },5000);
                                 }
                             });
                         }
                         else
                         {
-                            startNextActivity(intent);
+                            Handler handler1 = new Handler();
+                            handler1.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    startNextActivity(intent);
+                                }
+                            },5000);
                         }
                     }
 
