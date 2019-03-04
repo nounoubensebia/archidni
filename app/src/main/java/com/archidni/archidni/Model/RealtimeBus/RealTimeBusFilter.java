@@ -25,7 +25,10 @@ public class RealTimeBusFilter {
         ArrayList<Bus> filteredBuses = new ArrayList<>();
         for (Bus bus:buses)
         {
-            if (TimeUtils.getCurrentTimeInSeconds() - bus.getTimeStamp()/1000<timeOut)
+            long cTime = TimeUtils.getCurrentTimeInSeconds();
+            long bTime = bus.getTimeStamp()/1000 + 3600;
+            long diff = cTime - bTime;
+            if (diff<timeOut)
             {
                 filteredBuses.add(bus);
             }

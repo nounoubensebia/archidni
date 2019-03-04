@@ -1,5 +1,6 @@
 package com.archidni.archidni.Data.RealtimeBus;
 
+import com.archidni.archidni.App;
 import com.archidni.archidni.Model.Coordinate;
 import com.archidni.archidni.Model.RealtimeBus.Bus;
 
@@ -36,7 +37,8 @@ public class BusParser {
             int course = jsonObject.isNull("course") ? -1:jsonObject.getInt("course");
             String time = jsonObject.getString("time");
             DateFormat formatter;
-            formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+                    App.getAppContext().getResources().getConfiguration().locale);
             try {
                 Date date = formatter.parse(time);
                 buses.add(new Bus(id,new Coordinate(latitude,longitude),date.getTime(),speed,

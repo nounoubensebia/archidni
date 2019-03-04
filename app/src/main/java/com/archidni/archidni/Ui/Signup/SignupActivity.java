@@ -78,20 +78,22 @@ public class SignupActivity extends AppCompatActivity {
                 {
                     signupText.setVisibility(View.GONE);
                     progressBar.setVisibility(View.VISIBLE);
-                    usersRepository.signup(SignupActivity.this, email, password, firstName,
+                    usersRepository.signupWithoutCode(SignupActivity.this, email, password, firstName,
                             lastName,
-                            new UsersRepository.SignupRequestCallback() {
+                            new UsersRepository.SignupWithoutCodeRequestCallback() {
                                 @Override
-                                public void onSuccess() {
+                                public void onSuccess(User user) {
                                     /*SharedPrefsUtils.saveString(SignupActivity.this,
                                             SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT,user.toJson());
                                     Intent intent = new Intent(SignupActivity.this,
                                             MainActivity.class);
                                     startActivity(intent);
                                     finish();*/
-                                    Intent intent = new Intent(SignupActivity.this, EmailVerifActivity.class);
-                                    intent.putExtra(IntentUtils.USER_EMAIL,email);
-                                    intent.putExtra(IntentUtils.USER_PASSWORD,password);
+                                    Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                                    //intent.putExtra(IntentUtils.USER_EMAIL,email);
+                                    //intent.putExtra(IntentUtils.USER_PASSWORD,password);
+                                    SharedPrefsUtils.saveString(SignupActivity.this,
+                                            SharedPrefsUtils.SHARED_PREFS_ENTRY_USER_OBJECT,user.toJson());
                                     startActivity(intent);
                                     finish();
                                 }

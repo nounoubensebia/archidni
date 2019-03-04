@@ -87,6 +87,62 @@ public class UsersRepository extends OnlineDataStore {
         AppSingleton.getInstance(context).addToRequestQueue(stringRequest,getTag());
     }
 
+    public void signupWithoutCode (final Context context, final String email, final String password,
+                                   final String firstName, final String lastName,
+                                   final SignupWithoutCodeRequestCallback signupRequestCallback)
+    {
+        cancelRequests(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                SharedPrefsUtils.getServerUrl(context)+SIGNUP_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject root = null;
+                        try {
+                            root = new JSONObject(response);
+                            JSONObject userObject = root.getJSONObject("user");
+                            JSONObject tokensObject = root.getJSONObject("tokens");
+                            User user = getUser(userObject);
+                            parseAndSaveTokens(context,tokensObject);
+                            signupRequestCallback.onSuccess(user);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.networkResponse!=null&&error.networkResponse.statusCode==401)
+                {
+                    signupRequestCallback.onUserAlreadyExists();
+                }
+                else
+                {
+                    if (error.networkResponse!=null&&error.networkResponse.statusCode==410)
+                    {
+                        displayVersionIncorrect();
+                    }
+                    else
+                    {
+                        signupRequestCallback.onNetworkError();
+                    }
+                }
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                LinkedHashMap<String,String> map = new LinkedHashMap<>();
+                map.put("email",email);
+                map.put("password",password);
+                map.put("first_name",firstName);
+                map.put("last_name",lastName);
+                return map;
+            }
+        };
+        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,getTag());
+    }
+
     private void displayVersionIncorrect()
     {
         Context context = App.getAppContext();
@@ -144,6 +200,70 @@ public class UsersRepository extends OnlineDataStore {
                             }
                             else
                                 loginRequestCallback.onNetworkError();
+                    }
+                }
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                LinkedHashMap<String,String> map = new LinkedHashMap<>();
+                map.put("email",email);
+                map.put("password",password);
+                return map;
+            }
+        };
+        AppSingleton.getInstance(context).addToRequestQueue(stringRequest,getTag());
+    }
+
+
+    public void loginWithoutCode (final Context context, final String email, final String password,
+                       final LoginRequestCallback loginRequestCallback)
+    {
+        cancelRequests(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                SharedPrefsUtils.getServerUrl(context)+ LOGIN_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject root = new JSONObject(response);
+                            JSONObject userObject = root.getJSONObject("user");
+                            JSONObject tokensObject = root.getJSONObject("tokens");
+                            User user = getUser(userObject);
+                            parseAndSaveTokens(context,tokensObject);
+                            loginRequestCallback.onSuccess(user);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.networkResponse!=null&&error.networkResponse.statusCode==401)
+                {
+                    loginRequestCallback.onEmailOrPasswordIncorrect();
+                }
+                else
+                {
+                    if (error.networkResponse!=null&&error.networkResponse.statusCode==410)
+                    {
+                        displayVersionIncorrect();
+                    }
+                    else
+                    {
+                        if (error.networkResponse!=null&&error.networkResponse.statusCode==403)
+                        {
+                            loginRequestCallback.onUserAlreadyConnected();
+                        }
+                        else
+                        if (error.networkResponse!=null&&error.networkResponse.statusCode==402)
+                        {
+                            loginRequestCallback.onEmailNotVerified();
+                        }
+                        else
+                            loginRequestCallback.onNetworkError();
                     }
                 }
             }
@@ -365,6 +485,12 @@ public class UsersRepository extends OnlineDataStore {
 
     public interface SignupRequestCallback {
         public void onSuccess ();
+        public void onUserAlreadyExists();
+        public void onNetworkError();
+    }
+
+    public interface SignupWithoutCodeRequestCallback {
+        public void onSuccess (User user);
         public void onUserAlreadyExists();
         public void onNetworkError();
     }

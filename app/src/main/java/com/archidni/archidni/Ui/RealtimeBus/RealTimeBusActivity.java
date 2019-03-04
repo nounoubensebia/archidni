@@ -218,7 +218,7 @@ public class RealTimeBusActivity extends AppCompatActivity {
         busRepository.getBuses(new BusRepository.OnBusesFound() {
             @Override
             public void onBusesFound(List<Bus> buses) {
-                RealTimeBusFilter realTimeBusFilter = new RealTimeBusFilter(buses,3600);
+                RealTimeBusFilter realTimeBusFilter = new RealTimeBusFilter(buses,7200);
                 showBusesOnMap(realTimeBusFilter.getFilteredBuses());
                 hideProgressBar();
                 showUpdateButton();

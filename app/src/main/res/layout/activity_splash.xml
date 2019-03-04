@@ -37,12 +37,13 @@
         android:orientation="vertical">
 
         <ImageView
-            android:visibility="gone"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
+            android:visibility="visible"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
-            app:srcCompat="@drawable/ic_logo_byna_solutions" />
+            android:src="@mipmap/ic_aotua_launcher"/>
+            <!--app:srcCompat="@drawable/ic_aotua_colored" />-->
         <TextView
             android:id="@+id/text"
             android:textColor="#000"

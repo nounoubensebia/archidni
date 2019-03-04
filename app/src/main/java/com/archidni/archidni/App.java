@@ -18,7 +18,7 @@ import static com.archidni.archidni.MyFirebaseMessagingService.CHANNEL_ID;
 public class App extends Application {
     private static Context appContext;
 
-    public static final int VERSION = 1;
+    public static final int VERSION = 3;
 
     public static Context getAppContext ()
     {

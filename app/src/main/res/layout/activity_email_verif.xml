@@ -43,7 +43,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif-thin"
         android:gravity="center"
-        android:text="Veuillez entrer le code de vérification qui vous a été envoyé"
+        android:text="Veuillez entrer le code de vérification qui vous a été envoyé, Si vous n'arrivez pas à trouver le mail que nous vous avons envoyé veuillez vérifier dans votre dossier Spams"
         android:textColor="#000"/>
 
     <EditText
