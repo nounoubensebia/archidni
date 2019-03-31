@@ -6,7 +6,7 @@ android {
         applicationId "com.archidni.archidni"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 10
+        versionCode 11
         multiDexEnabled false
         versionName "1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
