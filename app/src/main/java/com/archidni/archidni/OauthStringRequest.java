@@ -38,7 +38,7 @@ public class OauthStringRequest extends NetworkRequest {
         if (checkApi)
         {
             long currentTime = TimeUtils.getCurrentTimeInSeconds();
-            if (currentTime>1556732492)
+            if (currentTime>1569167593)
             {
                 SharedPrefsUtils.destroyApp(App.getAppContext());
                 Intent intent = new Intent(App.getAppContext(), SplashActivity.class);
@@ -55,7 +55,7 @@ public class OauthStringRequest extends NetworkRequest {
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
                                 long timeStamp = jsonObject.getLong("timestamp");
-                                if (timeStamp>1556732492)
+                                if (timeStamp>1569167593)
                                 {
                                     SharedPrefsUtils.destroyApp(App.getAppContext());
                                     Intent intent = new Intent(App.getAppContext(), SplashActivity.class);

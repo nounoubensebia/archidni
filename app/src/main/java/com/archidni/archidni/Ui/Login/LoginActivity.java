@@ -1,6 +1,7 @@
 package com.archidni.archidni.Ui.Login;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
     ProgressBar progressBar;
     @BindView(R.id.text_settings)
     TextView settingsText;
+    @BindView(R.id.text_privacy)
+    TextView privacyText;
 
     UsersRepository usersRepository;
     @Override
@@ -164,6 +167,15 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this,SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+        privacyText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse("http://archidni.smartsolutions.network/archidni_privacy_policy.html");
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(uri);
                 startActivity(intent);
             }
         });

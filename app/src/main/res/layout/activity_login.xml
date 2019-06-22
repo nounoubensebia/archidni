@@ -122,6 +122,14 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:visibility="gone" />
+        <TextView
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="En cliquant sur se connecter vous acceptez la politique de confidentialité."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:visibility="visible"
@@ -152,6 +160,7 @@
                 android:textAllCaps="true"
                 android:textColor="#000"
                 />
+
         </LinearLayout>
 
         <TextView
@@ -164,6 +173,16 @@
             android:textAllCaps="true"
             android:textColor="#000"
              />
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:id="@+id/text_privacy"
+            android:layout_marginBottom="16dp"
+            android:textColor="#000000"
+            android:text="Politique de confidentialité"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </LinearLayout>
